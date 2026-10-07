@@ -1,0 +1,7 @@
+Lee AGENTS.md y docs/STATUS.md. Consulta también la arquitectura
+y el roadmap. Contrasta la documentación con los archivos actuales
+y continúa desde la tarea pendiente.
+
+Al terminar, actualiza docs/STATUS.md indicando qué has cambiado,
+qué has comprobado, qué queda pendiente y el siguiente paso.
+No marques como hecho algo que solo hayas propuesto.
