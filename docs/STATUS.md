@@ -6,7 +6,7 @@ Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
 ## Modo de trabajo
 
-Manuel escribe el código guiado paso a paso: el asistente explica cada archivo, por qué se usa y su lógica, con respuestas breves. El asistente solo implementa directamente lo que Manuel pida. La documentación se actualiza cuando Manuel lo solicite.
+Manuel escribe el código guiado paso a paso en **modo plan**: el asistente explica cada archivo, por qué se usa y su lógica, con respuestas breves. El asistente solo implementa lo que Manuel pida expresamente (tareas tediosas). Lo único que el asistente actualiza directamente es la documentación (este archivo y, si corresponde, roadmap y CHANGELOG), después de cada interacción. No ejecuta comandos que cambien el código, la configuración o las dependencias sin que Manuel lo pida.
 
 ## Visión del producto (decidida el 2026-10-07)
 
@@ -19,10 +19,16 @@ Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift.
 
 ## Estado confirmado
 
-- Next.js inicializado en la raíz del repositorio. `valvedex-base` ya no existe.
-- La portada de ChatGPT nunca se aplicó (`page.module.css` no existe).
-- `src/app/layout.tsx`: **aplicado por Manuel** (`lang="es"` y metadatos con `title.template`). Sin commit.
-- `src/app/page.tsx` y `globals.css` siguen siendo la plantilla de create-next-app.
+Comprobado por Claude Code el 2026-10-07 en `main` (commit `46865a1`).
+
+- Next.js inicializado en la raíz del repositorio.
+- `src/app/layout.tsx`: `lang="es"` y metadatos con `title.template`. Commiteado. Todavía no renderiza la cabecera.
+- `src/app/globals.css`: paleta base de Valve (`--background`, `--foreground`, `--surface`, `--border`, `--muted`, `--accent`, `--content-width`), expuesta a Tailwind con `@theme inline`, y `:focus-visible`. Commiteado.
+- Cabecera escrita por Manuel (`46865a1`) con tres problemas:
+  - Está en `src/app/components/layout/`; la arquitectura indica `src/components/layout/`.
+  - El CSS se llama `site.header.module.css`, pero `site-header.tsx` importa `./site-header.module.css`. El build fallará en cuanto se use.
+  - No se importa en `layout.tsx`.
+- `src/app/page.tsx` sigue siendo la plantilla de create-next-app.
 - Todavía no existen `src/features`, `src/components`, `src/domain`, `src/lib` ni `src/data`.
 - Terminal de Manuel: CMD en Windows.
 
@@ -44,10 +50,12 @@ Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift.
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- Rama activa: `feat/base-layout`. Último commit: `63996a1 Proyecto inicializado`.
-- Sin commit: `src/app/layout.tsx` y la documentación de esta sesión (AGENTS, STATUS, arquitectura, roadmap, CHANGELOG).
+- Rama activa: `main`. Último commit: `46865a1 Terminado Header`. En remoto existen también `feat/base-layout`, `component/header` e `Inicializar-Proyecto`.
+- Sin commit: este archivo. `.gitattributes` aparece sin seguimiento: lo creó Claude en una sesión que Manuel descartó; Manuel decide si lo borra o lo usa para corregir los finales de línea.
 
 ## Comprobaciones
+
+En `main` (2026-10-07, Claude, antes de que Manuel descartara la sesión): `npm run lint` y `npm run typecheck` superados; `npm run format:check` **falla en 16 archivos** solo por CRLF. Ni lint ni tipos detectan el error del import de la cabecera porque nadie importa el componente.
 
 Ejecutadas por Claude el 2026-10-07, antes de cambiar de rama:
 
@@ -64,6 +72,7 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona y el `postins
 
 ## Problemas pendientes
 
+- **Cabecera:** mover, renombrar el CSS y conectarla en `layout.tsx` (paso 3).
 - **Finales de línea (bloquea `npm run check`):** crear `.gitattributes` con `* text=auto eol=lf` y ejecutar `npx prettier --write .`.
 - Alertas de `npm audit` en desarrollo.
 - Registrar la versión de Node.js.
@@ -75,9 +84,9 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona y el `postins
 | Paso | Archivo(s)                                                             | Estado                  |
 | ---- | ---------------------------------------------------------------------- | ----------------------- |
 | 0    | Rama `feat/base-layout`                                                | Hecho                   |
-| 1    | `src/app/layout.tsx`: idioma y metadatos                               | Aplicado, sin comprobar |
-| 2    | `src/app/globals.css`: paleta base de Valve                            | Siguiente               |
-| 3    | `src/components/layout/site-header` (Inicio, Universos, Explorar)      | Pendiente               |
+| 1    | `src/app/layout.tsx`: idioma y metadatos                               | Hecho (commit)          |
+| 2    | `src/app/globals.css`: paleta base de Valve                            | Hecho (commit)          |
+| 3    | `src/components/layout/site-header` (Inicio, Universos, Explorar)      | Escrito; falta corregir |
 | 4    | `src/components/layout/site-footer` (aviso de fans no oficial)         | Pendiente               |
 | 5    | Portada sobre Valve y Steam en `src/app/page.tsx`                      | Pendiente               |
 | 6    | Tipos `Universe` y `Game`, datos y lectura en `src/features/universes` | Pendiente               |
@@ -87,7 +96,14 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona y el `postins
 
 ## Siguiente paso
 
-Corregir los finales de línea y comprobar con `npm run check`. Después, paso 2: `globals.css` con la paleta base de Valve.
+Terminar el paso 3; plan guiado preparado, pendiente de aplicar por Manuel:
+
+1. Mover `src/app/components/layout` a `src/components/layout`.
+2. Renombrar `site.header.module.css` a `site-header.module.css`.
+3. Importar `SiteHeader` desde `@/components/layout/site-header` y renderizarlo en `<body>` antes de `{children}`.
+4. Comprobar con `npm run build` y `npm run dev` (Tab, ancho móvil). `npm run check` seguirá fallando por los finales de línea hasta corregirlos.
+
+Después: finales de línea y paso 4, `site-footer`.
 
 ## Cómo actualizar este archivo
 
