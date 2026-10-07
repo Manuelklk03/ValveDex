@@ -2,7 +2,9 @@
 
 ## Contexto y estado
 
-ValveDex es una enciclopedia dedicada a todo el catálogo de juegos de Valve, incluidos Half-Life 2, Ricochet y las demás sagas. La primera entrega se limita a Half-Life, Opposing Force y Blue Shift. El objetivo es crear un portfolio sólido mientras Manuel aprende React y TypeScript.
+ValveDex es una enciclopedia dedicada a Valve y a todo su catálogo de juegos, organizada en tres niveles: portada sobre Valve (empresa, Steam, historia), sección «Universos» con cada saga y su paleta propia, y un hub por videojuego (lore, mapas, armas, personajes, curiosidades, easter eggs…). El contenido de la primera entrega se limita al universo Half-Life con Half-Life, Opposing Force y Blue Shift. El objetivo es crear un portfolio sólido mientras Manuel aprende React y TypeScript.
+
+Modo de trabajo acordado: Manuel escribe el código guiado paso a paso; el agente explica cada archivo y su lógica, y solo implementa directamente lo que Manuel pida expresamente. La documentación se actualiza cuando Manuel lo solicite o al cerrar una tarea.
 
 Este documento define reglas estables. El avance actual se registra en [docs/STATUS.md](docs/STATUS.md): léelo en cada sesión y contrástalo con el repositorio. No supongas que existen rutas, dependencias, scripts, tests, una API o un despliegue por estar mencionados en la documentación. Las instrucciones vigentes de Manuel y los archivos actuales mandan sobre descripciones antiguas de conversaciones o del README.
 
