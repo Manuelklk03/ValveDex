@@ -16,15 +16,15 @@ Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
 ## Qué existe y qué falta
 
-| Elemento | Estado |
-| --- | --- |
-| Repositorio y README | Creados, según Manuel |
-| AGENTS, CLAUDE, arquitectura, roadmap y changelog | Preparados para incorporarlos |
-| package.json y código de Next.js | Pendientes de crear en el repositorio actual |
-| Dependencias y lockfile | Pendientes de instalar y comprobar |
-| ESLint, Prettier y scripts de calidad | Pendientes de configurar y ejecutar |
-| Interfaz, catálogo y datos | Pendientes |
-| Tests, CI y despliegue | Pendientes |
+| Elemento                                          | Estado                                       |
+| ------------------------------------------------- | -------------------------------------------- |
+| Repositorio y README                              | Creados, según Manuel                        |
+| AGENTS, CLAUDE, arquitectura, roadmap y changelog | Preparados para incorporarlos                |
+| package.json y código de Next.js                  | Pendientes de crear en el repositorio actual |
+| Dependencias y lockfile                           | Pendientes de instalar y comprobar           |
+| ESLint, Prettier y scripts de calidad             | Pendientes de configurar y ejecutar          |
+| Interfaz, catálogo y datos                        | Pendientes                                   |
+| Tests, CI y despliegue                            | Pendientes                                   |
 
 El README contiene presentación y planificación. Cualquier frase antigua que dé por creada la base de la aplicación debe contrastarse con esta confirmación y con los archivos reales.
 

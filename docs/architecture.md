@@ -16,21 +16,21 @@ Buscamos responsabilidades claras, tipos explícitos, comprobaciones reproducibl
 
 ## 2. Responsabilidades
 
-| Ruta prevista | Responsabilidad |
-| --- | --- |
-| `src/app/` | Rutas, composición de páginas, layouts y metadatos |
-| `src/features/catalog/` | Tarjetas, fichas, búsqueda, filtros y lectura del catálogo |
-| `src/features/favorites/` | Estado y persistencia de favoritos, cuando se implemente |
-| `src/features/comparison/` | Selección y comparación de armas, cuando se implemente |
-| `src/components/ui/` | Controles de presentación reutilizados: botones, etiquetas o inputs |
-| `src/components/layout/` | Cabecera, navegación y pie comunes |
-| `src/domain/` | Tipos y reglas compartidas de juegos, fichas y fuentes, sin React |
-| `src/lib/` | Utilidades técnicas compartidas con una finalidad concreta |
-| `src/data/` | Catálogo local inicial y referencias de contenido |
-| `public/` | Recursos estáticos que se puedan publicar |
-| `tests/e2e/` | Recorridos de usuario en navegador |
-| `.github/workflows/` | Comprobaciones automáticas, cuando se configuren |
-| `docs/` | Arquitectura, planificación y estado de continuidad |
+| Ruta prevista              | Responsabilidad                                                     |
+| -------------------------- | ------------------------------------------------------------------- |
+| `src/app/`                 | Rutas, composición de páginas, layouts y metadatos                  |
+| `src/features/catalog/`    | Tarjetas, fichas, búsqueda, filtros y lectura del catálogo          |
+| `src/features/favorites/`  | Estado y persistencia de favoritos, cuando se implemente            |
+| `src/features/comparison/` | Selección y comparación de armas, cuando se implemente              |
+| `src/components/ui/`       | Controles de presentación reutilizados: botones, etiquetas o inputs |
+| `src/components/layout/`   | Cabecera, navegación y pie comunes                                  |
+| `src/domain/`              | Tipos y reglas compartidas de juegos, fichas y fuentes, sin React   |
+| `src/lib/`                 | Utilidades técnicas compartidas con una finalidad concreta          |
+| `src/data/`                | Catálogo local inicial y referencias de contenido                   |
+| `public/`                  | Recursos estáticos que se puedan publicar                           |
+| `tests/e2e/`               | Recorridos de usuario en navegador                                  |
+| `.github/workflows/`       | Comprobaciones automáticas, cuando se configuren                    |
+| `docs/`                    | Arquitectura, planificación y estado de continuidad                 |
 
 Dentro de una funcionalidad se crearán `components/`, `hooks/`, `utils/` o `server/` según haga falta. Los tests unitarios se colocarán junto al código que prueban. No se crearán directorios vacíos por completar el esquema.
 
@@ -47,14 +47,14 @@ El CSS propio de un componente estará junto a su archivo TSX: por ejemplo, `ent
 
 ## 3. Rutas iniciales
 
-| URL prevista | Función |
-| --- | --- |
-| `/` | Presentación y acceso a los tres juegos |
-| `/juegos/[slug]` | Introducción y contenido del juego |
-| `/catalogo` | Listado, búsqueda y filtros |
-| `/fichas/[slug]` | Ficha canónica y apariciones |
-| `/favoritos` | Fichas guardadas en este navegador |
-| `/comparador` | Comparación de armas compatibles |
+| URL prevista     | Función                                 |
+| ---------------- | --------------------------------------- |
+| `/`              | Presentación y acceso a los tres juegos |
+| `/juegos/[slug]` | Introducción y contenido del juego      |
+| `/catalogo`      | Listado, búsqueda y filtros             |
+| `/fichas/[slug]` | Ficha canónica y apariciones            |
+| `/favoritos`     | Fichas guardadas en este navegador      |
+| `/comparador`    | Comparación de armas compatibles        |
 
 Los filtros públicos se representarán en parámetros como `q`, `game`, `category` y `sort`. Se validarán los valores, se definirán valores por defecto y se mantendrá el funcionamiento del botón Atrás. Un slug inexistente mostrará una página 404.
 
@@ -62,13 +62,13 @@ Los filtros públicos se representarán en parámetros como `q`, `game`, `catego
 
 El diseño inicial contempla estas entidades; sus tipos exactos se escribirán al implementar el catálogo:
 
-| Entidad | Datos principales |
-| --- | --- |
-| `Game` | ID, slug, nombre, descripción y recursos visuales |
-| `Entry` | ID, slug único, nombre, categoría, resumen, apariciones y fuentes |
-| `Appearance` | Juego y diferencias concretas de una ficha en ese juego |
-| `Relation` | ID de origen, ID de destino y tipo de relación |
-| `Source` | URL, título y fecha de consulta |
+| Entidad      | Datos principales                                                        |
+| ------------ | ------------------------------------------------------------------------ |
+| `Game`       | ID, slug, nombre, descripción y recursos visuales                        |
+| `Entry`      | ID, slug único, nombre, categoría, resumen, apariciones y fuentes        |
+| `Appearance` | Juego y diferencias concretas de una ficha en ese juego                  |
+| `Relation`   | ID de origen, ID de destino y tipo de relación                           |
+| `Source`     | URL, título y fecha de consulta                                          |
 | `MediaAsset` | Recurso, texto alternativo, origen, autor y condiciones de uso conocidas |
 
 `Entry` se modelará mediante variantes discriminadas por categoría: arma, personaje, enemigo, objeto, localización, capítulo o facción. Cada variante tendrá los campos que necesita; evitaremos un objeto con decenas de propiedades opcionales sin relación.
@@ -83,13 +83,13 @@ Las páginas y layouts podrán permanecer en servidor. Las zonas con interacció
 
 El catálogo se leerá mediante funciones del módulo, protegidas como código de servidor cuando corresponda. Una página de servidor llamará a esas funciones directamente. Los futuros endpoints HTTP reutilizarán esa lógica cuando exista una necesidad de consumo por navegador u otro cliente.
 
-| Estado | Ubicación elegida |
-| --- | --- |
-| Menú abierto y controles locales | Estado React local |
-| Filtros y ordenación compartibles | URL como referencia para el estado aplicado |
-| Texto aún no aplicado en el buscador | Estado local si hace falta |
-| Favoritos | IDs en `localStorage`, con estado React sincronizado |
-| Contenido del catálogo | Fuente de datos, sin copiarlo a estado global |
+| Estado                               | Ubicación elegida                                    |
+| ------------------------------------ | ---------------------------------------------------- |
+| Menú abierto y controles locales     | Estado React local                                   |
+| Filtros y ordenación compartibles    | URL como referencia para el estado aplicado          |
+| Texto aún no aplicado en el buscador | Estado local si hace falta                           |
+| Favoritos                            | IDs en `localStorage`, con estado React sincronizado |
+| Contenido del catálogo               | Fuente de datos, sin copiarlo a estado global        |
 
 Para favoritos se definirá una clave versionada y se validará el JSON almacenado. La primera renderización será compatible entre servidor y cliente; la lectura del navegador no deberá sobrescribir los favoritos existentes con un array vacío. Se contemplarán almacenamiento no disponible y fichas eliminadas.
 
@@ -107,11 +107,11 @@ Se revisarán escritorio, móvil y uso por teclado. Las imágenes tendrán tama�
 
 Aplicaremos la variante de nombres `block__element--modifier` a las clases propias. Es una decisión de este proyecto para mantener nombres claros y practicar CSS estructurado.
 
-| Parte | Ejemplo en ValveDex |
-| --- | --- |
-| Bloque independiente | `entry-card` |
-| Elemento del bloque | `entry-card__title` |
-| Variante del bloque | `entry-card--featured` |
+| Parte                   | Ejemplo en ValveDex        |
+| ----------------------- | -------------------------- |
+| Bloque independiente    | `entry-card`               |
+| Elemento del bloque     | `entry-card__title`        |
+| Variante del bloque     | `entry-card--featured`     |
 | Variante de un elemento | `entry-card__tag--spoiler` |
 
 Los modificadores acompañan a su clase base. No representaremos toda la jerarquía del HTML en el nombre: un título dentro de la cabecera sigue siendo `entry-card__title`.
@@ -177,11 +177,11 @@ TypeScript estricto para comprobar tipos; ESLint para reglas de código y hooks;
 
 Usaremos una rama corta por funcionalidad y una pull request hacia `main` como práctica de revisión. GitHub Actions comprobará una instalación reproducible con `npm ci`, lint, tipos, formato y build. Las pruebas se incorporarán al flujo cuando exista su configuración y casos reales.
 
-| Herramienta prevista | Qué verificará |
-| --- | --- |
-| Vitest | Reglas puras de filtros, comparaciones e integridad del catálogo |
-| React Testing Library | Interacciones visibles de componentes compatibles |
-| Playwright | Navegación real, filtros, fichas y persistencia de favoritos |
+| Herramienta prevista  | Qué verificará                                                   |
+| --------------------- | ---------------------------------------------------------------- |
+| Vitest                | Reglas puras de filtros, comparaciones e integridad del catálogo |
+| React Testing Library | Interacciones visibles de componentes compatibles                |
+| Playwright            | Navegación real, filtros, fichas y persistencia de favoritos     |
 
 Según la guía de Next.js consultada, Vitest no cubre componentes de servidor asíncronos directamente; sus recorridos se comprobarán con pruebas E2E. Se volverá a comprobar la compatibilidad al instalar las herramientas.
 
@@ -189,15 +189,15 @@ Una entrega se considerará completa cuando cumpla sus criterios del roadmap, pa
 
 ## 8. Decisiones iniciales
 
-| Fecha | Decisión | Motivo y consecuencia |
-| --- | --- | --- |
-| 2026-09-30 | React con Next.js App Router | Combinar aprendizaje de React con páginas individuales y renderizado del contenido; exige distinguir servidor y cliente |
-| 2026-09-30 | Organización por funcionalidades | Mantener cerca el código que cambia junto y facilitar ampliaciones |
-| 2026-09-30 | Catálogo local inicial | Empezar la interfaz con datos comprobables; el acceso separado facilita cambiar la fuente después |
-| 2026-09-30 | TypeScript estricto y npm | Tipos consistentes e instalación reproducible mediante lockfile |
-| 2026-09-30 | Estado local, URL y persistencia de IDs | Asignar a cada estado un lugar claro y evitar duplicaciones |
-| 2026-10-01 | BEM en el CSS propio y CSS Modules para estilos de componentes | Practicar estilos con nombres coherentes y alcance local; Tailwind conserva sus utilidades sin duplicar responsabilidades |
-| 2026-10-07 | Reglas comunes en AGENTS, entrada para Claude y estado en STATUS | Continuar entre asistentes sin duplicar reglas ni dar por aplicado lo que solo se propuso en un chat |
+| Fecha      | Decisión                                                         | Motivo y consecuencia                                                                                                     |
+| ---------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| 2026-09-30 | React con Next.js App Router                                     | Combinar aprendizaje de React con páginas individuales y renderizado del contenido; exige distinguir servidor y cliente   |
+| 2026-09-30 | Organización por funcionalidades                                 | Mantener cerca el código que cambia junto y facilitar ampliaciones                                                        |
+| 2026-09-30 | Catálogo local inicial                                           | Empezar la interfaz con datos comprobables; el acceso separado facilita cambiar la fuente después                         |
+| 2026-09-30 | TypeScript estricto y npm                                        | Tipos consistentes e instalación reproducible mediante lockfile                                                           |
+| 2026-09-30 | Estado local, URL y persistencia de IDs                          | Asignar a cada estado un lugar claro y evitar duplicaciones                                                               |
+| 2026-10-01 | BEM en el CSS propio y CSS Modules para estilos de componentes   | Practicar estilos con nombres coherentes y alcance local; Tailwind conserva sus utilidades sin duplicar responsabilidades |
+| 2026-10-07 | Reglas comunes en AGENTS, entrada para Claude y estado en STATUS | Continuar entre asistentes sin duplicar reglas ni dar por aplicado lo que solo se propuso en un chat                      |
 
 El backend, la base de datos, la autenticación y el proveedor de despliegue están pendientes de decisión. La entrega de backend incluirá consumo de API desde React, validación de respuestas y gestión de errores. Las escrituras administrativas deberán comprobar identidad y permisos en servidor.
 
