@@ -19,13 +19,14 @@ Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift.
 
 ## Estado confirmado
 
-Comprobado por Claude Code el 2026-10-08 en `main` (commit `0f01054`).
+Comprobado por Claude Code el 2026-10-08 en `main` (commit `296a3da` más cambios sin commit del pie).
 
 - Next.js inicializado en la raíz del repositorio.
-- `src/app/layout.tsx`: `lang="es"`, metadatos con `title.template` y `<SiteHeader />` renderizada antes de `{children}`.
+- `src/app/layout.tsx`: `lang="es"`, metadatos con `title.template`, `<SiteHeader />` antes de `{children}` y `<SiteFooter />` después.
 - `src/app/globals.css`: paleta base de Valve (`--background`, `--foreground`, `--surface`, `--border`, `--muted`, `--accent`, `--content-width`), expuesta a Tailwind con `@theme inline`, y `:focus-visible`.
 - Cabecera en `src/components/layout/site-header.tsx`: enlaces Inicio, Universos y Explorar generados con `map`, CSS Modules + BEM. Funciona: el build pasa.
-  - Detalle pendiente: el CSS se llama `site.header.module.css` (con punto) y el import se adaptó a ese nombre. La convención kebab-case pide `site-header.module.css`; conviene renombrarlo y ajustar el import.
+  - CSS renombrado a `site-header.module.css` (kebab-case) e import ajustado.
+- Pie en `src/components/layout/site-footer.tsx` + `site-footer.module.css`: `<footer>` con aviso de proyecto de fans no oficial; BEM `site-footer`, `__inner`, `__notice`; `margin-top: auto` para quedarse abajo. Escrito por Manuel, sin commit.
 - `.gitattributes` creado y commiteado (`* text=auto eol=lf` y binarios).
 - `/universos` y `/explorar` todavía no existen: sus enlaces dan 404.
 - `src/app/page.tsx` sigue siendo la plantilla de create-next-app.
@@ -50,20 +51,20 @@ Comprobado por Claude Code el 2026-10-08 en `main` (commit `0f01054`).
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- Rama activa: `main`. Último commit: `0f01054 Arreglo de header y creacion de .gitAtributes`. Ramas: local `component/header`; remotas `feat/base-layout`, `component/header` e `Inicializar-Proyecto`. Se está trabajando directamente en `main`.
-- Sin commit: este archivo. Tras `npx prettier --write .`, `git status` lista además 12 archivos que solo cambiaron sus finales de línea en la copia de trabajo (`git diff` no muestra cambios de contenido).
+- Rama activa: `main`. Último commit: `296a3da Arreglo de Prettier y Update de status`. Ramas: local `component/header`; remotas `feat/base-layout`, `component/header` e `Inicializar-Proyecto`. Se está trabajando directamente en `main`.
+- Sin commit: `src/app/layout.tsx`, `src/components/layout/site-footer.tsx`, `site-footer.module.css` (nuevos) y este archivo.
 
 ## Comprobaciones
 
-Según la salida de terminal de Manuel del 2026-10-08, después de `npx prettier --write .`:
+Ejecutadas por Claude el 2026-10-08 con el pie aplicado:
 
-| Comando         | Resultado                                                               |
-| --------------- | ----------------------------------------------------------------------- |
-| `npm run check` | **Superado**: lint, `typecheck` y `format:check` («All matched files…») |
+| Comando         | Resultado                                                                                    |
+| --------------- | -------------------------------------------------------------------------------------------- |
+| `npm run check` | **Falla** solo en `format:check`: `site-footer.tsx` y `site-footer.module.css` están en CRLF |
+| `npm run build` | Superado (`/` y `/_not-found` estáticas), con cabecera y pie                                 |
 
-Ejecutado por Claude el 2026-10-08 en `0f01054`: `npm run build` superado (`/` y `/_not-found` estáticas), con la cabecera incluida.
-
-El fallo anterior de formato se debía a la copia de trabajo en CRLF frente a LF en el repositorio; `.gitattributes` evita que vuelva a ocurrir en checkouts futuros.
+Causa: el editor crea los archivos nuevos con CRLF. `.gitattributes` lo corrige al hacer commit, pero Prettier revisa la copia de trabajo. Solución: `npm run format` y, para que no se repita, configurar VS Code con finales de línea LF (`"files.eol": "
+"`, o «CRLF → LF» en la barra de estado).
 
 Comprobado el 2026-10-07: `npm audit --omit=dev` 0 vulnerabilidades; `npm audit` 5 altas solo en desarrollo (`eslint-config-next` → … → `braces`, GHSA-vfj7-8cjw-p6xm). No usar `npm audit fix --force`.
 
@@ -71,7 +72,7 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona y el `postins
 
 ## Problemas pendientes
 
-- Renombrar `site.header.module.css` a `site-header.module.css` y ajustar el import.
+- Archivos nuevos creados con CRLF por el editor: configurar VS Code en LF.
 - Alertas de `npm audit` en desarrollo.
 - Registrar la versión de Node.js.
 - `Frase para IA.txt` versionado en la raíz: decidir si se mueve a `docs/` o se elimina.
@@ -79,25 +80,25 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona y el `postins
 
 ## Pasos de la interfaz (guiados)
 
-| Paso | Archivo(s)                                                             | Estado                             |
-| ---- | ---------------------------------------------------------------------- | ---------------------------------- |
-| 0    | Rama `feat/base-layout`                                                | Hecho                              |
-| 1    | `src/app/layout.tsx`: idioma y metadatos                               | Hecho (commit)                     |
-| 2    | `src/app/globals.css`: paleta base de Valve                            | Hecho (commit)                     |
-| 3    | `src/components/layout/site-header` (Inicio, Universos, Explorar)      | Hecho (build); falta renombrar CSS |
-| 4    | `src/components/layout/site-footer` (aviso de fans no oficial)         | Explicado, pendiente de aplicar    |
-| 5    | Portada sobre Valve y Steam en `src/app/page.tsx`                      | Pendiente                          |
-| 6    | Tipos `Universe` y `Game`, datos y lectura en `src/features/universes` | Pendiente                          |
-| 7    | `/universos` con tarjetas de universo                                  | Pendiente                          |
-| 8    | `/universos/[universeSlug]` con tema por universo (Half-Life)          | Pendiente                          |
-| 9    | Hub de juego y apartados                                               | Pendiente                          |
+| Paso | Archivo(s)                                                             | Estado                          |
+| ---- | ---------------------------------------------------------------------- | ------------------------------- |
+| 0    | Rama `feat/base-layout`                                                | Hecho                           |
+| 1    | `src/app/layout.tsx`: idioma y metadatos                               | Hecho (commit)                  |
+| 2    | `src/app/globals.css`: paleta base de Valve                            | Hecho (commit)                  |
+| 3    | `src/components/layout/site-header` (Inicio, Universos, Explorar)      | Hecho                           |
+| 4    | `src/components/layout/site-footer` (aviso de fans no oficial)         | Hecho (build); falta formato LF |
+| 5    | Portada sobre Valve y Steam en `src/app/page.tsx`                      | Pendiente                       |
+| 6    | Tipos `Universe` y `Game`, datos y lectura en `src/features/universes` | Pendiente                       |
+| 7    | `/universos` con tarjetas de universo                                  | Pendiente                       |
+| 8    | `/universos/[universeSlug]` con tema por universo (Half-Life)          | Pendiente                       |
+| 9    | Hub de juego y apartados                                               | Pendiente                       |
 
 ## Siguiente paso
 
-1. Renombrar `site.header.module.css` a `site-header.module.css` y ajustar el import en `site-header.tsx`.
-2. Paso 4 (explicado en modo plan, pendiente de aplicar por Manuel): `src/components/layout/site-footer.tsx` + `site-footer.module.css` (BEM `site-footer`, `__inner`, `__notice`; `margin-top: auto` para fijarlo abajo en el `body` flex), con el aviso de proyecto de fans no oficial; importar `SiteFooter` en `layout.tsx` y renderizarlo después de `{children}`. No usar `new Date()` en el pie: con `cacheComponents` rompe el prerenderizado.
-3. Comprobar con `npm run check` y `npm run dev` (pie abajo, Tab, ancho móvil).
-4. Después: paso 5, portada sobre Valve y Steam.
+1. `npm run format` y `npm run check` hasta que pase; configurar VS Code con LF.
+2. Revisar en `npm run dev` cabecera y pie: pie abajo, Tab, ancho móvil (no revisado por el agente en navegador).
+3. Commit del pie.
+4. Paso 5: portada sobre Valve y Steam en `src/app/page.tsx`, sustituyendo la plantilla (se explicará en modo plan).
 
 ## Cómo actualizar este archivo
 
