@@ -51,10 +51,10 @@ Comprobado por Claude Code el 2026-10-08 en `main` (commit `296a3da` más cambio
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- 2026-10-08: historial de `main` reconstruido por Claude Code con PRs reales (#1–#6, merge commits): `Inicializar-Proyecto`, `feat/base-layout`, `component/header`, `fix/header-prettier`, `component/footer` y `page.tsx-principal`. Código idéntico al anterior (`git diff backup-main-original main` vacío). Copia del `main` antiguo en la rama y el tag `backup-main` / `backup-main-original` (`566e8eb`), local y remoto. Manuel ha pedido borrarlos y configurar Git global (`pull.rebase=false`, `merge.ff=false`); los permisos de Claude Code lo bloquearon: preparado, pendiente de que Manuel lo ejecute y de verificar.
+- 2026-10-08: historial de `main` reconstruido por Claude Code con PRs reales (#1–#6, merge commits): `Inicializar-Proyecto`, `feat/base-layout`, `component/header`, `fix/header-prettier`, `component/footer` y `page.tsx-principal`. Código idéntico al anterior (`git diff backup-main-original main` vacío). Los backups temporales (`backup-main`, `backup-main-original`) ya se han borrado.
 - `main` (`a928c3a`) protegida: solo cambios por PR (0 aprobaciones, aplica también a administradores), sin force push ni borrado. Repo: borrado automático de ramas al mergear y merge commits habilitados. Local: `branch.main.mergeoptions=--no-ff`, `pull.rebase=false`.
 - Flujo: rama desde `main` → commits → `git push -u origin <rama>` → PR en GitHub (`gh pr create`) → `gh pr merge --merge --delete-branch` → `git checkout main && git pull`.
-- Rama activa: `fix/errores-css` (desde `a928c3a`), con cambios sin commit en `next.config.ts` y `src/app/page.module.css`, sin publicar.
+- Rama activa: `main` en `baccec6` (PR #7 `fix/errores-css` mergeado).
 
 ## Comprobaciones
 
@@ -89,7 +89,7 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona y el `postins
 | 2    | `src/app/globals.css`: paleta base de Valve                            | Hecho (commit)                  |
 | 3    | `src/components/layout/site-header` (Inicio, Universos, Explorar)      | Hecho                           |
 | 4    | `src/components/layout/site-footer` (aviso de fans no oficial)         | Hecho (build); falta formato LF |
-| 5    | Portada sobre Valve y Steam en `src/app/page.tsx`                      | Pendiente                       |
+| 5    | Portada sobre Valve y Steam en `src/app/page.tsx`                      | v1 hecha (PR #6, #7)            |
 | 6    | Tipos `Universe` y `Game`, datos y lectura en `src/features/universes` | Pendiente                       |
 | 7    | `/universos` con tarjetas de universo                                  | Pendiente                       |
 | 8    | `/universos/[universeSlug]` con tema por universo (Half-Life)          | Pendiente                       |
@@ -97,10 +97,10 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona y el `postins
 
 ## Siguiente paso
 
-1. Manuel: `git config --global pull.rebase false`, `git config --global merge.ff false`, `git branch -D backup-main`, `git tag -d backup-main-original`, `git push origin --delete backup-main refs/tags/backup-main-original`, `git fetch --prune origin`; verificar con `git branch -a`, `git tag` y `git ls-remote origin`.
-2. Terminar `fix/errores-css` (`next.config.ts`, `page.module.css`, este archivo): `npm run check`, commit y primer PR con el flujo nuevo.
-3. Revisar en `npm run dev` cabecera, pie y portada: Tab y ancho móvil (no revisado por el agente en navegador).
-4. Continuar con la portada (paso 5) o el paso 6, según decida Manuel.
+Comprobado el 2026-10-08: backups borrados (local y remoto) y PR #7 `fix/errores-css` mergeado (`baccec6`). La portada v1 entró en el PR #6.
+
+1. Revisar en `npm run dev` cabecera, pie y portada: Tab y ancho móvil (no revisado por el agente en navegador).
+2. Paso 6 en la rama `feat/universes-data`: tipos `Universe` y `Game`, datos y lectura en `src/features/universes`.
 
 ## Cómo actualizar este archivo
 
