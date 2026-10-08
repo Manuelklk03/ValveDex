@@ -21,6 +21,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+
 .home-page__title {
   font-size: clamp(2rem, 6vw, 3.5rem);
   font-weight: 700;
@@ -72,7 +73,7 @@
   font-weight: 700;
 }
 
-.home-page__text {
+.home-page__section-text {
   max-width: 65ch;
   line-height: 1.7;
 }

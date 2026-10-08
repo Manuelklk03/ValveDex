@@ -5,3 +5,22 @@ y continúa desde la tarea pendiente.
 Al terminar, actualiza docs/STATUS.md indicando qué has cambiado,
 qué has comprobado, qué queda pendiente y el siguiente paso.
 No marques como hecho algo que solo hayas propuesto.
+
+
+// 
+
+Lee AGENTS.md y docs/STATUS.md y contrástalos con el repositorio (git status, git branch -a, git tag, git ls-remote origin, gh pr list --state all).
+
+Contexto de la sesión anterior (2026-10-08):
+- Se reconstruyó el historial de main en GitHub. Ahora cada bloque entra por un PR real con merge commit: #1 Inicializar-Proyecto, #2 feat/base-layout, #3 component/header, #4 fix/header-prettier, #5 component/footer, #6 page.tsx-principal. El código final es idéntico al anterior. main está en a928c3a.
+- main está protegida en GitHub: solo cambios por PR, 0 aprobaciones, también para administradores, sin force push ni borrado. El repo borra las ramas al mergear y tiene los merge commits habilitados.
+- Configuración local del repo: branch.main.mergeoptions=--no-ff y pull.rebase=false.
+- gh (GitHub CLI) está instalado y autenticado como Manuelklk03. Si no se encuentra en Git Bash, añade "/c/Program Files/GitHub CLI" al PATH.
+- Quedaron pendientes para Manuel, porque los permisos de Claude Code lo bloquearon: configurar git global (pull.rebase=false, merge.ff=false) y borrar la rama backup-main y el tag backup-main-original, en local y en remoto. Comprueba si ya lo hizo. Si no, recuérdaselo con los comandos de STATUS.md; no los ejecutes por tu cuenta.
+
+Lo que toca ahora:
+1. Rama activa: fix/errores-css, creada desde a928c3a. Tiene cambios sin commit en next.config.ts, src/app/page.module.css y docs/STATUS.md. Revísalos con Manuel, ejecuta npm run check y guíale para hacer commit y su primer PR con el flujo nuevo:
+   git push -u origin fix/errores-css → gh pr create --base main --fill → gh pr merge --merge --delete-branch → git checkout main && git pull
+2. Después, continúa con el siguiente paso de docs/STATUS.md.
+
+Recuerda el modo de trabajo: Manuel escribe el código guiado paso a paso; tú explicas de forma breve y en español, y solo implementas cuando él lo pide expresamente. Actualiza docs/STATUS.md al cerrar la tarea.

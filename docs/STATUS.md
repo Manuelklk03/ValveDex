@@ -51,8 +51,10 @@ Comprobado por Claude Code el 2026-10-08 en `main` (commit `296a3da` más cambio
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- Rama activa: `main`. Último commit: `296a3da Arreglo de Prettier y Update de status`. Ramas: local `component/header`; remotas `feat/base-layout`, `component/header` e `Inicializar-Proyecto`. Se está trabajando directamente en `main`.
-- Sin commit: `src/app/layout.tsx`, `src/components/layout/site-footer.tsx`, `site-footer.module.css` (nuevos) y este archivo.
+- 2026-10-08: historial de `main` reconstruido por Claude Code con PRs reales (#1–#6, merge commits): `Inicializar-Proyecto`, `feat/base-layout`, `component/header`, `fix/header-prettier`, `component/footer` y `page.tsx-principal`. Código idéntico al anterior (`git diff backup-main-original main` vacío). Copia del `main` antiguo en la rama y el tag `backup-main` / `backup-main-original` (`566e8eb`), local y remoto. Manuel ha pedido borrarlos y configurar Git global (`pull.rebase=false`, `merge.ff=false`); los permisos de Claude Code lo bloquearon: preparado, pendiente de que Manuel lo ejecute y de verificar.
+- `main` (`a928c3a`) protegida: solo cambios por PR (0 aprobaciones, aplica también a administradores), sin force push ni borrado. Repo: borrado automático de ramas al mergear y merge commits habilitados. Local: `branch.main.mergeoptions=--no-ff`, `pull.rebase=false`.
+- Flujo: rama desde `main` → commits → `git push -u origin <rama>` → PR en GitHub (`gh pr create`) → `gh pr merge --merge --delete-branch` → `git checkout main && git pull`.
+- Rama activa: `fix/errores-css` (desde `a928c3a`), con cambios sin commit en `next.config.ts` y `src/app/page.module.css`, sin publicar.
 
 ## Comprobaciones
 
@@ -95,10 +97,10 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona y el `postins
 
 ## Siguiente paso
 
-1. `npm run format` y `npm run check` hasta que pase; configurar VS Code con LF.
-2. Revisar en `npm run dev` cabecera y pie: pie abajo, Tab, ancho móvil (no revisado por el agente en navegador).
-3. Commit del pie.
-4. Paso 5: portada sobre Valve y Steam en `src/app/page.tsx`, sustituyendo la plantilla (se explicará en modo plan).
+1. Manuel: `git config --global pull.rebase false`, `git config --global merge.ff false`, `git branch -D backup-main`, `git tag -d backup-main-original`, `git push origin --delete backup-main refs/tags/backup-main-original`, `git fetch --prune origin`; verificar con `git branch -a`, `git tag` y `git ls-remote origin`.
+2. Terminar `fix/errores-css` (`next.config.ts`, `page.module.css`, este archivo): `npm run check`, commit y primer PR con el flujo nuevo.
+3. Revisar en `npm run dev` cabecera, pie y portada: Tab y ancho móvil (no revisado por el agente en navegador).
+4. Continuar con la portada (paso 5) o el paso 6, según decida Manuel.
 
 ## Cómo actualizar este archivo
 
