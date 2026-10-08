@@ -1,108 +1,98 @@
 # Estado actual — ValveDex
 
 Última actualización: **2026-10-07**.  
-Fuente de esta actualización: Claude Code con acceso al repositorio local; comandos ejecutados en esta sesión. Lo marcado como «según Manuel» no lo ha comprobado el agente.  
+Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.  
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
+
+## Modo de trabajo
+
+Manuel escribe el código guiado paso a paso: el asistente explica cada archivo, por qué se usa y su lógica, con respuestas breves. El asistente solo implementa directamente lo que Manuel pida. La documentación se actualiza cuando Manuel lo solicite.
+
+## Visión del producto (decidida el 2026-10-07)
+
+1. **Portada `/`:** solo sobre Valve: la empresa, Steam, su historia… Paleta oscura de estilo Valve.
+2. **`/universos`:** todas las sagas de Valve con sus videojuegos. Al entrar en un universo (por ejemplo, Half-Life), la paleta cambia a la de esa saga.
+3. **Hub de cada juego:** lore, mapas, armas, personajes, enemigos, curiosidades, easter eggs…
+4. **Hub principal `/explorar`:** buscador global con carruseles horizontales por categoría (armas, mapas…) que mezclan todos los juegos. Previsto para la Entrega 2.
+
+Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift. Detalle técnico en [architecture.md](architecture.md) (rutas, temas por variables CSS) y objetivos en [roadmap.md](roadmap.md).
 
 ## Estado confirmado
 
-- La aplicación Next.js está inicializada en la raíz del repositorio (`Desktop\Proyecto ValveDex\ValveDex`), con README e historial Git conservados.
-- La carpeta temporal `valvedex-base` ya no existe: la carpeta padre solo contiene `ValveDex`.
-- `src/app/page.tsx`, `layout.tsx` y `globals.css` siguen siendo la **plantilla de create-next-app**. La portada propuesta por ChatGPT **no está aplicada**: `page.tsx` no tiene cambios y `src/app/page.module.css` no existe.
-- `layout.tsx` mantiene `lang="en"` y los metadatos «Create Next App». Se cambiarán con la primera interfaz.
+- Next.js inicializado en la raíz del repositorio. `valvedex-base` ya no existe.
+- La portada de ChatGPT nunca se aplicó (`page.module.css` no existe).
+- `src/app/layout.tsx`: **aplicado por Manuel** (`lang="es"` y metadatos con `title.template`). Sin commit.
+- `src/app/page.tsx` y `globals.css` siguen siendo la plantilla de create-next-app.
 - Todavía no existen `src/features`, `src/components`, `src/domain`, `src/lib` ni `src/data`.
-- La terminal habitual de Manuel es CMD en Windows.
+- Terminal de Manuel: CMD en Windows.
 
 ## Versiones comprobadas
 
-| Herramienta  | Versión                                 |
-| ------------ | --------------------------------------- |
-| Node.js      | 24.21.0 (sin `engines` ni `.nvmrc`)     |
-| npm          | 12.1.0                                  |
-| Next.js      | 16.4.0 (App Router, `src/`, alias `@/*`) |
-| React        | 19.3.0                                  |
-| TypeScript   | 5.9.3, `strict: true`                   |
-| Tailwind CSS | 4.3.3, cargado con `@tailwindcss/turbopack` |
+| Herramienta  | Versión                                                           |
+| ------------ | ----------------------------------------------------------------- |
+| Node.js      | 24.21.0 (sin `engines` ni `.nvmrc`)                               |
+| npm          | 12.1.0                                                            |
+| Next.js      | 16.4.0 (App Router, `src/`, alias `@/*`)                          |
+| React        | 19.3.0                                                            |
+| TypeScript   | 5.9.3, `strict: true`                                             |
+| Tailwind CSS | 4.3.3, cargado con `@tailwindcss/turbopack`                       |
 | ESLint       | 9.39.5 con `eslint-config-next` 16.4.0 y `eslint-config-prettier` |
-| Prettier     | 3.9.9                                   |
+| Prettier     | 3.9.9                                                             |
 
 `next.config.ts` activa `cacheComponents` y `partialPrefetching`.
 
-## Qué existe y qué falta
-
-| Elemento                                          | Estado                                                   |
-| ------------------------------------------------- | -------------------------------------------------------- |
-| Repositorio, README y documentación de agentes    | En el repositorio                                        |
-| package.json, dependencias y lockfile             | Creados; nombre `valvedex`                               |
-| ESLint, Prettier, TypeScript y scripts de calidad | Configurados y verificados (ver comprobaciones)          |
-| Versión de Node registrada en el proyecto         | Pendiente (`engines` o `.nvmrc`)                         |
-| Interfaz, layout común y catálogo                 | Pendientes; la portada sigue siendo la plantilla         |
-| Tests, CI y despliegue                            | Pendientes                                               |
-
-## Decisiones vigentes
-
-- Producto: enciclopedia de todos los juegos de Valve, incorporados por fases.
-- Primera entrega: Half-Life, Opposing Force y Blue Shift.
-- Después: Half-Life 2, Ricochet y el resto del catálogo.
-- Stack: React + Next.js App Router + TypeScript + npm.
-- Estilos: Tailwind y CSS Modules con BEM para el CSS propio.
-- Objetivo: proyecto de portfolio y aprendizaje práctico de frontend React.
-- README: su revisión visual y la retirada de la sección de instalación local están aplazadas por Manuel. No modificarlo por ahora.
-- Backend, base de datos y despliegue: sin decisión definitiva.
-- No ejecutar `npm audit fix --force`: propone bajar `eslint-config-next` a 14.2.35.
-
-## Git y comprobaciones
-
-Consultado por Claude el 2026-10-07:
+## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- Rama activa: `Inicializar-Proyecto`, 1 commit por delante de `origin/Inicializar-Proyecto` (sin `push`). Último commit: `adda729 Config del proyecto Inicializada`.
-- La rama `Inicializar-Proyecto` aún no está fusionada en `main`. La rama `feat/base-layout` **no existe**.
-- Antes de esta actualización el árbol estaba limpio. Cambios de esta sesión sin commit: `docs/STATUS.md`, `docs/roadmap.md`, `docs/architecture.md`, `CHANGELOG.md`.
+- Rama activa: `feat/base-layout`. Último commit: `63996a1 Proyecto inicializado`.
+- Sin commit: `src/app/layout.tsx` y la documentación de esta sesión (AGENTS, STATUS, arquitectura, roadmap, CHANGELOG).
 
-Ejecutado por Claude el 2026-10-07:
+## Comprobaciones
 
-| Comando                 | Resultado                                                                                                                                         |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run check`         | Superado: lint sin avisos, `next typegen && tsc --noEmit` correcto y Prettier sin diferencias                                                     |
-| `npm run build`         | Superado: compilación, TypeScript y generación estática de `/` y `/_not-found`                                                                    |
-| `npm audit --omit=dev`  | 0 vulnerabilidades                                                                                                                                |
-| `npm audit`             | 5 vulnerabilidades altas solo en desarrollo: `eslint-config-next` → `@next/eslint-plugin-next` → `fast-glob` → `micromatch` → `braces` (GHSA-vfj7-8cjw-p6xm) |
+Ejecutadas por Claude el 2026-10-07, antes de cambiar de rama:
 
-Según Manuel, no comprobado por el agente:
+| Comando                | Resultado                                                                                                          |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `npm run check`        | Superado                                                                                                           |
+| `npm run build`        | Superado (`/` y `/_not-found` estáticas)                                                                           |
+| `npm audit --omit=dev` | 0 vulnerabilidades                                                                                                 |
+| `npm audit`            | 5 altas solo en desarrollo: `eslint-config-next` → … → `braces` (GHSA-vfj7-8cjw-p6xm). No usar `audit fix --force` |
 
-- `npm run dev` arranca y la página inicial se ve en el navegador.
-- El script `postinstall` de `unrs-resolver` está bloqueado; lint y build funcionan igualmente.
+Después de cambiar a `feat/base-layout`, `prettier --check .` **falla en 14 archivos**. La causa es que `core.autocrlf=true` reescribió los archivos con CRLF, mientras que `.prettierrc.json` exige `endOfLine: "lf"`. El contenido no ha cambiado.
+
+Según Manuel, no comprobado por el agente: `npm run dev` funciona y el `postinstall` de `unrs-resolver` está bloqueado sin afectar a lint ni build.
 
 ## Problemas pendientes
 
-- Alertas de `npm audit` en la cadena de desarrollo; esperar a una versión de `eslint-config-next` que lo corrija o valorar un `overrides` de `braces` comprobando después lint.
-- Registrar la versión de Node.js compatible.
-- `Frase para IA.txt` está versionado en la raíz; decidir si se mueve a `docs/` o se elimina.
-- Primera CI de lint, tipos, formato y build.
+- **Finales de línea (bloquea `npm run check`):** crear `.gitattributes` con `* text=auto eol=lf` y ejecutar `npx prettier --write .`.
+- Alertas de `npm audit` en desarrollo.
+- Registrar la versión de Node.js.
+- `Frase para IA.txt` versionado en la raíz: decidir si se mueve a `docs/` o se elimina.
+- CI pendiente.
+
+## Pasos de la interfaz (guiados)
+
+| Paso | Archivo(s)                                                             | Estado                  |
+| ---- | ---------------------------------------------------------------------- | ----------------------- |
+| 0    | Rama `feat/base-layout`                                                | Hecho                   |
+| 1    | `src/app/layout.tsx`: idioma y metadatos                               | Aplicado, sin comprobar |
+| 2    | `src/app/globals.css`: paleta base de Valve                            | Siguiente               |
+| 3    | `src/components/layout/site-header` (Inicio, Universos, Explorar)      | Pendiente               |
+| 4    | `src/components/layout/site-footer` (aviso de fans no oficial)         | Pendiente               |
+| 5    | Portada sobre Valve y Steam en `src/app/page.tsx`                      | Pendiente               |
+| 6    | Tipos `Universe` y `Game`, datos y lectura en `src/features/universes` | Pendiente               |
+| 7    | `/universos` con tarjetas de universo                                  | Pendiente               |
+| 8    | `/universos/[universeSlug]` con tema por universo (Half-Life)          | Pendiente               |
+| 9    | Hub de juego y apartados                                               | Pendiente               |
 
 ## Siguiente paso
 
-**Estructura base y primera interfaz (Entrega 1).**
-
-1. Subir `Inicializar-Proyecto`, abrir una pull request hacia `main` y fusionarla.
-2. Crear `feat/base-layout` desde `main` actualizado.
-3. Sustituir la plantilla: `lang="es"`, metadatos de ValveDex, variables de diseño en `globals.css` y layout común (cabecera, navegación y pie) en `src/components/layout/`, con CSS Modules y BEM.
-4. Crear una portada propia que presente los tres juegos iniciales. Revisar la propuesta de ChatGPT antes de reutilizarla, ya que no está en el repositorio.
-5. Ejecutar `npm run check` y `npm run build`, y revisar móvil, escritorio y teclado.
+Corregir los finales de línea y comprobar con `npm run check`. Después, paso 2: `globals.css` con la paleta base de Valve.
 
 ## Cómo actualizar este archivo
 
-Al terminar una tarea, actualiza el contenido anterior para que describa el estado vigente, sin acumular copias completas de sesiones antiguas. Registra:
-
-- Fecha y quién aporta la evidencia: agente con acceso al repositorio o confirmación del usuario.
-- Qué se ha aplicado y qué archivos han cambiado.
-- Rama y commit, solo si se han consultado; cambios sin commit, si existen.
-- Comandos ejecutados y resultados reales; revisiones manuales realizadas.
-- Bloqueos pendientes y una siguiente tarea concreta.
-
-Si solo se entregan instrucciones, indica «preparadas, pendientes de aplicar». Marca tareas del roadmap solo al completarlas; registra cambios relevantes terminados en CHANGELOG.
+Describe el estado vigente sin acumular sesiones antiguas. Registra fecha y fuente de la evidencia, archivos cambiados, rama y commit si se han consultado, comandos con resultados reales, bloqueos y siguiente paso. Lo solo propuesto se marca como «preparado, pendiente de aplicar».
 
 ## Para continuar en otra IA
 
-Comparte el repositorio actualizado o, como mínimo, `AGENTS.md`, `CLAUDE.md`, este archivo, `architecture.md`, `roadmap.md` y los archivos de código afectados. Ningún chat conoce automáticamente los cambios hechos en otro.
+Comparte el repositorio o, como mínimo, `AGENTS.md`, `CLAUDE.md`, este archivo, `architecture.md`, `roadmap.md` y los archivos de código afectados.

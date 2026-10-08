@@ -2,15 +2,21 @@
 
 Fecha de la decisión inicial: **2026-09-30**.
 
-Última actualización: **2026-10-07**, continuidad entre asistentes y aclaración del estado inicial.
+Última actualización: **2026-10-07**, nueva estructura de navegación (Valve → Universos → Juego) y paletas por universo.
 
-Estado: **diseño elegido; aplicación pendiente de inicializar en el repositorio actual**, según la confirmación de Manuel del 2026-10-07. Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
+Estado: **aplicación Next.js inicializada y comprobada el 2026-10-07; estructura de `src/` pendiente** (solo existe `src/app`). Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
 
 ## 1. Enfoque
 
-El producto cubrirá progresivamente todo el catálogo de juegos de Valve. La primera entrega se centra en Half-Life, Opposing Force y Blue Shift; Half-Life 2, Ricochet y los demás títulos se incorporarán después.
+El producto cubrirá progresivamente Valve y todo su catálogo de juegos. La navegación tiene tres niveles:
 
-Una aplicación Next.js organizada por funcionalidades: catálogo, favoritos y comparador. Cada módulo agrupa sus componentes y lógica; las páginas los combinan. Es una convención propia compatible con Next.js, no una estructura obligatoria del framework.
+1. **Portada (Valve):** la empresa, Steam, su historia y otros datos generales de Valve. Paleta oscura de estilo Valve.
+2. **Universos:** todas las sagas de Valve (Half-Life, Portal, Team Fortress, Counter-Strike, Left 4 Dead, etc.), cada una con los videojuegos que la forman. Al entrar en un universo, la paleta de colores cambia a la de esa saga.
+3. **Hub de videojuego:** dentro de cada juego, apartados como lore, mapas, armas, personajes, enemigos, curiosidades y easter eggs.
+
+La lista de universos y juegos se construirá con datos verificados; un universo sin contenido aún podrá mostrarse como «próximamente». El contenido de la primera entrega se centra en el universo Half-Life con Half-Life, Opposing Force y Blue Shift; Half-Life 2, Ricochet y los demás títulos se incorporarán después.
+
+Una aplicación Next.js organizada por funcionalidades: universos, catálogo, favoritos y comparador. Cada módulo agrupa sus componentes y lógica; las páginas los combinan. Es una convención propia compatible con Next.js, no una estructura obligatoria del framework.
 
 Buscamos responsabilidades claras, tipos explícitos, comprobaciones reproducibles y facilidad para ampliar el contenido. La prioridad de aprendizaje es el frontend React. El backend se incorporará después de completar un recorrido útil de consulta.
 
@@ -19,6 +25,7 @@ Buscamos responsabilidades claras, tipos explícitos, comprobaciones reproducibl
 | Ruta prevista              | Responsabilidad                                                     |
 | -------------------------- | ------------------------------------------------------------------- |
 | `src/app/`                 | Rutas, composición de páginas, layouts y metadatos                  |
+| `src/features/universes/`  | Lectura de universos y juegos, tarjetas y tema visual por universo  |
 | `src/features/catalog/`    | Tarjetas, fichas, búsqueda, filtros y lectura del catálogo          |
 | `src/features/favorites/`  | Estado y persistencia de favoritos, cuando se implemente            |
 | `src/features/comparison/` | Selección y comparación de armas, cuando se implemente              |
@@ -47,14 +54,28 @@ El CSS propio de un componente estará junto a su archivo TSX: por ejemplo, `ent
 
 ## 3. Rutas iniciales
 
-| URL prevista     | Función                                 |
-| ---------------- | --------------------------------------- |
-| `/`              | Presentación y acceso a los tres juegos |
-| `/juegos/[slug]` | Introducción y contenido del juego      |
-| `/catalogo`      | Listado, búsqueda y filtros             |
-| `/fichas/[slug]` | Ficha canónica y apariciones            |
-| `/favoritos`     | Fichas guardadas en este navegador      |
-| `/comparador`    | Comparación de armas compatibles        |
+| URL prevista                                     | Función                                                   |
+| ------------------------------------------------ | --------------------------------------------------------- |
+| `/`                                              | Portada sobre Valve: empresa, Steam e historia            |
+| `/universos`                                     | Todos los universos de Valve                              |
+| `/universos/[universeSlug]`                      | Universo con su paleta y la lista de sus videojuegos      |
+| `/universos/[universeSlug]/[gameSlug]`           | Hub del juego: acceso a lore, mapas, armas, personajes…   |
+| `/universos/[universeSlug]/[gameSlug]/[section]` | Apartado del hub (por ejemplo `armas` o `easter-eggs`)    |
+| `/fichas/[slug]`                                 | Ficha canónica y apariciones en los juegos                |
+| `/explorar`                                      | Hub principal: buscador global y carruseles por categoría |
+| `/favoritos`                                     | Fichas guardadas en este navegador                        |
+| `/comparador`                                    | Comparación de armas compatibles                          |
+
+Los segmentos visibles de la URL van en español (`universos`, `armas`); los nombres de parámetros en código, en inglés (`universeSlug`, `gameSlug`). Los apartados del hub serán una lista cerrada y validada; un apartado sin contenido no se enlazará o mostrará un estado vacío.
+
+### Hub principal `/explorar`
+
+Es el punto de búsqueda de todo el contenido, con independencia del universo. Arriba tiene un buscador global y debajo una fila con carrusel horizontal por categoría (armas, mapas, personajes, enemigos…) que mezcla fichas de todos los juegos.
+
+- Al buscar, cada carrusel muestra solo las coincidencias de su categoría y las filas vacías se ocultan; si no hay ninguna coincidencia, se muestra un estado «sin resultados».
+- Cada fila tiene un enlace «Ver todo» que abre el listado completo de esa categoría (`/explorar?category=armas`), con los filtros de la Entrega 2.
+- El carrusel será un `<ul>` con desplazamiento horizontal y `scroll-snap` en CSS, utilizable con rueda, gesto táctil y teclado. Los botones anterior/siguiente serán un componente de cliente pequeño. No se añadirá una librería de sliders.
+- Los resultados filtrados son datos derivados del texto buscado y del catálogo; no se copian a otro estado.
 
 Los filtros públicos se representarán en parámetros como `q`, `game`, `category` y `sort`. Se validarán los valores, se definirán valores por defecto y se mantendrá el funcionamiento del botón Atrás. Un slug inexistente mostrará una página 404.
 
@@ -64,14 +85,15 @@ El diseño inicial contempla estas entidades; sus tipos exactos se escribirán a
 
 | Entidad      | Datos principales                                                        |
 | ------------ | ------------------------------------------------------------------------ |
-| `Game`       | ID, slug, nombre, descripción y recursos visuales                        |
+| `Universe`   | ID, slug, nombre, descripción, tema visual e IDs de sus juegos           |
+| `Game`       | ID, slug, universo, nombre, año, descripción y recursos visuales         |
 | `Entry`      | ID, slug único, nombre, categoría, resumen, apariciones y fuentes        |
 | `Appearance` | Juego y diferencias concretas de una ficha en ese juego                  |
 | `Relation`   | ID de origen, ID de destino y tipo de relación                           |
 | `Source`     | URL, título y fecha de consulta                                          |
 | `MediaAsset` | Recurso, texto alternativo, origen, autor y condiciones de uso conocidas |
 
-`Entry` se modelará mediante variantes discriminadas por categoría: arma, personaje, enemigo, objeto, localización, capítulo o facción. Cada variante tendrá los campos que necesita; evitaremos un objeto con decenas de propiedades opcionales sin relación.
+`Entry` se modelará mediante variantes discriminadas por categoría: arma, personaje, enemigo, objeto, localización, mapa, capítulo, facción, curiosidad o easter egg. Los apartados del hub de un juego son vistas de estas fichas filtradas por categoría y juego; el lore puede empezar como texto propio del juego. Cada variante tendrá los campos que necesita; evitaremos un objeto con decenas de propiedades opcionales sin relación.
 
 Los IDs serán estables y diferentes de los nombres visibles. Una ficha compartida conservará su ID en los tres juegos. Las estadísticas deberán indicar juego, versión, dificultad y unidad cuando afecten al valor. «Desconocido» no significa cero. La comparación solo mostrará medidas equivalentes.
 
@@ -97,7 +119,15 @@ Los resultados filtrados serán datos derivados. Los efectos se reservarán para
 
 ## 6. Diseño y experiencia
 
-Dirección visual inicial: archivo de Black Mesa, con fondos oscuros, acentos reconocibles y lectura clara. Los colores, espacios, tipografía y estados interactivos se definirán de forma consistente.
+Dirección visual: oscura, de estilo Valve y Steam, con lectura clara. Los colores, espacios, tipografía y estados interactivos se definen como variables CSS en `globals.css`.
+
+### Temas por universo
+
+La portada y las páginas generales usan la paleta base de Valve. Cada universo redefine las **mismas variables** (`--background`, `--surface`, `--accent`…) con colores inspirados en sus juegos; por ejemplo, Half-Life con tonos naranja HEV y gris industrial. Los componentes solo usan las variables, nunca colores concretos, así que cambian de aspecto sin modificar su código.
+
+Mecanismo previsto: el layout de `/universos/[universeSlug]` envuelve su contenido en un componente de tema del módulo `universes` que aplica una clase modificadora BEM (`universe-theme universe-theme--half-life`). Esa clase redefine las variables y la cascada CSS las hereda a todo lo que hay dentro. No requiere JavaScript en el cliente ni librerías de temas. Cada paleta nueva debe mantener contraste suficiente entre texto y fondo.
+
+Los nombres, logotipos e imágenes de Valve pertenecen a sus propietarios. La web indicará que es un proyecto de fans no oficial y registrará el origen y las condiciones de uso de cada recurso visual.
 
 Se utilizarán HTML semántico, etiquetas de formulario, foco visible y mensajes comprensibles. Habrá estados de lista vacía y ausencia de resultados; carga y error donde exista trabajo asíncrono real. Las fichas tendrán enlaces propios y los spoilers estarán identificados.
 
@@ -198,6 +228,8 @@ Una entrega se considerará completa cuando cumpla sus criterios del roadmap, pa
 | 2026-09-30 | Estado local, URL y persistencia de IDs                          | Asignar a cada estado un lugar claro y evitar duplicaciones                                                               |
 | 2026-10-01 | BEM en el CSS propio y CSS Modules para estilos de componentes   | Practicar estilos con nombres coherentes y alcance local; Tailwind conserva sus utilidades sin duplicar responsabilidades |
 | 2026-10-07 | Reglas comunes en AGENTS, entrada para Claude y estado en STATUS | Continuar entre asistentes sin duplicar reglas ni dar por aplicado lo que solo se propuso en un chat                      |
+| 2026-10-07 | Navegación Valve → Universos → Juego, con hub por juego          | Petición de Manuel: portada sobre la empresa y Steam, sagas agrupadas y apartados de lore, mapas, armas, etc.             |
+| 2026-10-07 | Paleta base de Valve y tema por universo mediante variables CSS  | Cada saga tiene identidad visual propia sin duplicar componentes ni añadir librerías de temas                             |
 
 El backend, la base de datos, la autenticación y el proveedor de despliegue están pendientes de decisión. La entrega de backend incluirá consumo de API desde React, validación de respuestas y gestión de errores. Las escrituras administrativas deberán comprobar identidad y permisos en servidor.
 
