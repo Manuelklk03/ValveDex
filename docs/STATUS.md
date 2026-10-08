@@ -1,12 +1,12 @@
 # Estado actual — ValveDex
 
-Última actualización: **2026-10-07**.  
+Última actualización: **2026-10-08**.  
 Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.  
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
 ## Modo de trabajo
 
-Manuel escribe el código guiado paso a paso: el asistente explica cada archivo, por qué se usa y su lógica, con respuestas breves. El asistente solo implementa directamente lo que Manuel pida. La documentación se actualiza cuando Manuel lo solicite.
+Manuel escribe el código guiado paso a paso. En **modo plan**, el asistente explica cada archivo, por qué se usa y su lógica, con respuestas breves. En **modo auto**, el asistente solo actualiza documentación (este archivo y, si corresponde, roadmap y CHANGELOG) y no toca código, configuración ni dependencias. Solo implementa código cuando Manuel lo pide expresamente (tareas tediosas). No se pasa al paso siguiente hasta que Manuel confirma que ha terminado el actual.
 
 ## Visión del producto (decidida el 2026-10-07)
 
@@ -19,11 +19,17 @@ Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift.
 
 ## Estado confirmado
 
-- Next.js inicializado en la raíz del repositorio. `valvedex-base` ya no existe.
-- La portada de ChatGPT nunca se aplicó (`page.module.css` no existe).
-- `src/app/layout.tsx`: **aplicado por Manuel** (`lang="es"` y metadatos con `title.template`). Sin commit.
-- `src/app/page.tsx` y `globals.css` siguen siendo la plantilla de create-next-app.
-- Todavía no existen `src/features`, `src/components`, `src/domain`, `src/lib` ni `src/data`.
+Comprobado por Claude Code el 2026-10-08 en `main` (commit `0f01054`).
+
+- Next.js inicializado en la raíz del repositorio.
+- `src/app/layout.tsx`: `lang="es"`, metadatos con `title.template` y `<SiteHeader />` renderizada antes de `{children}`.
+- `src/app/globals.css`: paleta base de Valve (`--background`, `--foreground`, `--surface`, `--border`, `--muted`, `--accent`, `--content-width`), expuesta a Tailwind con `@theme inline`, y `:focus-visible`.
+- Cabecera en `src/components/layout/site-header.tsx`: enlaces Inicio, Universos y Explorar generados con `map`, CSS Modules + BEM. Funciona: el build pasa.
+  - Detalle pendiente: el CSS se llama `site.header.module.css` (con punto) y el import se adaptó a ese nombre. La convención kebab-case pide `site-header.module.css`; conviene renombrarlo y ajustar el import.
+- `.gitattributes` creado y commiteado (`* text=auto eol=lf` y binarios).
+- `/universos` y `/explorar` todavía no existen: sus enlaces dan 404.
+- `src/app/page.tsx` sigue siendo la plantilla de create-next-app.
+- Todavía no existen `src/features`, `src/domain`, `src/lib` ni `src/data`.
 - Terminal de Manuel: CMD en Windows.
 
 ## Versiones comprobadas
@@ -44,27 +50,28 @@ Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift.
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- Rama activa: `feat/base-layout`. Último commit: `63996a1 Proyecto inicializado`.
-- Sin commit: `src/app/layout.tsx` y la documentación de esta sesión (AGENTS, STATUS, arquitectura, roadmap, CHANGELOG).
+- Rama activa: `main`. Último commit: `0f01054 Arreglo de header y creacion de .gitAtributes`. Ramas: local `component/header`; remotas `feat/base-layout`, `component/header` e `Inicializar-Proyecto`. Se está trabajando directamente en `main`.
+- Sin commit: este archivo. Tras `npx prettier --write .`, `git status` lista además 12 archivos que solo cambiaron sus finales de línea en la copia de trabajo (`git diff` no muestra cambios de contenido).
 
 ## Comprobaciones
 
-Ejecutadas por Claude el 2026-10-07, antes de cambiar de rama:
+Según la salida de terminal de Manuel del 2026-10-08, después de `npx prettier --write .`:
 
-| Comando                | Resultado                                                                                                          |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `npm run check`        | Superado                                                                                                           |
-| `npm run build`        | Superado (`/` y `/_not-found` estáticas)                                                                           |
-| `npm audit --omit=dev` | 0 vulnerabilidades                                                                                                 |
-| `npm audit`            | 5 altas solo en desarrollo: `eslint-config-next` → … → `braces` (GHSA-vfj7-8cjw-p6xm). No usar `audit fix --force` |
+| Comando         | Resultado                                                               |
+| --------------- | ----------------------------------------------------------------------- |
+| `npm run check` | **Superado**: lint, `typecheck` y `format:check` («All matched files…») |
 
-Después de cambiar a `feat/base-layout`, `prettier --check .` **falla en 14 archivos**. La causa es que `core.autocrlf=true` reescribió los archivos con CRLF, mientras que `.prettierrc.json` exige `endOfLine: "lf"`. El contenido no ha cambiado.
+Ejecutado por Claude el 2026-10-08 en `0f01054`: `npm run build` superado (`/` y `/_not-found` estáticas), con la cabecera incluida.
 
-Según Manuel, no comprobado por el agente: `npm run dev` funciona y el `postinstall` de `unrs-resolver` está bloqueado sin afectar a lint ni build.
+El fallo anterior de formato se debía a la copia de trabajo en CRLF frente a LF en el repositorio; `.gitattributes` evita que vuelva a ocurrir en checkouts futuros.
+
+Comprobado el 2026-10-07: `npm audit --omit=dev` 0 vulnerabilidades; `npm audit` 5 altas solo en desarrollo (`eslint-config-next` → … → `braces`, GHSA-vfj7-8cjw-p6xm). No usar `npm audit fix --force`.
+
+Según Manuel, no comprobado por el agente: `npm run dev` funciona y el `postinstall` de `unrs-resolver` está bloqueado sin afectar a lint ni build. La cabecera no se ha revisado en navegador (teclado, móvil) por el agente.
 
 ## Problemas pendientes
 
-- **Finales de línea (bloquea `npm run check`):** crear `.gitattributes` con `* text=auto eol=lf` y ejecutar `npx prettier --write .`.
+- Renombrar `site.header.module.css` a `site-header.module.css` y ajustar el import.
 - Alertas de `npm audit` en desarrollo.
 - Registrar la versión de Node.js.
 - `Frase para IA.txt` versionado en la raíz: decidir si se mueve a `docs/` o se elimina.
@@ -72,22 +79,25 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona y el `postins
 
 ## Pasos de la interfaz (guiados)
 
-| Paso | Archivo(s)                                                             | Estado                  |
-| ---- | ---------------------------------------------------------------------- | ----------------------- |
-| 0    | Rama `feat/base-layout`                                                | Hecho                   |
-| 1    | `src/app/layout.tsx`: idioma y metadatos                               | Aplicado, sin comprobar |
-| 2    | `src/app/globals.css`: paleta base de Valve                            | Siguiente               |
-| 3    | `src/components/layout/site-header` (Inicio, Universos, Explorar)      | Pendiente               |
-| 4    | `src/components/layout/site-footer` (aviso de fans no oficial)         | Pendiente               |
-| 5    | Portada sobre Valve y Steam en `src/app/page.tsx`                      | Pendiente               |
-| 6    | Tipos `Universe` y `Game`, datos y lectura en `src/features/universes` | Pendiente               |
-| 7    | `/universos` con tarjetas de universo                                  | Pendiente               |
-| 8    | `/universos/[universeSlug]` con tema por universo (Half-Life)          | Pendiente               |
-| 9    | Hub de juego y apartados                                               | Pendiente               |
+| Paso | Archivo(s)                                                             | Estado                             |
+| ---- | ---------------------------------------------------------------------- | ---------------------------------- |
+| 0    | Rama `feat/base-layout`                                                | Hecho                              |
+| 1    | `src/app/layout.tsx`: idioma y metadatos                               | Hecho (commit)                     |
+| 2    | `src/app/globals.css`: paleta base de Valve                            | Hecho (commit)                     |
+| 3    | `src/components/layout/site-header` (Inicio, Universos, Explorar)      | Hecho (build); falta renombrar CSS |
+| 4    | `src/components/layout/site-footer` (aviso de fans no oficial)         | Explicado, pendiente de aplicar    |
+| 5    | Portada sobre Valve y Steam en `src/app/page.tsx`                      | Pendiente                          |
+| 6    | Tipos `Universe` y `Game`, datos y lectura en `src/features/universes` | Pendiente                          |
+| 7    | `/universos` con tarjetas de universo                                  | Pendiente                          |
+| 8    | `/universos/[universeSlug]` con tema por universo (Half-Life)          | Pendiente                          |
+| 9    | Hub de juego y apartados                                               | Pendiente                          |
 
 ## Siguiente paso
 
-Corregir los finales de línea y comprobar con `npm run check`. Después, paso 2: `globals.css` con la paleta base de Valve.
+1. Renombrar `site.header.module.css` a `site-header.module.css` y ajustar el import en `site-header.tsx`.
+2. Paso 4 (explicado en modo plan, pendiente de aplicar por Manuel): `src/components/layout/site-footer.tsx` + `site-footer.module.css` (BEM `site-footer`, `__inner`, `__notice`; `margin-top: auto` para fijarlo abajo en el `body` flex), con el aviso de proyecto de fans no oficial; importar `SiteFooter` en `layout.tsx` y renderizarlo después de `{children}`. No usar `new Date()` en el pie: con `cacheComponents` rompe el prerenderizado.
+3. Comprobar con `npm run check` y `npm run dev` (pie abajo, Tab, ancho móvil).
+4. Después: paso 5, portada sobre Valve y Steam.
 
 ## Cómo actualizar este archivo
 
