@@ -1,0 +1,17 @@
+.site-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.site-footer__inner {
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: 1.5rem 1rem;
+}
+
+.site-footer__notice {
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
