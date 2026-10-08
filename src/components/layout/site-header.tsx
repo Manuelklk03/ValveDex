@@ -1,5 +1,5 @@
 import Link from "next/link";
-import styles from "./site.header.module.css";
+import styles from "./site-header.module.css";
 
 const navLinks = [
   { href: "/", label: "Inicio" },
