@@ -1,0 +1,56 @@
+.universe-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: 100%;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+
+.universe-card:hover {
+  border-color: var(--accent);
+}
+
+.universe-card--coming-soon {
+  opacity: 0.6;
+}
+
+.universe-card--coming-soon:hover {
+  border-color: var(--border);
+}
+
+.universe-card__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.universe-card__link {
+  text-decoration: none;
+}
+
+.universe-card__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.universe-card__description {
+  flex: 1;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.universe-card__meta {
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.universe-card__badge {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
