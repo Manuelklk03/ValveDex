@@ -1,0 +1,32 @@
+.universes-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: 3rem 1rem;
+}
+
+.universes-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.universes-page__title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+}
+
+.universes-page__intro {
+  max-width: 40rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.universes-page__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 1.5rem;
+}

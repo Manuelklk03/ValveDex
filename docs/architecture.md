@@ -2,9 +2,9 @@
 
 Fecha de la decisión inicial: **2026-09-30**.
 
-Última actualización: **2026-10-09**: sección Valve (`src/features/valve`), tipos `Source` y `Milestone`, y componente `Timeline`.
+Última actualización: **2026-10-10**: tipos `Universe` y `Game`, `src/features/universes` (lectura y `UniverseCard`) y ruta `/universos`.
 
-Estado: **aplicación Next.js inicializada.** Existen `src/app`, `src/components/layout`, `src/components/ui`, `src/domain`, `src/data` y `src/features/valve`. Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
+Estado: **aplicación Next.js inicializada.** Existen `src/app`, `src/components/layout`, `src/components/ui`, `src/domain`, `src/data` `src/features/valve` y `src/features/universes`. Rutas existentes: `/` y `/universos`. Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
 
 ## 1. Enfoque
 
@@ -84,22 +84,24 @@ Los filtros públicos se representarán en parámetros como `q`, `game`, `catego
 
 El diseño inicial contempla estas entidades; sus tipos exactos se escribirán al implementar el catálogo:
 
-| Entidad      | Datos principales                                                        |
-| ------------ | ------------------------------------------------------------------------ |
-| `Universe`   | ID, slug, nombre, descripción, tema visual e IDs de sus juegos           |
-| `Game`       | ID, slug, universo, nombre, año, descripción y recursos visuales         |
-| `Entry`      | ID, slug único, nombre, categoría, resumen, apariciones y fuentes        |
-| `Appearance` | Juego y diferencias concretas de una ficha en ese juego                  |
-| `Relation`   | ID de origen, ID de destino y tipo de relación                           |
-| `Source`     | URL y título (implementado); fecha de consulta pendiente                 |
-| `Milestone`  | ID, año, título, descripción y fuentes (implementado)                    |
-| `MediaAsset` | Recurso, texto alternativo, origen, autor y condiciones de uso conocidas |
+| Entidad      | Datos principales                                                                                                     |
+| ------------ | --------------------------------------------------------------------------------------------------------------------- |
+| `Universe`   | ID, slug, nombre, descripción y estado (`available`/`coming-soon`); implementado. Tema visual pendiente               |
+| `Game`       | ID, slug, `universeId`, nombre, año, desarrollador, descripción y fuentes; implementado. Recursos visuales pendientes |
+| `Entry`      | ID, slug único, nombre, categoría, resumen, apariciones y fuentes                                                     |
+| `Appearance` | Juego y diferencias concretas de una ficha en ese juego                                                               |
+| `Relation`   | ID de origen, ID de destino y tipo de relación                                                                        |
+| `Source`     | URL y título (implementado); fecha de consulta pendiente                                                              |
+| `Milestone`  | ID, año, título, descripción y fuentes (implementado)                                                                 |
+| `MediaAsset` | Recurso, texto alternativo, origen, autor y condiciones de uso conocidas                                              |
 
 `Entry` se modelará mediante variantes discriminadas por categoría: arma, personaje, enemigo, objeto, localización, mapa, capítulo, facción, curiosidad o easter egg. Los apartados del hub de un juego son vistas de estas fichas filtradas por categoría y juego; el lore puede empezar como texto propio del juego. Cada variante tendrá los campos que necesita; evitaremos un objeto con decenas de propiedades opcionales sin relación.
 
 Los IDs serán estables y diferentes de los nombres visibles. Una ficha compartida conservará su ID en los tres juegos. Las estadísticas deberán indicar juego, versión, dificultad y unidad cuando afecten al valor. «Desconocido» no significa cero. La comparación solo mostrará medidas equivalentes.
 
 Primer caso implementado: `src/data/valve-milestones.ts` contiene los hitos de Valve; `getValveMilestones()` (`src/features/valve`) devuelve una copia ordenada por año, y la página la pasa por props al componente común `Timeline`, que solo depende del tipo `Milestone`.
+
+La relación universo–juego vive solo en `Game.universeId`: `Universe` no guarda la lista de sus juegos, porque dos copias de la misma relación podrían contradecirse. `src/features/universes/get-universes.ts` expone `getUniverses()`, `getUniverseBySlug(slug)` (devuelve `undefined` si no existe, para responder con 404) y `getGamesByUniverse(universeId)`. El `id` es único en todo el proyecto; el `slug` de un juego solo tiene que ser único dentro de su universo (`/universos/half-life/opposing-force`).
 
 Al incorporar los primeros datos se comprobarán IDs y slugs únicos, referencias válidas, apariciones y fuentes. Se empezará con contenido local pequeño y comprobable; no se presupone que exista una API pública completa de Half-Life.
 
