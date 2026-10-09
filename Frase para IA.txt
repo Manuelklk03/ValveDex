@@ -24,3 +24,25 @@ Lo que toca ahora:
 2. Después, continúa con el siguiente paso de docs/STATUS.md.
 
 Recuerda el modo de trabajo: Manuel escribe el código guiado paso a paso; tú explicas de forma breve y en español, y solo implementas cuando él lo pide expresamente. Actualiza docs/STATUS.md al cerrar la tarea.
+// 
+
+Lee AGENTS.md y docs/STATUS.md y contrástalos con el repositorio (git status, git branch -a, git log --oneline -5). docs/STATUS.md está desactualizado respecto a esta sesión; usa este contexto:
+
+Últimos cambios (2026-10-08):
+- PR #7 (fix/errores-css) fusionado en main: next.config.ts aplicaba el loader de Tailwind a "*.css" con `as: "*.css"`, lo que convertía los .module.css en CSS global y ninguna clase de CSS Modules llegaba al HTML. Se limitó la regla a "globals.css". page.module.css: clase renombrada a home-page__section-text.
+- Rama activa: feature/valve-timeline (sin PR todavía). Paso 6a hecho por Manuel:
+  - src/domain/source.ts (type Source)
+  - src/domain/milestone.ts (type Milestone: id, year, title, description, sources)
+  - src/data/valve-milestones.ts (5 hitos: 1996, 1998, 2003, 2004, 2022, con fuentes de Wikipedia)
+  - src/features/valve/get-valve-milestones.ts (getValveMilestones(): copia ordenada por año)
+  - Borrado el archivo "e" que se coló por error en d2f0e04.
+- Es la v1: más adelante se añadirán más hitos y la sección Valve crecerá (historia completa, personas como Gabe Newell, Steam, motores, hardware, curiosidades). Pendiente de documentar en architecture.md y roadmap.md.
+
+Siguiente paso, 6b: componente Timeline reutilizable (props tipadas, map, key = id, CSS Module con BEM, <ol> semántico) que recibe los hitos de getValveMilestones() y se muestra en una nueva sección de src/app/page.tsx. Después: PR de feature/valve-timeline hacia main.
+
+Modo de trabajo:
+- Modo plan: Manuel escribe el código; tú explicas paso a paso, breve y en español, qué hace cada archivo y por qué se crea, y le pasas los archivos completos. No continúes al siguiente paso hasta que él lo confirme.
+- Modo auto: solo actualizas documentación (STATUS.md, y roadmap/architecture/CHANGELOG si corresponde). No toques código salvo petición expresa.
+- Terminal: CMD en Windows. VS Code puede crear archivos con CRLF: si format:check falla, `npm run format`.
+
+Al empezar, actualiza docs/STATUS.md con este contexto (fecha, rama, archivos, comprobaciones reales) y corrige la línea de `"files.eol"`, que quedó partida en dos.
