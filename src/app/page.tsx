@@ -1,7 +1,10 @@
 import Link from "next/link";
 import styles from "./page.module.css";
+import { getValveMilestones } from "@/features/valve/get-valve-milestones";
+import { Timeline } from "@/components/ui/timeline";
 
 export default function HomePage() {
+  const milestones = getValveMilestones();
   return (
     <main className={styles["home-page"]}>
       <section
@@ -43,6 +46,16 @@ export default function HomePage() {
           fundada en 1996 por Gabe Newell y Mike Harrington, con sede en
           Bellevue (Washington). Su primer juego, Half-Life, se publicó en 1998.
         </p>
+      </section>
+
+      <section
+        className={styles["home-page__section"]}
+        aria-labelledby="history-title"
+      >
+        <h2 id="history-title" className={styles["home-page__section-title"]}>
+          Historia de Valve
+        </h2>
+        <Timeline milestones={milestones} />
       </section>
 
       <section
