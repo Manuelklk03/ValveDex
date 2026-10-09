@@ -8,8 +8,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
-- 2026-10-09: componente reutilizable `Timeline` (`src/components/ui`) con CSS Module y BEM. Rama `feature/valve-timeline`, todavía sin usar en la portada.
-- 2026-10-08: tipos `Source` y `Milestone`, cinco hitos de Valve con fuentes y `getValveMilestones()`. Rama `feature/valve-timeline`.
+- 2026-10-10: tipos `Universe` y `Game`, datos de cinco universos y de los tres juegos de Half-Life, funciones de lectura, `UniverseCard` y página `/universos`. Rama `feature/universes-data`, sin fusionar.
+- 2026-10-09: sección «Historia de Valve» en la portada: tipos `Source` y `Milestone`, cinco hitos con fuentes, `getValveMilestones()` y componente reutilizable `Timeline` (PR #8).
 - 2026-10-08: cabecera, pie y portada v1 sobre Valve y Steam (PR #3–#6).
 - 2026-10-07: aplicación inicializada con Next.js 16.4.0, React 19.3.0, TypeScript estricto, Tailwind CSS 4, ESLint, Prettier y scripts `lint`, `typecheck`, `format:check` y `check`.
 - 2026-10-07: CLAUDE.md y docs/STATUS.md incorporados al repositorio para compartir reglas y estado entre Claude, ChatGPT y Codex.
