@@ -2,7 +2,7 @@
 
 Estado inicial: **2026-09-30**. Plan de trabajo personal; el orden puede ajustarse según lo aprendido. Las casillas solo se marcarán con trabajo comprobado.
 
-Última actualización: **2026-10-07**.
+Última actualización: **2026-10-09**.
 
 Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la navegación Valve → Universos → Juego descrita en la [arquitectura](architecture.md). La primera fase de contenido mantiene el universo Half-Life con Half-Life, Opposing Force y Blue Shift. Consulta [STATUS.md](STATUS.md) para saber dónde retomar el trabajo.
 
@@ -15,7 +15,7 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 - [x] Crear o comprobar la aplicación Next.js, TypeScript y Tailwind (build comprobado el 2026-10-07).
 - [ ] Registrar la versión compatible de Node.js y mantener el lockfile de npm. El lockfile existe; falta registrar Node.
 - [x] Configurar y ejecutar ESLint, TypeScript y Prettier (`npm run check` superado el 2026-10-07).
-- [ ] Fijar finales de línea LF con `.gitattributes` para que Prettier no falle en Windows.
+- [x] Fijar finales de línea LF con `.gitattributes` para que Prettier no falle en Windows. Los archivos nuevos que crea VS Code siguen en CRLF hasta ejecutar `npm run format`.
 - [x] Crear el repositorio con el README, según confirmación de Manuel del 2026-10-07.
 - [ ] Preparar una primera CI de lint, tipos, formato y build.
 
@@ -23,10 +23,10 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 
 ## Entrega 1 — Primer recorrido navegable
 
-- [ ] Definir la paleta base de Valve en variables CSS y el layout adaptable (cabecera con Inicio y Universos, pie).
+- [ ] Definir la paleta base de Valve en variables CSS y el layout adaptable (cabecera con Inicio y Universos, pie). Paleta, cabecera y pie aplicados (build superado el 2026-10-08); falta revisar móvil y teclado en navegador.
 - [ ] Aplicar BEM al CSS propio y enlazar las clases de CSS Modules desde JSX.
 - [ ] Revisar modificadores, selectores y convivencia con las utilidades de Tailwind.
-- [ ] Portada sobre Valve: la empresa, Steam e historia, con datos verificados y fuentes.
+- [ ] Portada sobre Valve: la empresa, Steam e historia, con datos verificados y fuentes. v1 con hero, Valve y Steam (PR #6, #7). Cronología con 5 hitos y fuentes en `feature/valve-timeline` (tipos, datos y componente hechos; falta mostrarla en la portada).
 - [ ] Página `/universos` con todos los universos de Valve; los que aún no tengan contenido, marcados como «próximamente».
 - [ ] Página de universo con su paleta propia (empezando por Half-Life) y la lista de sus juegos.
 - [ ] Hub de juego para Half-Life, Opposing Force y Blue Shift con sus apartados (lore, mapas, armas, personajes, enemigos, curiosidades, easter eggs).
@@ -95,5 +95,7 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 **Se acepta cuando:** la demo funciona desde un dispositivo externo y el repositorio explica el alcance real, el acceso a la demo, las decisiones y las limitaciones conocidas.
 
 ## Ampliación posterior
+
+La sección Valve de la portada empieza como v1 (5 hitos). Más adelante crecerá con más hitos y la historia completa, personas clave como Gabe Newell, Steam, motores (GoldSrc, Source, Source 2), hardware y curiosidades, siempre con fuentes.
 
 Half-Life 2, Ricochet y el resto del catálogo de Valve quedan fuera del contenido de la primera entrega, pero forman parte del objetivo global. Cada universo nuevo (Portal, Team Fortress, Counter-Strike, Left 4 Dead…) añadirá sus datos, su paleta y los hubs de sus juegos después de consolidar Half-Life y sus dos expansiones iniciales.

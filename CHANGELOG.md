@@ -8,6 +8,9 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- 2026-10-09: componente reutilizable `Timeline` (`src/components/ui`) con CSS Module y BEM. Rama `feature/valve-timeline`, todavía sin usar en la portada.
+- 2026-10-08: tipos `Source` y `Milestone`, cinco hitos de Valve con fuentes y `getValveMilestones()`. Rama `feature/valve-timeline`.
+- 2026-10-08: cabecera, pie y portada v1 sobre Valve y Steam (PR #3–#6).
 - 2026-10-07: aplicación inicializada con Next.js 16.4.0, React 19.3.0, TypeScript estricto, Tailwind CSS 4, ESLint, Prettier y scripts `lint`, `typecheck`, `format:check` y `check`.
 - 2026-10-07: CLAUDE.md y docs/STATUS.md incorporados al repositorio para compartir reglas y estado entre Claude, ChatGPT y Codex.
 - Documentación inicial: README, instrucciones para agentes, arquitectura, changelog y roadmap.
@@ -19,6 +22,10 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 - 2026-10-07: nueva estructura del producto documentada: portada sobre Valve y Steam, sección Universos con paleta propia por saga y hub por juego (lore, mapas, armas, personajes, curiosidades, easter eggs), más un hub principal `/explorar` con buscador global y carruseles por categoría. Actualizados AGENTS, arquitectura y roadmap.
 - 2026-10-07: actualizado el protocolo de continuidad y el alcance global de todos los juegos de Valve, conservando la primera fase de Half-Life y sus expansiones. Documentado que el repositorio actual solo tiene el README y falta inicializar la aplicación.
 - 2026-10-01: documentada la convención BEM para las clases de CSS propias, su uso en React con CSS Modules y su convivencia con Tailwind. Actualizados README, instrucciones para agentes, arquitectura y roadmap. La aplicación de estilos en la web sigue pendiente.
+
+### Corregido
+
+- 2026-10-08: `next.config.ts` aplicaba el loader de Tailwind a todos los `.css` y anulaba CSS Modules; la regla se limita a `globals.css` (PR #7).
 
 ## Publicaciones
 

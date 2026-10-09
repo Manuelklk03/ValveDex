@@ -2,9 +2,9 @@
 
 Fecha de la decisión inicial: **2026-09-30**.
 
-Última actualización: **2026-10-07**, nueva estructura de navegación (Valve → Universos → Juego) y paletas por universo.
+Última actualización: **2026-10-09**: sección Valve (`src/features/valve`), tipos `Source` y `Milestone`, y componente `Timeline`.
 
-Estado: **aplicación Next.js inicializada y comprobada el 2026-10-07; estructura de `src/` pendiente** (solo existe `src/app`). Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
+Estado: **aplicación Next.js inicializada.** Existen `src/app`, `src/components/layout`, `src/components/ui`, `src/domain`, `src/data` y `src/features/valve`. Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
 
 ## 1. Enfoque
 
@@ -22,22 +22,23 @@ Buscamos responsabilidades claras, tipos explícitos, comprobaciones reproducibl
 
 ## 2. Responsabilidades
 
-| Ruta prevista              | Responsabilidad                                                     |
-| -------------------------- | ------------------------------------------------------------------- |
-| `src/app/`                 | Rutas, composición de páginas, layouts y metadatos                  |
-| `src/features/universes/`  | Lectura de universos y juegos, tarjetas y tema visual por universo  |
-| `src/features/catalog/`    | Tarjetas, fichas, búsqueda, filtros y lectura del catálogo          |
-| `src/features/favorites/`  | Estado y persistencia de favoritos, cuando se implemente            |
-| `src/features/comparison/` | Selección y comparación de armas, cuando se implemente              |
-| `src/components/ui/`       | Controles de presentación reutilizados: botones, etiquetas o inputs |
-| `src/components/layout/`   | Cabecera, navegación y pie comunes                                  |
-| `src/domain/`              | Tipos y reglas compartidas de juegos, fichas y fuentes, sin React   |
-| `src/lib/`                 | Utilidades técnicas compartidas con una finalidad concreta          |
-| `src/data/`                | Catálogo local inicial y referencias de contenido                   |
-| `public/`                  | Recursos estáticos que se puedan publicar                           |
-| `tests/e2e/`               | Recorridos de usuario en navegador                                  |
-| `.github/workflows/`       | Comprobaciones automáticas, cuando se configuren                    |
-| `docs/`                    | Arquitectura, planificación y estado de continuidad                 |
+| Ruta prevista              | Responsabilidad                                                    |
+| -------------------------- | ------------------------------------------------------------------ |
+| `src/app/`                 | Rutas, composición de páginas, layouts y metadatos                 |
+| `src/features/valve/`      | Lectura del contenido sobre Valve (hitos de su historia)           |
+| `src/features/universes/`  | Lectura de universos y juegos, tarjetas y tema visual por universo |
+| `src/features/catalog/`    | Tarjetas, fichas, búsqueda, filtros y lectura del catálogo         |
+| `src/features/favorites/`  | Estado y persistencia de favoritos, cuando se implemente           |
+| `src/features/comparison/` | Selección y comparación de armas, cuando se implemente             |
+| `src/components/ui/`       | Presentación reutilizable sin lógica de funcionalidad: `Timeline`  |
+| `src/components/layout/`   | Cabecera, navegación y pie comunes                                 |
+| `src/domain/`              | Tipos y reglas compartidas de juegos, fichas y fuentes, sin React  |
+| `src/lib/`                 | Utilidades técnicas compartidas con una finalidad concreta         |
+| `src/data/`                | Catálogo local inicial y referencias de contenido                  |
+| `public/`                  | Recursos estáticos que se puedan publicar                          |
+| `tests/e2e/`               | Recorridos de usuario en navegador                                 |
+| `.github/workflows/`       | Comprobaciones automáticas, cuando se configuren                   |
+| `docs/`                    | Arquitectura, planificación y estado de continuidad                |
 
 Dentro de una funcionalidad se crearán `components/`, `hooks/`, `utils/` o `server/` según haga falta. Los tests unitarios se colocarán junto al código que prueban. No se crearán directorios vacíos por completar el esquema.
 
@@ -90,12 +91,15 @@ El diseño inicial contempla estas entidades; sus tipos exactos se escribirán a
 | `Entry`      | ID, slug único, nombre, categoría, resumen, apariciones y fuentes        |
 | `Appearance` | Juego y diferencias concretas de una ficha en ese juego                  |
 | `Relation`   | ID de origen, ID de destino y tipo de relación                           |
-| `Source`     | URL, título y fecha de consulta                                          |
+| `Source`     | URL y título (implementado); fecha de consulta pendiente                 |
+| `Milestone`  | ID, año, título, descripción y fuentes (implementado)                    |
 | `MediaAsset` | Recurso, texto alternativo, origen, autor y condiciones de uso conocidas |
 
 `Entry` se modelará mediante variantes discriminadas por categoría: arma, personaje, enemigo, objeto, localización, mapa, capítulo, facción, curiosidad o easter egg. Los apartados del hub de un juego son vistas de estas fichas filtradas por categoría y juego; el lore puede empezar como texto propio del juego. Cada variante tendrá los campos que necesita; evitaremos un objeto con decenas de propiedades opcionales sin relación.
 
 Los IDs serán estables y diferentes de los nombres visibles. Una ficha compartida conservará su ID en los tres juegos. Las estadísticas deberán indicar juego, versión, dificultad y unidad cuando afecten al valor. «Desconocido» no significa cero. La comparación solo mostrará medidas equivalentes.
+
+Primer caso implementado: `src/data/valve-milestones.ts` contiene los hitos de Valve; `getValveMilestones()` (`src/features/valve`) devuelve una copia ordenada por año, y la página la pasa por props al componente común `Timeline`, que solo depende del tipo `Milestone`.
 
 Al incorporar los primeros datos se comprobarán IDs y slugs únicos, referencias válidas, apariciones y fuentes. Se empezará con contenido local pequeño y comprobable; no se presupone que exista una API pública completa de Half-Life.
 
