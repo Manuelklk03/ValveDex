@@ -18,7 +18,12 @@ export function UniverseCard({ universe, gameCount }: UniverseCardProps) {
     <article className={className}>
       <h2 className={styles["universe-card__title"]}>
         {isAvailable ? (
-          <Link href={`/universos/${universe.slug}`}>{universe.name}</Link>
+          <Link
+            href={`/universos/${universe.slug}`}
+            className={styles["universe-card__link"]}
+          >
+            {universe.name}
+          </Link>
         ) : (
           universe.name
         )}
