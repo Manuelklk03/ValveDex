@@ -2,7 +2,7 @@
 
 Estado inicial: **2026-09-30**. Plan de trabajo personal; el orden puede ajustarse según lo aprendido. Las casillas solo se marcarán con trabajo comprobado.
 
-Última actualización: **2026-10-10**.
+Última actualización: **2026-10-11**.
 
 Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la navegación Valve → Universos → Juego descrita en la [arquitectura](architecture.md). La primera fase de contenido mantiene el universo Half-Life con Half-Life, Opposing Force y Blue Shift. Consulta [STATUS.md](STATUS.md) para saber dónde retomar el trabajo.
 
@@ -27,9 +27,9 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 - [ ] Aplicar BEM al CSS propio y enlazar las clases de CSS Modules desde JSX.
 - [ ] Revisar modificadores, selectores y convivencia con las utilidades de Tailwind.
 - [ ] Portada sobre Valve: la empresa, Steam e historia, con datos verificados y fuentes. v1 con hero, Valve y Steam (PR #6, #7). Cronología «Historia de Valve» con 5 hitos y fuentes (PR #8). Pendiente: revisión en navegador y ampliar contenido.
-- [ ] Página `/universos` con todos los universos de Valve; los que aún no tengan contenido, marcados como «próximamente». Aplicada en `feature/universes-data` (build superado el 2026-10-10); falta la revisión en navegador y la PR.
-- [ ] Página de universo con su paleta propia (empezando por Half-Life) y la lista de sus juegos.
-- [ ] Hub de juego para Half-Life, Opposing Force y Blue Shift con sus apartados (lore, mapas, armas, personajes, enemigos, curiosidades, easter eggs).
+- [ ] Página `/universos` con todos los universos de Valve; los que aún no tengan contenido, marcados como «próximamente». Hecha (PR #9, build superado); falta la revisión en navegador.
+- [ ] Página de universo con su paleta propia (empezando por Half-Life) y la lista de sus juegos. Hecha (PR #10, build superado): tema por variables CSS y 404 para universos inexistentes o «Próximamente». Falta revisar el contraste y el teclado en navegador.
+- [ ] Hub de juego para Half-Life, Opposing Force y Blue Shift con sus apartados (lore, mapas, armas, personajes, enemigos, curiosidades, easter eggs). En curso en `feature/game-hub`: página del hub con cabecera, fuentes y apartados «Próximamente» aplicada (build superado el 2026-10-11). Siguiente: tema propio por juego y contenido de los apartados.
 - [ ] Ficha individual enlazada desde los apartados del hub.
 - [ ] Preparar datos reales de los tres juegos con una muestra de cada categoría inicial.
 - [ ] Registrar las fuentes y los recursos visuales utilizados.

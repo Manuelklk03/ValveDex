@@ -8,7 +8,9 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
-- 2026-10-10: tipos `Universe` y `Game`, datos de cinco universos y de los tres juegos de Half-Life, funciones de lectura, `UniverseCard` y página `/universos`. Rama `feature/universes-data`, sin fusionar.
+- 2026-10-11: hub de juego `/universos/[universeSlug]/[gameSlug]` con cabecera, fuentes y apartados «Próximamente»; los juegos de la página del universo enlazan a su hub. Incluye los tipos y datos de los apartados, `getGameBySlug()` y `getGameSections()`. Rama `feature/game-hub`, sin fusionar.
+- 2026-10-11: página `/universos/[universeSlug]` con la lista de juegos, 404 para universos inexistentes o «Próximamente» y tema visual de Half-Life mediante variables CSS (PR #10).
+- 2026-10-10: tipos `Universe` y `Game`, datos de cinco universos y de los tres juegos de Half-Life, funciones de lectura, `UniverseCard` y página `/universos` (PR #9).
 - 2026-10-09: sección «Historia de Valve» en la portada: tipos `Source` y `Milestone`, cinco hitos con fuentes, `getValveMilestones()` y componente reutilizable `Timeline` (PR #8).
 - 2026-10-08: cabecera, pie y portada v1 sobre Valve y Steam (PR #3–#6).
 - 2026-10-07: aplicación inicializada con Next.js 16.4.0, React 19.3.0, TypeScript estricto, Tailwind CSS 4, ESLint, Prettier y scripts `lint`, `typecheck`, `format:check` y `check`.
@@ -25,6 +27,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Corregido
 
+- 2026-10-11: la clase del estado vacío de la página de universo (`universe-page-empty` → `universe-page__empty`) no existía en el CSS Module.
 - 2026-10-08: `next.config.ts` aplicaba el loader de Tailwind a todos los `.css` y anulaba CSS Modules; la regla se limita a `globals.css` (PR #7).
 
 ## Publicaciones

@@ -1,0 +1,23 @@
+.game-theme {
+  flex: 1;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.game-theme--half-life-opposing-force {
+  --background: #161a14;
+  --foreground: #dde3d2;
+  --surface: #20261d;
+  --border: #3f4a36;
+  --muted: #9aa58c;
+  --accent: #9bc53d;
+}
+
+.game-theme--half-life-blue-shift {
+  --background: #12161d;
+  --foreground: #d9e2ef;
+  --surface: #1b2230;
+  --border: #34445e;
+  --muted: #8e9bb0;
+  --accent: #4f8fe8;
+}
