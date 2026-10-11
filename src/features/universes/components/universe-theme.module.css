@@ -1,0 +1,14 @@
+.universe-theme {
+  flex: 1;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.universe-theme--half-life {
+  --background: #1a1915;
+  --foreground: #e6e1d3;
+  --surface: #25231d;
+  --border: #4a4433;
+  --muted: #a39e8e;
+  --accent: #f28c28;
+}
