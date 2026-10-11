@@ -36,7 +36,7 @@
 
 **ValveDex** es una enciclopedia interactiva dedicada a **Valve y a todo su catálogo de juegos**, inspirada en una Pokédex. Reúne la historia de la compañía, sus sagas y, dentro de cada juego, su lore, mapas, armas, personajes, enemigos, curiosidades y easter eggs, con fuentes para cada dato.
 
-Desde los laboratorios de **Half-Life** y **Portal** hasta las partidas de **Counter-Strike**, **Team Fortress**, **Left 4 Dead** y **Dota**: la idea es tener todo Valve en un mismo lugar, **incluidas las expansiones, los clásicos y los proyectos cancelados**.
+Desde los laboratorios de **Half-Life** y **Portal** hasta las partidas de **Counter-Strike**, **Team Fortress**, **Left 4 Dead** y **Dota**: la idea es tener todo Valve en un mismo lugar, **incluidas las expansiones, los clásicos, los proyectos cancelados y los mods más famosos**.
 
 El contenido se incorpora de forma progresiva. **Empezamos por el universo Half-Life con Half-Life, Opposing Force y Blue Shift**, y después ampliaremos la enciclopedia con el resto de sagas y juegos.
 
@@ -121,6 +121,7 @@ Estas son algunas de las sagas que formarán parte de ValveDex. El alcance inclu
 - 🎮 **Juegos principales y expansiones** de cada saga.
 - 🕰️ **Clásicos** y títulos que no aparecen en esta selección.
 - 🗃️ **Proyectos cancelados y prototipos** que nunca llegaron a publicarse.
+- 🧩 **Mods famosos** de cada juego, muchos de ellos origen de juegos oficiales.
 - 🏢 **Valve como empresa:** su historia, Steam, sus motores y su hardware.
 
 ## 🚧 Estado del proyecto
@@ -139,6 +140,7 @@ Ya se puede navegar desde la portada hasta el hub de cada juego de Half-Life. To
 | 📖 Fichas de armas, personajes, enemigos… | 🛠️ En curso |
 | 🔎 Hub Explorar con buscador y carruseles | 📋 Previsto |
 | ⭐ Favoritos, comparador y control de spoilers | 📋 Previsto |
+| 🗃️ Proyectos cancelados y 🧩 mods famosos | 📋 Previsto |
 | 🌍 Varios idiomas con selector | 📋 Previsto para el final |
 | 🚀 Demo publicada | 📋 Pendiente |
 
@@ -154,7 +156,43 @@ El estado detallado de cada paso está en [docs/STATUS.md](docs/STATUS.md).
 
 Cada juego tendrá lore, mapas, armas, personajes, enemigos, curiosidades y easter eggs. Las fichas compartidas entre juegos tendrán una identidad común y recogerán sus diferencias cuando corresponda.
 
-Después llegarán Half-Life 2 y sus episodios, el resto de sagas y los proyectos cancelados.
+Después se completará **todo el universo Half-Life**, y a continuación el resto de sagas.
+
+### 🌌 El universo Half-Life al completo
+
+| Juego | Año | Desarrollo | Tipo |
+| --- | --- | --- | --- |
+| Half-Life | 1998 | Valve | Juego original |
+| Half-Life: Uplink | 1999 | Valve | Demo con contenido exclusivo |
+| Half-Life: Opposing Force | 1999 | Gearbox Software | Expansión |
+| Half-Life: Blue Shift | 2001 | Gearbox Software | Expansión |
+| Half-Life: Decay | 2001 | Gearbox Software | Expansión cooperativa (PlayStation 2) |
+| Half-Life: Source | 2004 | Valve | Versión en el motor Source |
+| Half-Life 2 | 2004 | Valve | Secuela |
+| Half-Life 2: Deathmatch | 2004 | Valve | Multijugador |
+| Half-Life 2: Lost Coast | 2005 | Valve | Nivel tecnológico |
+| Half-Life 2: Episode One | 2006 | Valve | Episodio |
+| Half-Life Deathmatch: Source | 2006 | Valve | Multijugador |
+| Half-Life 2: Survivor | 2006 | Taito / Valve | Versión arcade (Japón) |
+| Half-Life 2: Episode Two | 2007 | Valve | Episodio |
+| Half-Life: Alyx | 2020 | Valve | Precuela en realidad virtual |
+
+**🗃️ Proyectos cancelados**
+
+| Proyecto | Desarrollo | Qué era |
+| --- | --- | --- |
+| Half-Life para Dreamcast | Gearbox Software | Versión para consola, origen de Blue Shift |
+| Half-Life 2: Episode Three | Valve | Cierre previsto de la trilogía de episodios |
+| Return to Ravenholm | Arkane Studios | Episodio ambientado en Ravenholm |
+
+**🧩 Mods famosos**
+
+| Juego base | Mods |
+| --- | --- |
+| Half-Life | Counter-Strike y Day of Defeat (después juegos oficiales), Sven Co-op, They Hunger, Natural Selection, Black Mesa (remake, después comercial) |
+| Half-Life 2 | Garry's Mod (después comercial), Synergy, MINERVA: Metastasis, Entropy: Zero |
+
+> Lista en revisión: cada juego, proyecto y mod se contrastará con sus fuentes antes de publicarse en la web. Cada saga de Valve tendrá su propio apartado de cancelados y de mods.
 
 ## ✨ Funcionalidades
 
@@ -175,6 +213,7 @@ Después llegarán Half-Life 2 y sus episodios, el resto de sagas y los proyecto
 - ⚔️ **Comparador de armas:** comparar armas del mismo juego con estadísticas equivalentes.
 - 🙈 **Control de spoilers:** decidir cuándo mostrar información que pueda revelar partes de la historia.
 - 🗃️ **Proyectos cancelados:** apartado propio para juegos y prototipos que no llegaron a publicarse.
+- 🧩 **Mods famosos:** apartado en cada juego con los mods más conocidos, su historia y su relación con los juegos oficiales.
 - 🌍 **Varios idiomas:** selector de idioma con traducciones revisadas.
 - 📱 **Diseño responsive:** navegar desde móvil, tableta u ordenador.
 
@@ -280,7 +319,8 @@ Cada funcionalidad se desarrolla en su propia rama y entra en `main` mediante un
 - Crear el hub Explorar con buscador, filtros y carruseles.
 - Añadir favoritos, control de spoilers y comparación de armas.
 - Incorporar pruebas, automatizar comprobaciones y publicar una demo.
-- Ampliar el catálogo a Half-Life 2, el resto de sagas y los proyectos cancelados.
+- Completar el universo Half-Life: Uplink, Decay, Half-Life: Source, Half-Life 2 y sus episodios, Half-Life: Alyx y sus proyectos cancelados.
+- Ampliar el catálogo al resto de sagas, con los proyectos cancelados y los mods famosos de cada juego.
 - Traducir la web a otros idiomas.
 
 La API, la base de datos y la gestión de contenido se valorarán en una fase posterior. El alcance detallado se mantiene en el [roadmap](docs/roadmap.md).
@@ -292,7 +332,7 @@ ValveDex es un proyecto de fans independiente, sin afiliación oficial con Valve
 - **Imagen de cabecera:** identidad visual de Valve, consultada en [Combine OverWiki — Mr. Valve](https://combineoverwiki.net/wiki/Mr._Valve).
 - **Iconos de juegos:** recursos de las fichas de [Steam](https://store.steampowered.com/publisher/valve), enlazadas en cada icono.
 - **Insignias tecnológicas:** [Shields.io](https://shields.io/).
-- **Datos del contenido:** cada hito, juego y ficha enlaza a sus fuentes (Wikipedia, Combine OverWiki…).
+- **Datos del contenido:** cada hito, juego y ficha enlaza a sus fuentes (Wikipedia, Combine OverWiki, ModDB…).
 
 Las imágenes y marcas de los juegos pertenecen a sus respectivos titulares.
 
