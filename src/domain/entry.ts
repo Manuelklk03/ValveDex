@@ -12,3 +12,9 @@ export type Entry = {
   gameIds: string[];
   sources: Source[];
 };
+
+export function isEntryCategory(
+  sectionId: GameSectionId,
+): sectionId is EntryCategory {
+  return sectionId !== "lore";
+}

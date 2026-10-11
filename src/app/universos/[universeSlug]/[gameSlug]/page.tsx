@@ -3,11 +3,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getGameSections } from "@/features/games/get-game-sections";
 import {
-  getGameBySlug,
+  getUniverseAndGame,
   getGamesByUniverse,
-  getUniverseBySlug,
   getUniverses,
 } from "@/features/universes/get-universes";
+import { isEntryCategory } from "@/domain/entry";
+import { getEntriesByGameAndCategory } from "@/features/catalog/get-entries";
 import styles from "./page.module.css";
 
 export function generateStaticParams() {
@@ -19,22 +20,6 @@ export function generateStaticParams() {
         gameSlug: game.slug,
       })),
     );
-}
-
-function getUniverseAndGame(universeSlug: string, gameSlug: string) {
-  const universe = getUniverseBySlug(universeSlug);
-
-  if (!universe || universe.status !== "available") {
-    return undefined;
-  }
-
-  const game = getGameBySlug(universe.id, gameSlug);
-
-  if (!game) {
-    return undefined;
-  }
-
-  return { universe, game };
 }
 
 export async function generateMetadata({
@@ -102,17 +87,40 @@ export default async function GamePage({
           Apartados
         </h2>
         <ul className={styles["game-page__sections"]}>
-          {sections.map((section) => (
-            <li key={section.id} className={styles["game-page__card"]}>
-              <h3 className={styles["game-page__card-title"]}>
-                {section.name}
-              </h3>
-              <p className={styles["game-page__card-description"]}>
-                {section.description}
-              </p>
-              <span className={styles["game-page__badge"]}>Próximamente</span>
-            </li>
-          ))}
+          {sections.map((section) => {
+            const entryCount = isEntryCategory(section.id)
+              ? getEntriesByGameAndCategory(game.id, section.id).length
+              : 0;
+            const hasEntries = entryCount > 0;
+            const cardClassName = hasEntries
+              ? `${styles["game-page__card"]} ${styles["game-page__card--available"]}`
+              : styles["game-page__card"];
+
+            return (
+              <li key={section.id} className={cardClassName}>
+                <h3 className={styles["game-page__card-title"]}>
+                  {hasEntries ? (
+                    <Link
+                      href={`/universos/${universe.slug}/${game.slug}/${section.slug}`}
+                      className={styles["game-page__card-link"]}
+                    >
+                      {section.name}
+                    </Link>
+                  ) : (
+                    section.name
+                  )}
+                </h3>
+                <p className={styles["game-page__card-description"]}>
+                  {section.description}
+                </p>
+                <span className={styles["game-page__badge"]}>
+                  {hasEntries
+                    ? `${entryCount} ${entryCount === 1 ? "ficha" : "fichas"}`
+                    : "Próximamente"}
+                </span>
+              </li>
+            );
+          })}
         </ul>
       </section>
     </main>

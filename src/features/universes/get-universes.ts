@@ -25,3 +25,19 @@ export function getGameBySlug(
     (game) => game.universeId === universeId && game.slug === gameSlug,
   );
 }
+
+export function getUniverseAndGame(universeSlug: string, gameSlug: string) {
+  const universe = getUniverseBySlug(universeSlug);
+
+  if (!universe || universe.status !== "available") {
+    return undefined;
+  }
+
+  const game = getGameBySlug(universe.id, gameSlug);
+
+  if (!game) {
+    return undefined;
+  }
+
+  return { universe, game };
+}
