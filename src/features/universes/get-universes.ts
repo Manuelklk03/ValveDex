@@ -16,3 +16,12 @@ export function getGamesByUniverse(universeId: string): Game[] {
     .filter((game) => game.universeId === universeId)
     .sort((a, b) => a.releaseYear - b.releaseYear);
 }
+
+export function getGameBySlug(
+  universeId: string,
+  gameSlug: string,
+): Game | undefined {
+  return games.find(
+    (game) => game.universeId === universeId && game.slug === gameSlug,
+  );
+}
