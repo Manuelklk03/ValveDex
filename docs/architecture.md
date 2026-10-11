@@ -2,9 +2,9 @@
 
 Fecha de la decisión inicial: **2026-09-30**.
 
-Última actualización: **2026-10-10**: tipos `Universe` y `Game`, `src/features/universes` (lectura y `UniverseCard`) y ruta `/universos`.
+Última actualización: **2026-10-11**: página y tema por universo, apartados del hub (`GameSection`) y funcionalidad `src/features/games`.
 
-Estado: **aplicación Next.js inicializada.** Existen `src/app`, `src/components/layout`, `src/components/ui`, `src/domain`, `src/data` `src/features/valve` y `src/features/universes`. Rutas existentes: `/` y `/universos`. Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
+Estado: **aplicación Next.js inicializada.** Existen `src/app`, `src/components/layout`, `src/components/ui`, `src/domain`, `src/data` `src/features/valve` y `src/features/universes`. Rutas existentes: `/`, `/universos`, `/universos/[universeSlug]` y `/universos/[universeSlug]/[gameSlug]`. Funcionalidad `src/features/games` para el hub de juego. Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
 
 ## 1. Enfoque
 
@@ -22,23 +22,24 @@ Buscamos responsabilidades claras, tipos explícitos, comprobaciones reproducibl
 
 ## 2. Responsabilidades
 
-| Ruta prevista              | Responsabilidad                                                    |
-| -------------------------- | ------------------------------------------------------------------ |
-| `src/app/`                 | Rutas, composición de páginas, layouts y metadatos                 |
-| `src/features/valve/`      | Lectura del contenido sobre Valve (hitos de su historia)           |
-| `src/features/universes/`  | Lectura de universos y juegos, tarjetas y tema visual por universo |
-| `src/features/catalog/`    | Tarjetas, fichas, búsqueda, filtros y lectura del catálogo         |
-| `src/features/favorites/`  | Estado y persistencia de favoritos, cuando se implemente           |
-| `src/features/comparison/` | Selección y comparación de armas, cuando se implemente             |
-| `src/components/ui/`       | Presentación reutilizable sin lógica de funcionalidad: `Timeline`  |
-| `src/components/layout/`   | Cabecera, navegación y pie comunes                                 |
-| `src/domain/`              | Tipos y reglas compartidas de juegos, fichas y fuentes, sin React  |
-| `src/lib/`                 | Utilidades técnicas compartidas con una finalidad concreta         |
-| `src/data/`                | Catálogo local inicial y referencias de contenido                  |
-| `public/`                  | Recursos estáticos que se puedan publicar                          |
-| `tests/e2e/`               | Recorridos de usuario en navegador                                 |
-| `.github/workflows/`       | Comprobaciones automáticas, cuando se configuren                   |
-| `docs/`                    | Arquitectura, planificación y estado de continuidad                |
+| Ruta prevista              | Responsabilidad                                                           |
+| -------------------------- | ------------------------------------------------------------------------- |
+| `src/app/`                 | Rutas, composición de páginas, layouts y metadatos                        |
+| `src/features/valve/`      | Lectura del contenido sobre Valve (hitos de su historia)                  |
+| `src/features/games/`      | Hub de juego: apartados (`getGameSections`) y, más adelante, su contenido |
+| `src/features/universes/`  | Lectura de universos y juegos, tarjetas y tema visual por universo        |
+| `src/features/catalog/`    | Tarjetas, fichas, búsqueda, filtros y lectura del catálogo                |
+| `src/features/favorites/`  | Estado y persistencia de favoritos, cuando se implemente                  |
+| `src/features/comparison/` | Selección y comparación de armas, cuando se implemente                    |
+| `src/components/ui/`       | Presentación reutilizable sin lógica de funcionalidad: `Timeline`         |
+| `src/components/layout/`   | Cabecera, navegación y pie comunes                                        |
+| `src/domain/`              | Tipos y reglas compartidas de juegos, fichas y fuentes, sin React         |
+| `src/lib/`                 | Utilidades técnicas compartidas con una finalidad concreta                |
+| `src/data/`                | Catálogo local inicial y referencias de contenido                         |
+| `public/`                  | Recursos estáticos que se puedan publicar                                 |
+| `tests/e2e/`               | Recorridos de usuario en navegador                                        |
+| `.github/workflows/`       | Comprobaciones automáticas, cuando se configuren                          |
+| `docs/`                    | Arquitectura, planificación y estado de continuidad                       |
 
 Dentro de una funcionalidad se crearán `components/`, `hooks/`, `utils/` o `server/` según haga falta. Los tests unitarios se colocarán junto al código que prueban. No se crearán directorios vacíos por completar el esquema.
 
@@ -103,6 +104,10 @@ Primer caso implementado: `src/data/valve-milestones.ts` contiene los hitos de V
 
 La relación universo–juego vive solo en `Game.universeId`: `Universe` no guarda la lista de sus juegos, porque dos copias de la misma relación podrían contradecirse. `src/features/universes/get-universes.ts` expone `getUniverses()`, `getUniverseBySlug(slug)` (devuelve `undefined` si no existe, para responder con 404) y `getGamesByUniverse(universeId)`. El `id` es único en todo el proyecto; el `slug` de un juego solo tiene que ser único dentro de su universo (`/universos/half-life/opposing-force`).
 
+Los apartados del hub son una lista cerrada: `GameSectionId` (`src/domain/game-section.ts`) con `id` en inglés y `slug` en español para la URL (`armas`, `easter-eggs`), definidos una sola vez en `src/data/game-sections.ts` y comunes a todos los juegos. `getGameBySlug(universeId, gameSlug)` comprueba ambos campos, porque el slug de un juego solo es único dentro de su universo. La página del hub genera sus rutas con `generateStaticParams` anidado (`flatMap` sobre los universos disponibles y sus juegos). Un apartado sin contenido se muestra como «Próximamente» y no se enlaza.
+
+Con `cacheComponents`, `generateStaticParams` debe devolver al menos un parámetro; los slugs no generados se renderizan en tiempo de ejecución y terminan en `notFound()` si no existen. Los tipos `PageProps` y `LayoutProps` los genera `next typegen` según las rutas existentes.
+
 Al incorporar los primeros datos se comprobarán IDs y slugs únicos, referencias válidas, apariciones y fuentes. Se empezará con contenido local pequeño y comprobable; no se presupone que exista una API pública completa de Half-Life.
 
 ## 5. Servidor, cliente y estado
@@ -131,7 +136,11 @@ Dirección visual: oscura, de estilo Valve y Steam, con lectura clara. Los color
 
 La portada y las páginas generales usan la paleta base de Valve. Cada universo redefine las **mismas variables** (`--background`, `--surface`, `--accent`…) con colores inspirados en sus juegos; por ejemplo, Half-Life con tonos naranja HEV y gris industrial. Los componentes solo usan las variables, nunca colores concretos, así que cambian de aspecto sin modificar su código.
 
-Mecanismo previsto: el layout de `/universos/[universeSlug]` envuelve su contenido en un componente de tema del módulo `universes` que aplica una clase modificadora BEM (`universe-theme universe-theme--half-life`). Esa clase redefine las variables y la cascada CSS las hereda a todo lo que hay dentro. No requiere JavaScript en el cliente ni librerías de temas. Cada paleta nueva debe mantener contraste suficiente entre texto y fondo.
+Implementado el 2026-10-11 (PR #10): `src/app/universos/[universeSlug]/layout.tsx` envuelve el contenido en `UniverseTheme` (`src/features/universes/components/universe-theme.tsx`). El modificador se construye a partir del id del universo (`universe-theme--half-life`); un universo sin tema en el CSS se queda con la paleta base. El envoltorio pinta su propio fondo y ocupa el alto disponible (`flex: 1`). Cabecera y pie quedan fuera y mantienen la paleta de Valve.
+
+**Temas por juego (decidido el 2026-10-11, pendiente de implementar):** cada juego podrá tener su propia paleta (Opposing Force no usará la de Half-Life). `src/app/universos/[universeSlug]/[gameSlug]/layout.tsx` envolverá el contenido en `GameTheme` (`src/features/games/components`) con `game-theme--<gameId>`. Los temas se anidan: Valve → universo → juego. El más interno redefine solo las variables que necesite y el resto se hereda; un juego sin tema propio (Half-Life) usa el del universo. Los apartados futuros heredarán el tema de su juego.
+
+Mecanismo: el layout de `/universos/[universeSlug]` envuelve su contenido en un componente de tema del módulo `universes` que aplica una clase modificadora BEM (`universe-theme universe-theme--half-life`). Esa clase redefine las variables y la cascada CSS las hereda a todo lo que hay dentro. No requiere JavaScript en el cliente ni librerías de temas. Cada paleta nueva debe mantener contraste suficiente entre texto y fondo.
 
 Los nombres, logotipos e imágenes de Valve pertenecen a sus propietarios. La web indicará que es un proyecto de fans no oficial y registrará el origen y las condiciones de uso de cada recurso visual.
 

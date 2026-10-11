@@ -54,6 +54,21 @@
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   background: var(--surface);
+  position: relative;
+}
+
+.universe-page__game:hover {
+  border-color: var(--accent);
+}
+
+.universe-page__game-link {
+  text-decoration: none;
+}
+
+.universe-page__game-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }
 
 .universe-page__game-title {

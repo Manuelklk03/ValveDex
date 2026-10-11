@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   getGamesByUniverse,
@@ -23,8 +24,8 @@ export async function generateMetadata({
   const universe = getUniverseBySlug(universeSlug);
 
   return {
-    title: universe?.name || "Universo no encontrado",
-    description: universe?.description || "Descripción no encontrada",
+    title: universe?.name ?? "Universo no encontrado",
+    description: universe?.description ?? "Descripción no encontrada",
   };
 }
 
@@ -56,7 +57,7 @@ export default async function UniversePage({
         </h2>
 
         {games.length === 0 ? (
-          <p className={styles["universe-page-empty"]}>
+          <p className={styles["universe-page__empty"]}>
             Todavía no hay juegos registrados en este universo.
           </p>
         ) : (
@@ -64,7 +65,14 @@ export default async function UniversePage({
             {games.map((game) => (
               <li key={game.id} className={styles["universe-page__game"]}>
                 <h3 className={styles["universe-page__game-title"]}>
-                  {game.name}
+                  <h3 className={styles["universe-page__game-title"]}>
+                    <Link
+                      href={`/universos/${universe.slug}/${game.slug}`}
+                      className={styles["universe-page__game-link"]}
+                    >
+                      {game.name}
+                    </Link>
+                  </h3>
                 </h3>
                 <p className={styles["universe-page__game-meta"]}>
                   {game.releaseYear} · {game.developer}
