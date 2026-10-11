@@ -41,3 +41,11 @@ export function getUniverseAndGame(universeSlug: string, gameSlug: string) {
 
   return { universe, game };
 }
+
+export function getUniverseById(id: string): Universe | undefined {
+  return universes.find((universe) => universe.id === id);
+}
+
+export function getGameById(id: string): Game | undefined {
+  return games.find((game) => game.id === id);
+}

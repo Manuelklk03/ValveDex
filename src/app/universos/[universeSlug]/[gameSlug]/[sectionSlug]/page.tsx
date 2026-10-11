@@ -103,7 +103,12 @@ export default async function SectionPage({
           {entries.map((entry) => (
             <li key={entry.id} className={styles["section-page__entry"]}>
               <h2 className={styles["section-page__entry-title"]}>
-                {entry.name}
+                <Link
+                  href={`/fichas/${entry.slug}`}
+                  className={styles["section-page__entry-link"]}
+                >
+                  {entry.name}
+                </Link>
               </h2>
               <p className={styles["section-page__entry-summary"]}>
                 {entry.summary}

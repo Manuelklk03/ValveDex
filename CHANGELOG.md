@@ -8,7 +8,10 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
-- 2026-10-11: hub de juego `/universos/[universeSlug]/[gameSlug]` con cabecera, fuentes y apartados «Próximamente»; los juegos de la página del universo enlazan a su hub. Incluye los tipos y datos de los apartados, `getGameBySlug()` y `getGameSections()`. Rama `feature/game-hub`, sin fusionar.
+- 2026-10-12: fichas (`Entry`) con las cuatro primeras armas de Half-Life, página de apartado `/universos/[universeSlug]/[gameSlug]/[sectionSlug]` y página de ficha `/fichas/[entrySlug]` con el tema del juego, «Aparece en» y fuentes. Rama `feature/catalog-entries`, sin fusionar.
+- 2026-10-12: README actualizado con el recorrido por niveles, los temas, el universo Half-Life completo, los proyectos cancelados y los mods famosos.
+- 2026-10-11: tema visual propio por juego (Opposing Force y Blue Shift) mediante `GameTheme` (PR #11).
+- 2026-10-11: hub de juego `/universos/[universeSlug]/[gameSlug]` con cabecera, fuentes y apartados «Próximamente»; los juegos de la página del universo enlazan a su hub. Incluye los tipos y datos de los apartados, `getGameBySlug()` y `getGameSections()`. PR #11.
 - 2026-10-11: página `/universos/[universeSlug]` con la lista de juegos, 404 para universos inexistentes o «Próximamente» y tema visual de Half-Life mediante variables CSS (PR #10).
 - 2026-10-10: tipos `Universe` y `Game`, datos de cinco universos y de los tres juegos de Half-Life, funciones de lectura, `UniverseCard` y página `/universos` (PR #9).
 - 2026-10-09: sección «Historia de Valve» en la portada: tipos `Source` y `Milestone`, cinco hitos con fuentes, `getValveMilestones()` y componente reutilizable `Timeline` (PR #8).

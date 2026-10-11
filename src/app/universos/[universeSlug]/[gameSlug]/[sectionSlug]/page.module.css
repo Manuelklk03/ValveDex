@@ -50,11 +50,26 @@
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   background: var(--surface);
+  position: relative;
+}
+
+.section-page__entry:hover {
+  border-color: var(--accent);
 }
 
 .section-page__entry-title {
   font-size: 1.125rem;
   font-weight: 700;
+}
+
+.section-page__entry-link {
+  text-decoration: none;
+}
+
+.section-page__entry-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }
 
 .section-page__entry-summary {

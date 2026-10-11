@@ -2,7 +2,7 @@
 
 Estado inicial: **2026-09-30**. Plan de trabajo personal; el orden puede ajustarse según lo aprendido. Las casillas solo se marcarán con trabajo comprobado.
 
-Última actualización: **2026-10-11**.
+Última actualización: **2026-10-12**.
 
 Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la navegación Valve → Universos → Juego descrita en la [arquitectura](architecture.md). La primera fase de contenido mantiene el universo Half-Life con Half-Life, Opposing Force y Blue Shift. Consulta [STATUS.md](STATUS.md) para saber dónde retomar el trabajo.
 
@@ -29,8 +29,8 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 - [ ] Portada sobre Valve: la empresa, Steam e historia, con datos verificados y fuentes. v1 con hero, Valve y Steam (PR #6, #7). Cronología «Historia de Valve» con 5 hitos y fuentes (PR #8). Pendiente: revisión en navegador y ampliar contenido.
 - [ ] Página `/universos` con todos los universos de Valve; los que aún no tengan contenido, marcados como «próximamente». Hecha (PR #9, build superado); falta la revisión en navegador.
 - [ ] Página de universo con su paleta propia (empezando por Half-Life) y la lista de sus juegos. Hecha (PR #10, build superado): tema por variables CSS y 404 para universos inexistentes o «Próximamente». Falta revisar el contraste y el teclado en navegador.
-- [ ] Hub de juego para Half-Life, Opposing Force y Blue Shift con sus apartados (lore, mapas, armas, personajes, enemigos, curiosidades, easter eggs). En curso en `feature/game-hub`: página del hub con cabecera, fuentes y apartados «Próximamente» aplicada (build superado el 2026-10-11). Siguiente: tema propio por juego y contenido de los apartados.
-- [ ] Ficha individual enlazada desde los apartados del hub.
+- [ ] Hub de juego para Half-Life, Opposing Force y Blue Shift con sus apartados (lore, mapas, armas, personajes, enemigos, curiosidades, easter eggs). Hub con cabecera, fuentes, apartados y tema propio por juego (PR #11). Los apartados con fichas enlazan a su página; de momento solo «Armas» de Half-Life.
+- [ ] Ficha individual enlazada desde los apartados del hub. En curso en `feature/catalog-entries`: `/fichas/[entrySlug]` con tema del primer juego, «Aparece en» y fuentes (build superado el 2026-10-12); faltan los enlaces desde el apartado.
 - [ ] Preparar datos reales de los tres juegos con una muestra de cada categoría inicial.
 - [ ] Registrar las fuentes y los recursos visuales utilizados.
 - [ ] Mostrar relaciones entre fichas y una página 404 útil.
@@ -97,6 +97,10 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 ## Ampliación posterior
 
 La sección Valve de la portada empieza como v1 (5 hitos). Más adelante crecerá con más hitos y la historia completa, personas clave como Gabe Newell, Steam, motores (GoldSrc, Source, Source 2), hardware y curiosidades, siempre con fuentes.
+
+**Universo Half-Life completo (según Manuel, 2026-10-12):** después de Half-Life, Opposing Force y Blue Shift se añadirán Uplink, Decay, Half-Life: Source, Half-Life 2 (con Deathmatch y Lost Coast), los episodios, Half-Life Deathmatch: Source, Half-Life 2: Survivor y Half-Life: Alyx. La lista del README está pendiente de contrastar con fuentes.
+
+**Proyectos cancelados y mods famosos (según Manuel, 2026-10-12):** cada saga tendrá un apartado de proyectos cancelados y prototipos (por ejemplo, Half-Life para Dreamcast, Episode Three o Return to Ravenholm) y otro de mods famosos de cada juego (por ejemplo, Black Mesa, Sven Co-op o Garry's Mod). Necesitarán sus propios tipos de datos (proyecto cancelado y mod, con juego base, autores, estado y fuentes); se diseñarán cuando toque.
 
 **Varios idiomas (al final del proyecto, según Manuel):** selector de idioma y rutas por idioma (`/es/…`, `/en/…`). Los textos de la interfaz irán en archivos de traducción y los del contenido tendrán una versión por idioma en los datos. Las traducciones se generarán (con IA si conviene), se revisarán y quedarán guardadas en el proyecto, no se traducirán en el navegador. Mientras tanto se mantienen los textos en `src/data` y no repartidos por los componentes.
 

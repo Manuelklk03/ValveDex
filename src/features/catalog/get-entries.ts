@@ -11,3 +11,11 @@ export function getEntriesByGameAndCategory(
     )
     .sort((a, b) => a.name.localeCompare(b.name, "es"));
 }
+
+export function getEntries(): Entry[] {
+  return [...entries];
+}
+
+export function getEntryBySlug(slug: string): Entry | undefined {
+  return entries.find((entry) => entry.slug === slug);
+}

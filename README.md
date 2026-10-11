@@ -13,23 +13,52 @@
   <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&amp;logo=nextdotjs&amp;logoColor=white" alt="Next.js" />
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&amp;logo=typescript&amp;logoColor=white" alt="TypeScript" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-0F172A?style=for-the-badge&amp;logo=tailwindcss&amp;logoColor=38BDF8" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&amp;logo=eslint&amp;logoColor=white" alt="ESLint" />
+  <img src="https://img.shields.io/badge/Prettier-1A2C34?style=for-the-badge&amp;logo=prettier&amp;logoColor=F7B93E" alt="Prettier" />
 </p>
 
 <p align="center">
   <strong>🚧 En desarrollo · 🎮 Proyecto de portfolio · 📚 Wiki interactiva</strong>
 </p>
 
+<p align="center">
+  <a href="#-qué-es-valvedex">Qué es</a> ·
+  <a href="#-cómo-se-recorre">Cómo se recorre</a> ·
+  <a href="#-estado-del-proyecto">Estado</a> ·
+  <a href="#-funcionalidades">Funcionalidades</a> ·
+  <a href="#️-tecnologías">Tecnologías</a> ·
+  <a href="#-ejecutar-en-local">Ejecutar en local</a>
+</p>
+
 ---
 
 ## 🎮 ¿Qué es ValveDex?
 
-**ValveDex** es una enciclopedia interactiva dedicada a **todos los juegos de Valve**, inspirada en una Pokédex. Su objetivo es reunir personajes, armas, enemigos, objetos, mapas y localizaciones en una web donde consultar sus características y descubrir cómo se relacionan.
+**ValveDex** es una enciclopedia interactiva dedicada a **Valve y a todo su catálogo de juegos**, inspirada en una Pokédex. Reúne la historia de la compañía, sus sagas y, dentro de cada juego, su lore, mapas, armas, personajes, enemigos, curiosidades y easter eggs, con fuentes para cada dato.
 
-Desde los laboratorios de **Half-Life** y **Portal** hasta las partidas de **Counter-Strike**, **Team Fortress**, **Left 4 Dead** y **Dota**: la idea es tener todo el catálogo de Valve en un mismo lugar.
+Desde los laboratorios de **Half-Life** y **Portal** hasta las partidas de **Counter-Strike**, **Team Fortress**, **Left 4 Dead** y **Dota**: la idea es tener todo Valve en un mismo lugar, **incluidas las expansiones, los clásicos, los proyectos cancelados y los mods más famosos**.
 
-El contenido se incorporará de forma progresiva. **Empezamos por Half-Life, Opposing Force y Blue Shift**, y después ampliaremos la enciclopedia con el resto de juegos, sagas y expansiones.
+El contenido se incorpora de forma progresiva. **Empezamos por el universo Half-Life con Half-Life, Opposing Force y Blue Shift**, y después ampliaremos la enciclopedia con el resto de sagas y juegos.
 
 Proyecto personal desarrollado por **Manuel Casinos Pérez** para su portfolio, con el objetivo de reforzar React, TypeScript y Next.js mediante una aplicación completa y documentada.
+
+## 🧭 Cómo se recorre
+
+```text
+Valve (portada)  →  Universos  →  Universo  →  Juego  →  Apartado  →  Ficha
+       /             /universos   /half-life   /half-life  /armas   /fichas/escopeta
+```
+
+| Nivel | Qué encontrarás | Aspecto |
+| --- | --- | --- |
+| 🏠 **Portada** | Valve como empresa, Steam y la historia de la compañía con una cronología. | Paleta oscura de estilo Valve y Steam. |
+| 🌌 **Universos** | Todas las sagas de Valve; las que aún no tienen contenido aparecen como «Próximamente». | Paleta de Valve. |
+| ☢️ **Universo** | Los juegos de la saga, con año y desarrollador. | Cada universo tiene **su propia paleta** (Half-Life: gris industrial y naranja HEV). |
+| 🎮 **Juego** | Hub con lore, mapas, armas, personajes, enemigos, curiosidades y easter eggs. | Cada juego puede tener **su propio tema** (Opposing Force: verde militar; Blue Shift: azul de seguridad). |
+| 🗂️ **Apartado** | Las fichas de una categoría en ese juego (por ejemplo, sus armas). | Tema del juego. |
+| 📖 **Ficha** | Descripción, juegos en los que aparece y fuentes. | Tema del primer juego en el que aparece. |
+
+Más adelante, un hub **Explorar** reunirá todo el contenido con un buscador global y carruseles por categoría.
 
 ## 🕹️ Un proyecto para todo el catálogo de Valve
 
@@ -88,76 +117,152 @@ Proyecto personal desarrollado por **Manuel Casinos Pérez** para su portfolio, 
   </tr>
 </table>
 
-Estas son algunas de las sagas y juegos que formarán parte de ValveDex. El alcance del proyecto incluye **todo el catálogo de videojuegos de Valve**, también sus clásicos, expansiones y títulos que no aparecen en esta selección.
+Estas son algunas de las sagas que formarán parte de ValveDex. El alcance incluye **todo el catálogo de videojuegos de Valve**:
+
+- 🎮 **Juegos principales y expansiones** de cada saga.
+- 🕰️ **Clásicos** y títulos que no aparecen en esta selección.
+- 🗃️ **Proyectos cancelados y prototipos** que nunca llegaron a publicarse.
+- 🧩 **Mods famosos** de cada juego, muchos de ellos origen de juegos oficiales.
+- 🏢 **Valve como empresa:** su historia, Steam, sus motores y su hardware.
 
 ## 🚧 Estado del proyecto
 
-**En desarrollo · Configuración inicial.**
+**En desarrollo · Primer recorrido navegable.**
 
-La base del proyecto está creada con Next.js, React y TypeScript. El trabajo actual se centra en preparar las herramientas de desarrollo y construir la primera interfaz.
+Ya se puede navegar desde la portada hasta la ficha de cada arma de Half-Life. Todavía no hay demo publicada: las capturas y el enlace se añadirán cuando exista una versión desplegada.
 
-Las funcionalidades descritas a continuación son objetivos del proyecto y todavía no están disponibles. Las capturas y el enlace a la demo se añadirán cuando exista una versión navegable.
-
-## ☢️ Primera fase: Half-Life y sus expansiones
-
-| Juego | Contenido previsto |
+| Parte | Estado |
 | --- | --- |
-| Half-Life | Catálogo del juego original. |
-| Half-Life: Opposing Force | Contenido propio de la expansión y sus diferencias respecto al original. |
-| Half-Life: Blue Shift | Contenido propio de la expansión y sus conexiones con los otros juegos. |
+| 🏠 Portada sobre Valve y Steam, con cronología de la compañía | ✅ Hecha |
+| 🧱 Cabecera, pie y paleta base de Valve | ✅ Hechas |
+| 🌌 Página de universos con «Próximamente» | ✅ Hecha |
+| ☢️ Página de universo con paleta propia y 404 para universos inexistentes | ✅ Hecha |
+| 🎮 Hub de juego con tema propio y apartados | ✅ Hecho |
+| 📖 Apartados y fichas | 🛠️ En curso (primeras armas de Half-Life) |
+| 🔎 Hub Explorar con buscador y carruseles | 📋 Previsto |
+| ⭐ Favoritos, comparador y control de spoilers | 📋 Previsto |
+| 🗃️ Proyectos cancelados y 🧩 mods famosos | 📋 Previsto |
+| 🌍 Varios idiomas con selector | 📋 Previsto para el final |
+| 🚀 Demo publicada | 📋 Pendiente |
 
-El catálogo incluirá personajes, enemigos, armas, objetos, mapas y localizaciones, capítulos y facciones. Las fichas compartidas entre juegos tendrán una identidad común y recogerán sus diferencias cuando corresponda.
+El estado detallado de cada paso está en [docs/STATUS.md](docs/STATUS.md).
 
-La incorporación de otros juegos de Valve queda para fases posteriores.
+## ☢️ Primera fase: universo Half-Life
 
-## ✨ Funcionalidades previstas
+| Juego | Año | Desarrollo | Contenido previsto |
+| --- | --- | --- | --- |
+| Half-Life | 1998 | Valve | Catálogo del juego original. |
+| Half-Life: Opposing Force | 1999 | Gearbox Software | Contenido propio de la expansión y sus diferencias respecto al original. |
+| Half-Life: Blue Shift | 2001 | Gearbox Software | Contenido propio de la expansión y sus conexiones con los otros juegos. |
 
-- 🗂️ **Catálogo por juego y categoría:** explorar el contenido de cada título.
-- 📖 **Fichas de detalle:** consultar descripciones, características, apariciones y contenido relacionado.
-- 🔎 **Búsqueda, filtros y ordenación:** encontrar fichas y compartir enlaces con los filtros aplicados.
+Cada juego tendrá lore, mapas, armas, personajes, enemigos, curiosidades y easter eggs. Las fichas compartidas entre juegos tendrán una identidad común y recogerán sus diferencias cuando corresponda.
+
+Después se completará **todo el universo Half-Life**, y a continuación el resto de sagas.
+
+### 🌌 El universo Half-Life al completo
+
+| Juego | Año | Desarrollo | Tipo |
+| --- | --- | --- | --- |
+| Half-Life | 1998 | Valve | Juego original |
+| Half-Life: Uplink | 1999 | Valve | Demo con contenido exclusivo |
+| Half-Life: Opposing Force | 1999 | Gearbox Software | Expansión |
+| Half-Life: Blue Shift | 2001 | Gearbox Software | Expansión |
+| Half-Life: Decay | 2001 | Gearbox Software | Expansión cooperativa (PlayStation 2) |
+| Half-Life: Source | 2004 | Valve | Versión en el motor Source |
+| Half-Life 2 | 2004 | Valve | Secuela |
+| Half-Life 2: Deathmatch | 2004 | Valve | Multijugador |
+| Half-Life 2: Lost Coast | 2005 | Valve | Nivel tecnológico |
+| Half-Life 2: Episode One | 2006 | Valve | Episodio |
+| Half-Life Deathmatch: Source | 2006 | Valve | Multijugador |
+| Half-Life 2: Survivor | 2006 | Taito / Valve | Versión arcade (Japón) |
+| Half-Life 2: Episode Two | 2007 | Valve | Episodio |
+| Half-Life: Alyx | 2020 | Valve | Precuela en realidad virtual |
+
+**🗃️ Proyectos cancelados**
+
+| Proyecto | Desarrollo | Qué era |
+| --- | --- | --- |
+| Half-Life para Dreamcast | Gearbox Software | Versión para consola, origen de Blue Shift |
+| Half-Life 2: Episode Three | Valve | Cierre previsto de la trilogía de episodios |
+| Return to Ravenholm | Arkane Studios | Episodio ambientado en Ravenholm |
+
+**🧩 Mods famosos**
+
+| Juego base | Mods |
+| --- | --- |
+| Half-Life | Counter-Strike y Day of Defeat (después juegos oficiales), Sven Co-op, They Hunger, Natural Selection, Black Mesa (remake, después comercial) |
+| Half-Life 2 | Garry's Mod (después comercial), Synergy, MINERVA: Metastasis, Entropy: Zero |
+
+> Lista en revisión: cada juego, proyecto y mod se contrastará con sus fuentes antes de publicarse en la web. Cada saga de Valve tendrá su propio apartado de cancelados y de mods.
+
+## ✨ Funcionalidades
+
+**Disponibles**
+
+- 🧭 **Navegación por niveles:** Valve → Universos → Universo → Juego → Apartado → Ficha.
+- 🎨 **Temas por universo y por juego:** la paleta cambia al entrar en cada saga o juego, sin JavaScript en el cliente.
+- 📖 **Fichas** con los juegos en los que aparece cada elemento y sus fuentes.
+- 🕰️ **Cronología de Valve** con fuentes enlazadas.
+- 🚫 **Páginas 404** para universos, juegos, apartados y fichas inexistentes.
+- ♿ **Base accesible:** HTML semántico, foco visible y navegación por teclado.
+
+**Previstas**
+
+- 📖 **Más fichas:** personajes, enemigos, mapas, curiosidades y easter eggs de cada juego, con su contenido relacionado.
+- 🔎 **Hub Explorar:** buscador global con carruseles por categoría que mezclan todos los juegos.
+- 🎛️ **Búsqueda, filtros y ordenación:** encontrar fichas y compartir enlaces con los filtros aplicados.
 - ⭐ **Favoritos:** guardar fichas en el navegador para consultarlas más tarde.
 - ⚔️ **Comparador de armas:** comparar armas del mismo juego con estadísticas equivalentes.
 - 🙈 **Control de spoilers:** decidir cuándo mostrar información que pueda revelar partes de la historia.
-- 📱 **Diseño responsive y accesible:** navegar desde móvil, tableta u ordenador, también mediante teclado.
+- 🗃️ **Proyectos cancelados:** apartado propio para juegos y prototipos que no llegaron a publicarse.
+- 🧩 **Mods famosos:** apartado en cada juego con los mods más conocidos, su historia y su relación con los juegos oficiales.
+- 🌍 **Varios idiomas:** selector de idioma con traducciones revisadas.
+- 📱 **Diseño responsive:** navegar desde móvil, tableta u ordenador.
 
 ## 🛠️ Tecnologías
 
 | Tecnología | Uso |
 | --- | --- |
-| React | Construcción de la interfaz mediante componentes. |
-| Next.js · App Router | Rutas, páginas y renderizado de la aplicación. |
-| TypeScript | Tipado de componentes, propiedades y datos. |
-| Tailwind CSS | Utilidades para los estilos. |
-| ESLint | Revisión del código. |
+| React 19 | Construcción de la interfaz mediante componentes. |
+| Next.js 16 · App Router | Rutas dinámicas, layouts anidados, metadatos y prerenderizado. |
+| TypeScript (modo estricto) | Tipado de componentes, propiedades y datos. |
+| Tailwind CSS 4 | Variables de tema y utilidades. |
+| CSS Modules + BEM | Estilos propios de cada componente. |
+| ESLint y Prettier | Revisión y formato del código. |
 | npm | Gestión de dependencias y comandos. |
-| Git y GitHub | Control de versiones y documentación del proyecto. |
+| Git, GitHub y GitHub CLI | Ramas por funcionalidad y Pull Requests. |
 
-Las versiones de las dependencias se consultan en `package.json` y `package-lock.json`.
+Las versiones exactas están en `package.json` y `package-lock.json`.
 
-Prettier y las comprobaciones adicionales de calidad forman parte de la configuración inicial en curso. Las pruebas con Vitest, React Testing Library y Playwright, junto con la integración continua mediante GitHub Actions, se incorporarán en las fases correspondientes.
+Las pruebas con Vitest, React Testing Library y Playwright, junto con la integración continua mediante GitHub Actions, se incorporarán en las fases correspondientes.
 
 ## 🧱 Organización y estilos
 
-La arquitectura se organizará por funcionalidades, separando las rutas, los componentes compartidos, los datos y la lógica del catálogo. Las carpetas se incorporarán conforme hagan falta.
+La arquitectura se organiza por funcionalidades, separando rutas, componentes compartidos, tipos, datos y lógica de lectura.
 
-| Ubicación prevista | Responsabilidad |
+| Ubicación | Responsabilidad |
 | --- | --- |
-| `src/app/` | Páginas, rutas y layouts de Next.js. |
-| `src/features/` | Funcionalidades como catálogo, favoritos y comparador. |
-| `src/components/` | Componentes compartidos de interfaz y estructura. |
-| `src/domain/` | Tipos y modelos del contenido. |
-| `src/data/` | Datos locales del catálogo inicial. |
-| `src/lib/` | Utilidades compartidas. |
+| `src/app/` | Páginas, rutas y layouts de Next.js (`/universos/[universeSlug]/[gameSlug]/[sectionSlug]`, `/fichas/[entrySlug]`). |
+| `src/features/` | Funcionalidades: `valve`, `universes`, `games`, `catalog` y, más adelante, favoritos y comparador. |
+| `src/components/` | Componentes compartidos: cabecera, pie y piezas reutilizables como la cronología. |
+| `src/domain/` | Tipos del contenido: universos, juegos, apartados, fichas, hitos y fuentes. |
+| `src/data/` | Datos locales del catálogo, con sus fuentes. |
 | `public/` | Recursos estáticos. |
-| `docs/` | Arquitectura y planificación. |
+| `docs/` | Arquitectura, planificación y estado. |
 
-El CSS propio de los componentes utilizará **CSS Modules y BEM**:
+**Temas por variables CSS.** Los componentes solo usan variables (`--background`, `--accent`…). Cada universo y cada juego las redefine con una clase modificadora y la cascada hace el resto:
 
-- Bloque: `entry-card`.
-- Elemento: `entry-card__title`.
-- Modificador: `entry-card--featured`, acompañado de la clase base.
+```text
+Paleta de Valve  →  universe-theme--half-life  →  game-theme--half-life-opposing-force
+```
 
-Las utilidades de Tailwind mantendrán sus nombres. Se evitará definir una misma propiedad con Tailwind y CSS propio en el mismo elemento.
+El CSS propio de los componentes utiliza **CSS Modules y BEM**:
+
+- Bloque: `universe-card`.
+- Elemento: `universe-card__title`.
+- Modificador: `universe-card--coming-soon`, acompañado de la clase base.
+
+Las utilidades de Tailwind mantienen sus nombres. Se evita definir una misma propiedad con Tailwind y CSS propio en el mismo elemento.
 
 Las decisiones completas están en [Arquitectura](docs/architecture.md).
 
@@ -182,7 +287,7 @@ npm run dev
 
 Abre [http://localhost:3000](http://localhost:3000), o la dirección que indique la terminal. Para detener el servidor, pulsa `Ctrl + C`.
 
-### ⌨️ Comandos de la base del proyecto
+### ⌨️ Comandos
 
 | Comando | Función |
 | --- | --- |
@@ -190,34 +295,34 @@ Abre [http://localhost:3000](http://localhost:3000), o la dirección que indique
 | `npm run build` | Generar la compilación de producción. |
 | `npm run start` | Servir la compilación de producción, después de ejecutar `build`. |
 | `npm run lint` | Revisar el código con ESLint. |
-
-Los comandos `typecheck`, `format`, `format:check`, `lint:fix` y `check` se incorporarán durante la configuración de calidad. Para consultar los scripts disponibles en tu copia:
-
-```bash
-npm run
-```
+| `npm run lint:fix` | Corregir automáticamente lo que ESLint pueda arreglar. |
+| `npm run typecheck` | Generar los tipos de las rutas y comprobar TypeScript. |
+| `npm run format` | Formatear el proyecto con Prettier. |
+| `npm run format:check` | Comprobar el formato sin modificar archivos. |
+| `npm run check` | Ejecutar lint, tipos y formato de una vez. |
 
 ## 📚 Desarrollo y documentación
 
-El trabajo se organizará en tareas y ramas por funcionalidad, con cambios pequeños y revisables. Cada avance irá acompañado de la actualización de los documentos que le correspondan.
+Cada funcionalidad se desarrolla en su propia rama y entra en `main` mediante una Pull Request. La rama principal está protegida, y cada avance va acompañado de la actualización de sus documentos.
 
 | Documento | Contenido |
 | --- | --- |
 | [README.md](README.md) | Presentación, estado e instrucciones de ejecución. |
 | [AGENTS.md](AGENTS.md) | Contexto y pautas para trabajar con asistentes y agentes de IA. |
+| [Estado](docs/STATUS.md) | Punto exacto en el que está el desarrollo y siguiente paso. |
 | [Arquitectura](docs/architecture.md) | Organización del código, modelos y decisiones técnicas. |
-| [CHANGELOG.md](CHANGELOG.md) | Historial de cambios relevantes. |
 | [Roadmap](docs/roadmap.md) | Fases, tareas y objetivos pendientes. |
+| [CHANGELOG.md](CHANGELOG.md) | Historial de cambios relevantes. |
 
 ## 🗺️ Próximos pasos
 
-- Completar la configuración de calidad del código.
-- Crear la estructura visual y la navegación.
-- Definir los modelos e incorporar las primeras fichas.
-- Implementar búsqueda, filtros y páginas de detalle.
-- Añadir favoritos, control de spoilers y comparación.
+- Añadir más fichas (personajes, enemigos, mapas…) y completar los apartados de Half-Life, Opposing Force y Blue Shift.
+- Crear el hub Explorar con buscador, filtros y carruseles.
+- Añadir favoritos, control de spoilers y comparación de armas.
 - Incorporar pruebas, automatizar comprobaciones y publicar una demo.
-- Ampliar el catálogo al resto de juegos de Valve.
+- Completar el universo Half-Life: Uplink, Decay, Half-Life: Source, Half-Life 2 y sus episodios, Half-Life: Alyx y sus proyectos cancelados.
+- Ampliar el catálogo al resto de sagas, con los proyectos cancelados y los mods famosos de cada juego.
+- Traducir la web a otros idiomas.
 
 La API, la base de datos y la gestión de contenido se valorarán en una fase posterior. El alcance detallado se mantiene en el [roadmap](docs/roadmap.md).
 
@@ -228,10 +333,11 @@ ValveDex es un proyecto de fans independiente, sin afiliación oficial con Valve
 - **Imagen de cabecera:** identidad visual de Valve, consultada en [Combine OverWiki — Mr. Valve](https://combineoverwiki.net/wiki/Mr._Valve).
 - **Iconos de juegos:** recursos de las fichas de [Steam](https://store.steampowered.com/publisher/valve), enlazadas en cada icono.
 - **Insignias tecnológicas:** [Shields.io](https://shields.io/).
+- **Datos del contenido:** cada hito, juego y ficha enlaza a sus fuentes (Wikipedia, Combine OverWiki, ModDB…).
 
 Las imágenes y marcas de los juegos pertenecen a sus respectivos titulares.
 
-Las fichas incluirán referencias a sus fuentes. Las imágenes y otros recursos de terceros se incorporarán teniendo en cuenta su procedencia y sus condiciones de uso. No se publicarán estadísticas inventadas.
+Las imágenes y otros recursos de terceros se incorporarán teniendo en cuenta su procedencia y sus condiciones de uso. No se publicarán estadísticas inventadas.
 
 La licencia del código está pendiente de elección. Cualquier licencia que se añada al código propio no se aplicará automáticamente a marcas, imágenes ni otros contenidos de terceros.
 
