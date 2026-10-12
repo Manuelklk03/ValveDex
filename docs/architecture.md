@@ -2,9 +2,9 @@
 
 Fecha de la decisión inicial: **2026-09-30**.
 
-Última actualización: **2026-10-11**: página y tema por universo, apartados del hub (`GameSection`) y funcionalidad `src/features/games`.
+Última actualización: **2026-10-12**: temas por juego implementados, fichas (`Entry`), funcionalidad `src/features/catalog` y rutas de apartado y ficha.
 
-Estado: **aplicación Next.js inicializada.** Existen `src/app`, `src/components/layout`, `src/components/ui`, `src/domain`, `src/data` `src/features/valve` y `src/features/universes`. Rutas existentes: `/`, `/universos`, `/universos/[universeSlug]` y `/universos/[universeSlug]/[gameSlug]`. Funcionalidad `src/features/games` para el hub de juego. Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
+Estado: **aplicación Next.js inicializada.** Existen `src/app`, `src/components/layout`, `src/components/ui`, `src/domain`, `src/data` `src/features/valve` y `src/features/universes`. Rutas existentes: `/`, `/universos`, `/universos/[universeSlug]`, `/universos/[universeSlug]/[gameSlug]`, `/universos/[universeSlug]/[gameSlug]/[sectionSlug]` y `/fichas/[entrySlug]`. Funcionalidad `src/features/games` para el hub de juego. Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
 
 ## 1. Enfoque
 
@@ -85,16 +85,16 @@ Los filtros públicos se representarán en parámetros como `q`, `game`, `catego
 
 El diseño inicial contempla estas entidades; sus tipos exactos se escribirán al implementar el catálogo:
 
-| Entidad      | Datos principales                                                                                                     |
-| ------------ | --------------------------------------------------------------------------------------------------------------------- |
-| `Universe`   | ID, slug, nombre, descripción y estado (`available`/`coming-soon`); implementado. Tema visual pendiente               |
-| `Game`       | ID, slug, `universeId`, nombre, año, desarrollador, descripción y fuentes; implementado. Recursos visuales pendientes |
-| `Entry`      | ID, slug único, nombre, categoría, resumen, apariciones y fuentes                                                     |
-| `Appearance` | Juego y diferencias concretas de una ficha en ese juego                                                               |
-| `Relation`   | ID de origen, ID de destino y tipo de relación                                                                        |
-| `Source`     | URL y título (implementado); fecha de consulta pendiente                                                              |
-| `Milestone`  | ID, año, título, descripción y fuentes (implementado)                                                                 |
-| `MediaAsset` | Recurso, texto alternativo, origen, autor y condiciones de uso conocidas                                              |
+| Entidad      | Datos principales                                                                                                           |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| `Universe`   | ID, slug, nombre, descripción y estado (`available`/`coming-soon`); implementado. Tema visual pendiente                     |
+| `Game`       | ID, slug, `universeId`, nombre, año, desarrollador, descripción y fuentes; implementado. Recursos visuales pendientes       |
+| `Entry`      | ID, slug único, nombre, categoría (`EntryCategory`), resumen, `gameIds` y fuentes; implementado sin variantes por categoría |
+| `Appearance` | Juego y diferencias concretas de una ficha en ese juego                                                                     |
+| `Relation`   | ID de origen, ID de destino y tipo de relación                                                                              |
+| `Source`     | URL y título (implementado); fecha de consulta pendiente                                                                    |
+| `Milestone`  | ID, año, título, descripción y fuentes (implementado)                                                                       |
+| `MediaAsset` | Recurso, texto alternativo, origen, autor y condiciones de uso conocidas                                                    |
 
 `Entry` se modelará mediante variantes discriminadas por categoría: arma, personaje, enemigo, objeto, localización, mapa, capítulo, facción, curiosidad o easter egg. Los apartados del hub de un juego son vistas de estas fichas filtradas por categoría y juego; el lore puede empezar como texto propio del juego. Cada variante tendrá los campos que necesita; evitaremos un objeto con decenas de propiedades opcionales sin relación.
 
@@ -105,6 +105,8 @@ Primer caso implementado: `src/data/valve-milestones.ts` contiene los hitos de V
 La relación universo–juego vive solo en `Game.universeId`: `Universe` no guarda la lista de sus juegos, porque dos copias de la misma relación podrían contradecirse. `src/features/universes/get-universes.ts` expone `getUniverses()`, `getUniverseBySlug(slug)` (devuelve `undefined` si no existe, para responder con 404) y `getGamesByUniverse(universeId)`. El `id` es único en todo el proyecto; el `slug` de un juego solo tiene que ser único dentro de su universo (`/universos/half-life/opposing-force`).
 
 Los apartados del hub son una lista cerrada: `GameSectionId` (`src/domain/game-section.ts`) con `id` en inglés y `slug` en español para la URL (`armas`, `easter-eggs`), definidos una sola vez en `src/data/game-sections.ts` y comunes a todos los juegos. `getGameBySlug(universeId, gameSlug)` comprueba ambos campos, porque el slug de un juego solo es único dentro de su universo. La página del hub genera sus rutas con `generateStaticParams` anidado (`flatMap` sobre los universos disponibles y sus juegos). Un apartado sin contenido se muestra como «Próximamente» y no se enlaza.
+
+Las fichas (`src/domain/entry.ts`) usan `EntryCategory = Exclude<GameSectionId, "lore">`: el lore no tiene fichas. El type guard `isEntryCategory()` permite pasar el `id` de un apartado a las funciones del catálogo. Una ficha guarda `gameIds` y aparece en todos esos juegos con un único ID. `src/features/catalog/get-entries.ts` lee las fichas; el hub solo enlaza los apartados que tienen fichas. La ficha canónica vive en `/fichas/[entrySlug]` para que una ficha compartida tenga una sola URL; su layout anida `UniverseTheme` y `GameTheme` del primer juego de `gameIds`. Cuando una categoría necesite campos propios (por ejemplo, la munición de las armas), `Entry` pasará a ser una unión discriminada por `category`.
 
 Con `cacheComponents`, `generateStaticParams` debe devolver al menos un parámetro; los slugs no generados se renderizan en tiempo de ejecución y terminan en `notFound()` si no existen. Los tipos `PageProps` y `LayoutProps` los genera `next typegen` según las rutas existentes.
 
@@ -138,7 +140,7 @@ La portada y las páginas generales usan la paleta base de Valve. Cada universo 
 
 Implementado el 2026-10-11 (PR #10): `src/app/universos/[universeSlug]/layout.tsx` envuelve el contenido en `UniverseTheme` (`src/features/universes/components/universe-theme.tsx`). El modificador se construye a partir del id del universo (`universe-theme--half-life`); un universo sin tema en el CSS se queda con la paleta base. El envoltorio pinta su propio fondo y ocupa el alto disponible (`flex: 1`). Cabecera y pie quedan fuera y mantienen la paleta de Valve.
 
-**Temas por juego (decidido el 2026-10-11, pendiente de implementar):** cada juego podrá tener su propia paleta (Opposing Force no usará la de Half-Life). `src/app/universos/[universeSlug]/[gameSlug]/layout.tsx` envolverá el contenido en `GameTheme` (`src/features/games/components`) con `game-theme--<gameId>`. Los temas se anidan: Valve → universo → juego. El más interno redefine solo las variables que necesite y el resto se hereda; un juego sin tema propio (Half-Life) usa el del universo. Los apartados futuros heredarán el tema de su juego.
+**Temas por juego (implementado en la PR #11):** cada juego podrá tener su propia paleta (Opposing Force no usará la de Half-Life). `src/app/universos/[universeSlug]/[gameSlug]/layout.tsx` envolverá el contenido en `GameTheme` (`src/features/games/components`) con `game-theme--<gameId>`. Los temas se anidan: Valve → universo → juego. El más interno redefine solo las variables que necesite y el resto se hereda; un juego sin tema propio (Half-Life) usa el del universo. Los apartados futuros heredarán el tema de su juego.
 
 Mecanismo: el layout de `/universos/[universeSlug]` envuelve su contenido en un componente de tema del módulo `universes` que aplica una clase modificadora BEM (`universe-theme universe-theme--half-life`). Esa clase redefine las variables y la cascada CSS las hereda a todo lo que hay dentro. No requiere JavaScript en el cliente ni librerías de temas. Cada paleta nueva debe mantener contraste suficiente entre texto y fondo.
 

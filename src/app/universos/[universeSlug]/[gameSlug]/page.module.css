@@ -84,6 +84,7 @@
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   background: var(--surface);
+  position: relative;
 }
 
 .game-page__card-title {
@@ -103,4 +104,22 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.game-page__card--available:hover {
+  border-color: var(--accent);
+}
+
+.game-page__card--available .game-page__badge {
+  color: var(--accent);
+}
+
+.game-page__card-link {
+  text-decoration: none;
+}
+
+.game-page__card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }

@@ -1,0 +1,78 @@
+.entry-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: 3rem 1rem;
+}
+
+.entry-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.entry-page__category {
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.entry-page__title {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.entry-page__summary {
+  max-width: 40rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.entry-page__section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.entry-page__section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.entry-page__games,
+.entry-page__sources {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.entry-page__game-link {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.entry-page__game-link:hover {
+  text-decoration: underline;
+}
+
+.entry-page__game-year {
+  color: var(--muted);
+}
+
+.entry-page__source-link {
+  color: var(--muted);
+  text-decoration: underline;
+}
+
+.entry-page__source-link:hover {
+  color: var(--accent);
+}

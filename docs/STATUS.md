@@ -1,6 +1,6 @@
 # Estado actual — ValveDex
 
-Última actualización: **2026-10-11**.  
+Última actualización: **2026-10-12**.  
 Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.  
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
@@ -19,40 +19,41 @@ Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift.
 
 ## Estado confirmado
 
-Comprobado por Claude Code el 2026-10-11 en la rama `feature/game-hub` (commit `1b23835` más el paso 9b sin commit).
+Comprobado por Claude Code el 2026-10-12 en la rama `feature/catalog-entries` (commit `4933ff5` más el paso 10c sin commit).
 
 - Next.js inicializado en la raíz del repositorio. Terminal de Manuel: CMD en Windows.
-- `src/app/layout.tsx`: `lang="es"`, metadatos con `title.template`, `<SiteHeader />` antes de `{children}` y `<SiteFooter />` después.
-- `src/app/globals.css`: paleta base de Valve (`--background`, `--foreground`, `--surface`, `--border`, `--muted`, `--accent`, `--content-width`), expuesta a Tailwind con `@theme inline`, y `:focus-visible`.
-- `next.config.ts`: la regla de Turbopack con `@tailwindcss/turbopack` se aplica solo a `globals.css`, para no anular CSS Modules (PR #7).
-- `src/components/layout/`: `site-header` y `site-footer`, con CSS Modules y BEM.
+- `src/app/layout.tsx`: `lang="es"`, metadatos con `title.template`, `<SiteHeader />` y `<SiteFooter />`.
+- `src/app/globals.css`: paleta base de Valve en variables CSS, expuesta a Tailwind con `@theme inline`, y `:focus-visible`.
+- `next.config.ts`: el loader de Tailwind solo procesa `globals.css`, para no anular CSS Modules (PR #7).
 - **Portada `/`** (PR #6–#8): hero, «Valve», «Historia de Valve» (`Timeline` + `getValveMilestones()`) y «Steam».
-- **`/universos`** (PR #9): `UniverseCard` (`src/features/universes/components`) con el modificador `--coming-soon` y la tarjeta entera clicable mediante `::after` del enlace. Datos en `src/data/universes.ts` y `src/data/games.ts`; lectura en `src/features/universes/get-universes.ts`.
-- **`/universos/[universeSlug]`** (PR #10):
-  - `page.tsx`:
-    - `generateStaticParams` genera solo los universos `available`.
-    - `generateMetadata` pone el nombre del universo como título.
-    - `notFound()` si el slug no existe o el universo es `coming-soon`.
-    - Lista de juegos con estado vacío. Cada tarjeta enlaza a su hub (`universe-page__game-link` con `::after`) desde el 9b, sin commit.
-  - `layout.tsx` + `src/features/universes/components/universe-theme.tsx`: envuelve el contenido en `universe-theme universe-theme--<id>`, que redefine las variables CSS.
-  - Tema `half-life`: gris industrial y naranja HEV (`--accent: #f28c28`). Cabecera y pie quedan fuera del tema.
-- **Paso 9a (commit `1b23835`, Manuel):**
-  - `src/domain/game-section.ts`: `GameSectionId` (unión cerrada: `lore`, `maps`, `weapons`, `characters`, `enemies`, `trivia`, `easter-eggs`) y `GameSection` (`id`, `slug`, `name`, `description`).
-  - `src/data/game-sections.ts`: los 7 apartados, con slug en español (`mapas`, `armas`, `personajes`, `enemigos`, `curiosidades`…).
-  - `getGameBySlug(universeId, gameSlug)` añadido a `src/features/universes/get-universes.ts`.
-  - Nueva funcionalidad `src/features/games/get-game-sections.ts` con `getGameSections()`, que devuelve una copia.
-  - Se usan en el 9b.
-- **Paso 9b (Manuel, sin commit):**
-  - `src/app/universos/[universeSlug]/[gameSlug]/page.tsx` + `page.module.css` (bloque BEM `game-page`).
-  - `generateStaticParams` anidado con `flatMap`: genera los universos disponibles con cada uno de sus juegos.
-  - Función local `getUniverseAndGame()`, compartida por `generateMetadata` y la página.
-  - `notFound()` si el universo no está disponible o el juego no pertenece a él.
-  - Enlace «← universo» dentro de un `<nav>`.
-  - Cabecera con año, desarrollador, descripción y fuentes; los 7 apartados en un grid con «Próximamente», sin enlace.
-  - Hereda el tema del universo a través del layout de `[universeSlug]`.
-  - En `[universeSlug]/page.tsx`: corregida la clase `universe-page-empty` → `universe-page__empty`, y `||` → `??` en `generateMetadata`.
-- `/explorar` todavía no existe.
-- Todavía no existe `src/lib`.
+- **`/universos`** (PR #9): `UniverseCard` con el modificador `--coming-soon` y la tarjeta entera clicable.
+- **`/universos/[universeSlug]`** (PR #10): juegos enlazados a su hub, 404 para universos inexistentes o «Próximamente». `layout.tsx` + `UniverseTheme` (tema `half-life`).
+- **`/universos/[universeSlug]/[gameSlug]`** (PR #11):
+  - Hub con cabecera, fuentes y apartados.
+  - `layout.tsx` + `GameTheme` (`src/features/games/components`): temas `half-life-opposing-force` (verde militar) y `half-life-blue-shift` (azul). Half-Life hereda el del universo.
+  - `UniverseTheme` es flex en columna para que el tema del juego ocupe todo el alto.
+- **Paso 10a (`ad31935`):**
+  - `src/domain/entry.ts`: `EntryCategory = Exclude<GameSectionId, "lore">` y `Entry` (`id`, `slug`, `name`, `category`, `summary`, `gameIds`, `sources`).
+  - `src/data/entries.ts`: 4 armas de Half-Life (palanca, pistola de 9 mm, revólver .357, escopeta) con fuentes de Combine OverWiki y `gameIds: ["half-life"]`.
+  - `src/features/catalog/get-entries.ts`: `getEntriesByGameAndCategory()`, ordenadas con `localeCompare(…, "es")`.
+- **Paso 10b (`2654a6e`, `4933ff5`):**
+  - Type guard `isEntryCategory()` en `src/domain/entry.ts`.
+  - `getUniverseAndGame()` movida a `get-universes.ts`.
+  - `getGameSectionBySlug()`.
+  - El hub cuenta las fichas de cada apartado: los que tienen fichas enlazan y muestran «N fichas» (modificador `game-page__card--available`); el resto, «Próximamente».
+  - Nueva ruta `[gameSlug]/[sectionSlug]` (bloque BEM `section-page`):
+    - `generateStaticParams` triple, solo para apartados con fichas.
+    - `getSectionPageData()`.
+    - 404 para el lore y para slugs inexistentes.
+    - Lista de fichas.
+- **Paso 10c (Manuel, sin commit):**
+  - Nuevas funciones `getEntries()`, `getEntryBySlug()`, `getUniverseById()`, `getGameById()` y `getGameSectionById()`.
+  - Nueva ruta `src/app/fichas/[entrySlug]/`:
+    - `layout.tsx` anida `UniverseTheme` y `GameTheme` del primer juego de la ficha.
+    - `page.tsx` + `page.module.css` (bloque `entry-page`): categoría, nombre, resumen, «Aparece en» (enlaces al hub, calculados con `flatMap`) y fuentes.
+  - **Pendiente (punto 7 del 10c):** enlazar cada ficha desde la página de apartado.
+- `README.md` actualizado por Claude el 2026-10-12 con la visión y el estado actuales: recorrido por niveles, temas, universo Half-Life completo, proyectos cancelados y mods. Sin commit.
+- `/explorar` todavía no existe. Todavía no existe `src/lib`.
 
 ## Versiones comprobadas
 
@@ -72,12 +73,13 @@ Comprobado por Claude Code el 2026-10-11 en la rama `feature/game-hub` (commit `
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- `main` en `1de5125`. PRs fusionadas:
+- `main` en `cfb6fc1`. PRs fusionadas:
   - #1–#6: historial reconstruido.
   - #7 `fix/errores-css`.
   - #8 `feature/valve-timeline`.
   - #9 `feature/universes-data`.
-  - #10 `feature/universe-page` (2026-10-11).
+  - #10 `feature/universe-page`.
+  - #11 `feature/game-hub` (2026-10-11).
 - `main` protegida: solo cambios por PR (0 aprobaciones, también para administradores), sin force push ni borrado. El repositorio borra las ramas al mergear.
 - Configuración: local `branch.main.mergeoptions=--no-ff` y `pull.rebase=false`; global `pull.rebase=false` y `merge.ff=false`.
 - Flujo:
@@ -88,19 +90,19 @@ Comprobado por Claude Code el 2026-10-11 en la rama `feature/game-hub` (commit `
   5. `gh pr merge --merge --delete-branch`.
   6. `git checkout main && git pull`.
 - Es `gh pr`, no `git pr`. En Git Bash, si falta `gh`: `export PATH="$PATH:/c/Program Files/GitHub CLI"`.
-- Rama activa: `feature/game-hub` (`1b23835`), sin subir ni PR. Sin commit: el paso 9b y la documentación. Se fusiona cuando Manuel decida si el 9c (temas por juego) entra en esta rama o en otra.
-- Criterio: una rama = una funcionalidad completa.
+- Rama activa: `feature/catalog-entries` (`ad31935`, `2654a6e`, `4933ff5`), sin subir ni PR. Sin commit: el 10c (`src/app/fichas/`, `get-entries.ts`, `get-game-sections.ts`, `get-universes.ts`) y la documentación con el README.
+- Criterio: una rama = una funcionalidad completa. Esta rama se cierra cuando las fichas sean accesibles desde su apartado.
 
 ## Comprobaciones
 
-Ejecutadas por Claude el 2026-10-11 en `feature/game-hub`, con el 9b sin commit:
+Ejecutadas por Claude el 2026-10-12 en `feature/catalog-entries`, con el 10c sin commit:
 
-| Comando                | Resultado                                                                                                                                    |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run lint`         | Superado                                                                                                                                     |
-| `npm run typecheck`    | Superado                                                                                                                                     |
-| `npm run format:check` | Superado                                                                                                                                     |
-| `npm run build`        | Superado. Estáticas: `/`, `/universos`, `/universos/half-life` y `/universos/half-life/half-life`; las otras 2 rutas de juego, parciales (◐) |
+| Comando                | Resultado                                                                                                                                                               |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run lint`         | Superado                                                                                                                                                                |
+| `npm run typecheck`    | Superado                                                                                                                                                                |
+| `npm run format:check` | **Falla** en `src/app/fichas/[entrySlug]/layout.tsx`, `page.tsx` y `page.module.css`: CRLF. Se corrige con `npm run format`                                             |
+| `npm run build`        | Superado: `/fichas/escopeta`, `/fichas/palanca`, `/fichas/pistola-9mm`, `/fichas/revolver-357` y `/universos/half-life/half-life/armas`, además de las rutas anteriores |
 
 `LayoutProps` y `PageProps` los genera `next typegen` a partir de las rutas existentes. Al crear un `page.tsx` o un `layout.tsx` nuevo, ejecuta `npm run typecheck` (o mantén `npm run dev` abierto) y, si VS Code sigue marcando error, ejecuta «TypeScript: Restart TS Server».
 
@@ -117,34 +119,29 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente no
 - Registrar la versión de Node.js (`engines` o `.nvmrc`).
 - `Frase para IA.txt` versionado en la raíz: decidir si se mueve a `docs/` o se elimina.
 - CI pendiente.
-- Comprobar las fechas, los desarrolladores y los enlaces de `src/data/games.ts` con las fuentes.
+- Comprobar con las fuentes los datos de `src/data/games.ts` y `src/data/entries.ts` (enlaces de Combine OverWiki y si las armas aparecen también en las expansiones).
+- Las tablas del README sobre el universo Half-Life completo, los proyectos cancelados y los mods se escribieron sin contrastar con fuentes; llevan la nota «Lista en revisión».
 
 ## Pasos de la interfaz (guiados)
 
-| Paso | Archivo(s)                                                                                                                       | Estado                                        |
-| ---- | -------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| 1–4  | Layout, paleta base, cabecera y pie                                                                                              | Hecho                                         |
-| 5–6  | Portada sobre Valve y Steam con la cronología                                                                                    | Hecho (PR #6–#8)                              |
-| 7    | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`                                                                  | Hecho (PR #9)                                 |
-| 8    | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life                                                                     | Hecho (PR #10)                                |
-| 9a   | `GameSection`, `game-sections.ts`, `getGameBySlug`, `getGameSections`                                                            | Hecho (`1b23835`)                             |
-| 9b   | `/universos/[universeSlug]/[gameSlug]` y enlaces desde la página del universo                                                    | Aplicado; check y build superados; sin commit |
-| 9c   | Tema propio por juego: `GameTheme` + `[gameSlug]/layout.tsx` (p. ej. Opposing Force verde militar, Blue Shift azul de seguridad) | Decidido por Manuel; pendiente                |
-| 10   | Apartados del hub y fichas (`Entry`)                                                                                             | Pendiente                                     |
-| —    | Varios idiomas con selector                                                                                                      | Idea para el final (ver roadmap)              |
+| Paso | Archivo(s)                                                                         | Estado                                                                   |
+| ---- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| 1–4  | Layout, paleta base, cabecera y pie                                                | Hecho                                                                    |
+| 5–6  | Portada sobre Valve y Steam con la cronología                                      | Hecho (PR #6–#8)                                                         |
+| 7    | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`                    | Hecho (PR #9)                                                            |
+| 8    | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life                       | Hecho (PR #10)                                                           |
+| 9    | Hub de juego, apartados y tema propio por juego                                    | Hecho (PR #11)                                                           |
+| 10a  | Tipo `Entry`, 4 armas de Half-Life y `getEntriesByGameAndCategory`                 | Hecho (`ad31935`)                                                        |
+| 10b  | Apartados enlazados desde el hub y ruta `[sectionSlug]`                            | Hecho (`2654a6e`, `4933ff5`)                                             |
+| 10c  | `/fichas/[entrySlug]` con tema, «Aparece en» y fuentes; enlaces desde el apartado  | Ficha aplicada; build superado; faltan los enlaces (punto 7) y el commit |
+| —    | Más fichas, lore, Explorar, universo Half-Life completo, cancelados, mods, idiomas | Ver roadmap                                                              |
 
 ## Siguiente paso
 
-1. Manuel: revisar en `npm run dev`:
-   - `/universos/half-life`: clic en una tarjeta → hub del juego.
-   - «← Half-Life» vuelve al universo.
-   - `/universos/portal/half-life` y `/universos/half-life/inventado` dan 404.
-2. Commit del 9b y de la documentación.
-3. 9c (guiado en modo plan), en esta rama o en una nueva:
-   - `src/features/games/components/game-theme.tsx` + `.module.css`, con modificadores `game-theme--<gameId>`.
-   - `src/app/universos/[universeSlug]/[gameSlug]/layout.tsx`.
-   - Half-Life 1 no necesita entrada: hereda el tema del universo.
-4. Push, PR y merge de la rama con el flujo habitual.
+1. Punto 7 del 10c (Manuel): enlazar las fichas en `[sectionSlug]/page.tsx` y su CSS.
+2. `npm run format`, `npm run check`, `npm run build` y revisión en `npm run dev` del recorrido portada → ficha.
+3. Commit del 10c y de la documentación, push, PR y merge de `feature/catalog-entries`.
+4. Decidir el siguiente bloque: más fichas (personajes, enemigos) y contenido de Opposing Force y Blue Shift, página 404 propia, o empezar el lore.
 
 ## Cómo actualizar este archivo
 

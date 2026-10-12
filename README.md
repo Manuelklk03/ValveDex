@@ -46,7 +46,7 @@ Proyecto personal desarrollado por **Manuel Casinos Pérez** para su portfolio, 
 
 ```text
 Valve (portada)  →  Universos  →  Universo  →  Juego  →  Apartado  →  Ficha
-       /             /universos   /half-life   /opposing-force  /armas   /fichas/escopeta
+       /             /universos   /half-life   /half-life  /armas   /fichas/escopeta
 ```
 
 | Nivel | Qué encontrarás | Aspecto |
@@ -55,7 +55,8 @@ Valve (portada)  →  Universos  →  Universo  →  Juego  →  Apartado  →  
 | 🌌 **Universos** | Todas las sagas de Valve; las que aún no tienen contenido aparecen como «Próximamente». | Paleta de Valve. |
 | ☢️ **Universo** | Los juegos de la saga, con año y desarrollador. | Cada universo tiene **su propia paleta** (Half-Life: gris industrial y naranja HEV). |
 | 🎮 **Juego** | Hub con lore, mapas, armas, personajes, enemigos, curiosidades y easter eggs. | Cada juego puede tener **su propio tema** (Opposing Force: verde militar; Blue Shift: azul de seguridad). |
-| 📖 **Ficha** | Descripción, juegos en los que aparece, relaciones y fuentes. | Hereda el tema de su juego. |
+| 🗂️ **Apartado** | Las fichas de una categoría en ese juego (por ejemplo, sus armas). | Tema del juego. |
+| 📖 **Ficha** | Descripción, juegos en los que aparece y fuentes. | Tema del primer juego en el que aparece. |
 
 Más adelante, un hub **Explorar** reunirá todo el contenido con un buscador global y carruseles por categoría.
 
@@ -128,7 +129,7 @@ Estas son algunas de las sagas que formarán parte de ValveDex. El alcance inclu
 
 **En desarrollo · Primer recorrido navegable.**
 
-Ya se puede navegar desde la portada hasta el hub de cada juego de Half-Life. Todavía no hay demo publicada: las capturas y el enlace se añadirán cuando exista una versión desplegada.
+Ya se puede navegar desde la portada hasta la ficha de cada arma de Half-Life. Todavía no hay demo publicada: las capturas y el enlace se añadirán cuando exista una versión desplegada.
 
 | Parte | Estado |
 | --- | --- |
@@ -136,8 +137,8 @@ Ya se puede navegar desde la portada hasta el hub de cada juego de Half-Life. To
 | 🧱 Cabecera, pie y paleta base de Valve | ✅ Hechas |
 | 🌌 Página de universos con «Próximamente» | ✅ Hecha |
 | ☢️ Página de universo con paleta propia y 404 para universos inexistentes | ✅ Hecha |
-| 🎮 Hub de juego con tema propio y apartados | ✅ Hecho (apartados aún sin contenido) |
-| 📖 Fichas de armas, personajes, enemigos… | 🛠️ En curso |
+| 🎮 Hub de juego con tema propio y apartados | ✅ Hecho |
+| 📖 Apartados y fichas | 🛠️ En curso (primeras armas de Half-Life) |
 | 🔎 Hub Explorar con buscador y carruseles | 📋 Previsto |
 | ⭐ Favoritos, comparador y control de spoilers | 📋 Previsto |
 | 🗃️ Proyectos cancelados y 🧩 mods famosos | 📋 Previsto |
@@ -198,15 +199,16 @@ Después se completará **todo el universo Half-Life**, y a continuación el res
 
 **Disponibles**
 
-- 🧭 **Navegación por niveles:** Valve → Universos → Universo → Juego.
+- 🧭 **Navegación por niveles:** Valve → Universos → Universo → Juego → Apartado → Ficha.
 - 🎨 **Temas por universo y por juego:** la paleta cambia al entrar en cada saga o juego, sin JavaScript en el cliente.
+- 📖 **Fichas** con los juegos en los que aparece cada elemento y sus fuentes.
 - 🕰️ **Cronología de Valve** con fuentes enlazadas.
-- 🚫 **Páginas 404** para universos y juegos inexistentes.
+- 🚫 **Páginas 404** para universos, juegos, apartados y fichas inexistentes.
 - ♿ **Base accesible:** HTML semántico, foco visible y navegación por teclado.
 
 **Previstas**
 
-- 📖 **Fichas de detalle:** descripciones, apariciones en cada juego, contenido relacionado y fuentes.
+- 📖 **Más fichas:** personajes, enemigos, mapas, curiosidades y easter eggs de cada juego, con su contenido relacionado.
 - 🔎 **Hub Explorar:** buscador global con carruseles por categoría que mezclan todos los juegos.
 - 🎛️ **Búsqueda, filtros y ordenación:** encontrar fichas y compartir enlaces con los filtros aplicados.
 - ⭐ **Favoritos:** guardar fichas en el navegador para consultarlas más tarde.
@@ -240,10 +242,10 @@ La arquitectura se organiza por funcionalidades, separando rutas, componentes co
 
 | Ubicación | Responsabilidad |
 | --- | --- |
-| `src/app/` | Páginas, rutas y layouts de Next.js (`/universos/[universeSlug]/[gameSlug]`). |
-| `src/features/` | Funcionalidades: `valve`, `universes`, `games` y, más adelante, catálogo, favoritos y comparador. |
+| `src/app/` | Páginas, rutas y layouts de Next.js (`/universos/[universeSlug]/[gameSlug]/[sectionSlug]`, `/fichas/[entrySlug]`). |
+| `src/features/` | Funcionalidades: `valve`, `universes`, `games`, `catalog` y, más adelante, favoritos y comparador. |
 | `src/components/` | Componentes compartidos: cabecera, pie y piezas reutilizables como la cronología. |
-| `src/domain/` | Tipos del contenido: universos, juegos, apartados, hitos y fuentes. |
+| `src/domain/` | Tipos del contenido: universos, juegos, apartados, fichas, hitos y fuentes. |
 | `src/data/` | Datos locales del catálogo, con sus fuentes. |
 | `public/` | Recursos estáticos. |
 | `docs/` | Arquitectura, planificación y estado. |
@@ -314,8 +316,7 @@ Cada funcionalidad se desarrolla en su propia rama y entra en `main` mediante un
 
 ## 🗺️ Próximos pasos
 
-- Incorporar las primeras fichas (armas, personajes, enemigos…) y sus páginas.
-- Completar los apartados de Half-Life, Opposing Force y Blue Shift.
+- Añadir más fichas (personajes, enemigos, mapas…) y completar los apartados de Half-Life, Opposing Force y Blue Shift.
 - Crear el hub Explorar con buscador, filtros y carruseles.
 - Añadir favoritos, control de spoilers y comparación de armas.
 - Incorporar pruebas, automatizar comprobaciones y publicar una demo.
