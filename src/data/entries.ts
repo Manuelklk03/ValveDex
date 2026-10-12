@@ -8,7 +8,11 @@ export const entries: Entry[] = [
     category: "weapons",
     summary:
       "Arma cuerpo a cuerpo de Gordon Freeman y primera que consigue en el juego.",
-    gameIds: ["half-life"],
+    appearances: [
+      {
+        gameId: "half-life",
+      },
+    ],
     sources: [
       {
         title: "Crowbar - Combine OverWiki",
@@ -23,7 +27,11 @@ export const entries: Entry[] = [
     category: "weapons",
     summary:
       "Pistola semiautomática estándar del personal de seguridad de Black Mesa.",
-    gameIds: ["half-life"],
+    appearances: [
+      {
+        gameId: "half-life",
+      },
+    ],
     sources: [
       {
         title: "Glock 17 - Combine OverWiki",
@@ -37,7 +45,11 @@ export const entries: Entry[] = [
     name: "Revólver .357",
     category: "weapons",
     summary: "Revólver de gran potencia y cargador de seis balas.",
-    gameIds: ["half-life"],
+    appearances: [
+      {
+        gameId: "half-life",
+      },
+    ],
     sources: [
       {
         title: "Colt Python - Combine OverWiki",
@@ -51,7 +63,11 @@ export const entries: Entry[] = [
     name: "Escopeta",
     category: "weapons",
     summary: "Escopeta con disparo simple y doble, eficaz a corta distancia.",
-    gameIds: ["half-life"],
+    appearances: [
+      {
+        gameId: "half-life",
+      },
+    ],
     sources: [
       {
         title: "SPAS-12 - Combine OverWiki",

@@ -3,13 +3,18 @@ import type { Source } from "./source";
 
 export type EntryCategory = Exclude<GameSectionId, "lore">;
 
+export type EntryAppearance = {
+  gameId: string;
+  summary?: string;
+};
+
 export type Entry = {
   id: string;
   slug: string;
   name: string;
   category: EntryCategory;
   summary: string;
-  gameIds: string[];
+  appearances: EntryAppearance[];
   sources: Source[];
 };
 

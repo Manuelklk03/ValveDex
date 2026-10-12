@@ -40,11 +40,11 @@ export default async function EntryPage({
   }
 
   const section = getGameSectionById(entry.category);
-  const appearances = entry.gameIds.flatMap((gameId) => {
-    const game = getGameById(gameId);
+  const gameAppearances = entry.appearances.flatMap((appearance) => {
+    const game = getGameById(appearance.gameId);
     const universe = game ? getUniverseById(game.universeId) : undefined;
 
-    return game && universe ? [{ game, universe }] : [];
+    return game && universe ? [{ appearance, game, universe }] : [];
   });
 
   return (
@@ -68,7 +68,7 @@ export default async function EntryPage({
           Aparece en
         </h2>
         <ul className={styles["entry-page__games"]}>
-          {appearances.map(({ game, universe }) => (
+          {gameAppearances.map(({ appearance, game, universe }) => (
             <li key={game.id}>
               <Link
                 href={`/universos/${universe.slug}/${game.slug}`}
@@ -79,6 +79,11 @@ export default async function EntryPage({
               <span className={styles["entry-page__game-year"]}>
                 ({game.releaseYear})
               </span>
+              {appearance.summary && (
+                <p className={styles["entry-page__game-summary"]}>
+                  {appearance.summary}
+                </p>
+              )}
             </li>
           ))}
         </ul>
