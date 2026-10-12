@@ -119,7 +119,17 @@ export default async function SectionPage({
                     className={styles["section-page__entry-image"]}
                   />
                 )}
-                {/* …el <h2> con el Link y el <p> del resumen, sin cambios… */}
+                <h2 className={styles["section-page__entry-title"]}>
+                  <Link
+                    href={`/fichas/${entry.slug}`}
+                    className={styles["section-page__entry-link"]}
+                  >
+                    {entry.name}
+                  </Link>
+                </h2>
+                <p className={styles["section-page__entry-summary"]}>
+                  {getEntrySummaryForGame(entry, game.id)}
+                </p>
               </li>
             );
           })}

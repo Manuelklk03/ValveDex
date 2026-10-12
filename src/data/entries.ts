@@ -8,22 +8,7 @@ export const entries: Entry[] = [
     category: "weapons",
     summary:
       "Arma cuerpo a cuerpo de Gordon Freeman y primera que consigue en el juego.",
-    appearances: [
-      {
-        gameId: "half-life",
-        image: {
-          src: "/images/entries/spas-12-half-life.png",
-          alt: "Escopeta SPAS-12 de Half-Life",
-          width: 0,
-          height: 0,
-          source: {
-            title: "SPAS-12 - Combine OverWiki",
-            url: "https://combineoverwiki.net/wiki/SPAS-12",
-          },
-          license: "",
-        },
-      },
-    ],
+    appearances: [{ gameId: "half-life" }],
     sources: [
       {
         title: "Crowbar - Combine OverWiki",
@@ -38,26 +23,11 @@ export const entries: Entry[] = [
     category: "weapons",
     summary:
       "Pistola semiautomática estándar del personal de seguridad de Black Mesa.",
-    appearances: [
-      {
-        gameId: "half-life",
-        image: {
-          src: "/images/entries/spas-12-half-life.png",
-          alt: "Escopeta SPAS-12 de Half-Life",
-          width: 0,
-          height: 0,
-          source: {
-            title: "SPAS-12 - Combine OverWiki",
-            url: "https://combineoverwiki.net/wiki/SPAS-12",
-          },
-          license: "",
-        },
-      },
-    ],
+    appearances: [{ gameId: "half-life" }],
     sources: [
       {
-        title: "Glock 17 - Combine OverWiki",
-        url: "https://combineoverwiki.net/wiki/Glock_17",
+        title: "9mm Pistol (Half-Life) - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/9mm_Pistol_(Half-Life)",
       },
     ],
   },
@@ -67,26 +37,11 @@ export const entries: Entry[] = [
     name: "Revólver .357",
     category: "weapons",
     summary: "Revólver de gran potencia y cargador de seis balas.",
-    appearances: [
-      {
-        gameId: "half-life",
-        image: {
-          src: "/images/entries/spas-12-half-life.png",
-          alt: "Escopeta SPAS-12 de Half-Life",
-          width: 0,
-          height: 0,
-          source: {
-            title: "SPAS-12 - Combine OverWiki",
-            url: "https://combineoverwiki.net/wiki/SPAS-12",
-          },
-          license: "",
-        },
-      },
-    ],
+    appearances: [{ gameId: "half-life" }],
     sources: [
       {
-        title: "Colt Python - Combine OverWiki",
-        url: "https://combineoverwiki.net/wiki/Colt_Python",
+        title: ".357 Magnum - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/.357_Magnum",
       },
     ],
   },
@@ -100,22 +55,23 @@ export const entries: Entry[] = [
       {
         gameId: "half-life",
         image: {
-          src: "/images/entries/spas-12-half-life.png",
-          alt: "Escopeta SPAS-12 de Half-Life",
-          width: 0,
-          height: 0,
+          src: "/images/entries/spas-12-half-life.jpg",
+          alt: "Modelo de la escopeta de Half-Life",
+          width: 731,
+          height: 453,
           source: {
-            title: "SPAS-12 - Combine OverWiki",
-            url: "https://combineoverwiki.net/wiki/SPAS-12",
+            title: "File:W shotgun hd.jpg - Combine OverWiki",
+            url: "https://combineoverwiki.net/wiki/File:W_shotgun_hd.jpg",
           },
-          license: "",
+          credit: "Modelo del Half-Life High Definition Pack",
+          license: "Material del juego © Valve",
         },
       },
     ],
     sources: [
       {
-        title: "SPAS-12 - Combine OverWiki",
-        url: "https://combineoverwiki.net/wiki/SPAS-12",
+        title: "Shotgun (Half-Life) - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Shotgun_(Half-Life)",
       },
     ],
   },
