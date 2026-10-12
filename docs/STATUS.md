@@ -19,7 +19,7 @@ Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift.
 
 ## Estado confirmado
 
-Comprobado por Claude Code el 2026-10-12 en la rama `feature/catalog-entries` (commit `4933ff5` más el paso 10c sin commit).
+Comprobado por Claude Code el 2026-10-12 en `main` (`3d9e7f9`, PR #14 fusionada).
 
 - Next.js inicializado en la raíz del repositorio. Terminal de Manuel: CMD en Windows.
 - `src/app/layout.tsx`: `lang="es"`, metadatos con `title.template`, `<SiteHeader />` y `<SiteFooter />`.
@@ -46,13 +46,13 @@ Comprobado por Claude Code el 2026-10-12 en la rama `feature/catalog-entries` (c
     - `getSectionPageData()`.
     - 404 para el lore y para slugs inexistentes.
     - Lista de fichas.
-- **Paso 10c (Manuel, sin commit):**
+- **Paso 10c (Manuel, `a1aae3a`, PR #14):**
   - Nuevas funciones `getEntries()`, `getEntryBySlug()`, `getUniverseById()`, `getGameById()` y `getGameSectionById()`.
   - Nueva ruta `src/app/fichas/[entrySlug]/`:
     - `layout.tsx` anida `UniverseTheme` y `GameTheme` del primer juego de la ficha.
     - `page.tsx` + `page.module.css` (bloque `entry-page`): categoría, nombre, resumen, «Aparece en» (enlaces al hub, calculados con `flatMap`) y fuentes.
-  - **Pendiente (punto 7 del 10c):** enlazar cada ficha desde la página de apartado.
-- `README.md` actualizado por Claude el 2026-10-12 con la visión y el estado actuales: recorrido por niveles, temas, universo Half-Life completo, proyectos cancelados y mods. Sin commit.
+  - Cada ficha de la página de apartado enlaza a `/fichas/[slug]` (`section-page__entry-link` con `::after`).
+- `README.md` actualizado el 2026-10-12 con la visión y el estado actuales: recorrido por niveles, temas, universo Half-Life completo, proyectos cancelados y mods. Manuel también lo editó en GitHub (PR #12 y #13); el conflicto se resolvió conservando la versión de la rama, que incluía esos cambios y el estado más reciente.
 - `/explorar` todavía no existe. Todavía no existe `src/lib`.
 
 ## Versiones comprobadas
@@ -73,13 +73,15 @@ Comprobado por Claude Code el 2026-10-12 en la rama `feature/catalog-entries` (c
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- `main` en `cfb6fc1`. PRs fusionadas:
+- `main` en `3d9e7f9`. PRs fusionadas:
   - #1–#6: historial reconstruido.
   - #7 `fix/errores-css`.
   - #8 `feature/valve-timeline`.
   - #9 `feature/universes-data`.
   - #10 `feature/universe-page`.
   - #11 `feature/game-hub` (2026-10-11).
+  - #12 y #13: README editado directamente en GitHub.
+  - #14 `feature/catalog-entries` (2026-10-12).
 - `main` protegida: solo cambios por PR (0 aprobaciones, también para administradores), sin force push ni borrado. El repositorio borra las ramas al mergear.
 - Configuración: local `branch.main.mergeoptions=--no-ff` y `pull.rebase=false`; global `pull.rebase=false` y `merge.ff=false`.
 - Flujo:
@@ -90,18 +92,19 @@ Comprobado por Claude Code el 2026-10-12 en la rama `feature/catalog-entries` (c
   5. `gh pr merge --merge --delete-branch`.
   6. `git checkout main && git pull`.
 - Es `gh pr`, no `git pr`. En Git Bash, si falta `gh`: `export PATH="$PATH:/c/Program Files/GitHub CLI"`.
-- Rama activa: `feature/catalog-entries` (`ad31935`, `2654a6e`, `4933ff5`), sin subir ni PR. Sin commit: el 10c (`src/app/fichas/`, `get-entries.ts`, `get-game-sections.ts`, `get-universes.ts`) y la documentación con el README.
-- Criterio: una rama = una funcionalidad completa. Esta rama se cierra cuando las fichas sean accesibles desde su apartado.
+- Rama activa: `main`, al día con `origin/main`. No quedan otras ramas en local ni en remoto (`git fetch --prune` ejecutado el 2026-10-12). Sin commit: solo este archivo; irá en la próxima rama.
+- Criterio: una rama = una funcionalidad completa.
+- **Si editas algo en GitHub** (por ejemplo, el README), haz `git checkout main && git pull` antes de seguir. Si la rama local ya tenía cambios en el mismo archivo, `git merge origin/main` producirá un conflicto que hay que resolver (2026-10-12: resuelto por Claude en `b90f623`).
 
 ## Comprobaciones
 
-Ejecutadas por Claude el 2026-10-12 en `feature/catalog-entries`, con el 10c sin commit:
+Ejecutadas por Claude el 2026-10-12 en `feature/catalog-entries` tras resolver el conflicto del README (`b90f623`):
 
 | Comando                | Resultado                                                                                                                                                               |
 | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `npm run lint`         | Superado                                                                                                                                                                |
 | `npm run typecheck`    | Superado                                                                                                                                                                |
-| `npm run format:check` | **Falla** en `src/app/fichas/[entrySlug]/layout.tsx`, `page.tsx` y `page.module.css`: CRLF. Se corrige con `npm run format`                                             |
+| `npm run format:check` | Superado (después de `npm run format`)                                                                                                                                  |
 | `npm run build`        | Superado: `/fichas/escopeta`, `/fichas/palanca`, `/fichas/pistola-9mm`, `/fichas/revolver-357` y `/universos/half-life/half-life/armas`, además de las rutas anteriores |
 
 `LayoutProps` y `PageProps` los genera `next typegen` a partir de las rutas existentes. Al crear un `page.tsx` o un `layout.tsx` nuevo, ejecuta `npm run typecheck` (o mantén `npm run dev` abierto) y, si VS Code sigue marcando error, ejecuta «TypeScript: Restart TS Server».
@@ -124,24 +127,23 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente no
 
 ## Pasos de la interfaz (guiados)
 
-| Paso | Archivo(s)                                                                         | Estado                                                                   |
-| ---- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| 1–4  | Layout, paleta base, cabecera y pie                                                | Hecho                                                                    |
-| 5–6  | Portada sobre Valve y Steam con la cronología                                      | Hecho (PR #6–#8)                                                         |
-| 7    | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`                    | Hecho (PR #9)                                                            |
-| 8    | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life                       | Hecho (PR #10)                                                           |
-| 9    | Hub de juego, apartados y tema propio por juego                                    | Hecho (PR #11)                                                           |
-| 10a  | Tipo `Entry`, 4 armas de Half-Life y `getEntriesByGameAndCategory`                 | Hecho (`ad31935`)                                                        |
-| 10b  | Apartados enlazados desde el hub y ruta `[sectionSlug]`                            | Hecho (`2654a6e`, `4933ff5`)                                             |
-| 10c  | `/fichas/[entrySlug]` con tema, «Aparece en» y fuentes; enlaces desde el apartado  | Ficha aplicada; build superado; faltan los enlaces (punto 7) y el commit |
-| —    | Más fichas, lore, Explorar, universo Half-Life completo, cancelados, mods, idiomas | Ver roadmap                                                              |
+| Paso | Archivo(s)                                                                         | Estado                       |
+| ---- | ---------------------------------------------------------------------------------- | ---------------------------- |
+| 1–4  | Layout, paleta base, cabecera y pie                                                | Hecho                        |
+| 5–6  | Portada sobre Valve y Steam con la cronología                                      | Hecho (PR #6–#8)             |
+| 7    | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`                    | Hecho (PR #9)                |
+| 8    | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life                       | Hecho (PR #10)               |
+| 9    | Hub de juego, apartados y tema propio por juego                                    | Hecho (PR #11)               |
+| 10a  | Tipo `Entry`, 4 armas de Half-Life y `getEntriesByGameAndCategory`                 | Hecho (`ad31935`)            |
+| 10b  | Apartados enlazados desde el hub y ruta `[sectionSlug]`                            | Hecho (`2654a6e`, `4933ff5`) |
+| 10c  | `/fichas/[entrySlug]` con tema, «Aparece en» y fuentes; enlaces desde el apartado  | Hecho (PR #14)               |
+| —    | Más fichas, lore, Explorar, universo Half-Life completo, cancelados, mods, idiomas | Ver roadmap                  |
 
 ## Siguiente paso
 
-1. Punto 7 del 10c (Manuel): enlazar las fichas en `[sectionSlug]/page.tsx` y su CSS.
-2. `npm run format`, `npm run check`, `npm run build` y revisión en `npm run dev` del recorrido portada → ficha.
-3. Commit del 10c y de la documentación, push, PR y merge de `feature/catalog-entries`.
-4. Decidir el siguiente bloque: más fichas (personajes, enemigos) y contenido de Opposing Force y Blue Shift, página 404 propia, o empezar el lore.
+1. Revisar en `npm run dev` el recorrido completo portada → universo → juego → Armas → ficha (teclado y móvil). El agente no lo ha revisado en navegador.
+2. Decidir el siguiente bloque: más fichas (personajes, enemigos) y contenido de Opposing Force y Blue Shift, página 404 propia, o empezar el lore.
+3. Crear la rama nueva desde `main` actualizado e incluir en ella esta actualización de `docs/STATUS.md`.
 
 ## Cómo actualizar este archivo
 
