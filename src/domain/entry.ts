@@ -4,10 +4,15 @@ import type { MediaAsset } from "./media-asset";
 
 export type EntryCategory = Exclude<GameSectionId, "lore">;
 
+export type EntryImages = {
+  original?: MediaAsset;
+  hd?: MediaAsset;
+};
+
 export type EntryAppearance = {
   gameId: string;
   summary?: string;
-  image?: MediaAsset;
+  images?: EntryImages;
 };
 
 export type Entry = {

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { isEntryCategory } from "@/domain/entry";
 import {
   getEntriesByGameAndCategory,
-  getEntryAppearance,
+  getEntryThumbnail,
   getEntrySummaryForGame,
 } from "@/features/catalog/get-entries";
 import {
@@ -106,7 +106,7 @@ export default async function SectionPage({
       ) : (
         <ul className={styles["section-page__entries"]}>
           {entries.map((entry) => {
-            const image = getEntryAppearance(entry, game.id)?.image;
+            const image = getEntryThumbnail(entry, game.id);
 
             return (
               <li key={entry.id} className={styles["section-page__entry"]}>
