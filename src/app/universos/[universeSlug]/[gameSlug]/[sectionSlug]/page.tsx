@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isEntryCategory } from "@/domain/entry";
-import { getEntriesByGameAndCategory } from "@/features/catalog/get-entries";
+import {
+  getEntriesByGameAndCategory,
+  getEntrySummaryForGame,
+} from "@/features/catalog/get-entries";
 import {
   getGameSectionBySlug,
   getGameSections,
@@ -111,7 +114,7 @@ export default async function SectionPage({
                 </Link>
               </h2>
               <p className={styles["section-page__entry-summary"]}>
-                {entry.summary}
+                {getEntrySummaryForGame(entry, game.id)}
               </p>
             </li>
           ))}

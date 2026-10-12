@@ -68,6 +68,12 @@
   color: var(--muted);
 }
 
+.entry-page__game-summary {
+  margin-top: 0.25rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 .entry-page__source-link {
   color: var(--muted);
   text-decoration: underline;

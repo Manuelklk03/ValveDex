@@ -13,7 +13,7 @@ export default async function EntryLayout({
   const { entrySlug } = await params;
 
   const entry = getEntryBySlug(entrySlug);
-  const firstGameId = entry?.gameIds[0];
+  const firstGameId = entry?.appearances[0]?.gameId;
 
   const game = firstGameId ? getGameById(firstGameId) : undefined;
   const universe = game ? getUniverseById(game.universeId) : undefined;
