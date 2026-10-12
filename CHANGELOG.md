@@ -8,7 +8,9 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
-- 2026-10-12: fichas (`Entry`) con las cuatro primeras armas de Half-Life, página de apartado `/universos/[universeSlug]/[gameSlug]/[sectionSlug]` y página de ficha `/fichas/[entrySlug]` con el tema del juego, «Aparece en» y fuentes. Rama `feature/catalog-entries`, sin fusionar.
+- 2026-10-12: imágenes por juego en las fichas (`MediaAsset`, `next/image`), con fuente, crédito y licencia; primera imagen: escopeta de Half-Life (PR #17 y #18).
+- 2026-10-12: página 404 propia con enlaces a Inicio y Universos (PR #15).
+- 2026-10-12: fichas (`Entry`) con las cuatro primeras armas de Half-Life, página de apartado `/universos/[universeSlug]/[gameSlug]/[sectionSlug]` y página de ficha `/fichas/[entrySlug]` con el tema del juego, «Aparece en» y fuentes. PR #14.
 - 2026-10-12: README actualizado con el recorrido por niveles, los temas, el universo Half-Life completo, los proyectos cancelados y los mods famosos.
 - 2026-10-11: tema visual propio por juego (Opposing Force y Blue Shift) mediante `GameTheme` (PR #11).
 - 2026-10-11: hub de juego `/universos/[universeSlug]/[gameSlug]` con cabecera, fuentes y apartados «Próximamente»; los juegos de la página del universo enlazan a su hub. Incluye los tipos y datos de los apartados, `getGameBySlug()` y `getGameSections()`. PR #11.
@@ -24,12 +26,14 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Cambiado
 
+- 2026-10-12: cada ficha guarda sus apariciones por juego (`appearances`) en lugar de `gameIds`, para tener resumen, imagen y, más adelante, estadísticas propias de cada juego (PR #16).
 - 2026-10-07: nueva estructura del producto documentada: portada sobre Valve y Steam, sección Universos con paleta propia por saga y hub por juego (lore, mapas, armas, personajes, curiosidades, easter eggs), más un hub principal `/explorar` con buscador global y carruseles por categoría. Actualizados AGENTS, arquitectura y roadmap.
 - 2026-10-07: actualizado el protocolo de continuidad y el alcance global de todos los juegos de Valve, conservando la primera fase de Half-Life y sus expansiones. Documentado que el repositorio actual solo tiene el README y falta inicializar la aplicación.
 - 2026-10-01: documentada la convención BEM para las clases de CSS propias, su uso en React con CSS Modules y su convivencia con Tailwind. Actualizados README, instrucciones para agentes, arquitectura y roadmap. La aplicación de estilos en la web sigue pendiente.
 
 ### Corregido
 
+- 2026-10-12: imágenes de las fichas (faltaba el archivo y había datos copiados de la escopeta en otras armas), nombre y enlace de las fichas en la página de apartado y fuentes que apuntaban a una página de desambiguación (PR #18).
 - 2026-10-11: la clase del estado vacío de la página de universo (`universe-page-empty` → `universe-page__empty`) no existía en el CSS Module.
 - 2026-10-08: `next.config.ts` aplicaba el loader de Tailwind a todos los `.css` y anulaba CSS Modules; la regla se limita a `globals.css` (PR #7).
 

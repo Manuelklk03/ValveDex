@@ -19,7 +19,7 @@ Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift.
 
 ## Estado confirmado
 
-Comprobado por Claude Code el 2026-10-12 en `main` (`3d9e7f9`, PR #14 fusionada).
+Comprobado por Claude Code el 2026-10-12 en `main` (`7abf44e`, PR #18 fusionada).
 
 - Next.js inicializado en la raíz del repositorio. Terminal de Manuel: CMD en Windows.
 - `src/app/layout.tsx`: `lang="es"`, metadatos con `title.template`, `<SiteHeader />` y `<SiteFooter />`.
@@ -34,7 +34,7 @@ Comprobado por Claude Code el 2026-10-12 en `main` (`3d9e7f9`, PR #14 fusionada)
   - `UniverseTheme` es flex en columna para que el tema del juego ocupe todo el alto.
 - **Paso 10a (`ad31935`):**
   - `src/domain/entry.ts`: `EntryCategory = Exclude<GameSectionId, "lore">` y `Entry` (`id`, `slug`, `name`, `category`, `summary`, `gameIds`, `sources`).
-  - `src/data/entries.ts`: 4 armas de Half-Life (palanca, pistola de 9 mm, revólver .357, escopeta) con fuentes de Combine OverWiki y `gameIds: ["half-life"]`.
+  - `src/data/entries.ts`: 4 armas de Half-Life (palanca, pistola de 9 mm, revólver .357, escopeta) con fuentes de Combine OverWiki.
   - `src/features/catalog/get-entries.ts`: `getEntriesByGameAndCategory()`, ordenadas con `localeCompare(…, "es")`.
 - **Paso 10b (`2654a6e`, `4933ff5`):**
   - Type guard `isEntryCategory()` en `src/domain/entry.ts`.
@@ -52,6 +52,21 @@ Comprobado por Claude Code el 2026-10-12 en `main` (`3d9e7f9`, PR #14 fusionada)
     - `layout.tsx` anida `UniverseTheme` y `GameTheme` del primer juego de la ficha.
     - `page.tsx` + `page.module.css` (bloque `entry-page`): categoría, nombre, resumen, «Aparece en» (enlaces al hub, calculados con `flatMap`) y fuentes.
   - Cada ficha de la página de apartado enlaza a `/fichas/[slug]` (`section-page__entry-link` con `::after`).
+- **Paso 11 (PR #15):** `src/app/not-found.tsx` + `not-found.module.css` (bloque `not-found-page`). Se muestra con `notFound()` y con URLs sin ruta, dentro del layout raíz y con la paleta de Valve, con enlaces a Inicio y Universos.
+- **Paso 12 (PR #16, decisión «opción B» de Manuel):** cada ficha guarda `appearances: EntryAppearance[]` (`gameId`, `summary?`, `image?`) en lugar de `gameIds`.
+  - `getEntryAppearance()` y `getEntrySummaryForGame()` en `get-entries.ts`.
+  - La página de apartado muestra el resumen del juego.
+  - La ficha muestra el resumen y la imagen de cada aparición.
+- **Paso 13 (PR #17 y #18):**
+  - `src/domain/media-asset.ts`: `MediaAsset` (`src`, `alt`, `width`, `height`, `source`, `credit?`, `license?`).
+  - Imágenes en `public/images/entries/<id>-<juego>.<ext>`. Primera: `spas-12-half-life.jpg` (731 × 453, `File:W_shotgun_hd.jpg` de Combine OverWiki, modelo del High Definition Pack, licencia `Gamescreenshot`: material del juego © Valve).
+  - Ficha: `next/image` dentro de `<figure>` con crédito y enlace a la fuente.
+  - Apartado: miniatura decorativa (`alt=""`).
+  - La PR #17 se fusionó con errores, corregidos por Claude en la PR #18 a petición de Manuel:
+    - Faltaba el archivo de imagen.
+    - Las 4 armas tenían el bloque de imagen de la escopeta, con `width`/`height` 0.
+    - Un comentario de ejemplo había sustituido el nombre, el enlace y el resumen de cada ficha en la página de apartado.
+    - Las fuentes apuntaban a una página de desambiguación (`SPAS-12`); ahora apuntan a los artículos reales.
 - `README.md` actualizado el 2026-10-12 con la visión y el estado actuales: recorrido por niveles, temas, universo Half-Life completo, proyectos cancelados y mods. Manuel también lo editó en GitHub (PR #12 y #13); el conflicto se resolvió conservando la versión de la rama, que incluía esos cambios y el estado más reciente.
 - `/explorar` todavía no existe. Todavía no existe `src/lib`.
 
@@ -73,15 +88,19 @@ Comprobado por Claude Code el 2026-10-12 en `main` (`3d9e7f9`, PR #14 fusionada)
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- `main` en `3d9e7f9`. PRs fusionadas:
+- `main` en `7abf44e`. PRs fusionadas:
   - #1–#6: historial reconstruido.
   - #7 `fix/errores-css`.
   - #8 `feature/valve-timeline`.
   - #9 `feature/universes-data`.
   - #10 `feature/universe-page`.
-  - #11 `feature/game-hub` (2026-10-11).
+  - #11 `feature/game-hub`.
   - #12 y #13: README editado directamente en GitHub.
-  - #14 `feature/catalog-entries` (2026-10-12).
+  - #14 `feature/catalog-entries`.
+  - #15 `feature/not-found`.
+  - #16 `refactor/entry-appearances`.
+  - #17 `feature/entry-images`.
+  - #18 `fix/entry-images` (2026-10-12).
 - `main` protegida: solo cambios por PR (0 aprobaciones, también para administradores), sin force push ni borrado. El repositorio borra las ramas al mergear.
 - Configuración: local `branch.main.mergeoptions=--no-ff` y `pull.rebase=false`; global `pull.rebase=false` y `merge.ff=false`.
 - Flujo:
@@ -92,20 +111,20 @@ Comprobado por Claude Code el 2026-10-12 en `main` (`3d9e7f9`, PR #14 fusionada)
   5. `gh pr merge --merge --delete-branch`.
   6. `git checkout main && git pull`.
 - Es `gh pr`, no `git pr`. En Git Bash, si falta `gh`: `export PATH="$PATH:/c/Program Files/GitHub CLI"`.
-- Rama activa: `main`, al día con `origin/main`. No quedan otras ramas en local ni en remoto (`git fetch --prune` ejecutado el 2026-10-12). Sin commit: solo este archivo; irá en la próxima rama.
+- Esta actualización de la documentación va en la rama `docs/update-status`. Tras fusionarla no queda ninguna otra rama.
 - Criterio: una rama = una funcionalidad completa.
-- **Si editas algo en GitHub** (por ejemplo, el README), haz `git checkout main && git pull` antes de seguir. Si la rama local ya tenía cambios en el mismo archivo, `git merge origin/main` producirá un conflicto que hay que resolver (2026-10-12: resuelto por Claude en `b90f623`).
+- **Si editas algo en GitHub** (por ejemplo, el README), haz `git checkout main && git pull` antes de seguir. Si la rama local ya tenía cambios en el mismo archivo, `git merge origin/main` producirá un conflicto que hay que resolver.
 
 ## Comprobaciones
 
-Ejecutadas por Claude el 2026-10-12 en `feature/catalog-entries` tras resolver el conflicto del README (`b90f623`):
+Ejecutadas por Claude el 2026-10-12 en `fix/entry-images` (`03c9145`, PR #18):
 
-| Comando                | Resultado                                                                                                                                                               |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run lint`         | Superado                                                                                                                                                                |
-| `npm run typecheck`    | Superado                                                                                                                                                                |
-| `npm run format:check` | Superado (después de `npm run format`)                                                                                                                                  |
-| `npm run build`        | Superado: `/fichas/escopeta`, `/fichas/palanca`, `/fichas/pistola-9mm`, `/fichas/revolver-357` y `/universos/half-life/half-life/armas`, además de las rutas anteriores |
+| Comando               | Resultado                                                                                                                                                                                                                                        |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `npm run check`       | Superado (lint, tipos y formato)                                                                                                                                                                                                                 |
+| `npm run build`       | Superado                                                                                                                                                                                                                                         |
+| `next start` + `curl` | `/universos/half-life/half-life/armas` muestra las 4 fichas con nombre y enlace; solo la escopeta lleva imagen (731 × 453, servida por `/_next/image`, 200). `/fichas/escopeta` muestra el crédito completo. `/fichas/palanca` no muestra figura |
+| URLs de las fuentes   | Las 5 fuentes de Combine OverWiki responden 200                                                                                                                                                                                                  |
 
 `LayoutProps` y `PageProps` los genera `next typegen` a partir de las rutas existentes. Al crear un `page.tsx` o un `layout.tsx` nuevo, ejecuta `npm run typecheck` (o mantén `npm run dev` abierto) y, si VS Code sigue marcando error, ejecuta «TypeScript: Restart TS Server».
 
@@ -113,7 +132,7 @@ Causa del CRLF: VS Code crea los archivos nuevos con CRLF. `.gitattributes` lo c
 
 Comprobado el 2026-10-07: `npm audit --omit=dev` da 0 vulnerabilidades; `npm audit` da 5 altas solo en desarrollo (`eslint-config-next` → … → `braces`, GHSA-vfj7-8cjw-p6xm). No usar `npm audit fix --force`.
 
-Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente no ha revisado en el navegador (teclado, móvil, contraste del tema Half-Life) ninguna página.
+Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha comprobado el HTML servido, pero no ha revisado en un navegador (teclado, móvil, contraste de los temas) ninguna página.
 
 ## Problemas pendientes
 
@@ -122,28 +141,37 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente no
 - Registrar la versión de Node.js (`engines` o `.nvmrc`).
 - `Frase para IA.txt` versionado en la raíz: decidir si se mueve a `docs/` o se elimina.
 - CI pendiente.
-- Comprobar con las fuentes los datos de `src/data/games.ts` y `src/data/entries.ts` (enlaces de Combine OverWiki y si las armas aparecen también en las expansiones).
+- Comprobar con las fuentes los datos de `src/data/games.ts` y los textos de `src/data/entries.ts`, y si las armas aparecen también en las expansiones. Los enlaces de las fichas ya se han verificado (2026-10-12).
+- Sin comprobaciones automáticas de integridad de datos: los errores de la PR #17 (archivo de imagen inexistente, datos copiados de otra ficha, tamaños a 0) solo se detectaron revisando a mano.
 - Las tablas del README sobre el universo Half-Life completo, los proyectos cancelados y los mods se escribieron sin contrastar con fuentes; llevan la nota «Lista en revisión».
 
 ## Pasos de la interfaz (guiados)
 
-| Paso | Archivo(s)                                                                         | Estado                       |
-| ---- | ---------------------------------------------------------------------------------- | ---------------------------- |
-| 1–4  | Layout, paleta base, cabecera y pie                                                | Hecho                        |
-| 5–6  | Portada sobre Valve y Steam con la cronología                                      | Hecho (PR #6–#8)             |
-| 7    | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`                    | Hecho (PR #9)                |
-| 8    | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life                       | Hecho (PR #10)               |
-| 9    | Hub de juego, apartados y tema propio por juego                                    | Hecho (PR #11)               |
-| 10a  | Tipo `Entry`, 4 armas de Half-Life y `getEntriesByGameAndCategory`                 | Hecho (`ad31935`)            |
-| 10b  | Apartados enlazados desde el hub y ruta `[sectionSlug]`                            | Hecho (`2654a6e`, `4933ff5`) |
-| 10c  | `/fichas/[entrySlug]` con tema, «Aparece en» y fuentes; enlaces desde el apartado  | Hecho (PR #14)               |
-| —    | Más fichas, lore, Explorar, universo Half-Life completo, cancelados, mods, idiomas | Ver roadmap                  |
+| Paso | Archivo(s)                                                                             | Estado               |
+| ---- | -------------------------------------------------------------------------------------- | -------------------- |
+| 1–4  | Layout, paleta base, cabecera y pie                                                    | Hecho                |
+| 5–6  | Portada sobre Valve y Steam con la cronología                                          | Hecho (PR #6–#8)     |
+| 7    | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`                        | Hecho (PR #9)        |
+| 8    | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life                           | Hecho (PR #10)       |
+| 9    | Hub de juego, apartados y tema propio por juego                                        | Hecho (PR #11)       |
+| 10   | Fichas: modelo `Entry`, página de apartado y página de ficha                           | Hecho (PR #14)       |
+| 11   | Página 404 propia                                                                      | Hecho (PR #15)       |
+| 12   | `gameIds` → `appearances` (datos propios de cada juego)                                | Hecho (PR #16)       |
+| 13   | Imágenes por aparición (`MediaAsset`, `next/image`)                                    | Hecho (PR #17 y #18) |
+| —    | Integridad de datos, relaciones, más fichas, lore, Explorar, cancelados, mods, idiomas | Ver roadmap          |
 
 ## Siguiente paso
 
-1. Revisar en `npm run dev` el recorrido completo portada → universo → juego → Armas → ficha (teclado y móvil). El agente no lo ha revisado en navegador.
-2. Decidir el siguiente bloque: más fichas (personajes, enemigos) y contenido de Opposing Force y Blue Shift, página 404 propia, o empezar el lore.
-3. Crear la rama nueva desde `main` actualizado e incluir en ella esta actualización de `docs/STATUS.md`.
+1. Manuel: revisar en `npm run dev` la escopeta en «Armas» y en su ficha (imagen, crédito, móvil).
+2. Paso 14 propuesto: **comprobaciones de integridad de datos**. Pide la Entrega 1 y habría detectado los errores de la PR #17:
+   - IDs y slugs únicos.
+   - Referencias válidas (`gameId`, `universeId`).
+   - Imágenes existentes en `public/` con tamaño mayor que 0.
+   - Fuentes presentes.
+
+   Requiere elegir y añadir una herramienta de pruebas (Vitest, prevista en la arquitectura).
+
+3. Después: relaciones entre fichas, más fichas y las expansiones.
 
 ## Cómo actualizar este archivo
 

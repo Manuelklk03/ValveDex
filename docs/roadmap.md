@@ -2,7 +2,7 @@
 
 Estado inicial: **2026-09-30**. Plan de trabajo personal; el orden puede ajustarse según lo aprendido. Las casillas solo se marcarán con trabajo comprobado.
 
-Última actualización: **2026-10-12**.
+Última actualización: **2026-10-12** (tras la PR #18).
 
 Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la navegación Valve → Universos → Juego descrita en la [arquitectura](architecture.md). La primera fase de contenido mantiene el universo Half-Life con Half-Life, Opposing Force y Blue Shift. Consulta [STATUS.md](STATUS.md) para saber dónde retomar el trabajo.
 
@@ -30,11 +30,11 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 - [ ] Página `/universos` con todos los universos de Valve; los que aún no tengan contenido, marcados como «próximamente». Hecha (PR #9, build superado); falta la revisión en navegador.
 - [ ] Página de universo con su paleta propia (empezando por Half-Life) y la lista de sus juegos. Hecha (PR #10, build superado): tema por variables CSS y 404 para universos inexistentes o «Próximamente». Falta revisar el contraste y el teclado en navegador.
 - [ ] Hub de juego para Half-Life, Opposing Force y Blue Shift con sus apartados (lore, mapas, armas, personajes, enemigos, curiosidades, easter eggs). Hub con cabecera, fuentes, apartados y tema propio por juego (PR #11). Los apartados con fichas enlazan a su página; de momento solo «Armas» de Half-Life.
-- [ ] Ficha individual enlazada desde los apartados del hub. En curso en `feature/catalog-entries`: `/fichas/[entrySlug]` con tema del primer juego, «Aparece en» y fuentes (build superado el 2026-10-12); faltan los enlaces desde el apartado.
+- [ ] Ficha individual enlazada desde los apartados del hub. Hecha (PR #14, #16 y #18): `/fichas/[entrySlug]` con tema, «Aparece en», datos e imagen por juego, y fuentes. Falta la revisión en navegador.
 - [ ] Preparar datos reales de los tres juegos con una muestra de cada categoría inicial.
-- [ ] Registrar las fuentes y los recursos visuales utilizados.
-- [ ] Mostrar relaciones entre fichas y una página 404 útil.
-- [ ] Incorporar comprobaciones de integridad de datos y un recorrido E2E.
+- [ ] Registrar las fuentes y los recursos visuales utilizados. En curso: cada ficha, juego e hito tiene fuentes; cada imagen guarda fuente, crédito y licencia (`MediaAsset`). Falta una página o sección de créditos.
+- [ ] Mostrar relaciones entre fichas y una página 404 útil. La 404 está hecha (PR #15); faltan las relaciones.
+- [ ] Incorporar comprobaciones de integridad de datos y un recorrido E2E. Propuesto como paso 14: los errores de la PR #17 muestran que hacen falta.
 
 **Se acepta cuando:** desde la portada se llega a Universos → Half-Life → cada uno de sus tres juegos → un apartado → una ficha, y se sigue una relación sin enlaces rotos, con la paleta del universo aplicada, en móvil y escritorio.
 
