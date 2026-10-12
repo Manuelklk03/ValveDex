@@ -85,16 +85,16 @@ Los filtros públicos se representarán en parámetros como `q`, `game`, `catego
 
 El diseño inicial contempla estas entidades; sus tipos exactos se escribirán al implementar el catálogo:
 
-| Entidad      | Datos principales                                                                                                           |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| `Universe`   | ID, slug, nombre, descripción y estado (`available`/`coming-soon`); implementado. Tema visual pendiente                     |
-| `Game`       | ID, slug, `universeId`, nombre, año, desarrollador, descripción y fuentes; implementado. Recursos visuales pendientes       |
-| `Entry`      | ID, slug único, nombre, categoría (`EntryCategory`), resumen, `gameIds` y fuentes; implementado sin variantes por categoría |
-| `Appearance` | Juego y diferencias concretas de una ficha en ese juego                                                                     |
-| `Relation`   | ID de origen, ID de destino y tipo de relación                                                                              |
-| `Source`     | URL y título (implementado); fecha de consulta pendiente                                                                    |
-| `Milestone`  | ID, año, título, descripción y fuentes (implementado)                                                                       |
-| `MediaAsset` | Recurso, texto alternativo, origen, autor y condiciones de uso conocidas                                                    |
+| Entidad           | Datos principales                                                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `Universe`        | ID, slug, nombre, descripción y estado (`available`/`coming-soon`); implementado. Tema visual pendiente                               |
+| `Game`            | ID, slug, `universeId`, nombre, año, desarrollador, descripción y fuentes; implementado. Recursos visuales pendientes                 |
+| `Entry`           | ID, slug único, nombre, categoría (`EntryCategory`), resumen común, `appearances` y fuentes; implementado sin variantes por categoría |
+| `EntryAppearance` | `gameId`, resumen propio e imagen de una ficha en ese juego; implementado. Estadísticas por juego pendientes                          |
+| `Relation`        | ID de origen, ID de destino y tipo de relación                                                                                        |
+| `Source`          | URL y título (implementado); fecha de consulta pendiente                                                                              |
+| `Milestone`       | ID, año, título, descripción y fuentes (implementado)                                                                                 |
+| `MediaAsset`      | `src`, `alt`, `width`, `height`, fuente, crédito y licencia; implementado en `src/domain/media-asset.ts`                              |
 
 `Entry` se modelará mediante variantes discriminadas por categoría: arma, personaje, enemigo, objeto, localización, mapa, capítulo, facción, curiosidad o easter egg. Los apartados del hub de un juego son vistas de estas fichas filtradas por categoría y juego; el lore puede empezar como texto propio del juego. Cada variante tendrá los campos que necesita; evitaremos un objeto con decenas de propiedades opcionales sin relación.
 
@@ -106,7 +106,11 @@ La relación universo–juego vive solo en `Game.universeId`: `Universe` no guar
 
 Los apartados del hub son una lista cerrada: `GameSectionId` (`src/domain/game-section.ts`) con `id` en inglés y `slug` en español para la URL (`armas`, `easter-eggs`), definidos una sola vez en `src/data/game-sections.ts` y comunes a todos los juegos. `getGameBySlug(universeId, gameSlug)` comprueba ambos campos, porque el slug de un juego solo es único dentro de su universo. La página del hub genera sus rutas con `generateStaticParams` anidado (`flatMap` sobre los universos disponibles y sus juegos). Un apartado sin contenido se muestra como «Próximamente» y no se enlaza.
 
-Las fichas (`src/domain/entry.ts`) usan `EntryCategory = Exclude<GameSectionId, "lore">`: el lore no tiene fichas. El type guard `isEntryCategory()` permite pasar el `id` de un apartado a las funciones del catálogo. Una ficha guarda `gameIds` y aparece en todos esos juegos con un único ID. `src/features/catalog/get-entries.ts` lee las fichas; el hub solo enlaza los apartados que tienen fichas. La ficha canónica vive en `/fichas/[entrySlug]` para que una ficha compartida tenga una sola URL; su layout anida `UniverseTheme` y `GameTheme` del primer juego de `gameIds`. Cuando una categoría necesite campos propios (por ejemplo, la munición de las armas), `Entry` pasará a ser una unión discriminada por `category`.
+Las fichas (`src/domain/entry.ts`) usan `EntryCategory = Exclude<GameSectionId, "lore">`: el lore no tiene fichas. El type guard `isEntryCategory()` permite pasar el `id` de un apartado a las funciones del catálogo. Una ficha es **una sola** aunque aparezca en varios juegos (decisión de Manuel del 2026-10-12, «opción B»). Guarda lo común (`summary`, fuentes) y una `EntryAppearance` por juego con lo propio de esa versión: resumen, imagen y, más adelante, estadísticas. Por ejemplo, la escopeta de Half-Life y la de Half-Life 2 son la misma ficha con dos apariciones. Dos elementos realmente distintos serán fichas separadas, enlazadas con una relación. `getEntrySummaryForGame()` usa el resumen del juego y, si no lo hay, el común. `src/features/catalog/get-entries.ts` lee las fichas; el hub solo enlaza los apartados que tienen fichas. La ficha canónica vive en `/fichas/[entrySlug]` para que una ficha compartida tenga una sola URL; su layout anida `UniverseTheme` y `GameTheme` del juego de la primera aparición. Cuando una categoría necesite campos propios (por ejemplo, la munición de las armas), `Entry` pasará a ser una unión discriminada por `category`.
+
+**Imágenes:** se guardan en `public/images/entries/<id>-<juego>.<ext>` y se muestran con `next/image`, con `width` y `height` reales para reservar su espacio. Cada imagen registra su fuente (preferiblemente la página del archivo, donde constan autor y licencia), su crédito y su licencia. En la ficha la imagen es contenido (`alt` descriptivo, `<figure>` con crédito); en las tarjetas es decorativa (`alt=""`), porque el nombre ya está en el enlace.
+
+**404:** `src/app/not-found.tsx` responde tanto a `notFound()` como a las URLs sin ruta. Se pinta dentro del layout raíz con la paleta de Valve y ofrece enlaces a Inicio y Universos.
 
 Con `cacheComponents`, `generateStaticParams` debe devolver al menos un parámetro; los slugs no generados se renderizan en tiempo de ejecución y terminan en `notFound()` si no existen. Los tipos `PageProps` y `LayoutProps` los genera `next typegen` según las rutas existentes.
 
