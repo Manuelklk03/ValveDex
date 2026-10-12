@@ -54,17 +54,19 @@ export const entries: Entry[] = [
     appearances: [
       {
         gameId: "half-life",
-        image: {
-          src: "/images/entries/spas-12-half-life.jpg",
-          alt: "Modelo de la escopeta de Half-Life",
-          width: 731,
-          height: 453,
-          source: {
-            title: "File:W shotgun hd.jpg - Combine OverWiki",
-            url: "https://combineoverwiki.net/wiki/File:W_shotgun_hd.jpg",
+        images: {
+          hd: {
+            src: "/images/entries/spas-12-half-life.jpg",
+            alt: "Modelo HD de la escopeta de Half-Life",
+            width: 731,
+            height: 453,
+            source: {
+              title: "File:W shotgun hd.jpg - Combine OverWiki",
+              url: "https://combineoverwiki.net/wiki/File:W_shotgun_hd.jpg",
+            },
+            credit: "Modelo del Half-Life High Definition Pack",
+            license: "Material del juego © Valve",
           },
-          credit: "Modelo del Half-Life High Definition Pack",
-          license: "Material del juego © Valve",
         },
       },
     ],

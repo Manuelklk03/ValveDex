@@ -1,5 +1,6 @@
 import type { Entry, EntryCategory, EntryAppearance } from "@/domain/entry";
 import { entries } from "@/data/entries";
+import type { MediaAsset } from "@/domain/media-asset";
 
 export function getEntriesByGameAndCategory(
   gameId: string,
@@ -31,4 +32,13 @@ export function getEntryAppearance(
 
 export function getEntrySummaryForGame(entry: Entry, gameId: string): string {
   return getEntryAppearance(entry, gameId)?.summary ?? entry.summary;
+}
+
+export function getEntryThumbnail(
+  entry: Entry,
+  gameId: string,
+): MediaAsset | undefined {
+  const images = getEntryAppearance(entry, gameId)?.images;
+
+  return images?.hd ?? images?.original;
 }

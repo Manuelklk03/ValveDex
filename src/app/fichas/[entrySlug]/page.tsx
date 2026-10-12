@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ImageCompare } from "@/components/ui/image-compare";
 import { getEntries, getEntryBySlug } from "@/features/catalog/get-entries";
 import { getGameSectionById } from "@/features/games/get-game-sections";
 import {
   getGameById,
   getUniverseById,
 } from "@/features/universes/get-universes";
-import Image from "next/image";
 import styles from "./page.module.css";
 
 export function generateStaticParams() {
@@ -69,47 +70,69 @@ export default async function EntryPage({
           Aparece en
         </h2>
         <ul className={styles["entry-page__games"]}>
-          {gameAppearances.map(({ appearance, game, universe }) => (
-            <li key={game.id}>
-              <Link
-                href={`/universos/${universe.slug}/${game.slug}`}
-                className={styles["entry-page__game-link"]}
-              >
-                {game.name}
-              </Link>{" "}
-              <span className={styles["entry-page__game-year"]}>
-                ({game.releaseYear})
-              </span>
-              {appearance.summary && (
-                <p className={styles["entry-page__game-summary"]}>
-                  {appearance.summary}
-                </p>
-              )}
-              {appearance.image && (
-                <figure className={styles["entry-page__figure"]}>
-                  <Image
-                    src={appearance.image.src}
-                    alt={appearance.image.alt}
-                    width={appearance.image.width}
-                    height={appearance.image.height}
-                    className={styles["entry-page__image"]}
+          {gameAppearances.map(({ appearance, game, universe }) => {
+            const original = appearance.images?.original;
+            const hd = appearance.images?.hd;
+            const single = hd ?? original;
+            const credits = [original, hd].filter(
+              (image) => image !== undefined,
+            );
+
+            return (
+              <li key={game.id} className={styles["entry-page__game"]}>
+                <div>
+                  <Link
+                    href={`/universos/${universe.slug}/${game.slug}`}
+                    className={styles["entry-page__game-link"]}
+                  >
+                    {game.name}
+                  </Link>{" "}
+                  <span className={styles["entry-page__game-year"]}>
+                    ({game.releaseYear})
+                  </span>
+                </div>
+
+                {appearance.summary && (
+                  <p className={styles["entry-page__game-summary"]}>
+                    {appearance.summary}
+                  </p>
+                )}
+
+                {original && hd ? (
+                  <ImageCompare
+                    before={original}
+                    after={hd}
+                    beforeLabel="Original"
+                    afterLabel="HD Pack"
                   />
-                  <figcaption className={styles["entry-page__credit"]}>
+                ) : (
+                  single && (
+                    <Image
+                      src={single.src}
+                      alt={single.alt}
+                      width={single.width}
+                      height={single.height}
+                      className={styles["entry-page__image"]}
+                    />
+                  )
+                )}
+
+                {credits.map((image) => (
+                  <p key={image.src} className={styles["entry-page__credit"]}>
                     Imagen:{" "}
                     <a
-                      href={appearance.image.source.url}
+                      href={image.source.url}
                       className={styles["entry-page__source-link"]}
                     >
-                      {appearance.image.source.title}
+                      {image.source.title}
                     </a>
-                    {appearance.image.credit && ` · ${appearance.image.credit}`}
-                    {appearance.image.license &&
-                      ` · ${appearance.image.license}`}
-                  </figcaption>
-                </figure>
-              )}
-            </li>
-          ))}
+                    {image.credit && ` · ${image.credit}`}
+                    {image.license && ` · ${image.license}`}
+                  </p>
+                ))}
+              </li>
+            );
+          })}
         </ul>
       </section>
 

@@ -1,0 +1,48 @@
+.image-compare {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 32rem;
+}
+
+.image-compare__frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-compare__image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.image-compare__image--after {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  object-fit: contain;
+}
+
+.image-compare__divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.image-compare__control {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.image-compare__range {
+  flex: 1;
+  accent-color: var(--accent);
+}
