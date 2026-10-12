@@ -1,11 +1,13 @@
 import type { GameSectionId } from "./game-section";
 import type { Source } from "./source";
+import type { MediaAsset } from "./media-asset";
 
 export type EntryCategory = Exclude<GameSectionId, "lore">;
 
 export type EntryAppearance = {
   gameId: string;
   summary?: string;
+  image?: MediaAsset;
 };
 
 export type Entry = {

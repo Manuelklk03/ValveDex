@@ -82,3 +82,24 @@
 .entry-page__source-link:hover {
   color: var(--accent);
 }
+
+.entry-page__figure {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.entry-page__image {
+  width: 100%;
+  max-width: 24rem;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+
+.entry-page__credit {
+  color: var(--muted);
+  font-size: 0.875rem;
+}

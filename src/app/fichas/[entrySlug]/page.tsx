@@ -7,6 +7,7 @@ import {
   getGameById,
   getUniverseById,
 } from "@/features/universes/get-universes";
+import Image from "next/image";
 import styles from "./page.module.css";
 
 export function generateStaticParams() {
@@ -83,6 +84,29 @@ export default async function EntryPage({
                 <p className={styles["entry-page__game-summary"]}>
                   {appearance.summary}
                 </p>
+              )}
+              {appearance.image && (
+                <figure className={styles["entry-page__figure"]}>
+                  <Image
+                    src={appearance.image.src}
+                    alt={appearance.image.alt}
+                    width={appearance.image.width}
+                    height={appearance.image.height}
+                    className={styles["entry-page__image"]}
+                  />
+                  <figcaption className={styles["entry-page__credit"]}>
+                    Imagen:{" "}
+                    <a
+                      href={appearance.image.source.url}
+                      className={styles["entry-page__source-link"]}
+                    >
+                      {appearance.image.source.title}
+                    </a>
+                    {appearance.image.credit && ` · ${appearance.image.credit}`}
+                    {appearance.image.license &&
+                      ` · ${appearance.image.license}`}
+                  </figcaption>
+                </figure>
               )}
             </li>
           ))}

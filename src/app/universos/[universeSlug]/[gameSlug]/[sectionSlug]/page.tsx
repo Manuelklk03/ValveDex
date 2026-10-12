@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { isEntryCategory } from "@/domain/entry";
 import {
   getEntriesByGameAndCategory,
+  getEntryAppearance,
   getEntrySummaryForGame,
 } from "@/features/catalog/get-entries";
 import {
@@ -15,6 +16,7 @@ import {
   getUniverseAndGame,
   getUniverses,
 } from "@/features/universes/get-universes";
+import Image from "next/image";
 import styles from "./page.module.css";
 
 export function generateStaticParams() {
@@ -103,21 +105,24 @@ export default async function SectionPage({
         </p>
       ) : (
         <ul className={styles["section-page__entries"]}>
-          {entries.map((entry) => (
-            <li key={entry.id} className={styles["section-page__entry"]}>
-              <h2 className={styles["section-page__entry-title"]}>
-                <Link
-                  href={`/fichas/${entry.slug}`}
-                  className={styles["section-page__entry-link"]}
-                >
-                  {entry.name}
-                </Link>
-              </h2>
-              <p className={styles["section-page__entry-summary"]}>
-                {getEntrySummaryForGame(entry, game.id)}
-              </p>
-            </li>
-          ))}
+          {entries.map((entry) => {
+            const image = getEntryAppearance(entry, game.id)?.image;
+
+            return (
+              <li key={entry.id} className={styles["section-page__entry"]}>
+                {image && (
+                  <Image
+                    src={image.src}
+                    alt=""
+                    width={image.width}
+                    height={image.height}
+                    className={styles["section-page__entry-image"]}
+                  />
+                )}
+                {/* …el <h2> con el Link y el <p> del resumen, sin cambios… */}
+              </li>
+            );
+          })}
         </ul>
       )}
     </main>
