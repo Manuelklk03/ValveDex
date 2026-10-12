@@ -11,6 +11,17 @@ export const entries: Entry[] = [
     appearances: [
       {
         gameId: "half-life",
+        image: {
+          src: "/images/entries/spas-12-half-life.png",
+          alt: "Escopeta SPAS-12 de Half-Life",
+          width: 0,
+          height: 0,
+          source: {
+            title: "SPAS-12 - Combine OverWiki",
+            url: "https://combineoverwiki.net/wiki/SPAS-12",
+          },
+          license: "",
+        },
       },
     ],
     sources: [
@@ -30,6 +41,17 @@ export const entries: Entry[] = [
     appearances: [
       {
         gameId: "half-life",
+        image: {
+          src: "/images/entries/spas-12-half-life.png",
+          alt: "Escopeta SPAS-12 de Half-Life",
+          width: 0,
+          height: 0,
+          source: {
+            title: "SPAS-12 - Combine OverWiki",
+            url: "https://combineoverwiki.net/wiki/SPAS-12",
+          },
+          license: "",
+        },
       },
     ],
     sources: [
@@ -48,6 +70,17 @@ export const entries: Entry[] = [
     appearances: [
       {
         gameId: "half-life",
+        image: {
+          src: "/images/entries/spas-12-half-life.png",
+          alt: "Escopeta SPAS-12 de Half-Life",
+          width: 0,
+          height: 0,
+          source: {
+            title: "SPAS-12 - Combine OverWiki",
+            url: "https://combineoverwiki.net/wiki/SPAS-12",
+          },
+          license: "",
+        },
       },
     ],
     sources: [
@@ -66,6 +99,17 @@ export const entries: Entry[] = [
     appearances: [
       {
         gameId: "half-life",
+        image: {
+          src: "/images/entries/spas-12-half-life.png",
+          alt: "Escopeta SPAS-12 de Half-Life",
+          width: 0,
+          height: 0,
+          source: {
+            title: "SPAS-12 - Combine OverWiki",
+            url: "https://combineoverwiki.net/wiki/SPAS-12",
+          },
+          license: "",
+        },
       },
     ],
     sources: [

@@ -1,4 +1,4 @@
-import type { Entry, EntryCategory } from "@/domain/entry";
+import type { Entry, EntryCategory, EntryAppearance } from "@/domain/entry";
 import { entries } from "@/data/entries";
 
 export function getEntriesByGameAndCategory(
@@ -22,10 +22,13 @@ export function getEntryBySlug(slug: string): Entry | undefined {
   return entries.find((entry) => entry.slug === slug);
 }
 
-export function getEntrySummaryForGame(entry: Entry, gameId: string): string {
-  const appearance = entry.appearances.find(
-    (appearance) => appearance.gameId === gameId,
-  );
+export function getEntryAppearance(
+  entry: Entry,
+  gameId: string,
+): EntryAppearance | undefined {
+  return entry.appearances.find((appearance) => appearance.gameId === gameId);
+}
 
-  return appearance?.summary ?? entry.summary;
+export function getEntrySummaryForGame(entry: Entry, gameId: string): string {
+  return getEntryAppearance(entry, gameId)?.summary ?? entry.summary;
 }
