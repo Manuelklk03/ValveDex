@@ -1,0 +1,147 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+import { describe, expect, it } from "vitest";
+import { entries } from "./entries";
+import { gameSections } from "./game-sections";
+import { games } from "./games";
+import { universes } from "./universes";
+
+function findDuplicates(values: string[]): string[] {
+  return values.filter((value, index) => values.indexOf(value) !== index);
+}
+
+const entryImages = entries.flatMap((entry) =>
+  entry.appearances.flatMap((appearance) =>
+    [appearance.images?.original, appearance.images?.hd]
+      .filter((image) => image !== undefined)
+      .map((image) => ({
+        label: `${entry.id} / ${appearance.gameId}`,
+        image,
+      })),
+  ),
+);
+
+describe("universos", () => {
+  it("tienen id y slug únicos", () => {
+    expect(findDuplicates(universes.map((universe) => universe.id))).toEqual(
+      [],
+    );
+    expect(findDuplicates(universes.map((universe) => universe.slug))).toEqual(
+      [],
+    );
+  });
+});
+
+describe("juegos", () => {
+  it("tienen id único", () => {
+    expect(findDuplicates(games.map((game) => game.id))).toEqual([]);
+  });
+
+  it("tienen slug único dentro de su universo", () => {
+    expect(
+      findDuplicates(games.map((game) => `${game.universeId}/${game.slug}`)),
+    ).toEqual([]);
+  });
+
+  it("pertenecen a un universo existente", () => {
+    const universeIds = new Set(universes.map((universe) => universe.id));
+    const missing = games
+      .filter((game) => !universeIds.has(game.universeId))
+      .map((game) => `${game.id} → ${game.universeId}`);
+
+    expect(missing).toEqual([]);
+  });
+});
+
+describe("apartados", () => {
+  it("tienen id y slug únicos", () => {
+    expect(findDuplicates(gameSections.map((section) => section.id))).toEqual(
+      [],
+    );
+    expect(findDuplicates(gameSections.map((section) => section.slug))).toEqual(
+      [],
+    );
+  });
+});
+
+describe("fichas", () => {
+  it("tienen id y slug únicos", () => {
+    expect(findDuplicates(entries.map((entry) => entry.id))).toEqual([]);
+    expect(findDuplicates(entries.map((entry) => entry.slug))).toEqual([]);
+  });
+
+  it("aparecen en al menos un juego y en cada juego una sola vez", () => {
+    for (const entry of entries) {
+      expect(entry.appearances.length, entry.id).toBeGreaterThan(0);
+      expect(
+        findDuplicates(
+          entry.appearances.map((appearance) => appearance.gameId),
+        ),
+        entry.id,
+      ).toEqual([]);
+    }
+  });
+
+  it("solo aparecen en juegos existentes", () => {
+    const gameIds = new Set(games.map((game) => game.id));
+    const missing = entries.flatMap((entry) =>
+      entry.appearances
+        .filter((appearance) => !gameIds.has(appearance.gameId))
+        .map((appearance) => `${entry.id} → ${appearance.gameId}`),
+    );
+
+    expect(missing).toEqual([]);
+  });
+
+  it("tienen al menos una fuente con URL https", () => {
+    for (const entry of entries) {
+      expect(entry.sources.length, entry.id).toBeGreaterThan(0);
+
+      for (const source of entry.sources) {
+        expect(source.url, entry.id).toMatch(/^https:\/\//);
+      }
+    }
+  });
+});
+
+describe("imágenes de las fichas", () => {
+  it("existen en public/", () => {
+    const missing = entryImages
+      .filter(({ image }) => !existsSync(join("public", image.src)))
+      .map(({ label, image }) => `${label}: ${image.src}`);
+
+    expect(missing).toEqual([]);
+  });
+
+  it("tienen tamaño, texto alternativo y fuente", () => {
+    for (const { label, image } of entryImages) {
+      expect(image.width, label).toBeGreaterThan(0);
+      expect(image.height, label).toBeGreaterThan(0);
+      expect(image.alt.trim(), label).not.toBe("");
+      expect(image.source.url, label).toMatch(/^https:\/\//);
+    }
+  });
+
+  it("no se repiten entre fichas", () => {
+    expect(findDuplicates(entryImages.map(({ image }) => image.src))).toEqual(
+      [],
+    );
+  });
+
+  it("la original y la HD miden lo mismo (para el comparador)", () => {
+    const mismatched = entries.flatMap((entry) =>
+      entry.appearances.flatMap((appearance) => {
+        const original = appearance.images?.original;
+        const hd = appearance.images?.hd;
+
+        return original &&
+          hd &&
+          (original.width !== hd.width || original.height !== hd.height)
+          ? [`${entry.id} / ${appearance.gameId}`]
+          : [];
+      }),
+    );
+
+    expect(mismatched).toEqual([]);
+  });
+});
