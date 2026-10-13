@@ -1,6 +1,6 @@
 # Estado actual — ValveDex
 
-Última actualización: **2026-10-12**.  
+Última actualización: **2026-10-13**.  
 Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.  
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
@@ -19,7 +19,7 @@ Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift.
 
 ## Estado confirmado
 
-Comprobado por Claude Code el 2026-10-12 en `main` (`7abf44e`, PR #18 fusionada).
+Comprobado por Claude Code el 2026-10-13 en `main` (`b665491`, PR #21 fusionada).
 
 - Next.js inicializado en la raíz del repositorio. Terminal de Manuel: CMD en Windows.
 - `src/app/layout.tsx`: `lang="es"`, metadatos con `title.template`, `<SiteHeader />` y `<SiteFooter />`.
@@ -68,6 +68,16 @@ Comprobado por Claude Code el 2026-10-12 en `main` (`7abf44e`, PR #18 fusionada)
     - Un comentario de ejemplo había sustituido el nombre, el enlace y el resumen de cada ficha en la página de apartado.
     - Las fuentes apuntaban a una página de desambiguación (`SPAS-12`); ahora apuntan a los artículos reales.
 - `README.md` actualizado el 2026-10-12 con la visión y el estado actuales: recorrido por niveles, temas, universo Half-Life completo, proyectos cancelados y mods. Manuel también lo editó en GitHub (PR #12 y #13); el conflicto se resolvió conservando la versión de la rama, que incluía esos cambios y el estado más reciente.
+- **Comparador de imágenes original/HD (PR #20, Manuel):**
+  - `src/components/ui/image-compare.tsx` + `.module.css` (bloque `image-compare`): componente de cliente (`"use client"`, `useState`) con dos `next/image` superpuestas, `clip-path` según la posición y un `<input type="range">` etiquetado.
+  - `src/domain/entry.ts`: la aparición pasa de `image?: MediaAsset` a `images?: EntryImages` (`original?`, `hd?`).
+  - `getEntryThumbnail()` en `get-entries.ts`: devuelve la HD o, si falta, la original (miniatura del apartado).
+  - Ficha: si la aparición tiene `original` y `hd`, muestra el comparador; si solo tiene una, la imagen sola con su crédito.
+  - Ninguna ficha tiene todavía las dos imágenes: la escopeta solo tiene `hd`, así que el comparador aún no se ve en ninguna página.
+- **Integridad de datos con Vitest (PR #21, Manuel):**
+  - `vitest` 5.0.3 como dependencia de desarrollo; `vitest.config.ts` (alias `@`, entorno `node`).
+  - Scripts `test` (`vitest run`) y `test:watch`; `check` ejecuta ahora también `npm run test`.
+  - `src/data/data-integrity.test.ts`, 13 pruebas: IDs y slugs únicos de universos, juegos (slug único por universo), apartados y fichas; juegos con universo existente; fichas con al menos una aparición, sin juegos repetidos ni inexistentes y con fuentes `https`; imágenes existentes en `public/`, con tamaño, `alt` y fuente, sin repetirse entre fichas, y original y HD del mismo tamaño.
 - `/explorar` todavía no existe. Todavía no existe `src/lib`.
 
 ## Versiones comprobadas
@@ -82,13 +92,14 @@ Comprobado por Claude Code el 2026-10-12 en `main` (`7abf44e`, PR #18 fusionada)
 | Tailwind CSS | 4.3.3, cargado con `@tailwindcss/turbopack`                       |
 | ESLint       | 9.39.5 con `eslint-config-next` 16.4.0 y `eslint-config-prettier` |
 | Prettier     | 3.9.9                                                             |
+| Vitest       | 5.0.3                                                             |
 
 `next.config.ts` activa `cacheComponents` y `partialPrefetching`.
 
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- `main` en `7abf44e`. PRs fusionadas:
+- `main` en `b665491`. PRs fusionadas:
   - #1–#6: historial reconstruido.
   - #7 `fix/errores-css`.
   - #8 `feature/valve-timeline`.
@@ -100,7 +111,10 @@ Comprobado por Claude Code el 2026-10-12 en `main` (`7abf44e`, PR #18 fusionada)
   - #15 `feature/not-found`.
   - #16 `refactor/entry-appearances`.
   - #17 `feature/entry-images`.
-  - #18 `fix/entry-images` (2026-10-12).
+  - #18 `fix/entry-images`.
+  - #19 `docs/update-status`.
+  - #20 `feature/image-compare`.
+  - #21 `test/data-integrity` (2026-10-12).
 - `main` protegida: solo cambios por PR (0 aprobaciones, también para administradores), sin force push ni borrado. El repositorio borra las ramas al mergear.
 - Configuración: local `branch.main.mergeoptions=--no-ff` y `pull.rebase=false`; global `pull.rebase=false` y `merge.ff=false`.
 - Flujo:
@@ -111,20 +125,22 @@ Comprobado por Claude Code el 2026-10-12 en `main` (`7abf44e`, PR #18 fusionada)
   5. `gh pr merge --merge --delete-branch`.
   6. `git checkout main && git pull`.
 - Es `gh pr`, no `git pr`. En Git Bash, si falta `gh`: `export PATH="$PATH:/c/Program Files/GitHub CLI"`.
-- Esta actualización de la documentación va en la rama `docs/update-status`. Tras fusionarla no queda ninguna otra rama.
+- Sin ramas abiertas (local ni remoto) salvo `main`. Esta actualización de la documentación está sin commit en `main`: hay que moverla a una rama (`git switch -c docs/update-status`) y abrir PR.
 - Criterio: una rama = una funcionalidad completa.
 - **Si editas algo en GitHub** (por ejemplo, el README), haz `git checkout main && git pull` antes de seguir. Si la rama local ya tenía cambios en el mismo archivo, `git merge origin/main` producirá un conflicto que hay que resolver.
 
 ## Comprobaciones
 
-Ejecutadas por Claude el 2026-10-12 en `fix/entry-images` (`03c9145`, PR #18):
+Ejecutadas por Claude el 2026-10-13 en `main` (`b665491`):
 
-| Comando               | Resultado                                                                                                                                                                                                                                        |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `npm run check`       | Superado (lint, tipos y formato)                                                                                                                                                                                                                 |
-| `npm run build`       | Superado                                                                                                                                                                                                                                         |
-| `next start` + `curl` | `/universos/half-life/half-life/armas` muestra las 4 fichas con nombre y enlace; solo la escopeta lleva imagen (731 × 453, servida por `/_next/image`, 200). `/fichas/escopeta` muestra el crédito completo. `/fichas/palanca` no muestra figura |
-| URLs de las fuentes   | Las 5 fuentes de Combine OverWiki responden 200                                                                                                                                                                                                  |
+| Comando         | Resultado                                                                                                                 |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `npm run check` | Superado: lint, tipos, formato y 13 pruebas de Vitest                                                                     |
+| `npm run build` | Superado. `/universos/half-life/half-life/armas` y las 4 fichas se generan; el resto de rutas, con prerenderizado parcial |
+
+Vitest muestra un aviso: `vitest.config.ts` usa sintaxis ESM en un archivo que Vite carga como CommonJS. No falla hoy, pero dejará de funcionar cuando Vite cambie el cargador por defecto. Solución prevista: renombrarlo a `vitest.config.mts`.
+
+Comprobado el 2026-10-12 en la PR #18: las 5 fuentes de Combine OverWiki respondían 200 y la ficha de la escopeta mostraba su imagen y el crédito completo.
 
 `LayoutProps` y `PageProps` los genera `next typegen` a partir de las rutas existentes. Al crear un `page.tsx` o un `layout.tsx` nuevo, ejecuta `npm run typecheck` (o mantén `npm run dev` abierto) y, si VS Code sigue marcando error, ejecuta «TypeScript: Restart TS Server».
 
@@ -142,36 +158,35 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 - `Frase para IA.txt` versionado en la raíz: decidir si se mueve a `docs/` o se elimina.
 - CI pendiente.
 - Comprobar con las fuentes los datos de `src/data/games.ts` y los textos de `src/data/entries.ts`, y si las armas aparecen también en las expansiones. Los enlaces de las fichas ya se han verificado (2026-10-12).
-- Sin comprobaciones automáticas de integridad de datos: los errores de la PR #17 (archivo de imagen inexistente, datos copiados de otra ficha, tamaños a 0) solo se detectaron revisando a mano.
+- Las pruebas de integridad no comprueban las relaciones entre fichas (aún no existen) ni que los textos coincidan con las fuentes: eso sigue siendo revisión manual.
+- Aviso de Vitest por `vitest.config.ts` en ESM (ver Comprobaciones).
+- El comparador original/HD no tiene ninguna ficha con las dos imágenes: no se ha visto funcionando en una página real.
 - Las tablas del README sobre el universo Half-Life completo, los proyectos cancelados y los mods se escribieron sin contrastar con fuentes; llevan la nota «Lista en revisión».
 
 ## Pasos de la interfaz (guiados)
 
-| Paso | Archivo(s)                                                                             | Estado               |
-| ---- | -------------------------------------------------------------------------------------- | -------------------- |
-| 1–4  | Layout, paleta base, cabecera y pie                                                    | Hecho                |
-| 5–6  | Portada sobre Valve y Steam con la cronología                                          | Hecho (PR #6–#8)     |
-| 7    | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`                        | Hecho (PR #9)        |
-| 8    | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life                           | Hecho (PR #10)       |
-| 9    | Hub de juego, apartados y tema propio por juego                                        | Hecho (PR #11)       |
-| 10   | Fichas: modelo `Entry`, página de apartado y página de ficha                           | Hecho (PR #14)       |
-| 11   | Página 404 propia                                                                      | Hecho (PR #15)       |
-| 12   | `gameIds` → `appearances` (datos propios de cada juego)                                | Hecho (PR #16)       |
-| 13   | Imágenes por aparición (`MediaAsset`, `next/image`)                                    | Hecho (PR #17 y #18) |
-| —    | Integridad de datos, relaciones, más fichas, lore, Explorar, cancelados, mods, idiomas | Ver roadmap          |
+| Paso | Archivo(s)                                                                 | Estado               |
+| ---- | -------------------------------------------------------------------------- | -------------------- |
+| 1–4  | Layout, paleta base, cabecera y pie                                        | Hecho                |
+| 5–6  | Portada sobre Valve y Steam con la cronología                              | Hecho (PR #6–#8)     |
+| 7    | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`            | Hecho (PR #9)        |
+| 8    | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life               | Hecho (PR #10)       |
+| 9    | Hub de juego, apartados y tema propio por juego                            | Hecho (PR #11)       |
+| 10   | Fichas: modelo `Entry`, página de apartado y página de ficha               | Hecho (PR #14)       |
+| 11   | Página 404 propia                                                          | Hecho (PR #15)       |
+| 12   | `gameIds` → `appearances` (datos propios de cada juego)                    | Hecho (PR #16)       |
+| 13   | Imágenes por aparición (`MediaAsset`, `next/image`)                        | Hecho (PR #17 y #18) |
+| 13b  | Comparador de imágenes original/HD (`ImageCompare`, componente de cliente) | Hecho (PR #20)       |
+| 14   | Pruebas de integridad de datos con Vitest                                  | Hecho (PR #21)       |
+| —    | Relaciones, más fichas, lore, Explorar, cancelados, mods, idiomas          | Ver roadmap          |
 
 ## Siguiente paso
 
-1. Manuel: revisar en `npm run dev` la escopeta en «Armas» y en su ficha (imagen, crédito, móvil).
-2. Paso 14 propuesto: **comprobaciones de integridad de datos**. Pide la Entrega 1 y habría detectado los errores de la PR #17:
-   - IDs y slugs únicos.
-   - Referencias válidas (`gameId`, `universeId`).
-   - Imágenes existentes en `public/` con tamaño mayor que 0.
-   - Fuentes presentes.
-
-   Requiere elegir y añadir una herramienta de pruebas (Vitest, prevista en la arquitectura).
-
-3. Después: relaciones entre fichas, más fichas y las expansiones.
+1. Manuel: pasar esta actualización de documentación a una rama y abrir PR: `git switch -c docs/update-status`, commit, `git push -u origin docs/update-status`, `gh pr create --base main --fill`, `gh pr merge --merge --delete-branch`, `git checkout main && git pull`.
+2. Manuel: revisar en `npm run dev` la escopeta en «Armas» y en su ficha (imagen, crédito, móvil).
+3. Ver el comparador funcionando: añadir a una ficha (por ejemplo, la escopeta) la imagen `original` del mismo tamaño que la HD, con su fuente. Las pruebas comprueban que ambas midan lo mismo. Después, revisar el control con teclado (flechas en el `range`) y en móvil.
+4. Tarea pequeña: renombrar `vitest.config.ts` a `vitest.config.mts` para quitar el aviso de Vite.
+5. Después: relaciones entre fichas (con su prueba de integridad), más fichas y las apariciones en las expansiones.
 
 ## Cómo actualizar este archivo
 

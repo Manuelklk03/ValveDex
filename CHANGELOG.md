@@ -8,6 +8,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- 2026-10-12: pruebas de integridad de datos con Vitest (IDs y slugs únicos, referencias entre universos, juegos y fichas, fuentes e imágenes); `npm run check` las ejecuta (PR #21).
+- 2026-10-12: comparador de imágenes original/HD (`ImageCompare`) en las fichas; las apariciones guardan `images.original` e `images.hd` (PR #20).
 - 2026-10-12: imágenes por juego en las fichas (`MediaAsset`, `next/image`), con fuente, crédito y licencia; primera imagen: escopeta de Half-Life (PR #17 y #18).
 - 2026-10-12: página 404 propia con enlaces a Inicio y Universos (PR #15).
 - 2026-10-12: fichas (`Entry`) con las cuatro primeras armas de Half-Life, página de apartado `/universos/[universeSlug]/[gameSlug]/[sectionSlug]` y página de ficha `/fichas/[entrySlug]` con el tema del juego, «Aparece en» y fuentes. PR #14.

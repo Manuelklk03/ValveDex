@@ -34,7 +34,8 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 - [ ] Preparar datos reales de los tres juegos con una muestra de cada categoría inicial.
 - [ ] Registrar las fuentes y los recursos visuales utilizados. En curso: cada ficha, juego e hito tiene fuentes; cada imagen guarda fuente, crédito y licencia (`MediaAsset`). Falta una página o sección de créditos.
 - [ ] Mostrar relaciones entre fichas y una página 404 útil. La 404 está hecha (PR #15); faltan las relaciones.
-- [ ] Incorporar comprobaciones de integridad de datos y un recorrido E2E. Propuesto como paso 14: los errores de la PR #17 muestran que hacen falta.
+- [x] Incorporar comprobaciones de integridad de datos (Vitest, 13 pruebas, PR #21; `npm run check` superado el 2026-10-13).
+- [ ] Incorporar un recorrido E2E.
 
 **Se acepta cuando:** desde la portada se llega a Universos → Half-Life → cada uno de sus tres juegos → un apartado → una ficha, y se sigue una relación sin enlaces rotos, con la paleta del universo aplicada, en móvil y escritorio.
 
