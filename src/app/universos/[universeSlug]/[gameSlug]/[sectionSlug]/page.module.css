@@ -86,3 +86,28 @@
   height: 8rem;
   object-fit: contain;
 }
+
+.section-page__lore {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 65ch;
+}
+
+.section-page__lore-text {
+  line-height: 1.7;
+}
+
+.section-page__sources {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.section-page__source-link {
+  color: var(--muted);
+  text-decoration: underline;
+}
+
+.section-page__source-link:hover {
+  color: var(--accent);
+}

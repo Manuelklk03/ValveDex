@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isEntryCategory } from "@/domain/entry";
+import type { GameSection } from "@/domain/game-section";
 import {
   getEntriesByGameAndCategory,
   getEntryThumbnail,
   getEntrySummaryForGame,
 } from "@/features/catalog/get-entries";
+import { getGameLore } from "@/features/games/get-game-lore";
 import {
   getGameSectionBySlug,
   getGameSections,
@@ -16,8 +19,13 @@ import {
   getUniverseAndGame,
   getUniverses,
 } from "@/features/universes/get-universes";
-import Image from "next/image";
 import styles from "./page.module.css";
+
+function hasSectionContent(gameId: string, section: GameSection): boolean {
+  return isEntryCategory(section.id)
+    ? getEntriesByGameAndCategory(gameId, section.id).length > 0
+    : getGameLore(gameId) !== undefined;
+}
 
 export function generateStaticParams() {
   return getUniverses()
@@ -25,11 +33,7 @@ export function generateStaticParams() {
     .flatMap((universe) =>
       getGamesByUniverse(universe.id).flatMap((game) =>
         getGameSections()
-          .filter(
-            (section) =>
-              isEntryCategory(section.id) &&
-              getEntriesByGameAndCategory(game.id, section.id).length > 0,
-          )
+          .filter((section) => hasSectionContent(game.id, section))
           .map((section) => ({
             universeSlug: universe.slug,
             gameSlug: game.slug,
@@ -47,13 +51,21 @@ function getSectionPageData(
   const result = getUniverseAndGame(universeSlug, gameSlug);
   const section = getGameSectionBySlug(sectionSlug);
 
-  if (!result || !section || !isEntryCategory(section.id)) {
+  if (!result || !section) {
     return undefined;
+  }
+
+  if (!isEntryCategory(section.id)) {
+    const lore = getGameLore(result.game.id);
+
+    return lore
+      ? { ...result, section, kind: "lore" as const, lore }
+      : undefined;
   }
 
   const entries = getEntriesByGameAndCategory(result.game.id, section.id);
 
-  return { ...result, section, entries };
+  return { ...result, section, kind: "entries" as const, entries };
 }
 
 export async function generateMetadata({
@@ -81,7 +93,7 @@ export default async function SectionPage({
     notFound();
   }
 
-  const { universe, game, section, entries } = data;
+  const { universe, game, section } = data;
 
   return (
     <main className={styles["section-page"]}>
@@ -99,42 +111,67 @@ export default async function SectionPage({
         <p className={styles["section-page__intro"]}>{section.description}</p>
       </header>
 
-      {entries.length === 0 ? (
-        <p className={styles["section-page__empty"]}>
-          Todavía no hay fichas en este apartado.
-        </p>
-      ) : (
-        <ul className={styles["section-page__entries"]}>
-          {entries.map((entry) => {
-            const image = getEntryThumbnail(entry, game.id);
-
-            return (
-              <li key={entry.id} className={styles["section-page__entry"]}>
-                {image && (
-                  <Image
-                    src={image.src}
-                    alt=""
-                    width={image.width}
-                    height={image.height}
-                    className={styles["section-page__entry-image"]}
-                  />
-                )}
-                <h2 className={styles["section-page__entry-title"]}>
-                  <Link
-                    href={`/fichas/${entry.slug}`}
-                    className={styles["section-page__entry-link"]}
-                  >
-                    {entry.name}
-                  </Link>
-                </h2>
-                <p className={styles["section-page__entry-summary"]}>
-                  {getEntrySummaryForGame(entry, game.id)}
-                </p>
-              </li>
-            );
-          })}
-        </ul>
+      {data.kind === "lore" && (
+        <article className={styles["section-page__lore"]}>
+          {data.lore.paragraphs.map((paragraph, index) => (
+            <p key={index} className={styles["section-page__lore-text"]}>
+              {paragraph}
+            </p>
+          ))}
+          <p className={styles["section-page__sources"]}>
+            Fuente:{" "}
+            {data.lore.sources.map((source, index) => (
+              <span key={source.url}>
+                {index > 0 && ", "}
+                <a
+                  href={source.url}
+                  className={styles["section-page__source-link"]}
+                >
+                  {source.title}
+                </a>
+              </span>
+            ))}
+          </p>
+        </article>
       )}
+
+      {data.kind === "entries" &&
+        (data.entries.length === 0 ? (
+          <p className={styles["section-page__empty"]}>
+            Todavía no hay fichas en este apartado.
+          </p>
+        ) : (
+          <ul className={styles["section-page__entries"]}>
+            {data.entries.map((entry) => {
+              const image = getEntryThumbnail(entry, game.id);
+
+              return (
+                <li key={entry.id} className={styles["section-page__entry"]}>
+                  {image && (
+                    <Image
+                      src={image.src}
+                      alt=""
+                      width={image.width}
+                      height={image.height}
+                      className={styles["section-page__entry-image"]}
+                    />
+                  )}
+                  <h2 className={styles["section-page__entry-title"]}>
+                    <Link
+                      href={`/fichas/${entry.slug}`}
+                      className={styles["section-page__entry-link"]}
+                    >
+                      {entry.name}
+                    </Link>
+                  </h2>
+                  <p className={styles["section-page__entry-summary"]}>
+                    {getEntrySummaryForGame(entry, game.id)}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+        ))}
     </main>
   );
 }

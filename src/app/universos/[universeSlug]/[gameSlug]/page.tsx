@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getGameSections } from "@/features/games/get-game-sections";
-import {
-  getUniverseAndGame,
-  getGamesByUniverse,
-  getUniverses,
-} from "@/features/universes/get-universes";
 import { isEntryCategory } from "@/domain/entry";
 import { getEntriesByGameAndCategory } from "@/features/catalog/get-entries";
+import { getGameLore } from "@/features/games/get-game-lore";
+import { getGameSections } from "@/features/games/get-game-sections";
+import {
+  getGamesByUniverse,
+  getUniverseAndGame,
+  getUniverses,
+} from "@/features/universes/get-universes";
 import styles from "./page.module.css";
 
 export function generateStaticParams() {
@@ -91,15 +92,22 @@ export default async function GamePage({
             const entryCount = isEntryCategory(section.id)
               ? getEntriesByGameAndCategory(game.id, section.id).length
               : 0;
-            const hasEntries = entryCount > 0;
-            const cardClassName = hasEntries
+            const hasLore =
+              section.id === "lore" && getGameLore(game.id) !== undefined;
+            const isAvailable = entryCount > 0 || hasLore;
+            const cardClassName = isAvailable
               ? `${styles["game-page__card"]} ${styles["game-page__card--available"]}`
               : styles["game-page__card"];
+            const badge = hasLore
+              ? "Disponible"
+              : entryCount > 0
+                ? `${entryCount} ${entryCount === 1 ? "ficha" : "fichas"}`
+                : "Próximamente";
 
             return (
               <li key={section.id} className={cardClassName}>
                 <h3 className={styles["game-page__card-title"]}>
-                  {hasEntries ? (
+                  {isAvailable ? (
                     <Link
                       href={`/universos/${universe.slug}/${game.slug}/${section.slug}`}
                       className={styles["game-page__card-link"]}
@@ -113,11 +121,7 @@ export default async function GamePage({
                 <p className={styles["game-page__card-description"]}>
                   {section.description}
                 </p>
-                <span className={styles["game-page__badge"]}>
-                  {hasEntries
-                    ? `${entryCount} ${entryCount === 1 ? "ficha" : "fichas"}`
-                    : "Próximamente"}
-                </span>
+                <span className={styles["game-page__badge"]}>{badge}</span>
               </li>
             );
           })}
