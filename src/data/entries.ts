@@ -77,4 +77,99 @@ export const entries: Entry[] = [
       },
     ],
   },
+  {
+    id: "black-mesa-inbound",
+    slug: "black-mesa-inbound",
+    name: "Black Mesa Inbound",
+    category: "maps",
+    summary:
+      "Capítulo inicial de Half-Life: Gordon Freeman llega a su puesto de trabajo en el tranvía de Black Mesa.",
+    appearances: [{ gameId: "half-life" }],
+    sources: [
+      {
+        title: "Half-Life storyline - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life_storyline#Chapter_1:_Black_Mesa_Inbound",
+      },
+    ],
+  },
+  {
+    id: "gordon-freeman",
+    slug: "gordon-freeman",
+    name: "Gordon Freeman",
+    category: "characters",
+    summary:
+      "Físico teórico de Black Mesa y protagonista de Half-Life, equipado con el traje HEV.",
+    appearances: [
+      { gameId: "half-life" },
+      {
+        gameId: "half-life-opposing-force",
+        summary:
+          "Adrian Shephard lo ve teletransportarse a Xen en el complejo Lambda.",
+      },
+      {
+        gameId: "half-life-blue-shift",
+        summary:
+          "Barney Calhoun lo ve varias veces, entre ellas esperando el tranvía y cuando los marines se lo llevan.",
+      },
+    ],
+    sources: [
+      {
+        title: "Gordon Freeman - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Gordon_Freeman",
+      },
+    ],
+  },
+  {
+    id: "headcrab",
+    slug: "headcrab",
+    name: "Headcrab",
+    category: "enemies",
+    summary:
+      "Criatura de Xen que salta a la cabeza de sus víctimas y las convierte en zombis.",
+    appearances: [
+      { gameId: "half-life" },
+      { gameId: "half-life-opposing-force" },
+      { gameId: "half-life-blue-shift" },
+    ],
+    sources: [
+      {
+        title: "Headcrab - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Headcrab",
+      },
+    ],
+  },
+  {
+    id: "goldsrc-engine",
+    slug: "motor-goldsrc",
+    name: "El motor GoldSrc",
+    category: "trivia",
+    summary:
+      "Half-Life y sus expansiones funcionan con GoldSrc, una versión muy modificada del motor de Quake.",
+    appearances: [
+      { gameId: "half-life" },
+      { gameId: "half-life-opposing-force" },
+      { gameId: "half-life-blue-shift" },
+    ],
+    sources: [
+      {
+        title: "GoldSrc - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/GoldSrc",
+      },
+    ],
+  },
+  {
+    id: "gordon-employee-of-the-month",
+    slug: "gordon-empleado-del-mes",
+    name: "Gordon, empleado del mes",
+    category: "easter-eggs",
+    summary:
+      "En una oficina de Opposing Force puede verse una foto de Gordon Freeman como «Empleado del mes».",
+    appearances: [{ gameId: "half-life-opposing-force" }],
+    sources: [
+      {
+        title: "Gordon Freeman - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Gordon_Freeman",
+      },
+    ],
+  },
 ];
