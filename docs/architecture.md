@@ -2,9 +2,9 @@
 
 Fecha de la decisión inicial: **2026-09-30**.
 
-Última actualización: **2026-10-12**: temas por juego implementados, fichas (`Entry`), funcionalidad `src/features/catalog` y rutas de apartado y ficha.
+Última actualización: **2026-10-13**: comparador de imágenes original/HD, pruebas de integridad con Vitest, rutas previstas de la sección Valve y créditos, y orden «esqueleto antes que contenido».
 
-Estado: **aplicación Next.js inicializada.** Existen `src/app`, `src/components/layout`, `src/components/ui`, `src/domain`, `src/data` `src/features/valve` y `src/features/universes`. Rutas existentes: `/`, `/universos`, `/universos/[universeSlug]`, `/universos/[universeSlug]/[gameSlug]`, `/universos/[universeSlug]/[gameSlug]/[sectionSlug]` y `/fichas/[entrySlug]`. Funcionalidad `src/features/games` para el hub de juego. Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
+Estado: **aplicación Next.js inicializada.** Existen `src/app`, `src/components/layout`, `src/components/ui`, `src/domain`, `src/data` `src/features/valve` y `src/features/universes`. Rutas existentes: `/`, `/universos`, `/universos/[universeSlug]`, `/universos/[universeSlug]/[gameSlug]`, `/universos/[universeSlug]/[gameSlug]/[sectionSlug]` y `/fichas/[entrySlug]`. Funcionalidad `src/features/games` para el hub de juego. Pruebas de integridad en `src/data/data-integrity.test.ts` (Vitest, configuración en `vitest.config.mts`). Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
 
 ## 1. Enfoque
 
@@ -56,17 +56,21 @@ El CSS propio de un componente estará junto a su archivo TSX: por ejemplo, `ent
 
 ## 3. Rutas iniciales
 
-| URL prevista                                     | Función                                                   |
-| ------------------------------------------------ | --------------------------------------------------------- |
-| `/`                                              | Portada sobre Valve: empresa, Steam e historia            |
-| `/universos`                                     | Todos los universos de Valve                              |
-| `/universos/[universeSlug]`                      | Universo con su paleta y la lista de sus videojuegos      |
-| `/universos/[universeSlug]/[gameSlug]`           | Hub del juego: acceso a lore, mapas, armas, personajes…   |
-| `/universos/[universeSlug]/[gameSlug]/[section]` | Apartado del hub (por ejemplo `armas` o `easter-eggs`)    |
-| `/fichas/[slug]`                                 | Ficha canónica y apariciones en los juegos                |
-| `/explorar`                                      | Hub principal: buscador global y carruseles por categoría |
-| `/favoritos`                                     | Fichas guardadas en este navegador                        |
-| `/comparador`                                    | Comparación de armas compatibles                          |
+| URL prevista                                     | Función                                                      |
+| ------------------------------------------------ | ------------------------------------------------------------ |
+| `/`                                              | Portada sobre Valve: empresa, Steam e historia               |
+| `/universos`                                     | Todos los universos de Valve                                 |
+| `/universos/[universeSlug]`                      | Universo con su paleta y la lista de sus videojuegos         |
+| `/universos/[universeSlug]/[gameSlug]`           | Hub del juego: acceso a lore, mapas, armas, personajes…      |
+| `/universos/[universeSlug]/[gameSlug]/[section]` | Apartado del hub (por ejemplo `armas` o `easter-eggs`)       |
+| `/fichas/[slug]`                                 | Ficha canónica y apariciones en los juegos                   |
+| `/explorar`                                      | Hub principal: buscador global y carruseles por categoría    |
+| `/valve/historia`                                | Cronología completa de Valve (la portada muestra un resumen) |
+| `/valve/personas/[personSlug]`                   | Ficha de una persona de Valve (por ejemplo, Gabe Newell)     |
+| `/valve/steam`                                   | Historia y funciones de Steam                                |
+| `/creditos`                                      | Todas las fuentes e imágenes, generadas desde los datos      |
+| `/favoritos`                                     | Fichas guardadas en este navegador                           |
+| `/comparador`                                    | Comparación de armas compatibles                             |
 
 Los segmentos visibles de la URL van en español (`universos`, `armas`); los nombres de parámetros en código, en inglés (`universeSlug`, `gameSlug`). Los apartados del hub serán una lista cerrada y validada; un apartado sin contenido no se enlazará o mostrará un estado vacío.
 
@@ -85,16 +89,18 @@ Los filtros públicos se representarán en parámetros como `q`, `game`, `catego
 
 El diseño inicial contempla estas entidades; sus tipos exactos se escribirán al implementar el catálogo:
 
-| Entidad           | Datos principales                                                                                                                     |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `Universe`        | ID, slug, nombre, descripción y estado (`available`/`coming-soon`); implementado. Tema visual pendiente                               |
-| `Game`            | ID, slug, `universeId`, nombre, año, desarrollador, descripción y fuentes; implementado. Recursos visuales pendientes                 |
-| `Entry`           | ID, slug único, nombre, categoría (`EntryCategory`), resumen común, `appearances` y fuentes; implementado sin variantes por categoría |
-| `EntryAppearance` | `gameId`, resumen propio e imagen de una ficha en ese juego; implementado. Estadísticas por juego pendientes                          |
-| `Relation`        | ID de origen, ID de destino y tipo de relación                                                                                        |
-| `Source`          | URL y título (implementado); fecha de consulta pendiente                                                                              |
-| `Milestone`       | ID, año, título, descripción y fuentes (implementado)                                                                                 |
-| `MediaAsset`      | `src`, `alt`, `width`, `height`, fuente, crédito y licencia; implementado en `src/domain/media-asset.ts`                              |
+| Entidad           | Datos principales                                                                                                                                   |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Universe`        | ID, slug, nombre, descripción y estado (`available`/`coming-soon`); implementado. Tema visual pendiente                                             |
+| `Game`            | ID, slug, `universeId`, nombre, año, desarrollador, descripción y fuentes; implementado. Recursos visuales pendientes                               |
+| `Entry`           | ID, slug único, nombre, categoría (`EntryCategory`), resumen común, `appearances` y fuentes; implementado sin variantes por categoría               |
+| `EntryAppearance` | `gameId`, resumen propio e `images` (`EntryImages`: `original?` y `hd?`) de una ficha en ese juego; implementado. Estadísticas por juego pendientes |
+| `Relation`        | ID de origen, ID de destino y tipo de relación                                                                                                      |
+| `Source`          | URL y título (implementado); fecha de consulta pendiente                                                                                            |
+| `Milestone`       | ID, año, título, descripción y fuentes (implementado)                                                                                               |
+| `MediaAsset`      | `src`, `alt`, `width`, `height`, fuente, crédito y licencia; implementado en `src/domain/media-asset.ts`                                            |
+
+Cuando una aparición tiene imagen original y HD, la ficha las muestra con `ImageCompare` (`src/components/ui`), el único componente de cliente del catálogo: guarda la posición del deslizador en estado local (`useState`) y recibe ambas imágenes por props. Las dos deben medir lo mismo (lo comprueba una prueba). Las imágenes definitivas serán recortadas, sin fondo (PNG o WebP con transparencia); se incorporarán en la fase de contenido.
 
 `Entry` se modelará mediante variantes discriminadas por categoría: arma, personaje, enemigo, objeto, localización, mapa, capítulo, facción, curiosidad o easter egg. Los apartados del hub de un juego son vistas de estas fichas filtradas por categoría y juego; el lore puede empezar como texto propio del juego. Cada variante tendrá los campos que necesita; evitaremos un objeto con decenas de propiedades opcionales sin relación.
 
@@ -228,29 +234,31 @@ TypeScript estricto para comprobar tipos; ESLint para reglas de código y hooks;
 
 Usaremos una rama corta por funcionalidad y una pull request hacia `main` como práctica de revisión. GitHub Actions comprobará una instalación reproducible con `npm ci`, lint, tipos, formato y build. Las pruebas se incorporarán al flujo cuando exista su configuración y casos reales.
 
-| Herramienta prevista  | Qué verificará                                                   |
-| --------------------- | ---------------------------------------------------------------- |
-| Vitest                | Reglas puras de filtros, comparaciones e integridad del catálogo |
-| React Testing Library | Interacciones visibles de componentes compatibles                |
-| Playwright            | Navegación real, filtros, fichas y persistencia de favoritos     |
+| Herramienta           | Qué verificará                                                         |
+| --------------------- | ---------------------------------------------------------------------- |
+| Vitest (instalado)    | Integridad del catálogo (13 pruebas); después, filtros y comparaciones |
+| React Testing Library | Interacciones visibles de componentes compatibles                      |
+| Playwright            | Navegación real, filtros, fichas y persistencia de favoritos           |
 
-Según la guía de Next.js consultada, Vitest no cubre componentes de servidor asíncronos directamente; sus recorridos se comprobarán con pruebas E2E. Se volverá a comprobar la compatibilidad al instalar las herramientas.
+Vitest 5 está instalado (PR #21): `npm run test` ejecuta las pruebas y `npm run check` las incluye. React Testing Library y Playwright siguen previstos. Según la guía de Next.js consultada, Vitest no cubre componentes de servidor asíncronos directamente; sus recorridos se comprobarán con pruebas E2E. Se volverá a comprobar la compatibilidad al instalar las herramientas.
 
 Una entrega se considerará completa cuando cumpla sus criterios del roadmap, pase las comprobaciones aplicables, funcione en los tamaños revisados y tenga la documentación correspondiente actualizada. La entrega inicial de documentos no permite afirmar que esas comprobaciones del código hayan pasado.
 
 ## 8. Decisiones iniciales
 
-| Fecha      | Decisión                                                         | Motivo y consecuencia                                                                                                     |
-| ---------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| 2026-09-30 | React con Next.js App Router                                     | Combinar aprendizaje de React con páginas individuales y renderizado del contenido; exige distinguir servidor y cliente   |
-| 2026-09-30 | Organización por funcionalidades                                 | Mantener cerca el código que cambia junto y facilitar ampliaciones                                                        |
-| 2026-09-30 | Catálogo local inicial                                           | Empezar la interfaz con datos comprobables; el acceso separado facilita cambiar la fuente después                         |
-| 2026-09-30 | TypeScript estricto y npm                                        | Tipos consistentes e instalación reproducible mediante lockfile                                                           |
-| 2026-09-30 | Estado local, URL y persistencia de IDs                          | Asignar a cada estado un lugar claro y evitar duplicaciones                                                               |
-| 2026-10-01 | BEM en el CSS propio y CSS Modules para estilos de componentes   | Practicar estilos con nombres coherentes y alcance local; Tailwind conserva sus utilidades sin duplicar responsabilidades |
-| 2026-10-07 | Reglas comunes en AGENTS, entrada para Claude y estado en STATUS | Continuar entre asistentes sin duplicar reglas ni dar por aplicado lo que solo se propuso en un chat                      |
-| 2026-10-07 | Navegación Valve → Universos → Juego, con hub por juego          | Petición de Manuel: portada sobre la empresa y Steam, sagas agrupadas y apartados de lore, mapas, armas, etc.             |
-| 2026-10-07 | Paleta base de Valve y tema por universo mediante variables CSS  | Cada saga tiene identidad visual propia sin duplicar componentes ni añadir librerías de temas                             |
+| Fecha      | Decisión                                                         | Motivo y consecuencia                                                                                                               |
+| ---------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-09-30 | React con Next.js App Router                                     | Combinar aprendizaje de React con páginas individuales y renderizado del contenido; exige distinguir servidor y cliente             |
+| 2026-09-30 | Organización por funcionalidades                                 | Mantener cerca el código que cambia junto y facilitar ampliaciones                                                                  |
+| 2026-09-30 | Catálogo local inicial                                           | Empezar la interfaz con datos comprobables; el acceso separado facilita cambiar la fuente después                                   |
+| 2026-09-30 | TypeScript estricto y npm                                        | Tipos consistentes e instalación reproducible mediante lockfile                                                                     |
+| 2026-09-30 | Estado local, URL y persistencia de IDs                          | Asignar a cada estado un lugar claro y evitar duplicaciones                                                                         |
+| 2026-10-01 | BEM en el CSS propio y CSS Modules para estilos de componentes   | Practicar estilos con nombres coherentes y alcance local; Tailwind conserva sus utilidades sin duplicar responsabilidades           |
+| 2026-10-07 | Reglas comunes en AGENTS, entrada para Claude y estado en STATUS | Continuar entre asistentes sin duplicar reglas ni dar por aplicado lo que solo se propuso en un chat                                |
+| 2026-10-07 | Navegación Valve → Universos → Juego, con hub por juego          | Petición de Manuel: portada sobre la empresa y Steam, sagas agrupadas y apartados de lore, mapas, armas, etc.                       |
+| 2026-10-07 | Paleta base de Valve y tema por universo mediante variables CSS  | Cada saga tiene identidad visual propia sin duplicar componentes ni añadir librerías de temas                                       |
+| 2026-10-12 | Vitest para las pruebas de integridad de datos                   | Los errores de la PR #17 solo se vieron revisando a mano; las pruebas los detectan en `npm run check`                               |
+| 2026-10-13 | Completar el esqueleto antes del contenido                       | Decisión de Manuel: todas las rutas y piezas con datos mínimos primero; imágenes sin fondo, comparador visible y más fichas después |
 
 El backend, la base de datos, la autenticación y el proveedor de despliegue están pendientes de decisión. La entrega de backend incluirá consumo de API desde React, validación de respuestas y gestión de errores. Las escrituras administrativas deberán comprobar identidad y permisos en servidor.
 
