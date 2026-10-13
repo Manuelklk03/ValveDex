@@ -2,7 +2,7 @@
 
 Fecha de la decisión inicial: **2026-09-30**.
 
-Última actualización: **2026-10-13**: comparador de imágenes original/HD, pruebas de integridad con Vitest, rutas previstas de la sección Valve y créditos, y orden «esqueleto antes que contenido».
+Última actualización: **2026-10-13**: lore por juego (`GameLore`) y página de apartado con dos tipos de contenido; comparador de imágenes original/HD, pruebas de integridad con Vitest, rutas previstas de la sección Valve y créditos, y orden «esqueleto antes que contenido».
 
 Estado: **aplicación Next.js inicializada.** Existen `src/app`, `src/components/layout`, `src/components/ui`, `src/domain`, `src/data` `src/features/valve` y `src/features/universes`. Rutas existentes: `/`, `/universos`, `/universos/[universeSlug]`, `/universos/[universeSlug]/[gameSlug]`, `/universos/[universeSlug]/[gameSlug]/[sectionSlug]` y `/fichas/[entrySlug]`. Funcionalidad `src/features/games` para el hub de juego. Pruebas de integridad en `src/data/data-integrity.test.ts` (Vitest, configuración en `vitest.config.mts`). Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
 
@@ -99,10 +99,11 @@ El diseño inicial contempla estas entidades; sus tipos exactos se escribirán a
 | `Source`          | URL y título (implementado); fecha de consulta pendiente                                                                                            |
 | `Milestone`       | ID, año, título, descripción y fuentes (implementado)                                                                                               |
 | `MediaAsset`      | `src`, `alt`, `width`, `height`, fuente, crédito y licencia; implementado en `src/domain/media-asset.ts`                                            |
+| `GameLore`        | `gameId`, `paragraphs` y fuentes; implementado en `src/domain/game-lore.ts`, datos en `src/data/game-lore.ts`, lectura con `getGameLore()`          |
 
 Cuando una aparición tiene imagen original y HD, la ficha las muestra con `ImageCompare` (`src/components/ui`), el único componente de cliente del catálogo: guarda la posición del deslizador en estado local (`useState`) y recibe ambas imágenes por props. Las dos deben medir lo mismo (lo comprueba una prueba). Las imágenes definitivas serán recortadas, sin fondo (PNG o WebP con transparencia); se incorporarán en la fase de contenido.
 
-`Entry` se modelará mediante variantes discriminadas por categoría: arma, personaje, enemigo, objeto, localización, mapa, capítulo, facción, curiosidad o easter egg. Los apartados del hub de un juego son vistas de estas fichas filtradas por categoría y juego; el lore puede empezar como texto propio del juego. Cada variante tendrá los campos que necesita; evitaremos un objeto con decenas de propiedades opcionales sin relación.
+`Entry` se modelará mediante variantes discriminadas por categoría: arma, personaje, enemigo, objeto, localización, mapa, capítulo, facción, curiosidad o easter egg. Los apartados del hub de un juego son vistas de estas fichas filtradas por categoría y juego; el lore es texto propio de cada juego (`GameLore`), no una ficha. La ruta `[sectionSlug]` sirve ambos casos: `getSectionPageData()` devuelve una unión discriminada por `kind` (`"lore"` o `"entries"`) y la página pinta el bloque que corresponde. Cada variante tendrá los campos que necesita; evitaremos un objeto con decenas de propiedades opcionales sin relación.
 
 Los IDs serán estables y diferentes de los nombres visibles. Una ficha compartida conservará su ID en los tres juegos. Las estadísticas deberán indicar juego, versión, dificultad y unidad cuando afecten al valor. «Desconocido» no significa cero. La comparación solo mostrará medidas equivalentes.
 

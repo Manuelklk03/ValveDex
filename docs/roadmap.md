@@ -2,7 +2,7 @@
 
 Estado inicial: **2026-09-30**. Plan de trabajo personal; el orden puede ajustarse según lo aprendido. Las casillas solo se marcarán con trabajo comprobado.
 
-Última actualización: **2026-10-12** (tras la PR #18).
+Última actualización: **2026-10-13** (tras la PR #24).
 
 Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la navegación Valve → Universos → Juego descrita en la [arquitectura](architecture.md). La primera fase de contenido mantiene el universo Half-Life con Half-Life, Opposing Force y Blue Shift. Consulta [STATUS.md](STATUS.md) para saber dónde retomar el trabajo.
 
@@ -29,9 +29,9 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 - [ ] Portada sobre Valve: la empresa, Steam e historia, con datos verificados y fuentes. v1 con hero, Valve y Steam (PR #6, #7). Cronología «Historia de Valve» con 5 hitos y fuentes (PR #8). Pendiente: revisión en navegador y ampliar contenido.
 - [ ] Página `/universos` con todos los universos de Valve; los que aún no tengan contenido, marcados como «próximamente». Hecha (PR #9, build superado); falta la revisión en navegador.
 - [ ] Página de universo con su paleta propia (empezando por Half-Life) y la lista de sus juegos. Hecha (PR #10, build superado): tema por variables CSS y 404 para universos inexistentes o «Próximamente». Falta revisar el contraste y el teclado en navegador.
-- [ ] Hub de juego para Half-Life, Opposing Force y Blue Shift con sus apartados (lore, mapas, armas, personajes, enemigos, curiosidades, easter eggs). Hub con cabecera, fuentes, apartados y tema propio por juego (PR #11). Los apartados con fichas enlazan a su página; de momento solo «Armas» de Half-Life.
+- [ ] Hub de juego para Half-Life, Opposing Force y Blue Shift con sus apartados (lore, mapas, armas, personajes, enemigos, curiosidades, easter eggs). Hub con cabecera, fuentes, apartados y tema propio por juego (PR #11). Los apartados con contenido enlazan a su página: fichas de muestra en todas las categorías (PR #23) y lore de los tres juegos (PR #24). Falta un easter egg de Half-Life y la revisión en navegador.
 - [ ] Ficha individual enlazada desde los apartados del hub. Hecha (PR #14, #16 y #18): `/fichas/[entrySlug]` con tema, «Aparece en», datos e imagen por juego, y fuentes. Falta la revisión en navegador.
-- [ ] Preparar datos reales de los tres juegos con una muestra de cada categoría inicial.
+- [ ] Preparar datos reales de los tres juegos con una muestra de cada categoría inicial. Muestra mínima del esqueleto hecha (PR #23: 9 fichas, todas las categorías; apariciones en los tres juegos); falta ampliarla en la fase de contenido.
 - [ ] Registrar las fuentes y los recursos visuales utilizados. En curso: cada ficha, juego e hito tiene fuentes; cada imagen guarda fuente, crédito y licencia (`MediaAsset`). Falta una página o sección de créditos.
 - [ ] Mostrar relaciones entre fichas y una página 404 útil. La 404 está hecha (PR #15); faltan las relaciones.
 - [x] Incorporar comprobaciones de integridad de datos (Vitest, 13 pruebas, PR #21; `npm run check` superado el 2026-10-13).
