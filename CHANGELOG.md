@@ -8,6 +8,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- 2026-10-13: lore de Half-Life, Opposing Force y Blue Shift (`GameLore`, `getGameLore()`), con su página de apartado, la tarjeta «Lore» del hub como «Disponible» y dos pruebas de integridad (PR #24).
+- 2026-10-13: fichas de muestra en todas las categorías (mapa, personaje, enemigo, curiosidad y easter egg) con apariciones en Opposing Force y Blue Shift (PR #23).
 - 2026-10-12: pruebas de integridad de datos con Vitest (IDs y slugs únicos, referencias entre universos, juegos y fichas, fuentes e imágenes); `npm run check` las ejecuta (PR #21).
 - 2026-10-12: comparador de imágenes original/HD (`ImageCompare`) en las fichas; las apariciones guardan `images.original` e `images.hd` (PR #20).
 - 2026-10-12: imágenes por juego en las fichas (`MediaAsset`, `next/image`), con fuente, crédito y licencia; primera imagen: escopeta de Half-Life (PR #17 y #18).

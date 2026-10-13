@@ -19,7 +19,7 @@ Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift.
 
 ## Estado confirmado
 
-Comprobado por Claude Code el 2026-10-13 en `main` (`b665491`, PR #21 fusionada).
+Comprobado por Claude Code el 2026-10-13 en `main` (`3fc7f44`, PR #24 fusionada).
 
 - Next.js inicializado en la raíz del repositorio. Terminal de Manuel: CMD en Windows.
 - `src/app/layout.tsx`: `lang="es"`, metadatos con `title.template`, `<SiteHeader />` y `<SiteFooter />`.
@@ -78,6 +78,21 @@ Comprobado por Claude Code el 2026-10-13 en `main` (`b665491`, PR #21 fusionada)
   - `vitest` 5.0.3 como dependencia de desarrollo; `vitest.config.mts` (alias `@`, entorno `node`). Renombrado desde `vitest.config.ts` el 2026-10-13 para que Vite lo cargue como ESM y desaparezca su aviso.
   - Scripts `test` (`vitest run`) y `test:watch`; `check` ejecuta ahora también `npm run test`.
   - `src/data/data-integrity.test.ts`, 13 pruebas: IDs y slugs únicos de universos, juegos (slug único por universo), apartados y fichas; juegos con universo existente; fichas con al menos una aparición, sin juegos repetidos ni inexistentes y con fuentes `https`; imágenes existentes en `public/`, con tamaño, `alt` y fuente, sin repetirse entre fichas, y original y HD del mismo tamaño.
+- **Paso 15, fichas de muestra (PR #23, Manuel):** `src/data/entries.ts` pasa de 4 a 9 fichas, al menos una por categoría de fichas:
+  - Mapa `black-mesa-inbound` (Half-Life).
+  - Personaje `gordon-freeman` (los tres juegos, con resumen propio en Opposing Force y Blue Shift).
+  - Enemigo `headcrab` (los tres juegos).
+  - Curiosidad `goldsrc-engine` (slug `motor-goldsrc`, los tres juegos).
+  - Easter egg `gordon-employee-of-the-month` (solo Opposing Force).
+  - Fuentes de Combine OverWiki comprobadas por Claude el 2026-10-13 (respuesta 200 y datos presentes en la página).
+  - Resultado: Half-Life tiene 6 apartados con contenido (Easter eggs sigue en «Próximamente» en Half-Life); Opposing Force, 5 con el lore; Blue Shift, 4 con el lore.
+- **Paso 16, lore por juego (PR #24, Manuel):**
+  - `src/domain/game-lore.ts`: `GameLore` (`gameId`, `paragraphs: string[]`, `sources`).
+  - `src/data/game-lore.ts`: premisa sin spoilers de los tres juegos, con fuentes `*_storyline` de Combine OverWiki.
+  - `src/features/games/get-game-lore.ts`: `getGameLore(gameId)` devuelve `GameLore | undefined`.
+  - Página de apartado: `getSectionPageData()` devuelve una unión discriminada (`kind: "lore"` con `lore`, o `kind: "entries"` con `entries`); `hasSectionContent()` decide qué apartados genera `generateStaticParams`. El lore se muestra en un `<article>` (`section-page__lore`, `__lore-text`, `__sources`, `__source-link`).
+  - Hub: la tarjeta «Lore» enlaza y muestra «Disponible» si el juego tiene lore (`hasLore`, `isAvailable`, `badge`).
+  - 2 pruebas nuevas: el lore pertenece a juegos existentes (uno por juego como máximo) y tiene texto y fuentes `https`.
 - `/explorar` todavía no existe. Todavía no existe `src/lib`.
 
 ## Versiones comprobadas
@@ -99,7 +114,7 @@ Comprobado por Claude Code el 2026-10-13 en `main` (`b665491`, PR #21 fusionada)
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- `main` en `b665491`. PRs fusionadas:
+- `main` en `3fc7f44`. PRs fusionadas:
   - #1–#6: historial reconstruido.
   - #7 `fix/errores-css`.
   - #8 `feature/valve-timeline`.
@@ -115,6 +130,9 @@ Comprobado por Claude Code el 2026-10-13 en `main` (`b665491`, PR #21 fusionada)
   - #19 `docs/update-status`.
   - #20 `feature/image-compare`.
   - #21 `test/data-integrity` (2026-10-12).
+  - #22 `docs/update-status`.
+  - #23 `feature/skeleton-sample-entries`.
+  - #24 `feature/game-lore` (2026-10-13).
 - `main` protegida: solo cambios por PR (0 aprobaciones, también para administradores), sin force push ni borrado. El repositorio borra las ramas al mergear.
 - Configuración: local `branch.main.mergeoptions=--no-ff` y `pull.rebase=false`; global `pull.rebase=false` y `merge.ff=false`.
 - Flujo:
@@ -125,18 +143,19 @@ Comprobado por Claude Code el 2026-10-13 en `main` (`b665491`, PR #21 fusionada)
   5. `gh pr merge --merge --delete-branch`.
   6. `git checkout main && git pull`.
 - Es `gh pr`, no `git pr`. En Git Bash, si falta `gh`: `export PATH="$PATH:/c/Program Files/GitHub CLI"`.
-- Rama abierta: `docs/update-status` (`5232f39`, ya en GitHub) con la documentación de las PR #20–#21 y el renombrado de `vitest.config.mts`, más esta actualización sin commit. El 2026-10-13 se ejecutó `gh pr merge` antes de `gh pr create`: no había PR, así que no se fusionó nada y `main` sigue en `b665491`; solo se perdió la rama local, recreada desde el remoto con `git switch docs/update-status`.
+- Rama abierta: `docs/update-status`, creada por Claude el 2026-10-13 desde `3fc7f44` con esta actualización de documentación, sin commit.
 - Criterio: una rama = una funcionalidad completa.
 - **Si editas algo en GitHub** (por ejemplo, el README), haz `git checkout main && git pull` antes de seguir. Si la rama local ya tenía cambios en el mismo archivo, `git merge origin/main` producirá un conflicto que hay que resolver.
 
 ## Comprobaciones
 
-Ejecutadas por Claude el 2026-10-13 en `main` (`b665491`) y, `check`, de nuevo en `docs/update-status` (`5232f39`, con `vitest.config.mts`):
+Ejecutadas por Claude el 2026-10-13 en `main` (`3fc7f44`):
 
-| Comando         | Resultado                                                                                                                 |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `npm run check` | Superado: lint, tipos, formato y 13 pruebas de Vitest                                                                     |
-| `npm run build` | Superado. `/universos/half-life/half-life/armas` y las 4 fichas se generan; el resto de rutas, con prerenderizado parcial |
+| Comando         | Resultado                                                                                                                                     |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run check` | Superado: lint, tipos, formato y 15 pruebas de Vitest                                                                                         |
+| `npm run build` | Superado. Se generan `/lore` en los tres juegos y los apartados con fichas (Half-Life: 6; Opposing Force: 5; Blue Shift: 4, contando el lore) |
+| HTML generado   | `/universos/half-life/half-life/lore` contiene el texto del lore; el hub de Opposing Force muestra «Disponible» en Lore                       |
 
 Con `vitest.config.mts` ya no aparece el aviso de Vite sobre la configuración cargada como CommonJS.
 
@@ -158,6 +177,7 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 - `Frase para IA.txt` versionado en la raíz: decidir si se mueve a `docs/` o se elimina.
 - CI pendiente.
 - Comprobar con las fuentes los datos de `src/data/games.ts` y los textos de `src/data/entries.ts`, y si las armas aparecen también en las expansiones. Los enlaces de las fichas ya se han verificado (2026-10-12).
+- Half-Life no tiene easter eggs todavía (el apartado sigue en «Próximamente»); el texto del lore es solo la premisa, a la espera del control de spoilers.
 - Las pruebas de integridad no comprueban las relaciones entre fichas (aún no existen) ni que los textos coincidan con las fuentes: eso sigue siendo revisión manual.
 - El comparador original/HD no tiene ninguna ficha con las dos imágenes: no se ha visto funcionando en una página real. Se deja para la fase de contenido (imágenes sin fondo, PNG o WebP con transparencia, original y HD del mismo tamaño).
 - Las tablas del README sobre el universo Half-Life completo, los proyectos cancelados y los mods se escribieron sin contrastar con fuentes; llevan la nota «Lista en revisión».
@@ -177,9 +197,9 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 | 13   | Imágenes por aparición (`MediaAsset`, `next/image`)                                               | Hecho (PR #17 y #18)  |
 | 13b  | Comparador de imágenes original/HD (`ImageCompare`, componente de cliente)                        | Hecho (PR #20)        |
 | 14   | Pruebas de integridad de datos con Vitest                                                         | Hecho (PR #21)        |
-| 15   | Esqueleto: una ficha de muestra por categoría y apariciones en OF y BS                            | Siguiente             |
-| 16   | Esqueleto: lore por juego y su página                                                             | Pendiente             |
-| 17   | Esqueleto: relaciones entre fichas, bloque «Relacionado» y su prueba                              | Pendiente             |
+| 15   | Esqueleto: una ficha de muestra por categoría y apariciones en OF y BS                            | Hecho (PR #23)        |
+| 16   | Esqueleto: lore por juego y su página                                                             | Hecho (PR #24)        |
+| 17   | Esqueleto: relaciones entre fichas, bloque «Relacionado» y su prueba                              | Siguiente             |
 | 18   | Esqueleto: `/explorar` con una fila horizontal por categoría y «Ver todo»                         | Pendiente             |
 | 19   | Esqueleto: sección Valve (`/valve/historia`, `/valve/personas/[slug]`, `/valve/steam`)            | Pendiente             |
 | 20   | Esqueleto: página de créditos generada desde los datos                                            | Pendiente             |
@@ -189,18 +209,19 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 
 Decisión de Manuel (2026-10-13): **terminar primero el esqueleto** (todas las rutas y piezas con datos mínimos, pasos 15–20) y después la fase de contenido (imágenes sin fondo, comparador funcionando, más fichas, revisión visual).
 
-1. Manuel, cerrar la PR de documentación desde la rama `docs/update-status`:
+Pasos 15 y 16 terminados.
+
+1. Manuel, fusionar esta actualización de documentación (rama `docs/update-status`):
    ```cmd
    git add CHANGELOG.md docs
-   git commit -m "docs: registrar el plan del esqueleto y el renombrado de vitest"
-   git push
+   git commit -m "docs: registrar las fichas de muestra y el lore"
+   git push -u origin docs/update-status
    gh pr create --base main --fill
    gh pr merge --merge --delete-branch
    git checkout main && git pull
    ```
-   Orden importante: primero `gh pr create`, después `gh pr merge`.
-2. Paso 15 (guiado en modo plan): una ficha de muestra en cada categoría vacía (mapa, personaje, enemigo, curiosidad, easter egg) en Half-Life y alguna aparición en Opposing Force y Blue Shift, con fuentes. Así todos los apartados quedan navegables.
-3. Pendiente de Manuel: revisar en `npm run dev` cabecera, pie, portada, universos, hub y fichas en móvil y con teclado.
+2. Paso 17 (guiado en modo plan): relaciones entre fichas. Tipo `Relation` (origen, destino y tipo de relación), datos con al menos una relación (por ejemplo, palanca → Gordon Freeman), función de lectura, bloque «Relacionado» en la ficha y prueba de integridad (IDs de origen y destino existentes). Cierra los requisitos de la Entrega 1.
+3. Pendiente de Manuel: revisar en `npm run dev` el lore y los apartados nuevos en móvil y con teclado.
 
 ## Cómo actualizar este archivo
 
