@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import { entries } from "./entries";
 import { gameSections } from "./game-sections";
 import { games } from "./games";
+import { gameLore } from "./game-lore";
 import { universes } from "./universes";
 
 function findDuplicates(values: string[]): string[] {
@@ -143,5 +144,29 @@ describe("imágenes de las fichas", () => {
     );
 
     expect(mismatched).toEqual([]);
+  });
+});
+
+describe("lore", () => {
+  it("pertenece a juegos existentes y hay uno por juego como máximo", () => {
+    const gameIds = new Set(games.map((game) => game.id));
+
+    expect(
+      gameLore
+        .filter((lore) => !gameIds.has(lore.gameId))
+        .map((lore) => lore.gameId),
+    ).toEqual([]);
+    expect(findDuplicates(gameLore.map((lore) => lore.gameId))).toEqual([]);
+  });
+
+  it("tiene texto y fuentes con URL https", () => {
+    for (const lore of gameLore) {
+      expect(lore.paragraphs.length, lore.gameId).toBeGreaterThan(0);
+      expect(lore.sources.length, lore.gameId).toBeGreaterThan(0);
+
+      for (const source of lore.sources) {
+        expect(source.url, lore.gameId).toMatch(/^https:\/\//);
+      }
+    }
   });
 });
