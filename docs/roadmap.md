@@ -37,6 +37,8 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 - [x] Incorporar comprobaciones de integridad de datos (Vitest, 13 pruebas, PR #21; `npm run check` superado el 2026-10-13).
 - [ ] Incorporar un recorrido E2E.
 
+**Orden acordado (2026-10-13):** completar antes el esqueleto (pasos 15–20 de STATUS: fichas de muestra en todas las categorías, lore, relaciones, `/explorar` básico, sección Valve y créditos) y dejar para después el contenido y el pulido: imágenes sin fondo, comparador original/HD visible y más fichas.
+
 **Se acepta cuando:** desde la portada se llega a Universos → Half-Life → cada uno de sus tres juegos → un apartado → una ficha, y se sigue una relación sin enlaces rotos, con la paleta del universo aplicada, en móvil y escritorio.
 
 **React que practicaremos:** JSX, componentes, props, listas, claves estables y composición.

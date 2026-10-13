@@ -75,7 +75,7 @@ Comprobado por Claude Code el 2026-10-13 en `main` (`b665491`, PR #21 fusionada)
   - Ficha: si la aparición tiene `original` y `hd`, muestra el comparador; si solo tiene una, la imagen sola con su crédito.
   - Ninguna ficha tiene todavía las dos imágenes: la escopeta solo tiene `hd`, así que el comparador aún no se ve en ninguna página.
 - **Integridad de datos con Vitest (PR #21, Manuel):**
-  - `vitest` 5.0.3 como dependencia de desarrollo; `vitest.config.ts` (alias `@`, entorno `node`).
+  - `vitest` 5.0.3 como dependencia de desarrollo; `vitest.config.mts` (alias `@`, entorno `node`). Renombrado desde `vitest.config.ts` el 2026-10-13 para que Vite lo cargue como ESM y desaparezca su aviso.
   - Scripts `test` (`vitest run`) y `test:watch`; `check` ejecuta ahora también `npm run test`.
   - `src/data/data-integrity.test.ts`, 13 pruebas: IDs y slugs únicos de universos, juegos (slug único por universo), apartados y fichas; juegos con universo existente; fichas con al menos una aparición, sin juegos repetidos ni inexistentes y con fuentes `https`; imágenes existentes en `public/`, con tamaño, `alt` y fuente, sin repetirse entre fichas, y original y HD del mismo tamaño.
 - `/explorar` todavía no existe. Todavía no existe `src/lib`.
@@ -125,20 +125,20 @@ Comprobado por Claude Code el 2026-10-13 en `main` (`b665491`, PR #21 fusionada)
   5. `gh pr merge --merge --delete-branch`.
   6. `git checkout main && git pull`.
 - Es `gh pr`, no `git pr`. En Git Bash, si falta `gh`: `export PATH="$PATH:/c/Program Files/GitHub CLI"`.
-- Sin ramas abiertas (local ni remoto) salvo `main`. Esta actualización de la documentación está sin commit en `main`: hay que moverla a una rama (`git switch -c docs/update-status`) y abrir PR.
+- Rama abierta: `docs/update-status` (`5232f39`, ya en GitHub) con la documentación de las PR #20–#21 y el renombrado de `vitest.config.mts`, más esta actualización sin commit. El 2026-10-13 se ejecutó `gh pr merge` antes de `gh pr create`: no había PR, así que no se fusionó nada y `main` sigue en `b665491`; solo se perdió la rama local, recreada desde el remoto con `git switch docs/update-status`.
 - Criterio: una rama = una funcionalidad completa.
 - **Si editas algo en GitHub** (por ejemplo, el README), haz `git checkout main && git pull` antes de seguir. Si la rama local ya tenía cambios en el mismo archivo, `git merge origin/main` producirá un conflicto que hay que resolver.
 
 ## Comprobaciones
 
-Ejecutadas por Claude el 2026-10-13 en `main` (`b665491`):
+Ejecutadas por Claude el 2026-10-13 en `main` (`b665491`) y, `check`, de nuevo en `docs/update-status` (`5232f39`, con `vitest.config.mts`):
 
 | Comando         | Resultado                                                                                                                 |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | `npm run check` | Superado: lint, tipos, formato y 13 pruebas de Vitest                                                                     |
 | `npm run build` | Superado. `/universos/half-life/half-life/armas` y las 4 fichas se generan; el resto de rutas, con prerenderizado parcial |
 
-Vitest muestra un aviso: `vitest.config.ts` usa sintaxis ESM en un archivo que Vite carga como CommonJS. No falla hoy, pero dejará de funcionar cuando Vite cambie el cargador por defecto. Solución prevista: renombrarlo a `vitest.config.mts`.
+Con `vitest.config.mts` ya no aparece el aviso de Vite sobre la configuración cargada como CommonJS.
 
 Comprobado el 2026-10-12 en la PR #18: las 5 fuentes de Combine OverWiki respondían 200 y la ficha de la escopeta mostraba su imagen y el crédito completo.
 
@@ -159,34 +159,48 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 - CI pendiente.
 - Comprobar con las fuentes los datos de `src/data/games.ts` y los textos de `src/data/entries.ts`, y si las armas aparecen también en las expansiones. Los enlaces de las fichas ya se han verificado (2026-10-12).
 - Las pruebas de integridad no comprueban las relaciones entre fichas (aún no existen) ni que los textos coincidan con las fuentes: eso sigue siendo revisión manual.
-- Aviso de Vitest por `vitest.config.ts` en ESM (ver Comprobaciones).
-- El comparador original/HD no tiene ninguna ficha con las dos imágenes: no se ha visto funcionando en una página real.
+- El comparador original/HD no tiene ninguna ficha con las dos imágenes: no se ha visto funcionando en una página real. Se deja para la fase de contenido (imágenes sin fondo, PNG o WebP con transparencia, original y HD del mismo tamaño).
 - Las tablas del README sobre el universo Half-Life completo, los proyectos cancelados y los mods se escribieron sin contrastar con fuentes; llevan la nota «Lista en revisión».
 
 ## Pasos de la interfaz (guiados)
 
-| Paso | Archivo(s)                                                                 | Estado               |
-| ---- | -------------------------------------------------------------------------- | -------------------- |
-| 1–4  | Layout, paleta base, cabecera y pie                                        | Hecho                |
-| 5–6  | Portada sobre Valve y Steam con la cronología                              | Hecho (PR #6–#8)     |
-| 7    | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`            | Hecho (PR #9)        |
-| 8    | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life               | Hecho (PR #10)       |
-| 9    | Hub de juego, apartados y tema propio por juego                            | Hecho (PR #11)       |
-| 10   | Fichas: modelo `Entry`, página de apartado y página de ficha               | Hecho (PR #14)       |
-| 11   | Página 404 propia                                                          | Hecho (PR #15)       |
-| 12   | `gameIds` → `appearances` (datos propios de cada juego)                    | Hecho (PR #16)       |
-| 13   | Imágenes por aparición (`MediaAsset`, `next/image`)                        | Hecho (PR #17 y #18) |
-| 13b  | Comparador de imágenes original/HD (`ImageCompare`, componente de cliente) | Hecho (PR #20)       |
-| 14   | Pruebas de integridad de datos con Vitest                                  | Hecho (PR #21)       |
-| —    | Relaciones, más fichas, lore, Explorar, cancelados, mods, idiomas          | Ver roadmap          |
+| Paso | Archivo(s)                                                                                        | Estado                |
+| ---- | ------------------------------------------------------------------------------------------------- | --------------------- |
+| 1–4  | Layout, paleta base, cabecera y pie                                                               | Hecho                 |
+| 5–6  | Portada sobre Valve y Steam con la cronología                                                     | Hecho (PR #6–#8)      |
+| 7    | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`                                   | Hecho (PR #9)         |
+| 8    | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life                                      | Hecho (PR #10)        |
+| 9    | Hub de juego, apartados y tema propio por juego                                                   | Hecho (PR #11)        |
+| 10   | Fichas: modelo `Entry`, página de apartado y página de ficha                                      | Hecho (PR #14)        |
+| 11   | Página 404 propia                                                                                 | Hecho (PR #15)        |
+| 12   | `gameIds` → `appearances` (datos propios de cada juego)                                           | Hecho (PR #16)        |
+| 13   | Imágenes por aparición (`MediaAsset`, `next/image`)                                               | Hecho (PR #17 y #18)  |
+| 13b  | Comparador de imágenes original/HD (`ImageCompare`, componente de cliente)                        | Hecho (PR #20)        |
+| 14   | Pruebas de integridad de datos con Vitest                                                         | Hecho (PR #21)        |
+| 15   | Esqueleto: una ficha de muestra por categoría y apariciones en OF y BS                            | Siguiente             |
+| 16   | Esqueleto: lore por juego y su página                                                             | Pendiente             |
+| 17   | Esqueleto: relaciones entre fichas, bloque «Relacionado» y su prueba                              | Pendiente             |
+| 18   | Esqueleto: `/explorar` con una fila horizontal por categoría y «Ver todo»                         | Pendiente             |
+| 19   | Esqueleto: sección Valve (`/valve/historia`, `/valve/personas/[slug]`, `/valve/steam`)            | Pendiente             |
+| 20   | Esqueleto: página de créditos generada desde los datos                                            | Pendiente             |
+| —    | Fase de contenido: imágenes sin fondo, comparador visible, más fichas, revisión en navegador, E2E | Después del esqueleto |
 
 ## Siguiente paso
 
-1. Manuel: pasar esta actualización de documentación a una rama y abrir PR: `git switch -c docs/update-status`, commit, `git push -u origin docs/update-status`, `gh pr create --base main --fill`, `gh pr merge --merge --delete-branch`, `git checkout main && git pull`.
-2. Manuel: revisar en `npm run dev` la escopeta en «Armas» y en su ficha (imagen, crédito, móvil).
-3. Ver el comparador funcionando: añadir a una ficha (por ejemplo, la escopeta) la imagen `original` del mismo tamaño que la HD, con su fuente. Las pruebas comprueban que ambas midan lo mismo. Después, revisar el control con teclado (flechas en el `range`) y en móvil.
-4. Tarea pequeña: renombrar `vitest.config.ts` a `vitest.config.mts` para quitar el aviso de Vite.
-5. Después: relaciones entre fichas (con su prueba de integridad), más fichas y las apariciones en las expansiones.
+Decisión de Manuel (2026-10-13): **terminar primero el esqueleto** (todas las rutas y piezas con datos mínimos, pasos 15–20) y después la fase de contenido (imágenes sin fondo, comparador funcionando, más fichas, revisión visual).
+
+1. Manuel, cerrar la PR de documentación desde la rama `docs/update-status`:
+   ```cmd
+   git add CHANGELOG.md docs
+   git commit -m "docs: registrar el plan del esqueleto y el renombrado de vitest"
+   git push
+   gh pr create --base main --fill
+   gh pr merge --merge --delete-branch
+   git checkout main && git pull
+   ```
+   Orden importante: primero `gh pr create`, después `gh pr merge`.
+2. Paso 15 (guiado en modo plan): una ficha de muestra en cada categoría vacía (mapa, personaje, enemigo, curiosidad, easter egg) en Half-Life y alguna aparición en Opposing Force y Blue Shift, con fuentes. Así todos los apartados quedan navegables.
+3. Pendiente de Manuel: revisar en `npm run dev` cabecera, pie, portada, universos, hub y fichas en móvil y con teclado.
 
 ## Cómo actualizar este archivo
 

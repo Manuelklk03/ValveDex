@@ -28,6 +28,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Cambiado
 
+- 2026-10-13: `vitest.config.ts` renombrado a `vitest.config.mts` para que Vite lo cargue como ESM y desaparezca su aviso.
 - 2026-10-12: cada ficha guarda sus apariciones por juego (`appearances`) en lugar de `gameIds`, para tener resumen, imagen y, más adelante, estadísticas propias de cada juego (PR #16).
 - 2026-10-07: nueva estructura del producto documentada: portada sobre Valve y Steam, sección Universos con paleta propia por saga y hub por juego (lore, mapas, armas, personajes, curiosidades, easter eggs), más un hub principal `/explorar` con buscador global y carruseles por categoría. Actualizados AGENTS, arquitectura y roadmap.
 - 2026-10-07: actualizado el protocolo de continuidad y el alcance global de todos los juegos de Valve, conservando la primera fase de Half-Life y sus expansiones. Documentado que el repositorio actual solo tiene el README y falta inicializar la aplicación.
