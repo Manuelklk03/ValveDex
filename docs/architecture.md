@@ -2,7 +2,7 @@
 
 Fecha de la decisión inicial: **2026-09-30**.
 
-Última actualización: **2026-10-13**: lore por juego (`GameLore`) y página de apartado con dos tipos de contenido; comparador de imágenes original/HD, pruebas de integridad con Vitest, rutas previstas de la sección Valve y créditos, y orden «esqueleto antes que contenido».
+Última actualización: **2026-10-14**: relaciones entre fichas (`EntryRelation`); lore por juego (`GameLore`) y página de apartado con dos tipos de contenido; comparador de imágenes original/HD, pruebas de integridad con Vitest, rutas previstas de la sección Valve y créditos, y orden «esqueleto antes que contenido».
 
 Estado: **aplicación Next.js inicializada.** Existen `src/app`, `src/components/layout`, `src/components/ui`, `src/domain`, `src/data` `src/features/valve` y `src/features/universes`. Rutas existentes: `/`, `/universos`, `/universos/[universeSlug]`, `/universos/[universeSlug]/[gameSlug]`, `/universos/[universeSlug]/[gameSlug]/[sectionSlug]` y `/fichas/[entrySlug]`. Funcionalidad `src/features/games` para el hub de juego. Pruebas de integridad en `src/data/data-integrity.test.ts` (Vitest, configuración en `vitest.config.mts`). Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
 
@@ -89,17 +89,17 @@ Los filtros públicos se representarán en parámetros como `q`, `game`, `catego
 
 El diseño inicial contempla estas entidades; sus tipos exactos se escribirán al implementar el catálogo:
 
-| Entidad           | Datos principales                                                                                                                                   |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Universe`        | ID, slug, nombre, descripción y estado (`available`/`coming-soon`); implementado. Tema visual pendiente                                             |
-| `Game`            | ID, slug, `universeId`, nombre, año, desarrollador, descripción y fuentes; implementado. Recursos visuales pendientes                               |
-| `Entry`           | ID, slug único, nombre, categoría (`EntryCategory`), resumen común, `appearances` y fuentes; implementado sin variantes por categoría               |
-| `EntryAppearance` | `gameId`, resumen propio e `images` (`EntryImages`: `original?` y `hd?`) de una ficha en ese juego; implementado. Estadísticas por juego pendientes |
-| `Relation`        | ID de origen, ID de destino y tipo de relación                                                                                                      |
-| `Source`          | URL y título (implementado); fecha de consulta pendiente                                                                                            |
-| `Milestone`       | ID, año, título, descripción y fuentes (implementado)                                                                                               |
-| `MediaAsset`      | `src`, `alt`, `width`, `height`, fuente, crédito y licencia; implementado en `src/domain/media-asset.ts`                                            |
-| `GameLore`        | `gameId`, `paragraphs` y fuentes; implementado en `src/domain/game-lore.ts`, datos en `src/data/game-lore.ts`, lectura con `getGameLore()`          |
+| Entidad           | Datos principales                                                                                                                                                                                                     |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Universe`        | ID, slug, nombre, descripción y estado (`available`/`coming-soon`); implementado. Tema visual pendiente                                                                                                               |
+| `Game`            | ID, slug, `universeId`, nombre, año, desarrollador, descripción y fuentes; implementado. Recursos visuales pendientes                                                                                                 |
+| `Entry`           | ID, slug único, nombre, categoría (`EntryCategory`), resumen común, `appearances` y fuentes; implementado sin variantes por categoría                                                                                 |
+| `EntryAppearance` | `gameId`, resumen propio e `images` (`EntryImages`: `original?` y `hd?`) de una ficha en ese juego; implementado. Estadísticas por juego pendientes                                                                   |
+| `EntryRelation`   | `fromId`, `toId` y `type` (`used-by`, `found-in`); implementado en `src/domain/entry-relation.ts`, datos en `src/data/entry-relations.ts`. Se guarda una vez y se muestra en las dos fichas con `getRelatedEntries()` |
+| `Source`          | URL y título (implementado); fecha de consulta pendiente                                                                                                                                                              |
+| `Milestone`       | ID, año, título, descripción y fuentes (implementado)                                                                                                                                                                 |
+| `MediaAsset`      | `src`, `alt`, `width`, `height`, fuente, crédito y licencia; implementado en `src/domain/media-asset.ts`                                                                                                              |
+| `GameLore`        | `gameId`, `paragraphs` y fuentes; implementado en `src/domain/game-lore.ts`, datos en `src/data/game-lore.ts`, lectura con `getGameLore()`                                                                            |
 
 Cuando una aparición tiene imagen original y HD, la ficha las muestra con `ImageCompare` (`src/components/ui`), el único componente de cliente del catálogo: guarda la posición del deslizador en estado local (`useState`) y recibe ambas imágenes por props. Las dos deben medir lo mismo (lo comprueba una prueba). Las imágenes definitivas serán recortadas, sin fondo (PNG o WebP con transparencia); se incorporarán en la fase de contenido.
 

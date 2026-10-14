@@ -2,7 +2,7 @@
 
 Estado inicial: **2026-09-30**. Plan de trabajo personal; el orden puede ajustarse según lo aprendido. Las casillas solo se marcarán con trabajo comprobado.
 
-Última actualización: **2026-10-13** (tras la PR #24).
+Última actualización: **2026-10-14** (tras la PR #26).
 
 Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la navegación Valve → Universos → Juego descrita en la [arquitectura](architecture.md). La primera fase de contenido mantiene el universo Half-Life con Half-Life, Opposing Force y Blue Shift. Consulta [STATUS.md](STATUS.md) para saber dónde retomar el trabajo.
 
@@ -33,7 +33,7 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 - [ ] Ficha individual enlazada desde los apartados del hub. Hecha (PR #14, #16 y #18): `/fichas/[entrySlug]` con tema, «Aparece en», datos e imagen por juego, y fuentes. Falta la revisión en navegador.
 - [ ] Preparar datos reales de los tres juegos con una muestra de cada categoría inicial. Muestra mínima del esqueleto hecha (PR #23: 9 fichas, todas las categorías; apariciones en los tres juegos); falta ampliarla en la fase de contenido.
 - [ ] Registrar las fuentes y los recursos visuales utilizados. En curso: cada ficha, juego e hito tiene fuentes; cada imagen guarda fuente, crédito y licencia (`MediaAsset`). Falta una página o sección de créditos.
-- [ ] Mostrar relaciones entre fichas y una página 404 útil. La 404 está hecha (PR #15); faltan las relaciones.
+- [ ] Mostrar relaciones entre fichas y una página 404 útil. La 404 está hecha (PR #15). Relaciones hechas (PR #26: `EntryRelation`, bloque «Relacionado» en las dos direcciones); falta su prueba de integridad (paso 17b).
 - [x] Incorporar comprobaciones de integridad de datos (Vitest, 13 pruebas, PR #21; `npm run check` superado el 2026-10-13).
 - [ ] Incorporar un recorrido E2E.
 

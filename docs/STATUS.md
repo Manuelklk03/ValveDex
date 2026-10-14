@@ -1,6 +1,6 @@
 # Estado actual — ValveDex
 
-Última actualización: **2026-10-13**.  
+Última actualización: **2026-10-14**.  
 Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.  
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
@@ -19,7 +19,7 @@ Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift.
 
 ## Estado confirmado
 
-Comprobado por Claude Code el 2026-10-13 en `main` (`3fc7f44`, PR #24 fusionada).
+Comprobado por Claude Code el 2026-10-14 en `main` (`b27a831`, PR #26 fusionada).
 
 - Next.js inicializado en la raíz del repositorio. Terminal de Manuel: CMD en Windows.
 - `src/app/layout.tsx`: `lang="es"`, metadatos con `title.template`, `<SiteHeader />` y `<SiteFooter />`.
@@ -93,6 +93,13 @@ Comprobado por Claude Code el 2026-10-13 en `main` (`3fc7f44`, PR #24 fusionada)
   - Página de apartado: `getSectionPageData()` devuelve una unión discriminada (`kind: "lore"` con `lore`, o `kind: "entries"` con `entries`); `hasSectionContent()` decide qué apartados genera `generateStaticParams`. El lore se muestra en un `<article>` (`section-page__lore`, `__lore-text`, `__sources`, `__source-link`).
   - Hub: la tarjeta «Lore» enlaza y muestra «Disponible» si el juego tiene lore (`hasLore`, `isAvailable`, `badge`).
   - 2 pruebas nuevas: el lore pertenece a juegos existentes (uno por juego como máximo) y tiene texto y fuentes `https`.
+- **Paso 17, relaciones entre fichas (PR #26, Manuel, hecho en casa):**
+  - `src/domain/entry-relation.ts`: `EntryRelationType = "used-by" | "found-in"` y `EntryRelation` (`fromId`, `toId`, `type`).
+  - `src/data/entry-relations.ts`: 2 relaciones, palanca → Gordon Freeman (`used-by`) y Gordon Freeman → Black Mesa Inbound (`found-in`). Importa con ruta relativa (`./../domain/entry-relation`) en lugar del alias `@/`.
+  - `getEntryById()` en `get-entries.ts`.
+  - `src/features/catalog/get-related-entries.ts`: `getRelatedEntries(entryId)` devuelve `RelatedEntry[]` (`label`, `entry`) en los dos sentidos, con etiquetas de `Record<EntryRelationType, { outgoing; incoming }>` («Usada por»/«Usa», «Aparece en»/«Aparecen aquí»). Si un ID no existe, descarta la relación sin avisar.
+  - Ficha: sección «Relacionado» (`entry-page__related`, `__related-label`, `__related-link`), solo si hay relaciones; reutiliza estilos con selectores agrupados.
+  - Sin prueba de integridad de relaciones todavía.
 - `/explorar` todavía no existe. Todavía no existe `src/lib`.
 
 ## Versiones comprobadas
@@ -114,7 +121,7 @@ Comprobado por Claude Code el 2026-10-13 en `main` (`3fc7f44`, PR #24 fusionada)
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- `main` en `3fc7f44`. PRs fusionadas:
+- `main` en `b27a831`. PRs fusionadas:
   - #1–#6: historial reconstruido.
   - #7 `fix/errores-css`.
   - #8 `feature/valve-timeline`.
@@ -133,6 +140,8 @@ Comprobado por Claude Code el 2026-10-13 en `main` (`3fc7f44`, PR #24 fusionada)
   - #22 `docs/update-status`.
   - #23 `feature/skeleton-sample-entries`.
   - #24 `feature/game-lore` (2026-10-13).
+  - #25 `docs/update-status`.
+  - #26 `feature/entry-relations` (2026-10-14).
 - `main` protegida: solo cambios por PR (0 aprobaciones, también para administradores), sin force push ni borrado. El repositorio borra las ramas al mergear.
 - Configuración: local `branch.main.mergeoptions=--no-ff` y `pull.rebase=false`; global `pull.rebase=false` y `merge.ff=false`.
 - Flujo:
@@ -143,19 +152,22 @@ Comprobado por Claude Code el 2026-10-13 en `main` (`3fc7f44`, PR #24 fusionada)
   5. `gh pr merge --merge --delete-branch`.
   6. `git checkout main && git pull`.
 - Es `gh pr`, no `git pr`. En Git Bash, si falta `gh`: `export PATH="$PATH:/c/Program Files/GitHub CLI"`.
-- Rama abierta: `docs/update-status`, creada por Claude el 2026-10-13 desde `3fc7f44` con esta actualización de documentación, sin commit.
+- Rama abierta: `docs/update-status`, creada por Claude el 2026-10-14 desde `b27a831` con esta actualización de documentación, sin commit.
+- **`git pull` en `main`:** la configuración global `merge.ff=false` hace que un `git pull` normal cree un commit de merge local. Usar `git pull --ff-only` o configurar una vez `git config --global pull.ff only`.
 - Criterio: una rama = una funcionalidad completa.
 - **Si editas algo en GitHub** (por ejemplo, el README), haz `git checkout main && git pull` antes de seguir. Si la rama local ya tenía cambios en el mismo archivo, `git merge origin/main` producirá un conflicto que hay que resolver.
 
 ## Comprobaciones
 
-Ejecutadas por Claude el 2026-10-13 en `main` (`3fc7f44`):
+Ejecutadas por Claude el 2026-10-14 en `main` (`b27a831`):
 
-| Comando         | Resultado                                                                                                                                     |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run check` | Superado: lint, tipos, formato y 15 pruebas de Vitest                                                                                         |
-| `npm run build` | Superado. Se generan `/lore` en los tres juegos y los apartados con fichas (Half-Life: 6; Opposing Force: 5; Blue Shift: 4, contando el lore) |
-| HTML generado   | `/universos/half-life/half-life/lore` contiene el texto del lore; el hub de Opposing Force muestra «Disponible» en Lore                       |
+| Comando         | Resultado                                                                                                                                                                                              |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `npm run check` | Superado: lint, tipos, formato y 15 pruebas de Vitest                                                                                                                                                  |
+| `npm run build` | Superado                                                                                                                                                                                               |
+| HTML generado   | «Relacionado» en `/fichas/palanca` (Usada por: Gordon Freeman), `/fichas/gordon-freeman` (Usa: Palanca; Aparece en: Black Mesa Inbound) y `/fichas/black-mesa-inbound` (Aparecen aquí: Gordon Freeman) |
+
+Comprobado el 2026-10-13 (PR #24): se generan `/lore` en los tres juegos y el hub muestra «Disponible» en Lore.
 
 Con `vitest.config.mts` ya no aparece el aviso de Vite sobre la configuración cargada como CommonJS.
 
@@ -178,7 +190,9 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 - CI pendiente.
 - Comprobar con las fuentes los datos de `src/data/games.ts` y los textos de `src/data/entries.ts`, y si las armas aparecen también en las expansiones. Los enlaces de las fichas ya se han verificado (2026-10-12).
 - Half-Life no tiene easter eggs todavía (el apartado sigue en «Próximamente»); el texto del lore es solo la premisa, a la espera del control de spoilers.
-- Las pruebas de integridad no comprueban las relaciones entre fichas (aún no existen) ni que los textos coincidan con las fuentes: eso sigue siendo revisión manual.
+- **Las relaciones no tienen prueba de integridad:** un ID mal escrito en `entry-relations.ts` hace que la relación desaparezca sin error (paso 17b).
+- Las pruebas no comprueban que los textos coincidan con las fuentes: eso sigue siendo revisión manual.
+- Etiquetas de relación con género fijo («Usada por» sirve para «palanca», no para «revólver»); revisar al añadir más relaciones. «Aparece en» coincide con el título de la sección de juegos de la ficha.
 - El comparador original/HD no tiene ninguna ficha con las dos imágenes: no se ha visto funcionando en una página real. Se deja para la fase de contenido (imágenes sin fondo, PNG o WebP con transparencia, original y HD del mismo tamaño).
 - Las tablas del README sobre el universo Half-Life completo, los proyectos cancelados y los mods se escribieron sin contrastar con fuentes; llevan la nota «Lista en revisión».
 
@@ -199,7 +213,8 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 | 14   | Pruebas de integridad de datos con Vitest                                                         | Hecho (PR #21)        |
 | 15   | Esqueleto: una ficha de muestra por categoría y apariciones en OF y BS                            | Hecho (PR #23)        |
 | 16   | Esqueleto: lore por juego y su página                                                             | Hecho (PR #24)        |
-| 17   | Esqueleto: relaciones entre fichas, bloque «Relacionado» y su prueba                              | Siguiente             |
+| 17   | Esqueleto: relaciones entre fichas y bloque «Relacionado»                                         | Hecho (PR #26)        |
+| 17b  | Esqueleto: prueba de integridad de las relaciones y alias `@/` en su import                       | Siguiente             |
 | 18   | Esqueleto: `/explorar` con una fila horizontal por categoría y «Ver todo»                         | Pendiente             |
 | 19   | Esqueleto: sección Valve (`/valve/historia`, `/valve/personas/[slug]`, `/valve/steam`)            | Pendiente             |
 | 20   | Esqueleto: página de créditos generada desde los datos                                            | Pendiente             |
@@ -209,19 +224,21 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 
 Decisión de Manuel (2026-10-13): **terminar primero el esqueleto** (todas las rutas y piezas con datos mínimos, pasos 15–20) y después la fase de contenido (imágenes sin fondo, comparador funcionando, más fichas, revisión visual).
 
-Pasos 15 y 16 terminados.
+Pasos 15, 16 y 17 terminados (falta la prueba del 17).
 
 1. Manuel, fusionar esta actualización de documentación (rama `docs/update-status`):
    ```cmd
-   git add CHANGELOG.md docs
-   git commit -m "docs: registrar las fichas de muestra y el lore"
+   git add docs CHANGELOG.md
+   git commit -m "docs: registrar las relaciones entre fichas"
    git push -u origin docs/update-status
    gh pr create --base main --fill
    gh pr merge --merge --delete-branch
-   git checkout main && git pull
+   git checkout main && git pull --ff-only
    ```
-2. Paso 17 (guiado en modo plan): relaciones entre fichas. Tipo `Relation` (origen, destino y tipo de relación), datos con al menos una relación (por ejemplo, palanca → Gordon Freeman), función de lectura, bloque «Relacionado» en la ficha y prueba de integridad (IDs de origen y destino existentes). Cierra los requisitos de la Entrega 1.
-3. Pendiente de Manuel: revisar en `npm run dev` el lore y los apartados nuevos en móvil y con teclado.
+2. **Paso 17b** (rama `test/entry-relations`, guiado en modo plan): en `data-integrity.test.ts`, comprobar que cada relación apunta a fichas existentes (`fromId` y `toId`), que ninguna ficha se relaciona consigo misma y que no hay relaciones repetidas; cambiar el import de `entry-relations.ts` al alias `@/domain/entry-relation`.
+3. **Paso 18**: `/explorar` básico, con una fila horizontal por categoría (`scroll-snap`), enlace «Ver todo» y sin buscador todavía. El enlace «Explorar» de la cabecera da 404 desde el principio.
+4. Pasos 19 (sección Valve) y 20 (créditos). Después, revisión completa de la documentación y el README para todo el proyecto Valve.
+5. Pendiente de Manuel: revisar en `npm run dev` el lore, los apartados nuevos y «Relacionado» en móvil y con teclado.
 
 ## Cómo actualizar este archivo
 
