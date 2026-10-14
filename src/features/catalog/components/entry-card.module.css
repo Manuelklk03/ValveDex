@@ -1,0 +1,36 @@
+.entry-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+
+.entry-card:hover {
+  border-color: var(--accent);
+}
+
+.entry-card__title {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.entry-card__link {
+  text-decoration: none;
+}
+
+.entry-card__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.entry-card__summary {
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}

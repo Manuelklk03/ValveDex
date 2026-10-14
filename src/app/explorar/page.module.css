@@ -1,0 +1,25 @@
+.explore-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: 3rem 1rem;
+}
+
+.explore-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.explore-page__title {
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 700;
+}
+
+.explore-page__intro {
+  color: var(--muted);
+  line-height: 1.6;
+}
