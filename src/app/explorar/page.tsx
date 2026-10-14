@@ -35,6 +35,7 @@ export default function ExplorePage() {
           key={section.id}
           id={section.id}
           title={section.name}
+          href={`/explorar/${section.slug}`}
           entries={entries}
         />
       ))}

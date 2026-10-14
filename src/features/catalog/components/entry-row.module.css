@@ -21,3 +21,22 @@
   flex: 0 0 16rem;
   scroll-snap-align: start;
 }
+
+.entry-row__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.entry-row__more {
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.entry-row__more:hover {
+  text-decoration: underline;
+}
