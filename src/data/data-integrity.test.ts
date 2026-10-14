@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { entries } from "./entries";
+import { entryRelations } from "./entry-relations";
 import { gameSections } from "./game-sections";
 import { games } from "./games";
 import { gameLore } from "./game-lore";
@@ -168,5 +169,36 @@ describe("lore", () => {
         expect(source.url, lore.gameId).toMatch(/^https:\/\//);
       }
     }
+  });
+});
+
+describe("relaciones entre fichas", () => {
+  it("apuntan a fichas existentes", () => {
+    const entryIds = new Set(entries.map((entry) => entry.id));
+    const missing = entryRelations.flatMap((relation) =>
+      [relation.fromId, relation.toId]
+        .filter((id) => !entryIds.has(id))
+        .map((id) => `${relation.fromId} → ${relation.toId}: ${id}`),
+    );
+
+    expect(missing).toEqual([]);
+  });
+
+  it("no relacionan una ficha consigo misma", () => {
+    const selfRelations = entryRelations
+      .filter((relation) => relation.fromId === relation.toId)
+      .map((relation) => relation.fromId);
+
+    expect(selfRelations).toEqual([]);
+  });
+
+  it("no se repiten", () => {
+    expect(
+      findDuplicates(
+        entryRelations.map(
+          (relation) => `${relation.fromId}|${relation.type}|${relation.toId}`,
+        ),
+      ),
+    ).toEqual([]);
   });
 });
