@@ -42,3 +42,7 @@ export function getEntryThumbnail(
 
   return images?.hd ?? images?.original;
 }
+
+export function getEntryById(id: string): Entry | undefined {
+  return entries.find((entry) => entry.id === id);
+}

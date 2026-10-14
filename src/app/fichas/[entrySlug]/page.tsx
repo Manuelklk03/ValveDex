@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ImageCompare } from "@/components/ui/image-compare";
 import { getEntries, getEntryBySlug } from "@/features/catalog/get-entries";
+import { getRelatedEntries } from "@/features/catalog/get-related-entries";
 import { getGameSectionById } from "@/features/games/get-game-sections";
 import {
   getGameById,
@@ -42,6 +43,7 @@ export default async function EntryPage({
   }
 
   const section = getGameSectionById(entry.category);
+  const relatedEntries = getRelatedEntries(entry.id);
   const gameAppearances = entry.appearances.flatMap((appearance) => {
     const game = getGameById(appearance.gameId);
     const universe = game ? getUniverseById(game.universeId) : undefined;
@@ -135,6 +137,35 @@ export default async function EntryPage({
           })}
         </ul>
       </section>
+
+      {relatedEntries.length > 0 && (
+        <section
+          className={styles["entry-page__section"]}
+          aria-labelledby="related-title"
+        >
+          <h2
+            id="related-title"
+            className={styles["entry-page__section-title"]}
+          >
+            Relacionado
+          </h2>
+          <ul className={styles["entry-page__related"]}>
+            {relatedEntries.map(({ label, entry: related }) => (
+              <li key={`${label}-${related.id}`}>
+                <span className={styles["entry-page__related-label"]}>
+                  {label}:
+                </span>{" "}
+                <Link
+                  href={`/fichas/${related.slug}`}
+                  className={styles["entry-page__related-link"]}
+                >
+                  {related.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section
         className={styles["entry-page__section"]}
