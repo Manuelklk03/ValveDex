@@ -1,10 +1,10 @@
 import Link from "next/link";
 import styles from "./page.module.css";
-import { getValveMilestones } from "@/features/valve/get-valve-milestones";
+import { getLatestValveMilestones } from "@/features/valve/get-valve-milestones";
 import { Timeline } from "@/components/ui/timeline";
 
 export default function HomePage() {
-  const milestones = getValveMilestones();
+  const milestones = getLatestValveMilestones(3);
   return (
     <main className={styles["home-page"]}>
       <section
@@ -56,6 +56,9 @@ export default function HomePage() {
           Historia de Valve
         </h2>
         <Timeline milestones={milestones} />
+        <Link href="/valve/historia" className={styles["home-page__more-link"]}>
+          Ver la historia completa →
+        </Link>
       </section>
 
       <section

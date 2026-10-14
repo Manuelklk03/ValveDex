@@ -77,3 +77,14 @@
   max-width: 65ch;
   line-height: 1.7;
 }
+
+.home-page__more-link {
+  align-self: flex-start;
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.home-page__more-link:hover {
+  text-decoration: underline;
+}
