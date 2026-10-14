@@ -12,8 +12,8 @@ const relationLabels: Record<
   EntryRelationType,
   { outgoing: string; incoming: string }
 > = {
-  "used-by": { outgoing: "Usada por", incoming: "Usa" },
-  "found-in": { outgoing: "Aparece en", incoming: "Aparecen aquí" },
+  "used-by": { outgoing: "Usuarios", incoming: "Equipo" },
+  "found-in": { outgoing: "Ubicaciones", incoming: "Presentes aquí" },
 };
 
 export function getRelatedEntries(entryId: string): RelatedEntry[] {

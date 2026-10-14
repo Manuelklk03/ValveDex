@@ -1,4 +1,4 @@
-import type { EntryRelation } from "./../domain/entry-relation";
+import type { EntryRelation } from "@/domain/entry-relation";
 
 export const entryRelations: EntryRelation[] = [
   { fromId: "crowbar", toId: "gordon-freeman", type: "used-by" },
