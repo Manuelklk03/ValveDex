@@ -48,7 +48,8 @@
 }
 
 .entry-page__games,
-.entry-page__sources {
+.entry-page__sources,
+.entry-page__related {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -64,17 +65,20 @@
   gap: 0.75rem;
 }
 
-.entry-page__game-link {
+.entry-page__game-link,
+.entry-page__related-link {
   color: var(--accent);
   font-weight: 600;
   text-decoration: none;
 }
 
-.entry-page__game-link:hover {
+.entry-page__game-link:hover,
+.entry-page__related-link:hover {
   text-decoration: underline;
 }
 
-.entry-page__game-year {
+.entry-page__game-year,
+.entry-page__related-label {
   color: var(--muted);
 }
 
