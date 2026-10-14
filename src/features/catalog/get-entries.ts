@@ -46,3 +46,9 @@ export function getEntryThumbnail(
 export function getEntryById(id: string): Entry | undefined {
   return entries.find((entry) => entry.id === id);
 }
+
+export function getEntriesByCategory(category: EntryCategory) {
+  return entries
+    .filter((entry) => entry.category === category)
+    .sort((a, b) => a.name.localeCompare(b.name, "es"));
+}
