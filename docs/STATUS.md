@@ -95,11 +95,14 @@ Comprobado por Claude Code el 2026-10-14 en `main` (`b27a831`, PR #26 fusionada)
   - 2 pruebas nuevas: el lore pertenece a juegos existentes (uno por juego como máximo) y tiene texto y fuentes `https`.
 - **Paso 17, relaciones entre fichas (PR #26, Manuel, hecho en casa):**
   - `src/domain/entry-relation.ts`: `EntryRelationType = "used-by" | "found-in"` y `EntryRelation` (`fromId`, `toId`, `type`).
-  - `src/data/entry-relations.ts`: 2 relaciones, palanca → Gordon Freeman (`used-by`) y Gordon Freeman → Black Mesa Inbound (`found-in`). Importa con ruta relativa (`./../domain/entry-relation`) en lugar del alias `@/`.
+  - `src/data/entry-relations.ts`: 2 relaciones, palanca → Gordon Freeman (`used-by`) y Gordon Freeman → Black Mesa Inbound (`found-in`).
   - `getEntryById()` en `get-entries.ts`.
-  - `src/features/catalog/get-related-entries.ts`: `getRelatedEntries(entryId)` devuelve `RelatedEntry[]` (`label`, `entry`) en los dos sentidos, con etiquetas de `Record<EntryRelationType, { outgoing; incoming }>` («Usada por»/«Usa», «Aparece en»/«Aparecen aquí»). Si un ID no existe, descarta la relación sin avisar.
+  - `src/features/catalog/get-related-entries.ts`: `getRelatedEntries(entryId)` devuelve `RelatedEntry[]` (`label`, `entry`) en los dos sentidos, con etiquetas de `Record<EntryRelationType, { outgoing; incoming }>`. Si un ID no existe, descarta la relación sin avisar (la prueba del paso 17b lo detecta antes).
   - Ficha: sección «Relacionado» (`entry-page__related`, `__related-label`, `__related-link`), solo si hay relaciones; reutiliza estilos con selectores agrupados.
-  - Sin prueba de integridad de relaciones todavía.
+- **Paso 17b (rama `test/entry-relations`, hecho por Claude a petición de Manuel el 2026-10-14, sin PR todavía):**
+  - 3 pruebas nuevas en `data-integrity.test.ts`: las relaciones apuntan a fichas existentes, ninguna ficha se relaciona consigo misma y no hay relaciones repetidas. Comprobado que la primera falla con un ID mal escrito (`gordon-freman`).
+  - `entry-relations.ts` importa con el alias `@/domain/entry-relation`.
+  - Etiquetas sin género fijo y distintas de la sección «Aparece en» de los juegos: `used-by` → «Usuarios» / «Equipo»; `found-in` → «Ubicaciones» / «Presentes aquí».
 - `/explorar` todavía no existe. Todavía no existe `src/lib`.
 
 ## Versiones comprobadas
@@ -152,20 +155,21 @@ Comprobado por Claude Code el 2026-10-14 en `main` (`b27a831`, PR #26 fusionada)
   5. `gh pr merge --merge --delete-branch`.
   6. `git checkout main && git pull`.
 - Es `gh pr`, no `git pr`. En Git Bash, si falta `gh`: `export PATH="$PATH:/c/Program Files/GitHub CLI"`.
-- Rama abierta: `docs/update-status`, creada por Claude el 2026-10-14 desde `b27a831` con esta actualización de documentación, sin commit.
+- Rama abierta: `test/entry-relations` (creada por Manuel desde `b27a831`), con tres commits de Claude: `4a08867` (documentación de la PR #26), `d988f1f` (paso 17b) y la documentación del paso 17b. Sin subir a GitHub.
 - **`git pull` en `main`:** la configuración global `merge.ff=false` hace que un `git pull` normal cree un commit de merge local. Usar `git pull --ff-only` o configurar una vez `git config --global pull.ff only`.
 - Criterio: una rama = una funcionalidad completa.
 - **Si editas algo en GitHub** (por ejemplo, el README), haz `git checkout main && git pull` antes de seguir. Si la rama local ya tenía cambios en el mismo archivo, `git merge origin/main` producirá un conflicto que hay que resolver.
 
 ## Comprobaciones
 
-Ejecutadas por Claude el 2026-10-14 en `main` (`b27a831`):
+Ejecutadas por Claude el 2026-10-14 en `test/entry-relations` (`d988f1f`):
 
-| Comando         | Resultado                                                                                                                                                                                              |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `npm run check` | Superado: lint, tipos, formato y 15 pruebas de Vitest                                                                                                                                                  |
-| `npm run build` | Superado                                                                                                                                                                                               |
-| HTML generado   | «Relacionado» en `/fichas/palanca` (Usada por: Gordon Freeman), `/fichas/gordon-freeman` (Usa: Palanca; Aparece en: Black Mesa Inbound) y `/fichas/black-mesa-inbound` (Aparecen aquí: Gordon Freeman) |
+| Comando         | Resultado                                                                                                                                                                                                |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run check` | Superado: lint, tipos, formato y 18 pruebas de Vitest                                                                                                                                                    |
+| `npm run build` | Superado                                                                                                                                                                                                 |
+| HTML generado   | «Relacionado»: `/fichas/palanca` (Usuarios: Gordon Freeman), `/fichas/gordon-freeman` (Equipo: Palanca; Ubicaciones: Black Mesa Inbound) y `/fichas/black-mesa-inbound` (Presentes aquí: Gordon Freeman) |
+| Prueba negativa | Con `toId: "gordon-freman"`, «apuntan a fichas existentes» falla e indica `crowbar → gordon-freman`; archivo restaurado después                                                                          |
 
 Comprobado el 2026-10-13 (PR #24): se generan `/lore` en los tres juegos y el hub muestra «Disponible» en Lore.
 
@@ -190,9 +194,7 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 - CI pendiente.
 - Comprobar con las fuentes los datos de `src/data/games.ts` y los textos de `src/data/entries.ts`, y si las armas aparecen también en las expansiones. Los enlaces de las fichas ya se han verificado (2026-10-12).
 - Half-Life no tiene easter eggs todavía (el apartado sigue en «Próximamente»); el texto del lore es solo la premisa, a la espera del control de spoilers.
-- **Las relaciones no tienen prueba de integridad:** un ID mal escrito en `entry-relations.ts` hace que la relación desaparezca sin error (paso 17b).
 - Las pruebas no comprueban que los textos coincidan con las fuentes: eso sigue siendo revisión manual.
-- Etiquetas de relación con género fijo («Usada por» sirve para «palanca», no para «revólver»); revisar al añadir más relaciones. «Aparece en» coincide con el título de la sección de juegos de la ficha.
 - El comparador original/HD no tiene ninguna ficha con las dos imágenes: no se ha visto funcionando en una página real. Se deja para la fase de contenido (imágenes sin fondo, PNG o WebP con transparencia, original y HD del mismo tamaño).
 - Las tablas del README sobre el universo Half-Life completo, los proyectos cancelados y los mods se escribieron sin contrastar con fuentes; llevan la nota «Lista en revisión».
 
@@ -214,7 +216,7 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 | 15   | Esqueleto: una ficha de muestra por categoría y apariciones en OF y BS                            | Hecho (PR #23)        |
 | 16   | Esqueleto: lore por juego y su página                                                             | Hecho (PR #24)        |
 | 17   | Esqueleto: relaciones entre fichas y bloque «Relacionado»                                         | Hecho (PR #26)        |
-| 17b  | Esqueleto: prueba de integridad de las relaciones y alias `@/` en su import                       | Siguiente             |
+| 17b  | Esqueleto: prueba de integridad de las relaciones, alias `@/` y etiquetas sin género              | Hecho, rama sin PR    |
 | 18   | Esqueleto: `/explorar` con una fila horizontal por categoría y «Ver todo»                         | Pendiente             |
 | 19   | Esqueleto: sección Valve (`/valve/historia`, `/valve/personas/[slug]`, `/valve/steam`)            | Pendiente             |
 | 20   | Esqueleto: página de créditos generada desde los datos                                            | Pendiente             |
@@ -224,21 +226,18 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 
 Decisión de Manuel (2026-10-13): **terminar primero el esqueleto** (todas las rutas y piezas con datos mínimos, pasos 15–20) y después la fase de contenido (imágenes sin fondo, comparador funcionando, más fichas, revisión visual).
 
-Pasos 15, 16 y 17 terminados (falta la prueba del 17).
+Pasos 15, 16, 17 y 17b terminados (17b pendiente de PR).
 
-1. Manuel, fusionar esta actualización de documentación (rama `docs/update-status`):
+1. Manuel, subir y fusionar la rama `test/entry-relations` (documentación y paso 17b):
    ```cmd
-   git add docs CHANGELOG.md
-   git commit -m "docs: registrar las relaciones entre fichas"
-   git push -u origin docs/update-status
+   git push -u origin test/entry-relations
    gh pr create --base main --fill
    gh pr merge --merge --delete-branch
    git checkout main && git pull --ff-only
    ```
-2. **Paso 17b** (rama `test/entry-relations`, guiado en modo plan): en `data-integrity.test.ts`, comprobar que cada relación apunta a fichas existentes (`fromId` y `toId`), que ninguna ficha se relaciona consigo misma y que no hay relaciones repetidas; cambiar el import de `entry-relations.ts` al alias `@/domain/entry-relation`.
-3. **Paso 18**: `/explorar` básico, con una fila horizontal por categoría (`scroll-snap`), enlace «Ver todo» y sin buscador todavía. El enlace «Explorar» de la cabecera da 404 desde el principio.
-4. Pasos 19 (sección Valve) y 20 (créditos). Después, revisión completa de la documentación y el README para todo el proyecto Valve.
-5. Pendiente de Manuel: revisar en `npm run dev` el lore, los apartados nuevos y «Relacionado» en móvil y con teclado.
+2. **Paso 18** (guiado en modo plan): `/explorar` básico, con una fila horizontal por categoría (`scroll-snap`), enlace «Ver todo» y sin buscador todavía. El enlace «Explorar» de la cabecera da 404 desde el principio.
+3. Pasos 19 (sección Valve) y 20 (créditos). Después, revisión completa de la documentación y el README para todo el proyecto Valve.
+4. Pendiente de Manuel: revisar en `npm run dev` el lore, los apartados nuevos y «Relacionado» en móvil y con teclado.
 
 ## Cómo actualizar este archivo
 

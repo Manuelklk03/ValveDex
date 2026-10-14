@@ -33,7 +33,7 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 - [ ] Ficha individual enlazada desde los apartados del hub. Hecha (PR #14, #16 y #18): `/fichas/[entrySlug]` con tema, «Aparece en», datos e imagen por juego, y fuentes. Falta la revisión en navegador.
 - [ ] Preparar datos reales de los tres juegos con una muestra de cada categoría inicial. Muestra mínima del esqueleto hecha (PR #23: 9 fichas, todas las categorías; apariciones en los tres juegos); falta ampliarla en la fase de contenido.
 - [ ] Registrar las fuentes y los recursos visuales utilizados. En curso: cada ficha, juego e hito tiene fuentes; cada imagen guarda fuente, crédito y licencia (`MediaAsset`). Falta una página o sección de créditos.
-- [ ] Mostrar relaciones entre fichas y una página 404 útil. La 404 está hecha (PR #15). Relaciones hechas (PR #26: `EntryRelation`, bloque «Relacionado» en las dos direcciones); falta su prueba de integridad (paso 17b).
+- [ ] Mostrar relaciones entre fichas y una página 404 útil. La 404 está hecha (PR #15). Relaciones hechas (PR #26: `EntryRelation`, bloque «Relacionado» en las dos direcciones) y su prueba de integridad (paso 17b, rama `test/entry-relations`). Falta la revisión en navegador para marcarlo.
 - [x] Incorporar comprobaciones de integridad de datos (Vitest, 13 pruebas, PR #21; `npm run check` superado el 2026-10-13).
 - [ ] Incorporar un recorrido E2E.
 
