@@ -6,6 +6,8 @@ import { entryRelations } from "./entry-relations";
 import { gameSections } from "./game-sections";
 import { games } from "./games";
 import { gameLore } from "./game-lore";
+import { valveMilestones } from "./valve-milestones";
+import { valvePeople } from "./valve-people";
 import { universes } from "./universes";
 
 function findDuplicates(values: string[]): string[] {
@@ -200,5 +202,34 @@ describe("relaciones entre fichas", () => {
         ),
       ),
     ).toEqual([]);
+  });
+});
+
+describe("Valve", () => {
+  it("los hitos tienen id único y fuentes https", () => {
+    expect(findDuplicates(valveMilestones.map((m) => m.id))).toEqual([]);
+
+    for (const milestone of valveMilestones) {
+      expect(milestone.sources.length, milestone.id).toBeGreaterThan(0);
+
+      for (const source of milestone.sources) {
+        expect(source.url, milestone.id).toMatch(/^https:\/\//);
+      }
+    }
+  });
+
+  it("las personas tienen id y slug únicos y fuentes https", () => {
+    expect(findDuplicates(valvePeople.map((person) => person.id))).toEqual([]);
+    expect(findDuplicates(valvePeople.map((person) => person.slug))).toEqual(
+      [],
+    );
+
+    for (const person of valvePeople) {
+      expect(person.sources.length, person.id).toBeGreaterThan(0);
+
+      for (const source of person.sources) {
+        expect(source.url, person.id).toMatch(/^https:\/\//);
+      }
+    }
   });
 });

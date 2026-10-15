@@ -88,3 +88,13 @@
 .home-page__more-link:hover {
   text-decoration: underline;
 }
+
+.home-page__people {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.home-page__person-role {
+  color: var(--muted);
+}
