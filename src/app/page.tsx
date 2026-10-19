@@ -91,6 +91,10 @@ export default function HomePage() {
           Steam es la plataforma de distribución digital de Valve, lanzada en
           2003. Hoy es la tienda y biblioteca de juegos para PC más utilizada.
         </p>
+
+        <Link href="/valve/steam" className={styles["home-page__more-link"]}>
+          Más sobre Steam →
+        </Link>
       </section>
     </main>
   );
