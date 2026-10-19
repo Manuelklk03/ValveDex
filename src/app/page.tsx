@@ -1,10 +1,13 @@
 import Link from "next/link";
 import styles from "./page.module.css";
-import { getValveMilestones } from "@/features/valve/get-valve-milestones";
+import { getLatestValveMilestones } from "@/features/valve/get-valve-milestones";
 import { Timeline } from "@/components/ui/timeline";
+import { getValvePeople } from "@/features/valve/get-valve-people";
 
 export default function HomePage() {
-  const milestones = getValveMilestones();
+  const milestones = getLatestValveMilestones(3);
+  const people = getValvePeople();
+
   return (
     <main className={styles["home-page"]}>
       <section
@@ -46,6 +49,22 @@ export default function HomePage() {
           fundada en 1996 por Gabe Newell y Mike Harrington, con sede en
           Bellevue (Washington). Su primer juego, Half-Life, se publicó en 1998.
         </p>
+
+        <ul className={styles["home-page__people"]}>
+          {people.map((person) => (
+            <li key={person.id}>
+              <Link
+                href={`/valve/personas/${person.slug}`}
+                className={styles["home-page__more-link"]}
+              >
+                {person.name}
+              </Link>{" "}
+              <span className={styles["home-page__person-role"]}>
+                · {person.role}
+              </span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section
@@ -56,6 +75,9 @@ export default function HomePage() {
           Historia de Valve
         </h2>
         <Timeline milestones={milestones} />
+        <Link href="/valve/historia" className={styles["home-page__more-link"]}>
+          Ver la historia completa →
+        </Link>
       </section>
 
       <section
@@ -69,6 +91,10 @@ export default function HomePage() {
           Steam es la plataforma de distribución digital de Valve, lanzada en
           2003. Hoy es la tienda y biblioteca de juegos para PC más utilizada.
         </p>
+
+        <Link href="/valve/steam" className={styles["home-page__more-link"]}>
+          Más sobre Steam →
+        </Link>
       </section>
     </main>
   );
