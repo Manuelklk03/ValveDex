@@ -22,6 +22,7 @@ Este documento define reglas estables. El avance actual se registra en [docs/STA
 - Durante un paso de aprendizaje, identifica la parte que hará Manuel y la comprobación final. Si pide una implementación completa, hazla y explica después lo esencial.
 - Proporciona comandos compatibles con la terminal indicada. Alacritty es el emulador: comprueba si utiliza PowerShell, CMD o Bash antes de dar comandos específicos del shell.
 - Si entregas un archivo para que lo sustituya manualmente, proporciona su contenido completo y la ruta relativa al proyecto.
+- Si el cambio es sobre un archivo existente, indica las líneas exactas que hay que modificar y explica por qué y para qué se hace cada cambio.
 - Trabaja en la entrega solicitada; el roadmap no es una orden de implementar automáticamente todas las fases.
 
 ## Reglas de arquitectura
@@ -84,7 +85,9 @@ Prueba comportamientos importantes: filtros combinados, fichas inexistentes, int
 - Actualiza estas instrucciones si cambian las normas de trabajo.
 - Anota cambios completados relevantes en «Sin publicar» del changelog. Las funciones futuras pertenecen al roadmap.
 - Marca un objetivo como completado únicamente con evidencia de su implementación y comprobación.
-- Usa mensajes de commit tipo `feat(catalog): añadir filtro por juego` o `docs: documentar el arranque`, siguiendo Conventional Commits cuando se realicen commits.
+- Usa mensajes de commit tipo `feat(catalog): añadir filtro por juego` o `docs: documentar el arranque`, siguiendo Conventional Commits (`feat`, `fix`, `refactor`, `docs`, `style`, `test`, `chore`). Manuel hace los commits con el mensaje que redacta el agente: al final de cada paso, entrégale el mensaje completo (título, línea en blanco y descripción en lista con `- `). No hagas el commit salvo petición expresa.
+- Sigue GitHub Flow: nunca trabajes en `main`; una rama por funcionalidad, corrección o cambio lógico (`feature/`, `fix/`, `refactor/`, `docs/`, `test/`, `chore/`), PR hacia `main`, revisión, merge y borrado de la rama. Actualiza `main` con `git pull --ff-only`.
+- Versionado semántico con tags y GitHub Releases solo cuando `main` esté estable. Avisa a Manuel cuando veas un punto adecuado, pero no crees el tag sin su indicación. Criterios en [docs/STATUS.md](docs/STATUS.md#versiones-del-proyecto).
 - Al terminar, comunica qué cambió, cómo se comprobó y qué limitación queda. No inventes comandos ejecutados, resultados, métricas o publicaciones.
 
 Formato de referencia: [AGENTS.md](https://agents.md/). Si una herramienta no descubre este archivo automáticamente, indícale explícitamente que lo lea; no mantengas copias divergentes de estas reglas.

@@ -32,12 +32,15 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 - [ ] Hub de juego para Half-Life, Opposing Force y Blue Shift con sus apartados (lore, mapas, armas, personajes, enemigos, curiosidades, easter eggs). Hub con cabecera, fuentes, apartados y tema propio por juego (PR #11). Los apartados con contenido enlazan a su página: fichas de muestra en todas las categorías (PR #23) y lore de los tres juegos (PR #24). Falta un easter egg de Half-Life y la revisión en navegador.
 - [ ] Ficha individual enlazada desde los apartados del hub. Hecha (PR #14, #16 y #18): `/fichas/[entrySlug]` con tema, «Aparece en», datos e imagen por juego, y fuentes. Falta la revisión en navegador.
 - [ ] Preparar datos reales de los tres juegos con una muestra de cada categoría inicial. Muestra mínima del esqueleto hecha (PR #23: 9 fichas, todas las categorías; apariciones en los tres juegos); falta ampliarla en la fase de contenido.
-- [ ] Registrar las fuentes y los recursos visuales utilizados. En curso: cada ficha, juego e hito tiene fuentes; cada imagen guarda fuente, crédito y licencia (`MediaAsset`). Falta una página o sección de créditos.
-- [ ] Mostrar relaciones entre fichas y una página 404 útil. La 404 está hecha (PR #15). Relaciones hechas (PR #26: `EntryRelation`, bloque «Relacionado» en las dos direcciones) y su prueba de integridad (paso 17b, rama `test/entry-relations`). Falta la revisión en navegador para marcarlo.
-- [x] Incorporar comprobaciones de integridad de datos (Vitest, 13 pruebas, PR #21; `npm run check` superado el 2026-10-13).
+- [ ] Registrar las fuentes y los recursos visuales utilizados. En curso: cada ficha, juego, hito y persona tiene fuentes; cada imagen guarda fuente, crédito y licencia (`MediaAsset`). Falta la página de créditos (paso 20).
+- [ ] Mostrar relaciones entre fichas y una página 404 útil. La 404 está hecha (PR #15). Relaciones hechas (PR #26: `EntryRelation`, bloque «Relacionado» en las dos direcciones) con su prueba de integridad (PR #27). Falta la revisión en navegador para marcarlo.
+- [ ] Sección Valve: `/valve/historia`, `/valve/personas/[personSlug]` y `/valve/steam`, con la portada como resumen (PR #29). Falta la revisión en navegador y contrastar los textos con sus fuentes.
+- [x] Incorporar comprobaciones de integridad de datos (Vitest, PR #21; 20 pruebas y `npm run check` superado el 2026-10-19).
 - [ ] Incorporar un recorrido E2E.
 
-**Orden acordado (2026-10-13):** completar antes el esqueleto (pasos 15–20 de STATUS: fichas de muestra en todas las categorías, lore, relaciones, `/explorar` básico, sección Valve y créditos) y dejar para después el contenido y el pulido: imágenes sin fondo, comparador original/HD visible y más fichas.
+**Orden acordado (2026-10-13):** completar antes el esqueleto (pasos 15–20 de STATUS: fichas de muestra en todas las categorías, lore, relaciones, `/explorar` básico, sección Valve y créditos) y dejar para después el contenido y el pulido: imágenes sin fondo, comparador original/HD visible y más fichas. A 2026-10-19 solo falta el paso 20 (créditos). Pendiente de decidir si los campos propios por categoría y los tipos de proyectos cancelados y mods entran también en el esqueleto.
+
+**Versiones (decisión de Manuel, 2026-10-16):** `v0.1.0` al cerrar el esqueleto; `v0.x` por cada bloque grande de contenido; `v1.0.0` cuando esté completo **todo el universo Half-Life** (no solo esta entrega). Detalle en [STATUS.md](STATUS.md#versiones-del-proyecto).
 
 **Se acepta cuando:** desde la portada se llega a Universos → Half-Life → cada uno de sus tres juegos → un apartado → una ficha, y se sigue una relación sin enlaces rotos, con la paleta del universo aplicada, en móvil y escritorio.
 
@@ -47,9 +50,9 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 
 ## Entrega 2 — Hub principal, búsqueda y filtros
 
-- [ ] Crear el hub `/explorar` con buscador global y un carrusel horizontal por categoría (armas, mapas, personajes, enemigos…).
+- [ ] Crear el hub `/explorar` con buscador global y un carrusel horizontal por categoría (armas, mapas, personajes, enemigos…). Hecho sin buscador (PR #28): una fila con `scroll-snap` por cada categoría con fichas.
 - [ ] Filtrar todos los carruseles con la búsqueda, ocultar filas vacías y mostrar «sin resultados».
-- [ ] Enlazar «Ver todo» de cada fila al listado completo de esa categoría.
+- [ ] Enlazar «Ver todo» de cada fila al listado completo de esa categoría. Hecho como ruta `/explorar/[categorySlug]` (PR #28) en lugar de `?category=`; falta la revisión en navegador.
 - [ ] Buscar por nombre y combinar filtros por juego y categoría.
 - [ ] Añadir ordenación, contador y limpieza de filtros.
 - [ ] Reflejar los filtros aplicados en la URL.
@@ -99,7 +102,7 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 
 ## Ampliación posterior
 
-La sección Valve de la portada empieza como v1 (5 hitos). Más adelante crecerá con más hitos y la historia completa, personas clave como Gabe Newell, Steam, motores (GoldSrc, Source, Source 2), hardware y curiosidades, siempre con fuentes.
+La sección Valve ya tiene páginas propias (PR #29): historia completa (5 hitos), personas (los dos fundadores) y Steam. Crecerá con más hitos, más personas clave, motores (GoldSrc, Source, Source 2), hardware y curiosidades, siempre con fuentes.
 
 **Universo Half-Life completo (según Manuel, 2026-10-12):** después de Half-Life, Opposing Force y Blue Shift se añadirán Uplink, Decay, Half-Life: Source, Half-Life 2 (con Deathmatch y Lost Coast), los episodios, Half-Life Deathmatch: Source, Half-Life 2: Survivor y Half-Life: Alyx. La lista del README está pendiente de contrastar con fuentes.
 
