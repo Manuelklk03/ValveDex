@@ -1,12 +1,12 @@
 # Estado actual — ValveDex
 
-Última actualización: **2026-10-14**.  
+Última actualización: **2026-10-19**.  
 Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.  
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
 ## Modo de trabajo
 
-Manuel escribe el código guiado paso a paso. En **modo plan**, el asistente explica cada archivo, por qué se usa y su lógica, con respuestas breves. En **modo auto**, el asistente solo actualiza documentación (este archivo y, si corresponde, roadmap y CHANGELOG) y no toca código, configuración ni dependencias. Solo implementa código cuando Manuel lo pide expresamente (tareas tediosas). No se pasa al paso siguiente hasta que Manuel confirma que ha terminado el actual.
+Manuel escribe el código guiado paso a paso. En **modo plan**, el asistente explica cada archivo, por qué se usa y su lógica, con respuestas breves. En cada cambio sobre un archivo existente indica las líneas exactas que hay que modificar y explica por qué y para qué se hace. Al final de cada paso entrega el mensaje de commit (ver «Git»). En **modo auto**, el asistente solo actualiza documentación (este archivo y, si corresponde, roadmap y CHANGELOG) y no toca código, configuración ni dependencias. Solo implementa código cuando Manuel lo pide expresamente (tareas tediosas). No se pasa al paso siguiente hasta que Manuel confirma que ha terminado el actual.
 
 ## Visión del producto (decidida el 2026-10-07)
 
@@ -19,7 +19,7 @@ Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift.
 
 ## Estado confirmado
 
-Comprobado por Claude Code el 2026-10-14 en `main` (`b27a831`, PR #26 fusionada).
+Comprobado por Claude Code el 2026-10-19 en `main` (`2baaaf1`, PR #29 fusionada).
 
 - Next.js inicializado en la raíz del repositorio. Terminal de Manuel: CMD en Windows.
 - `src/app/layout.tsx`: `lang="es"`, metadatos con `title.template`, `<SiteHeader />` y `<SiteFooter />`.
@@ -99,11 +99,23 @@ Comprobado por Claude Code el 2026-10-14 en `main` (`b27a831`, PR #26 fusionada)
   - `getEntryById()` en `get-entries.ts`.
   - `src/features/catalog/get-related-entries.ts`: `getRelatedEntries(entryId)` devuelve `RelatedEntry[]` (`label`, `entry`) en los dos sentidos, con etiquetas de `Record<EntryRelationType, { outgoing; incoming }>`. Si un ID no existe, descarta la relación sin avisar (la prueba del paso 17b lo detecta antes).
   - Ficha: sección «Relacionado» (`entry-page__related`, `__related-label`, `__related-link`), solo si hay relaciones; reutiliza estilos con selectores agrupados.
-- **Paso 17b (rama `test/entry-relations`, hecho por Claude a petición de Manuel el 2026-10-14, sin PR todavía):**
+- **Paso 17b (PR #27, hecho por Claude a petición de Manuel el 2026-10-14):**
   - 3 pruebas nuevas en `data-integrity.test.ts`: las relaciones apuntan a fichas existentes, ninguna ficha se relaciona consigo misma y no hay relaciones repetidas. Comprobado que la primera falla con un ID mal escrito (`gordon-freman`).
   - `entry-relations.ts` importa con el alias `@/domain/entry-relation`.
   - Etiquetas sin género fijo y distintas de la sección «Aparece en» de los juegos: `used-by` → «Usuarios» / «Equipo»; `found-in` → «Ubicaciones» / «Presentes aquí».
-- `/explorar` todavía no existe. Todavía no existe `src/lib`.
+- **Paso 18, `/explorar` básico (PR #28, Manuel, hecho en el portátil):**
+  - `getEntriesByCategory(category)` en `get-entries.ts`: fichas de una categoría de todos los juegos.
+  - `src/features/catalog/components/entry-card.tsx` + css: tarjeta de ficha reutilizable, clicable entera con `::after`.
+  - `src/features/catalog/components/entry-row.tsx` + css: fila con título, carrusel horizontal con `scroll-snap` (sin JavaScript) y enlace «Ver todo» con el nombre de la categoría oculto con `sr-only` para lectores de pantalla.
+  - `/explorar`: una fila por cada categoría con fichas. El enlace «Explorar» de la cabecera ya no da 404.
+  - `/explorar/[categorySlug]`: ruta estática con todas las fichas de la categoría en una cuadrícula (`auto-fill` + `minmax`), contador y estado vacío; 404 para el lore y para slugs inexistentes.
+  - Todavía sin buscador ni filtros (Entrega 2).
+- **Paso 19, sección Valve (PR #29, Manuel, 2026-10-16 a 2026-10-19):**
+  - 19a: `/valve/historia` con la cronología completa (`Timeline`). `getLatestValveMilestones(count)` en `get-valve-milestones.ts`: la portada muestra solo los 3 últimos hitos (2003, 2004 y 2022) y enlaza a la historia completa. `src/app/valve/valve-page.module.css`: bloque BEM `valve-page` compartido por las tres páginas.
+  - 19b: `src/domain/valve-person.ts` (`ValvePerson`: `id`, `slug`, `name`, `role`, `summary`, `sources`), `src/data/valve-people.ts` (Gabe Newell y Mike Harrington), `src/features/valve/get-valve-people.ts` (`getValvePeople()` ordenadas por nombre, `getValvePersonBySlug()`) y la ruta estática `/valve/personas/[personSlug]` con 404. La sección «Valve» de la portada enlaza a cada fundador (`home-page__people`, `__person-role`, `__more-link`).
+  - 19c: `/valve/steam`, con la historia de la plataforma y su fuente (Wikipedia). El texto está en la página; se pasará a `src/data` si crece. La sección «Steam» de la portada enlaza a ella.
+  - 2 pruebas nuevas: hitos de Valve con `id` único y fuentes `https`; personas con `id` y `slug` únicos y fuentes `https`.
+- Todavía no existe `src/lib`.
 
 ## Versiones comprobadas
 
@@ -124,7 +136,7 @@ Comprobado por Claude Code el 2026-10-14 en `main` (`b27a831`, PR #26 fusionada)
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- `main` en `b27a831`. PRs fusionadas:
+- `main` en `2baaaf1`. PRs fusionadas:
   - #1–#6: historial reconstruido.
   - #7 `fix/errores-css`.
   - #8 `feature/valve-timeline`.
@@ -145,31 +157,38 @@ Comprobado por Claude Code el 2026-10-14 en `main` (`b27a831`, PR #26 fusionada)
   - #24 `feature/game-lore` (2026-10-13).
   - #25 `docs/update-status`.
   - #26 `feature/entry-relations` (2026-10-14).
+  - #27 `test/entry-relations`.
+  - #28 `feature/explore-page`.
+  - #29 `feature/valve-section` (2026-10-19).
 - `main` protegida: solo cambios por PR (0 aprobaciones, también para administradores), sin force push ni borrado. El repositorio borra las ramas al mergear.
 - Configuración: local `branch.main.mergeoptions=--no-ff` y `pull.rebase=false`; global `pull.rebase=false` y `merge.ff=false`.
-- Flujo:
-  1. Rama desde `main` actualizado.
-  2. Commits.
-  3. `git push -u origin <rama>` (la primera vez).
-  4. `gh pr create --base main --fill`.
-  5. `gh pr merge --merge --delete-branch`.
-  6. `git checkout main && git pull`.
+- Flujo (GitHub Flow, pedido por Manuel el 2026-10-16):
+  1. `git switch main && git pull --ff-only`.
+  2. `git switch -c <tipo>/<nombre>` (`feature/`, `fix/`, `refactor/`, `docs/`, `test/`, `chore/`). Nunca trabajar directamente en `main`.
+  3. Commits pequeños y claros.
+  4. `git push -u origin <rama>` (la primera vez; después, `git push`).
+  5. `gh pr create --base main --fill`.
+  6. Revisar los cambios y `gh pr merge --merge --delete-branch`.
+  7. `git switch main && git pull --ff-only`.
+- **Mensajes de commit:** los redacta la IA y los escribe Manuel (2026-10-16). Al final de cada paso, el asistente entrega el mensaje completo: título Conventional Commits en español (`feat(valve): …`), línea en blanco y descripción en lista con `- ` (las líneas que continúan un punto van sangradas con dos espacios). El asistente no hace el commit salvo petición expresa.
+- **Trabajo entre dos PCs:** para continuar una rama sin terminar en el otro equipo, `git push` en el primero y, en el segundo, `git fetch`, `git switch <rama>` y `git pull --ff-only`. La PR se crea cuando la rama está completa. Antes de cambiar de equipo, `git status` debe indicar el árbol limpio y la rama al día con el remoto.
 - Es `gh pr`, no `git pr`. En Git Bash, si falta `gh`: `export PATH="$PATH:/c/Program Files/GitHub CLI"`.
-- Rama abierta: `test/entry-relations` (creada por Manuel desde `b27a831`), con tres commits de Claude: `4a08867` (documentación de la PR #26), `d988f1f` (paso 17b) y la documentación del paso 17b. Sin subir a GitHub.
+- Rama abierta: `docs/update-status`, creada por Claude el 2026-10-19 desde `2baaaf1` con esta actualización de la documentación.
 - **`git pull` en `main`:** la configuración global `merge.ff=false` hace que un `git pull` normal cree un commit de merge local. Usar `git pull --ff-only` o configurar una vez `git config --global pull.ff only`.
 - Criterio: una rama = una funcionalidad completa.
 - **Si editas algo en GitHub** (por ejemplo, el README), haz `git checkout main && git pull` antes de seguir. Si la rama local ya tenía cambios en el mismo archivo, `git merge origin/main` producirá un conflicto que hay que resolver.
 
 ## Comprobaciones
 
-Ejecutadas por Claude el 2026-10-14 en `test/entry-relations` (`d988f1f`):
+Ejecutadas por Claude el 2026-10-19 en `main` (`2baaaf1`):
 
-| Comando         | Resultado                                                                                                                                                                                                |
-| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run check` | Superado: lint, tipos, formato y 18 pruebas de Vitest                                                                                                                                                    |
-| `npm run build` | Superado                                                                                                                                                                                                 |
-| HTML generado   | «Relacionado»: `/fichas/palanca` (Usuarios: Gordon Freeman), `/fichas/gordon-freeman` (Equipo: Palanca; Ubicaciones: Black Mesa Inbound) y `/fichas/black-mesa-inbound` (Presentes aquí: Gordon Freeman) |
-| Prueba negativa | Con `toId: "gordon-freman"`, «apuntan a fichas existentes» falla e indica `crowbar → gordon-freman`; archivo restaurado después                                                                          |
+| Comando         | Resultado                                                                                                                                                 |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run check` | Superado: lint, tipos, formato y 20 pruebas de Vitest                                                                                                     |
+| `npm run build` | Superado: 55 páginas estáticas, entre ellas `/valve/historia`, `/valve/steam`, `/valve/personas/gabe-newell` y `/valve/personas/mike-harrington`          |
+| HTML generado   | La portada muestra 3 hitos (2003, 2004 y 2022) y enlaza a `/valve/historia`, a las dos personas y a `/valve/steam`; `/valve/historia` muestra los 5 hitos |
+
+Comprobado el 2026-10-14 (PR #27): «Relacionado» aparece en `/fichas/palanca`, `/fichas/gordon-freeman` y `/fichas/black-mesa-inbound`, y la prueba de relaciones falla con un ID mal escrito (`gordon-freman`).
 
 Comprobado el 2026-10-13 (PR #24): se generan `/lore` en los tres juegos y el hub muestra «Disponible» en Lore.
 
@@ -197,6 +216,8 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 - Las pruebas no comprueban que los textos coincidan con las fuentes: eso sigue siendo revisión manual.
 - El comparador original/HD no tiene ninguna ficha con las dos imágenes: no se ha visto funcionando en una página real. Se deja para la fase de contenido (imágenes sin fondo, PNG o WebP con transparencia, original y HD del mismo tamaño).
 - Las tablas del README sobre el universo Half-Life completo, los proyectos cancelados y los mods se escribieron sin contrastar con fuentes; llevan la nota «Lista en revisión».
+- Los textos de las personas de Valve y de `/valve/steam` no los ha contrastado el agente con sus fuentes.
+- Pendientes de diseño, hablados el 2026-10-13 y sin paso asignado: campos propios por categoría (unión discriminada: munición, papel, ubicación…) y tipos y rutas de proyectos cancelados y mods. Propuesta: pasos 21 y 22 del esqueleto, a confirmar por Manuel.
 
 ## Pasos de la interfaz (guiados)
 
@@ -216,28 +237,45 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 | 15   | Esqueleto: una ficha de muestra por categoría y apariciones en OF y BS                            | Hecho (PR #23)        |
 | 16   | Esqueleto: lore por juego y su página                                                             | Hecho (PR #24)        |
 | 17   | Esqueleto: relaciones entre fichas y bloque «Relacionado»                                         | Hecho (PR #26)        |
-| 17b  | Esqueleto: prueba de integridad de las relaciones, alias `@/` y etiquetas sin género              | Hecho, rama sin PR    |
-| 18   | Esqueleto: `/explorar` con una fila horizontal por categoría y «Ver todo»                         | Pendiente             |
-| 19   | Esqueleto: sección Valve (`/valve/historia`, `/valve/personas/[slug]`, `/valve/steam`)            | Pendiente             |
-| 20   | Esqueleto: página de créditos generada desde los datos                                            | Pendiente             |
+| 17b  | Esqueleto: prueba de integridad de las relaciones, alias `@/` y etiquetas sin género              | Hecho (PR #27)        |
+| 18   | Esqueleto: `/explorar` con una fila horizontal por categoría y «Ver todo»                         | Hecho (PR #28)        |
+| 19   | Esqueleto: sección Valve (`/valve/historia`, `/valve/personas/[slug]`, `/valve/steam`)            | Hecho (PR #29)        |
+| 20   | Esqueleto: página de créditos generada desde los datos                                            | Siguiente             |
 | —    | Fase de contenido: imágenes sin fondo, comparador visible, más fichas, revisión en navegador, E2E | Después del esqueleto |
 
 ## Siguiente paso
 
 Decisión de Manuel (2026-10-13): **terminar primero el esqueleto** (todas las rutas y piezas con datos mínimos, pasos 15–20) y después la fase de contenido (imágenes sin fondo, comparador funcionando, más fichas, revisión visual).
 
-Pasos 15, 16, 17 y 17b terminados (17b pendiente de PR).
+Pasos 15 a 19 terminados.
 
-1. Manuel, subir y fusionar la rama `test/entry-relations` (documentación y paso 17b):
+1. Manuel, fusionar esta actualización de la documentación (rama `docs/update-status`):
    ```cmd
-   git push -u origin test/entry-relations
+   git add CHANGELOG.md AGENTS.md docs
+   git commit
+   git push -u origin docs/update-status
    gh pr create --base main --fill
    gh pr merge --merge --delete-branch
-   git checkout main && git pull --ff-only
+   git switch main && git pull --ff-only
    ```
-2. **Paso 18** (guiado en modo plan): `/explorar` básico, con una fila horizontal por categoría (`scroll-snap`), enlace «Ver todo» y sin buscador todavía. El enlace «Explorar» de la cabecera da 404 desde el principio.
-3. Pasos 19 (sección Valve) y 20 (créditos). Después, revisión completa de la documentación y el README para todo el proyecto Valve.
-4. Pendiente de Manuel: revisar en `npm run dev` el lore, los apartados nuevos y «Relacionado» en móvil y con teclado.
+2. **Paso 20** (guiado en modo plan): página `/creditos` generada desde los datos (fuentes de juegos, fichas, lore, hitos y personas; imágenes con su crédito y licencia), enlazada desde el pie.
+3. Decidir si los campos por categoría y los proyectos cancelados y mods entran en el esqueleto (pasos 21 y 22) o en la fase de contenido.
+4. **Versión:** al cerrar el esqueleto, proponer a Manuel la `v0.1.0` (no crear el tag sin su confirmación).
+5. Pendiente de Manuel: revisar en `npm run dev` el lore, «Relacionado», `/explorar` y la sección Valve en móvil y con teclado.
+
+## Versiones del proyecto
+
+Decisión de Manuel (2026-10-16): versionado semántico con tags de Git y GitHub Releases, creados solo cuando `main` esté estable y Manuel lo pida. El asistente avisa cuando ve un punto adecuado, pero no crea el tag.
+
+| Versión  | Cuándo                                                                                                                            |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `v0.1.0` | Al terminar el esqueleto: todas las rutas y piezas existen, funcionan y tienen pruebas                                            |
+| `v0.x.0` | Cada bloque grande de contenido estable (por ejemplo, Half-Life completo, después sus expansiones, Half-Life 2…)                  |
+| `v0.x.y` | Correcciones y ajustes pequeños                                                                                                   |
+| `v1.0.0` | **Todo el universo Half-Life**: todos sus juegos, expansiones y episodios, con proyectos cancelados y mods, revisado y desplegado |
+| `v1.x.0` | Cada universo nuevo (Portal, Team Fortress…) o funcionalidad grande posterior                                                     |
+
+Comandos, cuando Manuel lo indique: `git tag -a vX.Y.Z -m "Version X.Y.Z"`, `git push origin vX.Y.Z` y `gh release create vX.Y.Z --generate-notes`. `package.json` ya declara `"version": "0.1.0"` (valor de la plantilla); se actualizará al crear cada versión.
 
 ## Cómo actualizar este archivo
 

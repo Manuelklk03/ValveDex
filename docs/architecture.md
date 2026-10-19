@@ -2,9 +2,9 @@
 
 Fecha de la decisión inicial: **2026-09-30**.
 
-Última actualización: **2026-10-14**: relaciones entre fichas (`EntryRelation`); lore por juego (`GameLore`) y página de apartado con dos tipos de contenido; comparador de imágenes original/HD, pruebas de integridad con Vitest, rutas previstas de la sección Valve y créditos, y orden «esqueleto antes que contenido».
+Última actualización: **2026-10-19**: sección Valve (`/valve/historia`, `/valve/personas/[personSlug]`, `/valve/steam`, tipo `ValvePerson`); `/explorar` básico con filas por categoría y `/explorar/[categorySlug]`; relaciones entre fichas (`EntryRelation`); lore por juego (`GameLore`); comparador de imágenes original/HD, pruebas de integridad con Vitest y orden «esqueleto antes que contenido».
 
-Estado: **aplicación Next.js inicializada.** Existen `src/app`, `src/components/layout`, `src/components/ui`, `src/domain`, `src/data` `src/features/valve` y `src/features/universes`. Rutas existentes: `/`, `/universos`, `/universos/[universeSlug]`, `/universos/[universeSlug]/[gameSlug]`, `/universos/[universeSlug]/[gameSlug]/[sectionSlug]` y `/fichas/[entrySlug]`. Funcionalidad `src/features/games` para el hub de juego. Pruebas de integridad en `src/data/data-integrity.test.ts` (Vitest, configuración en `vitest.config.mts`). Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
+Estado: **aplicación Next.js inicializada.** Existen `src/app`, `src/components/layout`, `src/components/ui`, `src/domain`, `src/data`, `src/features/valve`, `src/features/universes`, `src/features/games` y `src/features/catalog` (con `components/`). Rutas existentes: `/`, `/universos`, `/universos/[universeSlug]`, `/universos/[universeSlug]/[gameSlug]`, `/universos/[universeSlug]/[gameSlug]/[sectionSlug]`, `/fichas/[entrySlug]`, `/explorar`, `/explorar/[categorySlug]`, `/valve/historia`, `/valve/personas/[personSlug]` y `/valve/steam`. Funcionalidad `src/features/games` para el hub de juego. Pruebas de integridad en `src/data/data-integrity.test.ts` (Vitest, configuración en `vitest.config.mts`). Este documento evolucionará con el código. Las rutas y carpetas descritas son objetivos, no evidencia de que ya existan. El estado actualizado se mantiene en [STATUS.md](STATUS.md).
 
 ## 1. Enfoque
 
@@ -25,7 +25,7 @@ Buscamos responsabilidades claras, tipos explícitos, comprobaciones reproducibl
 | Ruta prevista              | Responsabilidad                                                           |
 | -------------------------- | ------------------------------------------------------------------------- |
 | `src/app/`                 | Rutas, composición de páginas, layouts y metadatos                        |
-| `src/features/valve/`      | Lectura del contenido sobre Valve (hitos de su historia)                  |
+| `src/features/valve/`      | Lectura del contenido sobre Valve (hitos y personas)                      |
 | `src/features/games/`      | Hub de juego: apartados (`getGameSections`) y, más adelante, su contenido |
 | `src/features/universes/`  | Lectura de universos y juegos, tarjetas y tema visual por universo        |
 | `src/features/catalog/`    | Tarjetas, fichas, búsqueda, filtros y lectura del catálogo                |
@@ -65,6 +65,7 @@ El CSS propio de un componente estará junto a su archivo TSX: por ejemplo, `ent
 | `/universos/[universeSlug]/[gameSlug]/[section]` | Apartado del hub (por ejemplo `armas` o `easter-eggs`)       |
 | `/fichas/[slug]`                                 | Ficha canónica y apariciones en los juegos                   |
 | `/explorar`                                      | Hub principal: buscador global y carruseles por categoría    |
+| `/explorar/[categorySlug]`                       | Listado completo de una categoría («Ver todo»)               |
 | `/valve/historia`                                | Cronología completa de Valve (la portada muestra un resumen) |
 | `/valve/personas/[personSlug]`                   | Ficha de una persona de Valve (por ejemplo, Gabe Newell)     |
 | `/valve/steam`                                   | Historia y funciones de Steam                                |
@@ -79,7 +80,8 @@ Los segmentos visibles de la URL van en español (`universos`, `armas`); los nom
 Es el punto de búsqueda de todo el contenido, con independencia del universo. Arriba tiene un buscador global y debajo una fila con carrusel horizontal por categoría (armas, mapas, personajes, enemigos…) que mezcla fichas de todos los juegos.
 
 - Al buscar, cada carrusel muestra solo las coincidencias de su categoría y las filas vacías se ocultan; si no hay ninguna coincidencia, se muestra un estado «sin resultados».
-- Cada fila tiene un enlace «Ver todo» que abre el listado completo de esa categoría (`/explorar?category=armas`), con los filtros de la Entrega 2.
+- Cada fila tiene un enlace «Ver todo» que abre el listado completo de esa categoría en su propia ruta estática, `/explorar/[categorySlug]` (por ejemplo, `/explorar/armas`). Los filtros de la Entrega 2 se añadirán como parámetros de búsqueda sobre esa página.
+- Implementado sin buscador (PR #28): `EntryRow` (fila con `scroll-snap`, sin JavaScript) y `EntryCard` (tarjeta clicable entera) viven en `src/features/catalog/components`; `getEntriesByCategory()` reúne las fichas de todos los juegos.
 - El carrusel será un `<ul>` con desplazamiento horizontal y `scroll-snap` en CSS, utilizable con rueda, gesto táctil y teclado. Los botones anterior/siguiente serán un componente de cliente pequeño. No se añadirá una librería de sliders.
 - Los resultados filtrados son datos derivados del texto buscado y del catálogo; no se copian a otro estado.
 
@@ -107,7 +109,7 @@ Cuando una aparición tiene imagen original y HD, la ficha las muestra con `Imag
 
 Los IDs serán estables y diferentes de los nombres visibles. Una ficha compartida conservará su ID en los tres juegos. Las estadísticas deberán indicar juego, versión, dificultad y unidad cuando afecten al valor. «Desconocido» no significa cero. La comparación solo mostrará medidas equivalentes.
 
-Primer caso implementado: `src/data/valve-milestones.ts` contiene los hitos de Valve; `getValveMilestones()` (`src/features/valve`) devuelve una copia ordenada por año, y la página la pasa por props al componente común `Timeline`, que solo depende del tipo `Milestone`.
+Primer caso implementado: `src/data/valve-milestones.ts` contiene los hitos de Valve; `getValveMilestones()` (`src/features/valve`) devuelve una copia ordenada por año, y la página la pasa por props al componente común `Timeline`, que solo depende del tipo `Milestone`. La portada es un resumen: `getLatestValveMilestones(count)` le da los últimos hitos y `/valve/historia` muestra todos. Las personas de Valve tienen su propio tipo (`ValvePerson`: `id`, `slug`, `name`, `role`, `summary`, `sources`), porque no son fichas de juego, y su ruta `/valve/personas/[personSlug]`. Las tres páginas de `/valve` comparten el bloque BEM `valve-page` (`src/app/valve/valve-page.module.css`); un archivo que no se llama `page.tsx` no crea ruta, así que puede vivir en `src/app`.
 
 La relación universo–juego vive solo en `Game.universeId`: `Universe` no guarda la lista de sus juegos, porque dos copias de la misma relación podrían contradecirse. `src/features/universes/get-universes.ts` expone `getUniverses()`, `getUniverseBySlug(slug)` (devuelve `undefined` si no existe, para responder con 404) y `getGamesByUniverse(universeId)`. El `id` es único en todo el proyecto; el `slug` de un juego solo tiene que ser único dentro de su universo (`/universos/half-life/opposing-force`).
 
