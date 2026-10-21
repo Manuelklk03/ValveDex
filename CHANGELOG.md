@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- 2026-10-21: configuración de Claude Code del proyecto (`.claude/settings.json`): solo quedan activos los plugins compatibles con el aprendizaje guiado y la convención del proyecto; `.claude/settings.local.json` queda fuera de Git (PR #31).
 - 2026-10-19: sección Valve: `/valve/historia` con la cronología completa, `/valve/personas/[personSlug]` con los dos fundadores y `/valve/steam`; la portada muestra los 3 últimos hitos y enlaza a las tres páginas; pruebas de integridad de hitos y personas (PR #29).
 - 2026-10-14: página `/explorar` con una fila horizontal por categoría (`EntryRow`, `EntryCard`) y página `/explorar/[categorySlug]` con todas las fichas de cada categoría («Ver todo»); el enlace «Explorar» de la cabecera ya no da 404 (PR #28).
 - 2026-10-14: pruebas de integridad de las relaciones (fichas existentes, sin autorrelaciones ni duplicados); etiquetas de relación sin género fijo («Usuarios», «Equipo», «Ubicaciones», «Presentes aquí»).
