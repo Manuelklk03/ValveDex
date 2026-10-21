@@ -1,6 +1,6 @@
 # Estado actual — ValveDex
 
-Última actualización: **2026-10-19**.  
+Última actualización: **2026-10-21**.  
 Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.  
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
@@ -19,7 +19,7 @@ Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift.
 
 ## Estado confirmado
 
-Comprobado por Claude Code el 2026-10-19 en `main` (`2baaaf1`, PR #29 fusionada).
+Comprobado por Claude Code el 2026-10-21 en `main` (`853ee13`, PR #31 fusionada).
 
 - Next.js inicializado en la raíz del repositorio. Terminal de Manuel: CMD en Windows.
 - `src/app/layout.tsx`: `lang="es"`, metadatos con `title.template`, `<SiteHeader />` y `<SiteFooter />`.
@@ -115,6 +115,14 @@ Comprobado por Claude Code el 2026-10-19 en `main` (`2baaaf1`, PR #29 fusionada)
   - 19b: `src/domain/valve-person.ts` (`ValvePerson`: `id`, `slug`, `name`, `role`, `summary`, `sources`), `src/data/valve-people.ts` (Gabe Newell y Mike Harrington), `src/features/valve/get-valve-people.ts` (`getValvePeople()` ordenadas por nombre, `getValvePersonBySlug()`) y la ruta estática `/valve/personas/[personSlug]` con 404. La sección «Valve» de la portada enlaza a cada fundador (`home-page__people`, `__person-role`, `__more-link`).
   - 19c: `/valve/steam`, con la historia de la plataforma y su fuente (Wikipedia). El texto está en la página; se pasará a `src/data` si crece. La sección «Steam» de la portada enlaza a ella.
   - 2 pruebas nuevas: hitos de Valve con `id` único y fuentes `https`; personas con `id` y `slug` únicos y fuentes `https`.
+- **Plugins de Claude Code en el proyecto (PR #31, Claude del portátil a petición de Manuel, 2026-10-21):**
+  - `.claude/settings.json` (versionado, compartido por los dos PCs) desactiva **solo en ValveDex** `caveman`, `superpowers`, `claude-mem`, `imagegen-skills`, `taste` y `ui-ux-pro-max`, porque recortan las explicaciones, imponen otro flujo de trabajo o generan código y estilos fuera de la convención BEM del proyecto. La configuración global (`~/.claude/settings.json`) sigue con todos activados para otros proyectos.
+  - Siguen activos: `frontend-stack`, `frontend-design`, `impeccable`, `emil-design-eng`, `antislop`, `andrej-karpathy-skills`, `grill-me`, `claude-code-setup` y `ponytail`. Prevalecen las reglas de `AGENTS.md`: Manuel escribe el código y el asistente explica; un plugin no autoriza a implementar ni a resumir las explicaciones.
+  - Comprobado por Claude el 2026-10-21 en el PC de sobremesa: tiene instalados los mismos plugins que el portátil (además de `headroom`, ya desactivado globalmente), así que el mismo `.claude/settings.json` sirve en los dos equipos sin cambios.
+  - `ponytail` en nivel **lite** solo en este proyecto (`"env": { "PONYTAIL_DEFAULT_MODE": "lite" }` en `.claude/settings.json`, añadido por Claude el 2026-10-21): hace lo que se pide y menciona en una línea la alternativa más simple, sin recortar las explicaciones. Es el único de los plugins activos con opciones configurables; los demás no tienen ajustes. En otros proyectos sigue en `full`. Se aplica al abrir una sesión nueva.
+  - `CLAUDE.md` tiene la sección «Plugins de Claude Code en ValveDex» (2026-10-21, a petición de Manuel): el asistente usa `grill-me` por su cuenta antes de pasos que definan datos o rutas nuevas y `antislop` para revisar textos y páginas nuevas antes de cerrar un paso; las skills de diseño, solo para revisar o pulir y siempre como pasos guiados en CSS Modules + BEM y sin dependencias nuevas.
+  - `.gitignore` ignora `.claude/settings.local.json`, para que los ajustes personales de cada PC (permisos, preferencias) no se suban al repositorio.
+  - Los cambios de plugins se aplican al abrir una sesión nueva de Claude Code: la sesión que estaba abierta durante el cambio aún cargó `caveman` y `ponytail` en modo completo.
 - Todavía no existe `src/lib`.
 
 ## Versiones comprobadas
@@ -136,7 +144,7 @@ Comprobado por Claude Code el 2026-10-19 en `main` (`2baaaf1`, PR #29 fusionada)
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- `main` en `2baaaf1`. PRs fusionadas:
+- `main` en `853ee13`. PRs fusionadas:
   - #1–#6: historial reconstruido.
   - #7 `fix/errores-css`.
   - #8 `feature/valve-timeline`.
@@ -160,6 +168,8 @@ Comprobado por Claude Code el 2026-10-19 en `main` (`2baaaf1`, PR #29 fusionada)
   - #27 `test/entry-relations`.
   - #28 `feature/explore-page`.
   - #29 `feature/valve-section` (2026-10-19).
+  - #30 `docs/update-status`.
+  - #31 `chore/claude-plugins` (2026-10-21).
 - `main` protegida: solo cambios por PR (0 aprobaciones, también para administradores), sin force push ni borrado. El repositorio borra las ramas al mergear.
 - Configuración: local `branch.main.mergeoptions=--no-ff` y `pull.rebase=false`; global `pull.rebase=false` y `merge.ff=false`.
 - Flujo (GitHub Flow, pedido por Manuel el 2026-10-16):
@@ -173,7 +183,8 @@ Comprobado por Claude Code el 2026-10-19 en `main` (`2baaaf1`, PR #29 fusionada)
 - **Mensajes de commit:** los redacta la IA y los escribe Manuel (2026-10-16). Al final de cada paso, el asistente entrega el mensaje completo: título Conventional Commits en español (`feat(valve): …`), línea en blanco y descripción en lista con `- ` (las líneas que continúan un punto van sangradas con dos espacios). El asistente no hace el commit salvo petición expresa.
 - **Trabajo entre dos PCs:** para continuar una rama sin terminar en el otro equipo, `git push` en el primero y, en el segundo, `git fetch`, `git switch <rama>` y `git pull --ff-only`. La PR se crea cuando la rama está completa. Antes de cambiar de equipo, `git status` debe indicar el árbol limpio y la rama al día con el remoto.
 - Es `gh pr`, no `git pr`. En Git Bash, si falta `gh`: `export PATH="$PATH:/c/Program Files/GitHub CLI"`.
-- Rama abierta: `docs/update-status`, creada por Claude el 2026-10-19 desde `2baaaf1` con esta actualización de la documentación.
+- Rama abierta: `docs/update-status`, creada por Claude el 2026-10-21 desde `853ee13` con esta actualización de la documentación y la regla de `.gitignore`. Sin commit.
+- **Vim:** el commit `b031b14` terminó con una línea `i` suelta en la descripción. Pulsa `i` solo una vez al abrir el editor y, antes de `:wq`, `Esc`; si la `i` se cuela en el texto, bórrala antes de guardar.
 - **`git pull` en `main`:** la configuración global `merge.ff=false` hace que un `git pull` normal cree un commit de merge local. Usar `git pull --ff-only` o configurar una vez `git config --global pull.ff only`.
 - Criterio: una rama = una funcionalidad completa.
 - **Si editas algo en GitHub** (por ejemplo, el README), haz `git checkout main && git pull` antes de seguir. Si la rama local ya tenía cambios en el mismo archivo, `git merge origin/main` producirá un conflicto que hay que resolver.
@@ -247,11 +258,11 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 
 Decisión de Manuel (2026-10-13): **terminar primero el esqueleto** (todas las rutas y piezas con datos mínimos, pasos 15–20) y después la fase de contenido (imágenes sin fondo, comparador funcionando, más fichas, revisión visual).
 
-Pasos 15 a 19 terminados.
+Pasos 15 a 19 terminados. El paso 20 está preparado (guía entregada el 2026-10-19), pendiente de aplicar: aún no existen `src/features/credits` ni `src/app/creditos`.
 
-1. Manuel, fusionar esta actualización de la documentación (rama `docs/update-status`):
+1. Manuel, fusionar esta actualización (rama `docs/update-status`):
    ```cmd
-   git add CHANGELOG.md AGENTS.md docs
+   git add .claude .gitignore AGENTS.md CHANGELOG.md docs
    git commit
    git push -u origin docs/update-status
    gh pr create --base main --fill

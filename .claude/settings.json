@@ -6,5 +6,8 @@
     "imagegen-skills@imagegen-skills": false,
     "taste@frontend-stack": false,
     "ui-ux-pro-max@frontend-stack": false
+  },
+  "env": {
+    "PONYTAIL_DEFAULT_MODE": "lite"
   }
 }

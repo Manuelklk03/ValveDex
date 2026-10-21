@@ -71,6 +71,7 @@ Prueba comportamientos importantes: filtros combinados, fichas inexistentes, int
 ## Continuidad entre Claude, ChatGPT y Codex
 
 - `AGENTS.md` contiene las reglas comunes. `CLAUDE.md` importa esas reglas para Claude Code; no mantengas una segunda copia distinta.
+- `.claude/settings.json` decide qué plugins de Claude Code se usan en este proyecto. Si un plugin o skill activo pide otra forma de trabajar (respuestas telegráficas, implementar por su cuenta, otro flujo de commits), mandan estas reglas.
 - `docs/STATUS.md` contiene el punto de continuación. Actualízalo al cerrar cada tarea real con fecha, cambios, comprobaciones y siguiente paso.
 - Una respuesta con instrucciones o archivos descargables no demuestra que Manuel los haya aplicado. Distingue «preparado», «aplicado por el usuario» y «verificado».
 - Al cambiar de IA, entrega o lee las versiones actuales del repositorio. El chat de una herramienta no se comparte automáticamente con otra.
