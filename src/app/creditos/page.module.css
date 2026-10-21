@@ -1,0 +1,76 @@
+.credits-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: 3rem 1rem;
+}
+
+.credits-page__back {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.credits-page__back:hover {
+  color: var(--accent);
+}
+
+.credits-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.credits-page__title {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.credits-page__intro {
+  max-width: 65ch;
+  color: var(--muted);
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
+.credits-page__section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.credits-page__section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.credits-page__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.credits-page__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.credits-page__link {
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+}
+
+.credits-page__link:hover {
+  color: var(--accent);
+}
+
+.credits-page__meta {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
