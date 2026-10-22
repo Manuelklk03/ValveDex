@@ -15,15 +15,38 @@ export type EntryAppearance = {
   images?: EntryImages;
 };
 
-export type Entry = {
+type EntryBase = {
   id: string;
   slug: string;
   name: string;
-  category: EntryCategory;
   summary: string;
   appearances: EntryAppearance[];
   sources: Source[];
 };
+
+export type WeaponDetails = {
+  slot: number;
+  ammo?: string;
+};
+
+export type MapDetails = {
+  chapter: number;
+};
+
+export type CharacterDetails = {
+  affiliation: string;
+};
+
+export type EnemyDetails = {
+  origin: string;
+};
+
+export type Entry =
+  | (EntryBase & { category: "weapons"; details: WeaponDetails })
+  | (EntryBase & { category: "maps"; details: MapDetails })
+  | (EntryBase & { category: "characters"; details: CharacterDetails })
+  | (EntryBase & { category: "enemies"; details: EnemyDetails })
+  | (EntryBase & { category: "trivia" | "easter-eggs" });
 
 export function isEntryCategory(
   sectionId: GameSectionId,

@@ -6,6 +6,7 @@ export const entries: Entry[] = [
     slug: "palanca",
     name: "Palanca",
     category: "weapons",
+    details: { slot: 1 },
     summary:
       "Arma cuerpo a cuerpo de Gordon Freeman y primera que consigue en el juego.",
     appearances: [{ gameId: "half-life" }],
@@ -21,6 +22,7 @@ export const entries: Entry[] = [
     slug: "pistola-9mm",
     name: "Pistola de 9 mm",
     category: "weapons",
+    details: { slot: 2, ammo: "9 mm" },
     summary:
       "Pistola semiautomática estándar del personal de seguridad de Black Mesa.",
     appearances: [{ gameId: "half-life" }],
@@ -36,6 +38,7 @@ export const entries: Entry[] = [
     slug: "revolver-357",
     name: "Revólver .357",
     category: "weapons",
+    details: { slot: 2, ammo: ".357 Magnum" },
     summary: "Revólver de gran potencia y cargador de seis balas.",
     appearances: [{ gameId: "half-life" }],
     sources: [
@@ -50,6 +53,7 @@ export const entries: Entry[] = [
     slug: "escopeta",
     name: "Escopeta",
     category: "weapons",
+    details: { slot: 3, ammo: "Cartuchos del calibre 12" },
     summary: "Escopeta con disparo simple y doble, eficaz a corta distancia.",
     appearances: [
       {
@@ -82,6 +86,7 @@ export const entries: Entry[] = [
     slug: "black-mesa-inbound",
     name: "Black Mesa Inbound",
     category: "maps",
+    details: { chapter: 1 },
     summary:
       "Capítulo inicial de Half-Life: Gordon Freeman llega a su puesto de trabajo en el tranvía de Black Mesa.",
     appearances: [{ gameId: "half-life" }],
@@ -97,6 +102,7 @@ export const entries: Entry[] = [
     slug: "gordon-freeman",
     name: "Gordon Freeman",
     category: "characters",
+    details: { affiliation: "Black Mesa" },
     summary:
       "Físico teórico de Black Mesa y protagonista de Half-Life, equipado con el traje HEV.",
     appearances: [
@@ -124,6 +130,7 @@ export const entries: Entry[] = [
     slug: "headcrab",
     name: "Headcrab",
     category: "enemies",
+    details: { origin: "Xen" },
     summary:
       "Criatura de Xen que salta a la cabeza de sus víctimas y las convierte en zombis.",
     appearances: [
