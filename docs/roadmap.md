@@ -100,6 +100,25 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 
 **Se acepta cuando:** la demo funciona desde un dispositivo externo y el repositorio explica el alcance real, el acceso a la demo, las decisiones y las limitaciones conocidas.
 
+## Fase de diseño (después del esqueleto)
+
+Acordado con Manuel el 2026-10-22. El esqueleto actual es solo estructura y datos de prueba: el diseño final será mucho más ambicioso (3D, animaciones, transiciones, efectos), con calidad de portfolio.
+
+**Orden:** esqueleto (22a mods, 22b cancelados) → `v0.1.0` → **fase de diseño** → contenido completo de Half-Life sobre ese diseño.
+
+**Al empezar la fase, el asistente debe recordarlo a Manuel y proponer:**
+
+- Reactivar en `.claude/settings.json` los plugins `taste`, `ui-ux-pro-max` e `imagegen-skills` (desactivados durante el esqueleto).
+- Cambiar en `CLAUDE.md` la regla «sin dependencias nuevas» y dejar que las skills de diseño (`frontend-stack` como director, `impeccable`, `frontend-design`, `emil-design-eng`, `antislop`) lideren la dirección visual y el sistema de diseño.
+- Instalar, explicando para qué sirve cada una:
+  - **GSAP**: animaciones y secuencias complejas.
+  - **Lenis**: scroll suave.
+  - **React Bits**: componentes y efectos animados listos para adaptar.
+  - **shadcn/ui** (Radix UI + Tailwind): componentes accesibles (diálogos, menús, pestañas…).
+  - **Three.js + React Three Fiber (+ drei)**: escenas y modelos 3D (por ejemplo, armas que giran en su ficha).
+- Decidir cómo conviven CSS Modules + BEM con Tailwind y shadcn/ui, y documentarlo en `architecture.md`.
+- Mantener el modo guiado: Manuel escribe el código con la explicación de cada archivo.
+
 ## Ampliación posterior
 
 La sección Valve ya tiene páginas propias (PR #29): historia completa (5 hitos), personas (los dos fundadores) y Steam. Crecerá con más hitos, más personas clave, motores (GoldSrc, Source, Source 2), hardware y curiosidades, siempre con fuentes.

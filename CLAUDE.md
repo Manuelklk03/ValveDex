@@ -18,3 +18,5 @@ En Claude web, adjunta también los archivos referenciados y el código relevant
 - **Skills de diseño (`frontend-stack`, `impeccable`, `frontend-design`, `emil-design-eng`):** solo para revisar una página (accesibilidad, contraste, móvil, teclado) o en la fase de pulido, o cuando Manuel lo pida. Sus propuestas se entregan como pasos guiados, en CSS Modules + BEM y sin dependencias nuevas (nada de GSAP, Lenis, shadcn… sin pedirlo).
 - **`andrej-karpathy-skills` y `ponytail` (lite):** cambios mínimos y sin adornos, pero nunca a costa de las explicaciones.
 - **`claude-code-setup`:** solo para revisar la configuración de Claude Code.
+
+Estas reglas valen para el esqueleto. En la **fase de diseño** (ver [docs/roadmap.md](docs/roadmap.md#fase-de-diseño-después-del-esqueleto)) se reactivarán `taste`, `ui-ux-pro-max` e `imagegen-skills`, se permitirán dependencias de diseño (GSAP, Lenis, React Bits, shadcn/ui, Three.js + React Three Fiber) y el asistente debe recordárselo a Manuel al llegar.
