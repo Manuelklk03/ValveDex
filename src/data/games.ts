@@ -49,4 +49,21 @@ export const games: Game[] = [
       },
     ],
   },
+  {
+    id: "sven-co-op",
+    slug: "sven-co-op",
+    universeId: "half-life",
+    name: "Sven Co-op",
+    releaseYear: 1999,
+    developer: "Sven Co-op Team",
+    description:
+      "Mod cooperativo de Half-Life: varios jugadores recorren juntos mapas y campañas contra los enemigos del juego.",
+    baseGameId: "half-life",
+    sources: [
+      {
+        title: "Sven Co-op - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Sven_Co-op",
+      },
+    ],
+  },
 ];

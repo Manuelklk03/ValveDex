@@ -49,3 +49,15 @@ export function getUniverseById(id: string): Universe | undefined {
 export function getGameById(id: string): Game | undefined {
   return games.find((game) => game.id === id);
 }
+
+export function getOfficialGamesByUniverse(universeId: string): Game[] {
+  return getGamesByUniverse(universeId).filter(
+    (game) => game.baseGameId === undefined,
+  );
+}
+
+export function getModsByGame(gameId: string): Game[] {
+  return games
+    .filter((game) => game.baseGameId === gameId)
+    .sort((a, b) => a.name.localeCompare(b.name, "es"));
+}

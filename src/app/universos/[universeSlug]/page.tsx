@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  getGamesByUniverse,
+  getOfficialGamesByUniverse,
   getUniverseBySlug,
   getUniverses,
 } from "@/features/universes/get-universes";
@@ -40,7 +40,7 @@ export default async function UniversePage({
     notFound();
   }
 
-  const games = getGamesByUniverse(universe.id);
+  const games = getOfficialGamesByUniverse(universe.id);
   return (
     <main className={styles["universe-page"]}>
       <header className={styles["universe-page__header"]}>
