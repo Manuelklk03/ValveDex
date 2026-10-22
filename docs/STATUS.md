@@ -1,8 +1,17 @@
 # Estado actual — ValveDex
 
-Última actualización: **2026-10-21**.  
+Última actualización: **2026-10-22**.  
 Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.  
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
+
+## Actualización de seguridad verificada (2026-10-22)
+
+- Codex actualizó Next.js de 16.4.0 a 16.4.2 en el checkout `feature/game-mods`, por petición expresa de Manuel. Archivos: `package.json`, `package-lock.json` y `next.config.ts`; se conserva la configuración previa y se añade `experimental.agentUpgrade: "security"`, admitido por la versión instalada.
+- Instalación con npm completada, incluyendo herramientas de desarrollo para verificar. `npm exec -- next --version`: 16.4.2. `npm run check`: lint, tipos, formato y 26 pruebas superados. `npm run build`: superado, 57 páginas generadas.
+- Servidor de producción: `/`, `/universos`, `/fichas/palanca` y `/creditos` responden 200; una ruta inexistente responde 404. Sin revisión visual de navegador.
+- Auditoría de producción: 0 vulnerabilidades. Auditoría con desarrollo: persisten las 5 alertas altas conocidas de la cadena de `braces`; no se aplica `audit fix --force`.
+- No se encontró trabajo equivalente local. No se pudieron consultar PRs (HTTP 401) ni ramas remotas (credenciales de Git). Sin publicación de PR.
+- Los cambios previos de mods y `.gitignore` se conservan fuera de esta actualización. Siguiente paso: continuar ese trabajo; los apartados históricos inferiores no representan una nueva verificación de todo el proyecto.
 
 ## Modo de trabajo
 
