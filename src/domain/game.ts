@@ -8,5 +8,6 @@ export type Game = {
   releaseYear: number;
   developer: string;
   description: string;
+  baseGameId?: string;
   sources: Source[];
 };

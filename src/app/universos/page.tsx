@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { UniverseCard } from "@/features/universes/components/universe-card";
 import {
   getUniverses,
-  getGamesByUniverse,
+  getOfficialGamesByUniverse,
 } from "@/features/universes/get-universes";
 import styles from "./page.module.css";
 
@@ -29,7 +29,7 @@ export default function UniversesPage() {
           <li key={universe.id}>
             <UniverseCard
               universe={universe}
-              gameCount={getGamesByUniverse(universe.id).length}
+              gameCount={getOfficialGamesByUniverse(universe.id).length}
             />
           </li>
         ))}

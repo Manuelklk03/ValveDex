@@ -55,6 +55,23 @@ describe("juegos", () => {
 
     expect(missing).toEqual([]);
   });
+
+  it("los mods dependen de un juego oficial del mismo universo", () => {
+    const officialGames = new Map(
+      games
+        .filter((game) => game.baseGameId === undefined)
+        .map((game) => [game.id, game]),
+    );
+    const invalid = games
+      .filter((game) => game.baseGameId !== undefined)
+      .filter((mod) => {
+        const base = officialGames.get(mod.baseGameId ?? "");
+        return !base || base.universeId !== mod.universeId;
+      })
+      .map((mod) => `${mod.id} → ${mod.baseGameId}`);
+
+    expect(invalid).toEqual([]);
+  });
 });
 
 describe("apartados", () => {

@@ -123,3 +123,23 @@
   position: absolute;
   inset: 0;
 }
+
+.game-page__mods {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.game-page__mod-link {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.game-page__mod-link:hover {
+  text-decoration: underline;
+}
+
+.game-page__meta-muted {
+  color: var(--muted);
+}

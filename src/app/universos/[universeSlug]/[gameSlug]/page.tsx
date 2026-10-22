@@ -6,10 +6,13 @@ import { getEntriesByGameAndCategory } from "@/features/catalog/get-entries";
 import { getGameLore } from "@/features/games/get-game-lore";
 import { getGameSections } from "@/features/games/get-game-sections";
 import {
+  getGameById,
   getGamesByUniverse,
+  getModsByGame,
   getUniverseAndGame,
   getUniverses,
 } from "@/features/universes/get-universes";
+
 import styles from "./page.module.css";
 
 export function generateStaticParams() {
@@ -50,6 +53,9 @@ export default async function GamePage({
   const { universe, game } = result;
   const sections = getGameSections();
 
+  const baseGame = game.baseGameId ? getGameById(game.baseGameId) : undefined;
+  const mods = getModsByGame(game.id);
+
   return (
     <main className={styles["game-page"]}>
       <nav aria-label="Ruta de navegación">
@@ -65,6 +71,18 @@ export default async function GamePage({
         <p className={styles["game-page__meta"]}>
           {game.releaseYear} · {game.developer}
         </p>
+        {baseGame && (
+          <p className={styles["game-page__meta"]}>
+            Mod de{" "}
+            <Link
+              href={`/universos/${universe.slug}/${baseGame.slug}`}
+              className={styles["game-page__mod-link"]}
+            >
+              {baseGame.name}
+            </Link>
+          </p>
+        )}
+
         <h1 className={styles["game-page__title"]}>{game.name}</h1>
         <p className={styles["game-page__intro"]}>{game.description}</p>
         <p className={styles["game-page__sources"]}>
@@ -127,6 +145,32 @@ export default async function GamePage({
           })}
         </ul>
       </section>
+
+      {mods.length > 0 && (
+        <section
+          className={styles["game-page__section"]}
+          aria-labelledby="mods-title"
+        >
+          <h2 id="mods-title" className={styles["game-page__section-title"]}>
+            Mods
+          </h2>
+          <ul className={styles["game-page__mods"]}>
+            {mods.map((mod) => (
+              <li key={mod.id}>
+                <Link
+                  href={`/universos/${universe.slug}/${mod.slug}`}
+                  className={styles["game-page__mod-link"]}
+                >
+                  {mod.name}
+                </Link>{" "}
+                <span className={styles["game-page__meta-muted"]}>
+                  ({mod.releaseYear} · {mod.developer})
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </main>
   );
 }
