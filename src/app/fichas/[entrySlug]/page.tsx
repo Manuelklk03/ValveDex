@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { ImageCompare } from "@/components/ui/image-compare";
 import { getEntries, getEntryBySlug } from "@/features/catalog/get-entries";
 import { getRelatedEntries } from "@/features/catalog/get-related-entries";
+
+import { getEntryFacts } from "@/features/catalog/get-entry-facts";
 import { getGameSectionById } from "@/features/games/get-game-sections";
 import {
   getGameById,
@@ -41,6 +43,7 @@ export default async function EntryPage({
   if (!entry) {
     notFound();
   }
+  const facts = getEntryFacts(entry);
 
   const section = getGameSectionById(entry.category);
   const relatedEntries = getRelatedEntries(entry.id);
@@ -60,6 +63,27 @@ export default async function EntryPage({
         <h1 className={styles["entry-page__title"]}>{entry.name}</h1>
         <p className={styles["entry-page__summary"]}>{entry.summary}</p>
       </header>
+
+      {facts.length > 0 && (
+        <section
+          className={styles["entry-page__section"]}
+          aria-labelledby="facts-title"
+        >
+          <h2 id="facts-title" className={styles["entry-page__section-title"]}>
+            Datos
+          </h2>
+          <dl className={styles["entry-page__facts"]}>
+            {facts.map((fact) => (
+              <div key={fact.label} className={styles["entry-page__fact"]}>
+                <dt className={styles["entry-page__fact-label"]}>
+                  {fact.label}
+                </dt>
+                <dd>{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
 
       <section
         className={styles["entry-page__section"]}
