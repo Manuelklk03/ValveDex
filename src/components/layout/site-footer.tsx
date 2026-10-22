@@ -1,4 +1,5 @@
 import styles from "./site-footer.module.css";
+import Link from "next/link";
 
 export function SiteFooter() {
   return (
@@ -9,6 +10,9 @@ export function SiteFooter() {
           Corporation. Half-Life, Steam y el resto de nombres y marcas
           pertenecen a sus respectivos propietarios.
         </p>
+        <Link href="/creditos" className={styles["site-footer__link"]}>
+          Créditos y fuentes
+        </Link>
       </div>
     </footer>
   );

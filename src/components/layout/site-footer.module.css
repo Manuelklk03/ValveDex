@@ -8,10 +8,23 @@
   max-width: var(--content-width);
   margin-inline: auto;
   padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .site-footer__notice {
   color: var(--muted);
   font-size: 0.875rem;
   line-height: 1.6;
+}
+
+.site-footer__link {
+  color: var(--muted);
+  font-size: 0.875rem;
+  text-decoration: underline;
+}
+
+.site-footer__link:hover {
+  color: var(--accent);
 }
