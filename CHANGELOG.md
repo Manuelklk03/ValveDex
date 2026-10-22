@@ -6,6 +6,10 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+### Seguridad
+
+- 2026-10-22: Next.js actualizado de 16.4.0 a 16.4.2 y `experimental.agentUpgrade` configurado como `"security"`, conservando las demás opciones. Verificados lint, tipos, formato, 26 pruebas, compilación y respuestas HTTP de producción.
+
 ### Añadido
 
 - 2026-10-21: configuración de Claude Code del proyecto (`.claude/settings.json`): solo quedan activos los plugins compatibles con el aprendizaje guiado y la convención del proyecto; `.claude/settings.local.json` queda fuera de Git (PR #31).
