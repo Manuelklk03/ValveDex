@@ -44,3 +44,5 @@ next-env.d.ts
 .claude/settings.local.json
 
 .codeiumignore
+# capturas y registros de Playwright (referencias de diseño, no se versionan)
+.playwright-mcp/
