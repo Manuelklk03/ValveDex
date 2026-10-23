@@ -109,18 +109,24 @@ Acordado con Manuel el 2026-10-22. El esqueleto actual es solo estructura y dato
 
 **Orden:** esqueleto (22a mods, 22b cancelados) → `v0.1.0` → **fase de diseño** → contenido completo de Half-Life sobre ese diseño. Esqueleto y `v0.1.0` hechos el 2026-10-23: la fase de diseño es la siguiente.
 
-**Al empezar la fase, el asistente debe recordarlo a Manuel y proponer:**
+**Preparación (hecha el 2026-10-23, decisiones de Manuel):**
 
-- Reactivar en `.claude/settings.json` los plugins `taste`, `ui-ux-pro-max` e `imagegen-skills` (desactivados durante el esqueleto).
-- Cambiar en `CLAUDE.md` la regla «sin dependencias nuevas» y dejar que las skills de diseño (`frontend-stack` como director, `impeccable`, `frontend-design`, `emil-design-eng`, `antislop`) lideren la dirección visual y el sistema de diseño.
-- Instalar, explicando para qué sirve cada una:
+- [x] Reactivados en `.claude/settings.json` `taste`, `ui-ux-pro-max` e `imagegen-skills`; siguen desactivados `caveman`, `superpowers` y `claude-mem`.
+- [x] `CLAUDE.md`: `frontend-stack` dirige las skills de diseño; se permiten dependencias de diseño.
+- [x] Las librerías se instalan **cada una en el paso en que se usa por primera vez**, explicando para qué sirve:
   - **GSAP**: animaciones y secuencias complejas.
   - **Lenis**: scroll suave.
   - **React Bits**: componentes y efectos animados listos para adaptar.
   - **shadcn/ui** (Radix UI + Tailwind): componentes accesibles (diálogos, menús, pestañas…).
   - **Three.js + React Three Fiber (+ drei)**: escenas y modelos 3D (por ejemplo, armas que giran en su ficha).
-- Decidir cómo conviven CSS Modules + BEM con Tailwind y shadcn/ui, y documentarlo en `architecture.md`.
-- Mantener el modo guiado: Manuel escribe el código con la explicación de cada archivo.
+- [x] Estilos: componentes propios en CSS Modules + BEM; shadcn/ui con sus utilidades de Tailwind y colores de las variables de los temas (`architecture.md`).
+- Se mantiene el modo guiado: Manuel escribe el código con la explicación de cada archivo.
+
+**Pasos previstos:**
+
+- [ ] D1. Dirección de diseño: brief de `frontend-stack` (público, estética, tipografía, color, composición, movimiento y qué librería entra dónde), decidido con Manuel antes de escribir código.
+- [ ] D2. Sistema de diseño: tokens (tipografía, espaciado, radios, sombras, movimiento) en `globals.css` y paletas de los temas revisadas con la comprobación de contraste de `antislop`.
+- [ ] D3 y siguientes: rediseño página a página (portada, universos, hub, apartado, ficha, `/explorar`…), cada uno con su librería cuando haga falta y revisado en móvil, teclado y `prefers-reduced-motion`.
 
 ## Ampliación posterior
 
