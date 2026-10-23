@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { ImageCompare } from "@/components/ui/image-compare";
 import { getEntries, getEntryBySlug } from "@/features/catalog/get-entries";
 import { getRelatedEntries } from "@/features/catalog/get-related-entries";
-
+import { getGameYearLabel } from "@/features/games/get-game-year-label";
 import { getEntryFacts } from "@/features/catalog/get-entry-facts";
 import { getGameSectionById } from "@/features/games/get-game-sections";
 import {
@@ -114,7 +114,7 @@ export default async function EntryPage({
                     {game.name}
                   </Link>{" "}
                   <span className={styles["entry-page__game-year"]}>
-                    ({game.releaseYear})
+                    ({getGameYearLabel(game)})
                   </span>
                 </div>
 

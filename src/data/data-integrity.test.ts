@@ -56,14 +56,18 @@ describe("juegos", () => {
     expect(missing).toEqual([]);
   });
 
-  it("los mods dependen de un juego oficial del mismo universo", () => {
+  it("los mods y los cancelados dependen de un juego oficial del mismo universo", () => {
     const officialGames = new Map(
       games
-        .filter((game) => game.baseGameId === undefined)
+        .filter(
+          (game) => game.status === "released" && game.baseGameId === undefined,
+        )
         .map((game) => [game.id, game]),
     );
     const invalid = games
-      .filter((game) => game.baseGameId !== undefined)
+      .filter(
+        (game) => game.baseGameId !== undefined || game.status === "cancelled",
+      )
       .filter((mod) => {
         const base = officialGames.get(mod.baseGameId ?? "");
         return !base || base.universeId !== mod.universeId;

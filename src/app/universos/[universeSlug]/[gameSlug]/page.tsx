@@ -5,11 +5,13 @@ import { isEntryCategory } from "@/domain/entry";
 import { getEntriesByGameAndCategory } from "@/features/catalog/get-entries";
 import { getGameLore } from "@/features/games/get-game-lore";
 import { getGameSections } from "@/features/games/get-game-sections";
+import { getGameYearLabel } from "@/features/games/get-game-year-label";
 import {
   getGameById,
   getGamesByUniverse,
   getModsByGame,
   getUniverseAndGame,
+  getCancelledGamesByGame,
   getUniverses,
 } from "@/features/universes/get-universes";
 
@@ -55,6 +57,7 @@ export default async function GamePage({
 
   const baseGame = game.baseGameId ? getGameById(game.baseGameId) : undefined;
   const mods = getModsByGame(game.id);
+  const cancelledGames = getCancelledGamesByGame(game.id);
 
   return (
     <main className={styles["game-page"]}>
@@ -69,11 +72,13 @@ export default async function GamePage({
 
       <header className={styles["game-page__header"]}>
         <p className={styles["game-page__meta"]}>
-          {game.releaseYear} · {game.developer}
+          {getGameYearLabel(game)} · {game.developer}
         </p>
         {baseGame && (
           <p className={styles["game-page__meta"]}>
-            Mod de{" "}
+            {game.status === "cancelled"
+              ? "Proyecto cancelado basado en"
+              : "Mod de"}{" "}
             <Link
               href={`/universos/${universe.slug}/${baseGame.slug}`}
               className={styles["game-page__mod-link"]}
@@ -164,7 +169,36 @@ export default async function GamePage({
                   {mod.name}
                 </Link>{" "}
                 <span className={styles["game-page__meta-muted"]}>
-                  ({mod.releaseYear} · {mod.developer})
+                  ({getGameYearLabel(mod)} · {mod.developer})
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {cancelledGames.length > 0 && (
+        <section
+          className={styles["game-page__section"]}
+          aria-labelledby="cancelled-title"
+        >
+          <h2
+            id="cancelled-title"
+            className={styles["game-page__section-title"]}
+          >
+            Proyectos cancelados
+          </h2>
+          <ul className={styles["game-page__cancelled"]}>
+            {cancelledGames.map((cancelled) => (
+              <li key={cancelled.id}>
+                <Link
+                  href={`/universos/${universe.slug}/${cancelled.slug}`}
+                  className={styles["game-page__cancelled-link"]}
+                >
+                  {cancelled.name}
+                </Link>{" "}
+                <span className={styles["game-page__meta-muted"]}>
+                  ({getGameYearLabel(cancelled)} · {cancelled.developer})
                 </span>
               </li>
             ))}

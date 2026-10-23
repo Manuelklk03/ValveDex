@@ -5,6 +5,7 @@ export const games: Game[] = [
     id: "half-life",
     slug: "half-life",
     universeId: "half-life",
+    status: "released",
     name: "Half-Life",
     releaseYear: 1998,
     developer: "Valve",
@@ -22,6 +23,7 @@ export const games: Game[] = [
     slug: "opposing-force",
     universeId: "half-life",
     name: "Half-Life: Opposing Force",
+    status: "released",
     releaseYear: 1999,
     developer: "Gearbox Software",
     description:
@@ -38,6 +40,7 @@ export const games: Game[] = [
     slug: "blue-shift",
     universeId: "half-life",
     name: "Half-Life: Blue Shift",
+    status: "released",
     releaseYear: 2001,
     developer: "Gearbox Software",
     description:
@@ -54,6 +57,7 @@ export const games: Game[] = [
     slug: "sven-co-op",
     universeId: "half-life",
     name: "Sven Co-op",
+    status: "released",
     releaseYear: 1999,
     developer: "Sven Co-op Team",
     description:
@@ -63,6 +67,24 @@ export const games: Game[] = [
       {
         title: "Sven Co-op - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/Sven_Co-op",
+      },
+    ],
+  },
+  {
+    id: "half-life-dreamcast",
+    slug: "half-life-dreamcast",
+    universeId: "half-life",
+    name: "Half-Life para Dreamcast",
+    status: "cancelled",
+    cancelledYear: 2001,
+    developer: "Gearbox Software y Captivation Digital Laboratories",
+    description:
+      "Versión de Half-Life para Dreamcast con contenido nuevo, cancelada el 15 de junio de 2001, pocas semanas antes de su lanzamiento previsto.",
+    baseGameId: "half-life",
+    sources: [
+      {
+        title: "Half-Life Dreamcast - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life_Dreamcast",
       },
     ],
   },
