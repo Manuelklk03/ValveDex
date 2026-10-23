@@ -6,12 +6,22 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+Nada todavía.
+
+## [0.1.0] — 2026-10-23
+
+Primera versión: el **esqueleto** completo. Todas las rutas y piezas existen, funcionan con datos de muestra y tienen pruebas. El diseño visual y el contenido completo llegan en las fases siguientes.
+
 ### Seguridad
 
 - 2026-10-22: Next.js actualizado de 16.4.0 a 16.4.2 y `experimental.agentUpgrade` configurado como `"security"`, conservando las demás opciones. Verificados lint, tipos, formato, 26 pruebas, compilación y respuestas HTTP de producción.
 
 ### Añadido
 
+- 2026-10-23: proyectos cancelados como juegos con `status: "cancelled"` y su propio hub (apartados, lore y fichas como cualquier juego); el hub del juego base los lista y el del cancelado enlaza a su juego base. Primer proyecto: Half-Life para Dreamcast (PR #38).
+- 2026-10-22: mods como juegos con `baseGameId` y su propio hub; `/universos` y la página del universo solo muestran juegos oficiales y el hub de cada juego lista sus mods. Primer mod: Sven Co-op (PR #36).
+- 2026-10-22: campos propios por categoría: `Entry` es una unión discriminada por `category` (ranura y munición de las armas, capítulo de los mapas, afiliación de los personajes, origen de los enemigos) y la ficha muestra la sección «Datos» con `getEntryFacts()` (PR #34).
+- 2026-10-22: página `/creditos` generada desde los datos, con las fuentes agrupadas por URL y dónde se usa cada una, y las imágenes con su crédito y licencia; enlazada desde el pie (PR #33).
 - 2026-10-21: configuración de Claude Code del proyecto (`.claude/settings.json`): solo quedan activos los plugins compatibles con el aprendizaje guiado y la convención del proyecto; `.claude/settings.local.json` queda fuera de Git (PR #31).
 - 2026-10-19: sección Valve: `/valve/historia` con la cronología completa, `/valve/personas/[personSlug]` con los dos fundadores y `/valve/steam`; la portada muestra los 3 últimos hitos y enlaza a las tres páginas; pruebas de integridad de hitos y personas (PR #29).
 - 2026-10-14: página `/explorar` con una fila horizontal por categoría (`EntryRow`, `EntryCard`) y página `/explorar/[categorySlug]` con todas las fichas de cada categoría («Ver todo»); el enlace «Explorar» de la cabecera ya no da 404 (PR #28).
@@ -39,6 +49,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Cambiado
 
+- 2026-10-23: `Game` es una unión discriminada por `status` (`released` con `releaseYear` o `cancelled` con `cancelledYear`); `getGameYearLabel()` muestra «1998» o «Cancelado en 2001» (PR #38).
 - 2026-10-13: `vitest.config.ts` renombrado a `vitest.config.mts` para que Vite lo cargue como ESM y desaparezca su aviso.
 - 2026-10-12: cada ficha guarda sus apariciones por juego (`appearances`) en lugar de `gameIds`, para tener resumen, imagen y, más adelante, estadísticas propias de cada juego (PR #16).
 - 2026-10-07: nueva estructura del producto documentada: portada sobre Valve y Steam, sección Universos con paleta propia por saga y hub por juego (lore, mapas, armas, personajes, curiosidades, easter eggs), más un hub principal `/explorar` con buscador global y carruseles por categoría. Actualizados AGENTS, arquitectura y roadmap.
@@ -47,10 +58,13 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Corregido
 
+- 2026-10-23: `<h3>` duplicado dentro del título de cada juego en la página del universo (PR #38).
 - 2026-10-12: imágenes de las fichas (faltaba el archivo y había datos copiados de la escopeta en otras armas), nombre y enlace de las fichas en la página de apartado y fuentes que apuntaban a una página de desambiguación (PR #18).
 - 2026-10-11: la clase del estado vacío de la página de universo (`universe-page-empty` → `universe-page__empty`) no existía en el CSS Module.
 - 2026-10-08: `next.config.ts` aplicaba el loader de Tailwind a todos los `.css` y anulaba CSS Modules; la regla se limita a `globals.css` (PR #7).
 
 ## Publicaciones
 
-Todavía no hay versiones publicadas registradas. Al publicar una entrega, los cambios acumulados se moverán a una sección con la versión real y su fecha en formato `AAAA-MM-DD`. No se copiará cada commit ni se registrarán funciones planificadas como terminadas.
+Al publicar una versión, los cambios de «Sin publicar» se mueven a una sección con su número y su fecha (`AAAA-MM-DD`), que coincide con el tag de Git y la GitHub Release. No se copia cada commit ni se registran funciones planificadas como terminadas.
+
+- `v0.1.0` (2026-10-23): esqueleto completo.

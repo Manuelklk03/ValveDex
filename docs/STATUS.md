@@ -1,17 +1,12 @@
 # Estado actual — ValveDex
 
-Última actualización: **2026-10-22**.  
-Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.  
+Última actualización: **2026-10-23**.
+Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
-## Actualización de seguridad verificada (2026-10-22)
+## Versión actual: `v0.1.0` (esqueleto terminado)
 
-- Codex actualizó Next.js de 16.4.0 a 16.4.2 en el checkout `feature/game-mods`, por petición expresa de Manuel. Archivos: `package.json`, `package-lock.json` y `next.config.ts`; se conserva la configuración previa y se añade `experimental.agentUpgrade: "security"`, admitido por la versión instalada.
-- Instalación con npm completada, incluyendo herramientas de desarrollo para verificar. `npm exec -- next --version`: 16.4.2. `npm run check`: lint, tipos, formato y 26 pruebas superados. `npm run build`: superado, 57 páginas generadas.
-- Servidor de producción: `/`, `/universos`, `/fichas/palanca` y `/creditos` responden 200; una ruta inexistente responde 404. Sin revisión visual de navegador.
-- Auditoría de producción: 0 vulnerabilidades. Auditoría con desarrollo: persisten las 5 alertas altas conocidas de la cadena de `braces`; no se aplica `audit fix --force`.
-- No se encontró trabajo equivalente local. No se pudieron consultar PRs (HTTP 401) ni ramas remotas (credenciales de Git). Sin publicación de PR.
-- Los cambios previos de mods y `.gitignore` se conservan fuera de esta actualización. Siguiente paso: continuar ese trabajo; los apartados históricos inferiores no representan una nueva verificación de todo el proyecto.
+El 2026-10-23 se cerró el **esqueleto** (pasos 15–22): todas las rutas y piezas existen, funcionan con datos de muestra y tienen pruebas. Se publica como `v0.1.0` (tag de Git y GitHub Release sobre el merge de la PR de documentación de ese día). **Lo siguiente es la fase de diseño** (ver [roadmap.md](roadmap.md#fase-de-diseño-después-del-esqueleto)); el asistente debe recordar a Manuel lo acordado para ella al empezar.
 
 ## Modo de trabajo
 
@@ -28,7 +23,7 @@ Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift.
 
 ## Estado confirmado
 
-Comprobado por Claude Code el 2026-10-21 en `main` (`853ee13`, PR #31 fusionada).
+Comprobado por Claude Code el 2026-10-23 en `main` (`a0267e4`, PR #38 fusionada).
 
 - Next.js inicializado en la raíz del repositorio. Terminal de Manuel: CMD en Windows.
 - `src/app/layout.tsx`: `lang="es"`, metadatos con `title.template`, `<SiteHeader />` y `<SiteFooter />`.
@@ -132,6 +127,11 @@ Comprobado por Claude Code el 2026-10-21 en `main` (`853ee13`, PR #31 fusionada)
   - `CLAUDE.md` tiene la sección «Plugins de Claude Code en ValveDex» (2026-10-21, a petición de Manuel): el asistente usa `grill-me` por su cuenta antes de pasos que definan datos o rutas nuevas y `antislop` para revisar textos y páginas nuevas antes de cerrar un paso; las skills de diseño, solo para revisar o pulir y siempre como pasos guiados en CSS Modules + BEM y sin dependencias nuevas.
   - `.gitignore` ignora `.claude/settings.local.json`, para que los ajustes personales de cada PC (permisos, preferencias) no se suban al repositorio.
   - Los cambios de plugins se aplican al abrir una sesión nueva de Claude Code: la sesión que estaba abierta durante el cambio aún cargó `caveman` y `ponytail` en modo completo.
+- **Paso 20, créditos (PR #33, Manuel, 2026-10-22):** `src/features/credits/get-credits.ts` reúne las fuentes de juegos, lore, fichas, hitos y personas (`collectSourceUses()`), las agrupa por URL con un `Map` (`getSourceCredits()`, con `usedIn`) y lista las imágenes con su ficha, juego, crédito y licencia (`getImageCredits()`). Ruta `/creditos` (bloque BEM `credits-page`, `overflow-wrap: anywhere` para las URL largas) y enlace «Créditos y fuentes» en el pie. 3 pruebas junto a la función (lógica, no datos). Límite: la fuente de `/valve/steam` está escrita en la página y no aparece en los créditos.
+- **Paso 21, campos por categoría (PR #34, Manuel, 2026-10-22):** `Entry` es una unión discriminada por `category` sobre `EntryBase`: armas (`slot`, `ammo?`), mapas (`chapter`), personajes (`affiliation`) y enemigos (`origin`); curiosidades y easter eggs sin `details`. Las 7 fichas afectadas tienen sus `details`. `getEntryFacts()` (`src/features/catalog`) los convierte en pares etiqueta–valor con un `switch`; la ficha muestra «Datos» con `<dl>` (`entry-page__facts`, `__fact`, `__fact-label`). 2 pruebas. Las ranuras y la munición no se han contrastado todavía con las fuentes.
+- **Seguridad (PR #35, Codex a petición de Manuel, 2026-10-22):** Next.js 16.4.0 → 16.4.2 y `experimental.agentUpgrade: "security"` en `next.config.ts`. Con esa opción, `next build` **falla** si la versión instalada tiene una vulnerabilidad conocida: tras cambiar de PC o de rama con otras dependencias, ejecuta `npm ci` (instala exactamente el lockfile). Comprobado el 2026-10-23: el PC de sobremesa seguía con 16.4.0 instalado y el build fallaba hasta `npm ci`.
+- **Paso 22a, mods (PR #36, Manuel, 2026-10-22):** `Game.baseGameId?` liga un mod a su juego. `getOfficialGamesByUniverse()` alimenta `/universos` y la página del universo; `getModsByGame()` la sección «Mods» del hub, y el hub de un mod enlaza a su juego base. Muestra: Sven Co-op. Prueba: cada mod depende de un juego oficial del mismo universo.
+- **Paso 22b, proyectos cancelados (PR #38, Manuel con correcciones de Claude, 2026-10-23):** decisión de Manuel tras `grill-me`: un cancelado es un **juego** con hub propio, porque de algunos hay mucha información (mapas, armas…). `Game` es una unión discriminada por `status` (`released` con `releaseYear` | `cancelled` con `cancelledYear`); `getGameYear()` en `src/domain/game.ts` y `getGameYearLabel()` en `src/features/games`. `getOfficialGamesByUniverse()` y `getModsByGame()` solo cuentan juegos publicados; `getCancelledGamesByGame()` alimenta la sección «Proyectos cancelados» del hub del juego base (`game-page__cancelled`, `__cancelled-link`, agrupados con los de mods). Muestra: Half-Life para Dreamcast (fuente comprobada en Combine OverWiki). La prueba de mods cubre también los cancelados: hoy un cancelado necesita juego base; si aparece uno sin él, se relajará la regla y se listará en la página del universo. Corregido de paso un `<h3>` duplicado en la página del universo.
 - Todavía no existe `src/lib`.
 
 ## Versiones comprobadas
@@ -140,7 +140,7 @@ Comprobado por Claude Code el 2026-10-21 en `main` (`853ee13`, PR #31 fusionada)
 | ------------ | ----------------------------------------------------------------- |
 | Node.js      | 24.21.0 (sin `engines` ni `.nvmrc`)                               |
 | npm          | 12.1.0                                                            |
-| Next.js      | 16.4.0 (App Router, `src/`, alias `@/*`)                          |
+| Next.js      | 16.4.2 (App Router, `src/`, alias `@/*`)                          |
 | React        | 19.3.0                                                            |
 | TypeScript   | 5.9.3, `strict: true`                                             |
 | Tailwind CSS | 4.3.3, cargado con `@tailwindcss/turbopack`                       |
@@ -153,7 +153,7 @@ Comprobado por Claude Code el 2026-10-21 en `main` (`853ee13`, PR #31 fusionada)
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- `main` en `853ee13`. PRs fusionadas:
+- `main` en `a0267e4` (tag `v0.1.0` sobre el merge de la PR de documentación del 2026-10-23). PRs fusionadas:
   - #1–#6: historial reconstruido.
   - #7 `fix/errores-css`.
   - #8 `feature/valve-timeline`.
@@ -179,6 +179,13 @@ Comprobado por Claude Code el 2026-10-21 en `main` (`853ee13`, PR #31 fusionada)
   - #29 `feature/valve-section` (2026-10-19).
   - #30 `docs/update-status`.
   - #31 `chore/claude-plugins` (2026-10-21).
+  - #32 `docs/update-status`.
+  - #33 `feature/credits-page` (2026-10-22).
+  - #34 `feature/entry-details`.
+  - #35 `fix/next-security-16.4.2`.
+  - #36 `feature/game-mods`.
+  - #37 `docs/design-phase`.
+  - #38 `feature/cancelled-projects` (2026-10-23).
 - `main` protegida: solo cambios por PR (0 aprobaciones, también para administradores), sin force push ni borrado. El repositorio borra las ramas al mergear.
 - Configuración: local `branch.main.mergeoptions=--no-ff` y `pull.rebase=false`; global `pull.rebase=false` y `merge.ff=false`.
 - Flujo (GitHub Flow, pedido por Manuel el 2026-10-16):
@@ -192,13 +199,21 @@ Comprobado por Claude Code el 2026-10-21 en `main` (`853ee13`, PR #31 fusionada)
 - **Mensajes de commit:** los redacta la IA y los escribe Manuel (2026-10-16). Al final de cada paso, el asistente entrega el mensaje completo: título Conventional Commits en español (`feat(valve): …`), línea en blanco y descripción en lista con `- ` (las líneas que continúan un punto van sangradas con dos espacios). El asistente no hace el commit salvo petición expresa.
 - **Trabajo entre dos PCs:** para continuar una rama sin terminar en el otro equipo, `git push` en el primero y, en el segundo, `git fetch`, `git switch <rama>` y `git pull --ff-only`. La PR se crea cuando la rama está completa. Antes de cambiar de equipo, `git status` debe indicar el árbol limpio y la rama al día con el remoto.
 - Es `gh pr`, no `git pr`. En Git Bash, si falta `gh`: `export PATH="$PATH:/c/Program Files/GitHub CLI"`.
-- Rama abierta: `docs/update-status`, creada por Claude el 2026-10-21 desde `853ee13` con esta actualización de la documentación y la regla de `.gitignore`. Sin commit.
+- Rama abierta: `docs/release-v0.1.0`, creada por Claude el 2026-10-23 desde `a0267e4` con esta actualización de la documentación; se fusiona antes de crear el tag.
 - **Vim:** el commit `b031b14` terminó con una línea `i` suelta en la descripción. Pulsa `i` solo una vez al abrir el editor y, antes de `:wq`, `Esc`; si la `i` se cuela en el texto, bórrala antes de guardar.
 - **`git pull` en `main`:** la configuración global `merge.ff=false` hace que un `git pull` normal cree un commit de merge local. Usar `git pull --ff-only` o configurar una vez `git config --global pull.ff only`.
 - Criterio: una rama = una funcionalidad completa.
 - **Si editas algo en GitHub** (por ejemplo, el README), haz `git checkout main && git pull` antes de seguir. Si la rama local ya tenía cambios en el mismo archivo, `git merge origin/main` producirá un conflicto que hay que resolver.
 
 ## Comprobaciones
+
+Ejecutadas por Claude el 2026-10-23 en `feature/cancelled-projects` (el contenido de la PR #38), con Next.js 16.4.2 instalado mediante `npm ci`:
+
+| Comando         | Resultado                                                                                                                                                                                                        |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run check` | Superado: lint, tipos, formato y 26 pruebas de Vitest (3 archivos)                                                                                                                                               |
+| `npm run build` | Superado: 58 páginas estáticas, entre ellas `/universos/half-life/half-life-dreamcast` y `/creditos`                                                                                                             |
+| HTML generado   | El hub de Half-Life lista «Proyectos cancelados» con Half-Life para Dreamcast; su hub muestra «Cancelado en 2001» y «Proyecto cancelado basado en Half-Life»; la página del universo no lista mods ni cancelados |
 
 Ejecutadas por Claude el 2026-10-19 en `main` (`2baaaf1`):
 
@@ -237,51 +252,51 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 - El comparador original/HD no tiene ninguna ficha con las dos imágenes: no se ha visto funcionando en una página real. Se deja para la fase de contenido (imágenes sin fondo, PNG o WebP con transparencia, original y HD del mismo tamaño).
 - Las tablas del README sobre el universo Half-Life completo, los proyectos cancelados y los mods se escribieron sin contrastar con fuentes; llevan la nota «Lista en revisión».
 - Los textos de las personas de Valve y de `/valve/steam` no los ha contrastado el agente con sus fuentes.
-- Pendientes de diseño, hablados el 2026-10-13 y sin paso asignado: campos propios por categoría (unión discriminada: munición, papel, ubicación…) y tipos y rutas de proyectos cancelados y mods. Propuesta: pasos 21 y 22 del esqueleto, a confirmar por Manuel.
+- La fuente de `/valve/steam` está escrita en la página: no sale en `/creditos` hasta que ese texto pase a `src/data`.
+- Contrastar con las fuentes las ranuras y la munición de las armas (paso 21).
+- Ninguna página se ha revisado en un navegador (móvil, teclado, contraste): se hará sobre el diseño definitivo.
 
 ## Pasos de la interfaz (guiados)
 
-| Paso | Archivo(s)                                                                                        | Estado                |
-| ---- | ------------------------------------------------------------------------------------------------- | --------------------- |
-| 1–4  | Layout, paleta base, cabecera y pie                                                               | Hecho                 |
-| 5–6  | Portada sobre Valve y Steam con la cronología                                                     | Hecho (PR #6–#8)      |
-| 7    | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`                                   | Hecho (PR #9)         |
-| 8    | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life                                      | Hecho (PR #10)        |
-| 9    | Hub de juego, apartados y tema propio por juego                                                   | Hecho (PR #11)        |
-| 10   | Fichas: modelo `Entry`, página de apartado y página de ficha                                      | Hecho (PR #14)        |
-| 11   | Página 404 propia                                                                                 | Hecho (PR #15)        |
-| 12   | `gameIds` → `appearances` (datos propios de cada juego)                                           | Hecho (PR #16)        |
-| 13   | Imágenes por aparición (`MediaAsset`, `next/image`)                                               | Hecho (PR #17 y #18)  |
-| 13b  | Comparador de imágenes original/HD (`ImageCompare`, componente de cliente)                        | Hecho (PR #20)        |
-| 14   | Pruebas de integridad de datos con Vitest                                                         | Hecho (PR #21)        |
-| 15   | Esqueleto: una ficha de muestra por categoría y apariciones en OF y BS                            | Hecho (PR #23)        |
-| 16   | Esqueleto: lore por juego y su página                                                             | Hecho (PR #24)        |
-| 17   | Esqueleto: relaciones entre fichas y bloque «Relacionado»                                         | Hecho (PR #26)        |
-| 17b  | Esqueleto: prueba de integridad de las relaciones, alias `@/` y etiquetas sin género              | Hecho (PR #27)        |
-| 18   | Esqueleto: `/explorar` con una fila horizontal por categoría y «Ver todo»                         | Hecho (PR #28)        |
-| 19   | Esqueleto: sección Valve (`/valve/historia`, `/valve/personas/[slug]`, `/valve/steam`)            | Hecho (PR #29)        |
-| 20   | Esqueleto: página de créditos generada desde los datos                                            | Siguiente             |
-| —    | Fase de contenido: imágenes sin fondo, comparador visible, más fichas, revisión en navegador, E2E | Después del esqueleto |
+| Paso | Archivo(s)                                                                                        | Estado               |
+| ---- | ------------------------------------------------------------------------------------------------- | -------------------- |
+| 1–4  | Layout, paleta base, cabecera y pie                                                               | Hecho                |
+| 5–6  | Portada sobre Valve y Steam con la cronología                                                     | Hecho (PR #6–#8)     |
+| 7    | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`                                   | Hecho (PR #9)        |
+| 8    | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life                                      | Hecho (PR #10)       |
+| 9    | Hub de juego, apartados y tema propio por juego                                                   | Hecho (PR #11)       |
+| 10   | Fichas: modelo `Entry`, página de apartado y página de ficha                                      | Hecho (PR #14)       |
+| 11   | Página 404 propia                                                                                 | Hecho (PR #15)       |
+| 12   | `gameIds` → `appearances` (datos propios de cada juego)                                           | Hecho (PR #16)       |
+| 13   | Imágenes por aparición (`MediaAsset`, `next/image`)                                               | Hecho (PR #17 y #18) |
+| 13b  | Comparador de imágenes original/HD (`ImageCompare`, componente de cliente)                        | Hecho (PR #20)       |
+| 14   | Pruebas de integridad de datos con Vitest                                                         | Hecho (PR #21)       |
+| 15   | Esqueleto: una ficha de muestra por categoría y apariciones en OF y BS                            | Hecho (PR #23)       |
+| 16   | Esqueleto: lore por juego y su página                                                             | Hecho (PR #24)       |
+| 17   | Esqueleto: relaciones entre fichas y bloque «Relacionado»                                         | Hecho (PR #26)       |
+| 17b  | Esqueleto: prueba de integridad de las relaciones, alias `@/` y etiquetas sin género              | Hecho (PR #27)       |
+| 18   | Esqueleto: `/explorar` con una fila horizontal por categoría y «Ver todo»                         | Hecho (PR #28)       |
+| 19   | Esqueleto: sección Valve (`/valve/historia`, `/valve/personas/[slug]`, `/valve/steam`)            | Hecho (PR #29)       |
+| 20   | Esqueleto: página de créditos generada desde los datos                                            | Hecho (PR #33)       |
+| 21   | Esqueleto: campos propios por categoría (unión discriminada) y sección «Datos»                    | Hecho (PR #34)       |
+| 22a  | Esqueleto: mods como juegos con `baseGameId` y su propio hub                                      | Hecho (PR #36)       |
+| 22b  | Esqueleto: proyectos cancelados como juegos con `status: "cancelled"`                             | Hecho (PR #38)       |
+| —    | `v0.1.0`                                                                                          | Publicada 2026-10-23 |
+| —    | Fase de diseño                                                                                    | Siguiente            |
+| —    | Fase de contenido: imágenes sin fondo, comparador visible, más fichas, revisión en navegador, E2E | Después del diseño   |
 
 ## Siguiente paso
 
-Decisión de Manuel (2026-10-13): **terminar primero el esqueleto** (todas las rutas y piezas con datos mínimos, pasos 15–20) y después la fase de contenido (imágenes sin fondo, comparador funcionando, más fichas, revisión visual).
+Esqueleto terminado y publicado como `v0.1.0` (2026-10-23). Orden acordado: **fase de diseño** → contenido completo de Half-Life sobre ese diseño.
 
-Pasos 15 a 19 terminados. El paso 20 está preparado (guía entregada el 2026-10-19), pendiente de aplicar: aún no existen `src/features/credits` ni `src/app/creditos`.
-
-1. Manuel, fusionar esta actualización (rama `docs/update-status`):
-   ```cmd
-   git add .claude .gitignore AGENTS.md CHANGELOG.md docs
-   git commit
-   git push -u origin docs/update-status
-   gh pr create --base main --fill
-   gh pr merge --merge --delete-branch
-   git switch main && git pull --ff-only
-   ```
-2. **Paso 20** (guiado en modo plan): página `/creditos` generada desde los datos (fuentes de juegos, fichas, lore, hitos y personas; imágenes con su crédito y licencia), enlazada desde el pie.
-3. Decidir si los campos por categoría y los proyectos cancelados y mods entran en el esqueleto (pasos 21 y 22) o en la fase de contenido.
-4. **Versión:** al cerrar el esqueleto, proponer a Manuel la `v0.1.0` (no crear el tag sin su confirmación).
-5. Pendiente de Manuel: revisar en `npm run dev` el lore, «Relacionado», `/explorar` y la sección Valve en móvil y con teclado.
+1. **Empezar la fase de diseño.** Al empezar, el asistente recuerda y propone a Manuel lo acordado en [roadmap.md](roadmap.md#fase-de-diseño-después-del-esqueleto):
+   - Reactivar en `.claude/settings.json` `taste`, `ui-ux-pro-max` e `imagegen-skills`.
+   - Cambiar en `CLAUDE.md` la regla «sin dependencias nuevas» y dejar que las skills de diseño lideren la dirección visual.
+   - Instalar, explicando cada una: GSAP, Lenis, React Bits, shadcn/ui, Three.js + React Three Fiber (+ drei).
+   - Decidir cómo conviven CSS Modules + BEM con Tailwind y shadcn/ui, y documentarlo en `architecture.md`.
+   - Mantener el modo guiado.
+2. Después, la fase de contenido: imágenes sin fondo, comparador original/HD visible, más fichas, revisión en navegador (móvil, teclado, contraste) y un recorrido E2E.
+3. Tras el esqueleto, revisión completa de la documentación y del README para presentar el proyecto como enciclopedia de todo Valve (aviso de Manuel, 2026-10-13).
 
 ## Versiones del proyecto
 
@@ -295,7 +310,17 @@ Decisión de Manuel (2026-10-16): versionado semántico con tags de Git y GitHub
 | `v1.0.0` | **Todo el universo Half-Life**: todos sus juegos, expansiones y episodios, con proyectos cancelados y mods, revisado y desplegado |
 | `v1.x.0` | Cada universo nuevo (Portal, Team Fortress…) o funcionalidad grande posterior                                                     |
 
-Comandos, cuando Manuel lo indique: `git tag -a vX.Y.Z -m "Version X.Y.Z"`, `git push origin vX.Y.Z` y `gh release create vX.Y.Z --generate-notes`. `package.json` ya declara `"version": "0.1.0"` (valor de la plantilla); se actualizará al crear cada versión.
+Publicadas: **`v0.1.0`** (2026-10-23, esqueleto).
+
+Cómo se crea una versión, cuando Manuel lo indique (siempre sobre `main` actualizado y con `npm run check` y `npm run build` superados):
+
+1. En una rama `docs/release-vX.Y.Z`: subir `"version"` en `package.json` (y `npm install` para actualizar el lockfile), mover «Sin publicar» del CHANGELOG a `## [X.Y.Z] — AAAA-MM-DD` y actualizar este archivo. PR y merge.
+2. `git switch main && git pull --ff-only`.
+3. `git tag -a vX.Y.Z -m "vX.Y.Z — <resumen>"`: crea un tag **anotado** (con autor, fecha y mensaje) sobre el commit actual.
+4. `git push origin vX.Y.Z`: los tags no se suben con un `git push` normal.
+5. `gh release create vX.Y.Z --title "vX.Y.Z — <resumen>" --notes-file <notas>.md`: crea la GitHub Release con las notas de esa versión del CHANGELOG (o `--generate-notes` para que GitHub liste las PRs).
+
+`package.json` declara `"version": "0.1.0"` desde la plantilla, así que para `v0.1.0` no hubo que cambiarlo.
 
 ## Cómo actualizar este archivo
 
