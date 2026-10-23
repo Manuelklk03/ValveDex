@@ -32,13 +32,15 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 - [ ] Hub de juego para Half-Life, Opposing Force y Blue Shift con sus apartados (lore, mapas, armas, personajes, enemigos, curiosidades, easter eggs). Hub con cabecera, fuentes, apartados y tema propio por juego (PR #11). Los apartados con contenido enlazan a su página: fichas de muestra en todas las categorías (PR #23) y lore de los tres juegos (PR #24). Falta un easter egg de Half-Life y la revisión en navegador.
 - [ ] Ficha individual enlazada desde los apartados del hub. Hecha (PR #14, #16 y #18): `/fichas/[entrySlug]` con tema, «Aparece en», datos e imagen por juego, y fuentes. Falta la revisión en navegador.
 - [ ] Preparar datos reales de los tres juegos con una muestra de cada categoría inicial. Muestra mínima del esqueleto hecha (PR #23: 9 fichas, todas las categorías; apariciones en los tres juegos); falta ampliarla en la fase de contenido.
-- [ ] Registrar las fuentes y los recursos visuales utilizados. En curso: cada ficha, juego, hito y persona tiene fuentes; cada imagen guarda fuente, crédito y licencia (`MediaAsset`). Falta la página de créditos (paso 20).
+- [x] Registrar las fuentes y los recursos visuales utilizados. Cada ficha, juego, hito y persona tiene fuentes; cada imagen guarda fuente, crédito y licencia (`MediaAsset`), y `/creditos` lo reúne todo desde los datos (PR #33). Límite conocido: la fuente de `/valve/steam` está escrita en la página y no sale en los créditos.
+- [x] Campos propios por categoría: `Entry` como unión discriminada por `category` y sección «Datos» en la ficha (PR #34).
+- [x] Mods y proyectos cancelados como juegos con su propio hub: mods con `baseGameId` (PR #36) y cancelados con `status: "cancelled"` (PR #38). Muestras: Sven Co-op y Half-Life para Dreamcast.
 - [ ] Mostrar relaciones entre fichas y una página 404 útil. La 404 está hecha (PR #15). Relaciones hechas (PR #26: `EntryRelation`, bloque «Relacionado» en las dos direcciones) con su prueba de integridad (PR #27). Falta la revisión en navegador para marcarlo.
 - [ ] Sección Valve: `/valve/historia`, `/valve/personas/[personSlug]` y `/valve/steam`, con la portada como resumen (PR #29). Falta la revisión en navegador y contrastar los textos con sus fuentes.
 - [x] Incorporar comprobaciones de integridad de datos (Vitest, PR #21; 20 pruebas y `npm run check` superado el 2026-10-19).
 - [ ] Incorporar un recorrido E2E.
 
-**Orden acordado (2026-10-13):** completar antes el esqueleto (pasos 15–20 de STATUS: fichas de muestra en todas las categorías, lore, relaciones, `/explorar` básico, sección Valve y créditos) y dejar para después el contenido y el pulido: imágenes sin fondo, comparador original/HD visible y más fichas. A 2026-10-19 solo falta el paso 20 (créditos). Pendiente de decidir si los campos propios por categoría y los tipos de proyectos cancelados y mods entran también en el esqueleto.
+**Orden acordado (2026-10-13, ampliado el 2026-10-20):** completar antes el esqueleto (pasos 15–22 de STATUS: fichas de muestra en todas las categorías, lore, relaciones, `/explorar` básico, sección Valve, créditos, campos por categoría, mods y proyectos cancelados) y dejar para después el diseño, el contenido y el pulido. **Esqueleto terminado el 2026-10-23 y publicado como `v0.1.0`.** Lo que queda sin marcar en esta entrega es la revisión en navegador y el contenido real, que se harán sobre el diseño definitivo.
 
 **Versiones (decisión de Manuel, 2026-10-16):** `v0.1.0` al cerrar el esqueleto; `v0.x` por cada bloque grande de contenido; `v1.0.0` cuando esté completo **todo el universo Half-Life** (no solo esta entrega). Detalle en [STATUS.md](STATUS.md#versiones-del-proyecto).
 
@@ -78,6 +80,7 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 ## Entrega 4 — API y gestión de contenido
 
 - [ ] Elegir y documentar backend, base de datos y autenticación.
+- [ ] Documentar la API con **OpenAPI 3.1** (decisión de Manuel, 2026-10-21): los mismos esquemas Zod que validan los route handlers generarán la especificación, publicada con Swagger UI o Scalar en una ruta como `/api/docs`.
 - [ ] Consumir la API desde React con estados de carga, error y reintento.
 - [ ] Añadir formularios de edición y validación.
 - [ ] Proteger las operaciones de escritura en servidor.
@@ -104,7 +107,7 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 
 Acordado con Manuel el 2026-10-22. El esqueleto actual es solo estructura y datos de prueba: el diseño final será mucho más ambicioso (3D, animaciones, transiciones, efectos), con calidad de portfolio.
 
-**Orden:** esqueleto (22a mods, 22b cancelados) → `v0.1.0` → **fase de diseño** → contenido completo de Half-Life sobre ese diseño.
+**Orden:** esqueleto (22a mods, 22b cancelados) → `v0.1.0` → **fase de diseño** → contenido completo de Half-Life sobre ese diseño. Esqueleto y `v0.1.0` hechos el 2026-10-23: la fase de diseño es la siguiente.
 
 **Al empezar la fase, el asistente debe recordarlo a Manuel y proponer:**
 
