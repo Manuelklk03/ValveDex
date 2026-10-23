@@ -124,19 +124,22 @@
   inset: 0;
 }
 
-.game-page__mods {
+.game-page__mods,
+.game-page__cancelled {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.game-page__mod-link {
+.game-page__mod-link,
+.game-page__cancelled-link {
   color: var(--accent);
   font-weight: 600;
   text-decoration: none;
 }
 
-.game-page__mod-link:hover {
+.game-page__mod-link:hover,
+.game-page__cancelled-link:hover {
   text-decoration: underline;
 }
 

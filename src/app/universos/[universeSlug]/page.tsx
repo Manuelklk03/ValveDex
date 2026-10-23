@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getGameYearLabel } from "@/features/games/get-game-year-label";
 import {
   getOfficialGamesByUniverse,
   getUniverseBySlug,
@@ -65,17 +66,15 @@ export default async function UniversePage({
             {games.map((game) => (
               <li key={game.id} className={styles["universe-page__game"]}>
                 <h3 className={styles["universe-page__game-title"]}>
-                  <h3 className={styles["universe-page__game-title"]}>
-                    <Link
-                      href={`/universos/${universe.slug}/${game.slug}`}
-                      className={styles["universe-page__game-link"]}
-                    >
-                      {game.name}
-                    </Link>
-                  </h3>
+                  <Link
+                    href={`/universos/${universe.slug}/${game.slug}`}
+                    className={styles["universe-page__game-link"]}
+                  >
+                    {game.name}
+                  </Link>
                 </h3>
                 <p className={styles["universe-page__game-meta"]}>
-                  {game.releaseYear} · {game.developer}
+                  {getGameYearLabel(game)} · {game.developer}
                 </p>
                 <p className={styles["universe-page__game-description"]}>
                   {game.description}

@@ -1,6 +1,6 @@
 import { games } from "@/data/games";
 import { universes } from "@/data/universes";
-import type { Game } from "@/domain/game";
+import { getGameYear, type Game } from "@/domain/game";
 import type { Universe } from "@/domain/universe";
 
 export function getUniverses(): Universe[] {
@@ -14,7 +14,7 @@ export function getUniverseBySlug(slug: string): Universe | undefined {
 export function getGamesByUniverse(universeId: string): Game[] {
   return games
     .filter((game) => game.universeId === universeId)
-    .sort((a, b) => a.releaseYear - b.releaseYear);
+    .sort((a, b) => getGameYear(a) - getGameYear(b));
 }
 
 export function getGameBySlug(
@@ -52,12 +52,18 @@ export function getGameById(id: string): Game | undefined {
 
 export function getOfficialGamesByUniverse(universeId: string): Game[] {
   return getGamesByUniverse(universeId).filter(
-    (game) => game.baseGameId === undefined,
+    (game) => game.status === "released" && game.baseGameId === undefined,
   );
 }
 
 export function getModsByGame(gameId: string): Game[] {
   return games
-    .filter((game) => game.baseGameId === gameId)
+    .filter((game) => game.status === "released" && game.baseGameId === gameId)
+    .sort((a, b) => a.name.localeCompare(b.name, "es"));
+}
+
+export function getCancelledGamesByGame(gameId: string): Game[] {
+  return games
+    .filter((game) => game.status === "cancelled" && game.baseGameId === gameId)
     .sort((a, b) => a.name.localeCompare(b.name, "es"));
 }
