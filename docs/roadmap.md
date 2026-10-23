@@ -124,7 +124,7 @@ Acordado con Manuel el 2026-10-22. El esqueleto actual es solo estructura y dato
 
 **Pasos previstos:**
 
-- [ ] D1. Dirección de diseño: brief de `frontend-stack` (público, estética, tipografía, color, composición, movimiento y qué librería entra dónde), decidido con Manuel antes de escribir código.
+- [x] D1. Dirección de diseño (aprobada el 2026-10-23, [design.md](design.md)): brief de `frontend-stack` (público, estética, tipografía, color, composición, movimiento y qué librería entra dónde), decidido con Manuel antes de escribir código.
 - [ ] D2. Sistema de diseño: tokens (tipografía, espaciado, radios, sombras, movimiento) en `globals.css` y paletas de los temas revisadas con la comprobación de contraste de `antislop`.
 - [ ] D3 y siguientes: rediseño página a página (portada, universos, hub, apartado, ficha, `/explorar`…), cada uno con su librería cuando haga falta y revisado en móvil, teclado y `prefers-reduced-motion`.
 
