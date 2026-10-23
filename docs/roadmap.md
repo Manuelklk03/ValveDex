@@ -107,7 +107,7 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 
 Acordado con Manuel el 2026-10-22. El esqueleto actual es solo estructura y datos de prueba: el diseño final será mucho más ambicioso (3D, animaciones, transiciones, efectos), con calidad de portfolio.
 
-**Orden:** esqueleto (22a mods, 22b cancelados) → `v0.1.0` → **fase de diseño** → contenido completo de Half-Life sobre ese diseño. Esqueleto y `v0.1.0` hechos el 2026-10-23: la fase de diseño es la siguiente.
+**Orden (decisión de Manuel, 2026-10-23):** el esqueleto está hecho y solo tiene datos de muestra y textos provisionales. En lugar de «todo el diseño y después todo el contenido», se hace primero el **sistema de diseño** (D1b y D2) y después **cada zona a la vez: su contenido real con fuentes y su diseño**. No se diseña una zona que todavía no tiene contenido (Steam por épocas, Portal, Left 4 Dead…): sus ideas quedan apuntadas en [design.md](design.md).
 
 **Preparación (hecha el 2026-10-23, decisiones de Manuel):**
 
@@ -126,7 +126,7 @@ Acordado con Manuel el 2026-10-22. El esqueleto actual es solo estructura y dato
 
 - [x] D1. Dirección de diseño (aprobada el 2026-10-23, [design.md](design.md)): brief de `frontend-stack` (público, estética, tipografía, color, composición, movimiento y qué librería entra dónde), decidido con Manuel antes de escribir código.
 - [ ] D2. Sistema de diseño: tokens (tipografía, espaciado, radios, sombras, movimiento) en `globals.css` y paletas de los temas revisadas con la comprobación de contraste de `antislop`.
-- [ ] D3 y siguientes: rediseño página a página (portada, universos, hub, apartado, ficha, `/explorar`…), cada uno con su librería cuando haga falta y revisado en móvil, teclado y `prefers-reduced-motion`.
+- [ ] Después, por zonas, cada una con su contenido real y su diseño a la vez (orden en [design.md](design.md#9-plan-por-fases)): portada y sección Valve (con la intro), entrada de universos, Half-Life, Opposing Force, Blue Shift; más adelante, Steam y los demás universos. Cada librería se instala cuando la zona la necesita, y cada zona se revisa en móvil, teclado y `prefers-reduced-motion`.
 
 ## Ampliación posterior
 
