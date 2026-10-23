@@ -27,7 +27,7 @@ Este documento define reglas estables. El avance actual se registra en [docs/STA
 
 ## Reglas de arquitectura
 
-- Base elegida: React, Next.js App Router, TypeScript estricto y Tailwind CSS; CSS Modules con BEM para los estilos propios de componentes.
+- Base elegida: React, Next.js App Router, TypeScript estricto y Tailwind CSS; CSS Modules con BEM para los estilos propios de componentes. Los componentes de shadcn/ui, cuando se añadan, conservan sus utilidades de Tailwind y toman los colores de las variables CSS de los temas.
 - `src/app` compone páginas, layouts y rutas. La lógica de cada funcionalidad vive en `src/features`.
 - Los elementos compartidos van en `src/components`, `src/lib` y `src/domain` solo cuando corresponda por su responsabilidad.
 - Los componentes comunes no importan funcionalidades. Evita dependencias circulares y que una funcionalidad importe detalles internos de otra.

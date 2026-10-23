@@ -233,6 +233,8 @@ Los valores son ilustrativos; los estilos finales utilizarán los valores comune
 
 Tailwind conserva sus utilidades. Lo combinaremos con CSS propio solo donde aporte valor, asignando a cada propiedad un único responsable para evitar conflictos. No añadiremos clases BEM vacías a elementos que solo necesiten utilidades. Los estilos globales se reservarán para la base y las variables compartidas.
 
+**Fase de diseño (decisión de Manuel, 2026-10-23):** los componentes propios siguen con CSS Modules + BEM. Los componentes de shadcn/ui se copian en el proyecto con sus utilidades de Tailwind y no se reescriben en BEM; sus tokens (`--background`, `--primary`…) se definirán a partir de las variables de los temas, para que cambien de paleta con el universo y el juego igual que el resto. Si un componente propio envuelve uno de shadcn, el envoltorio usa BEM y el de shadcn conserva sus utilidades: cada propiedad tiene un único responsable. Las librerías de diseño (GSAP, Lenis, React Bits, shadcn/ui, Three.js + React Three Fiber + drei) se instalan cada una en el paso en que se usan por primera vez; las animaciones y el 3D viven en componentes de cliente pequeños, sin convertir en cliente las páginas ni el layout raíz, y respetan `prefers-reduced-motion`.
+
 La revisión de CSS comprobará nombres coherentes, selectores simples y ausencia de conflictos, también en móvil y estados de interacción. Esta convención no implica cambiar la nomenclatura de TypeScript ni instalar otra herramienta por defecto.
 
 ## 7. Calidad y flujo de trabajo

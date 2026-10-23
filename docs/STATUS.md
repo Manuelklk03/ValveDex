@@ -153,7 +153,7 @@ Comprobado por Claude Code el 2026-10-23 en `main` (`a0267e4`, PR #38 fusionada)
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- `main` en `a0267e4` (tag `v0.1.0` sobre el merge de la PR de documentación del 2026-10-23). PRs fusionadas:
+- `main` en `af6252a`, con el tag `v0.1.0`. PRs fusionadas:
   - #1–#6: historial reconstruido.
   - #7 `fix/errores-css`.
   - #8 `feature/valve-timeline`.
@@ -186,6 +186,7 @@ Comprobado por Claude Code el 2026-10-23 en `main` (`a0267e4`, PR #38 fusionada)
   - #36 `feature/game-mods`.
   - #37 `docs/design-phase`.
   - #38 `feature/cancelled-projects` (2026-10-23).
+  - #39 `docs/release-v0.1.0` (tag `v0.1.0`).
 - `main` protegida: solo cambios por PR (0 aprobaciones, también para administradores), sin force push ni borrado. El repositorio borra las ramas al mergear.
 - Configuración: local `branch.main.mergeoptions=--no-ff` y `pull.rebase=false`; global `pull.rebase=false` y `merge.ff=false`.
 - Flujo (GitHub Flow, pedido por Manuel el 2026-10-16):
@@ -199,7 +200,7 @@ Comprobado por Claude Code el 2026-10-23 en `main` (`a0267e4`, PR #38 fusionada)
 - **Mensajes de commit:** los redacta la IA y los escribe Manuel (2026-10-16). Al final de cada paso, el asistente entrega el mensaje completo: título Conventional Commits en español (`feat(valve): …`), línea en blanco y descripción en lista con `- ` (las líneas que continúan un punto van sangradas con dos espacios). El asistente no hace el commit salvo petición expresa.
 - **Trabajo entre dos PCs:** para continuar una rama sin terminar en el otro equipo, `git push` en el primero y, en el segundo, `git fetch`, `git switch <rama>` y `git pull --ff-only`. La PR se crea cuando la rama está completa. Antes de cambiar de equipo, `git status` debe indicar el árbol limpio y la rama al día con el remoto.
 - Es `gh pr`, no `git pr`. En Git Bash, si falta `gh`: `export PATH="$PATH:/c/Program Files/GitHub CLI"`.
-- Rama abierta: `docs/release-v0.1.0`, creada por Claude el 2026-10-23 desde `a0267e4` con esta actualización de la documentación; se fusiona antes de crear el tag.
+- Rama abierta: `chore/design-phase-setup`, creada por Claude el 2026-10-23 desde `af6252a` (tag `v0.1.0`) con la preparación de la fase de diseño.
 - **Vim:** el commit `b031b14` terminó con una línea `i` suelta en la descripción. Pulsa `i` solo una vez al abrir el editor y, antes de `:wq`, `Esc`; si la `i` se cuela en el texto, bórrala antes de guardar.
 - **`git pull` en `main`:** la configuración global `merge.ff=false` hace que un `git pull` normal cree un commit de merge local. Usar `git pull --ff-only` o configurar una vez `git config --global pull.ff only`.
 - Criterio: una rama = una funcionalidad completa.
@@ -289,14 +290,10 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 
 Esqueleto terminado y publicado como `v0.1.0` (2026-10-23). Orden acordado: **fase de diseño** → contenido completo de Half-Life sobre ese diseño.
 
-1. **Empezar la fase de diseño.** Al empezar, el asistente recuerda y propone a Manuel lo acordado en [roadmap.md](roadmap.md#fase-de-diseño-después-del-esqueleto):
-   - Reactivar en `.claude/settings.json` `taste`, `ui-ux-pro-max` e `imagegen-skills`.
-   - Cambiar en `CLAUDE.md` la regla «sin dependencias nuevas» y dejar que las skills de diseño lideren la dirección visual.
-   - Instalar, explicando cada una: GSAP, Lenis, React Bits, shadcn/ui, Three.js + React Three Fiber (+ drei).
-   - Decidir cómo conviven CSS Modules + BEM con Tailwind y shadcn/ui, y documentarlo en `architecture.md`.
-   - Mantener el modo guiado.
-2. Después, la fase de contenido: imágenes sin fondo, comparador original/HD visible, más fichas, revisión en navegador (móvil, teclado, contraste) y un recorrido E2E.
-3. Tras el esqueleto, revisión completa de la documentación y del README para presentar el proyecto como enciclopedia de todo Valve (aviso de Manuel, 2026-10-13).
+1. **Fase de diseño, preparada el 2026-10-23** (rama `chore/design-phase-setup`): plugins de diseño reactivados, reglas de `CLAUDE.md`, `AGENTS.md` y `architecture.md` actualizadas. Decisiones de Manuel: librerías **una a una, al usarlas**; componentes propios en **CSS Modules + BEM** y shadcn/ui con sus utilidades de Tailwind; la preparación la hace Claude. Los plugins reactivados cargan al abrir una sesión nueva de Claude Code.
+2. **Paso D1, dirección de diseño:** brief de `frontend-stack` (público, estética, tipografía, color, composición, movimiento y qué librería entra dónde), sin código, decidido con Manuel. Después D2 (tokens y sistema de diseño) y el rediseño página a página ([roadmap.md](roadmap.md#fase-de-diseño-después-del-esqueleto)).
+3. Después, la fase de contenido: imágenes sin fondo, comparador original/HD visible, más fichas, revisión en navegador (móvil, teclado, contraste) y un recorrido E2E.
+4. Tras el esqueleto, revisión completa de la documentación y del README para presentar el proyecto como enciclopedia de todo Valve (aviso de Manuel, 2026-10-13).
 
 ## Versiones del proyecto
 
