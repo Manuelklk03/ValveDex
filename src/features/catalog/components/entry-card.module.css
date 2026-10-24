@@ -56,9 +56,10 @@
   }
 }
 
+/* Contorno por dentro: el carrusel de /explorar (overflow-x: auto) recortaría uno exterior */
 .entry-card:has(.entry-card__link:focus-visible) {
   outline: 2px solid var(--foreground);
-  outline-offset: 3px;
+  outline-offset: -5px;
 }
 
 .entry-card__title {
