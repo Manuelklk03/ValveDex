@@ -4,20 +4,35 @@
   color: var(--foreground);
 }
 
+/* Opposing Force: lona oliva y verde ácido de la cápsula oficial; títulos estarcidos en mayúsculas */
 .game-theme--half-life-opposing-force {
-  --background: #161a14;
-  --foreground: #dde3d2;
-  --surface: #20261d;
-  --border: #3f4a36;
-  --muted: #9aa58c;
-  --accent: #9bc53d;
+  --background: #252e1c;
+  --foreground: #e8ecd9;
+  --surface: #2f3a24;
+  --border: #4a5640;
+  --muted: #b9c2a4;
+  --accent: #9bd23c;
+  color-scheme: dark;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgb(255 255 255 / 0.025) 0 2px,
+    transparent 2px 6px
+  );
 }
 
+.game-theme--half-life-opposing-force :where(h1, h2) {
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Blue Shift: plástico claro de acreditación y azul de seguridad */
 .game-theme--half-life-blue-shift {
-  --background: #12161d;
-  --foreground: #d9e2ef;
-  --surface: #1b2230;
-  --border: #34445e;
-  --muted: #8e9bb0;
-  --accent: #4f8fe8;
+  --background: #f4f6fa;
+  --foreground: #14213d;
+  --surface: #e6ebf4;
+  --border: #c3cde0;
+  --muted: #4a5878;
+  --accent: #1f4fa8;
+  color-scheme: light;
+  background-image: none;
 }
