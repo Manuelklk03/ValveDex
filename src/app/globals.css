@@ -1,12 +1,14 @@
 @import "tailwindcss";
 
+/* Paleta de Valve (docs/design.md): casi negro, blanco cálido y el rojo solo para la válvula y la acción principal */
 :root {
-  --background: #171a21;
-  --foreground: #c7d5e0;
-  --surface: #1b2838;
-  --border: #2a475e;
-  --muted: #8f98a0;
-  --accent: #66c0f4;
+  --background: #0b0b0b;
+  --foreground: #f2efe9;
+  --surface: #151515;
+  --border: #2e2c29;
+  --muted: #a19d95;
+  --accent: #ffffff;
+  --valve-red: #f74843;
   --content-width: 72rem;
   color-scheme: dark;
 }
@@ -18,8 +20,9 @@
   --color-border: var(--border);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-valve-red: var(--valve-red);
+  --font-sans: var(--font-archivo);
+  --font-mono: var(--font-plex-mono);
 }
 
 body {

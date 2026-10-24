@@ -14,8 +14,11 @@
   border-color: var(--accent);
 }
 
+/* Sin opacidad: el texto atenuado debe seguir pasando el contraste AA */
 .universe-card--coming-soon {
-  opacity: 0.6;
+  border-style: dashed;
+  background: transparent;
+  color: var(--muted);
 }
 
 .universe-card--coming-soon:hover {

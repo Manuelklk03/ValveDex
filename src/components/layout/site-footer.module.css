@@ -14,17 +14,21 @@
 }
 
 .site-footer__notice {
+  max-width: 70ch;
   color: var(--muted);
   font-size: 0.875rem;
   line-height: 1.6;
 }
 
 .site-footer__link {
+  align-self: flex-start;
   color: var(--muted);
   font-size: 0.875rem;
   text-decoration: underline;
+  text-underline-offset: 0.25em;
+  transition: color 160ms ease-out;
 }
 
 .site-footer__link:hover {
-  color: var(--accent);
+  color: var(--foreground);
 }
