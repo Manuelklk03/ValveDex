@@ -92,3 +92,13 @@ Prueba comportamientos importantes: filtros combinados, fichas inexistentes, int
 - Al terminar, comunica qué cambió, cómo se comprobó y qué limitación queda. No inventes comandos ejecutados, resultados, métricas o publicaciones.
 
 Formato de referencia: [AGENTS.md](https://agents.md/). Si una herramienta no descubre este archivo automáticamente, indícale explícitamente que lo lea; no mantengas copias divergentes de estas reglas.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

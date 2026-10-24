@@ -1,0 +1,15 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": ["src/app/muestra/page.module.css"],
+        "createdAt": "2026-10-24T19:44:05.464Z",
+        "reason": "Claude: franja de peligro a todo el ancho (Opposing Force) y franjas por sector de Black Mesa, recurso aprobado en docs/design.md (dirección A + C)"
+      }
+    ]
+  }
+}

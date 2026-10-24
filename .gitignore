@@ -46,3 +46,6 @@ next-env.d.ts
 .codeiumignore
 # capturas y registros de Playwright (referencias de diseño, no se versionan)
 .playwright-mcp/
+
+# Caché del hook de diseño de impeccable
+.impeccable/hook.cache.json
