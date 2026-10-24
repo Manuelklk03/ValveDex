@@ -1,7 +1,12 @@
+/* Sin fondo propio: Half-Life deja ver el papel pautado de UniverseTheme; cada juego con tema pinta el suyo */
 .game-theme {
   flex: 1;
-  background: var(--background);
   color: var(--foreground);
+}
+
+.game-theme--half-life-opposing-force,
+.game-theme--half-life-blue-shift {
+  background-color: var(--background);
 }
 
 /* Opposing Force: lona oliva y verde ácido de la cápsula oficial; títulos estarcidos en mayúsculas */
