@@ -1,100 +1,393 @@
 .home-page {
+  --gutter: max(1rem, calc((100vw - var(--content-width)) / 2));
+  --line: rgb(242 239 233 / 0.14);
   display: flex;
   flex-direction: column;
-  gap: 3rem;
   width: 100%;
-  max-width: var(--content-width);
-  margin-inline: auto;
-  padding: 3rem 1rem;
 }
 
+/* Entrada: un solo punto focal, la válvula; el rojo solo en ella y en la acción principal */
 .home-page__hero {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-height: min(88svh, 54rem);
+  padding: clamp(3rem, 8vw, 6rem) var(--gutter) 0;
+  background: radial-gradient(
+    40rem 30rem at 78% 42%,
+    rgb(247 72 67 / 0.07),
+    transparent 70%
+  );
+}
+
+.home-page__hero-inner {
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+}
+
+.home-page__hero-content {
+  display: grid;
+  gap: 1.5rem;
+  justify-items: start;
 }
 
 .home-page__eyebrow {
-  color: var(--accent);
-  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
+.home-page__eyebrow::before {
+  content: "";
+  width: 2.5rem;
+  height: 1px;
+  background: currentColor;
+}
+
 .home-page__title {
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  font-weight: 700;
-  line-height: 1.1;
+  max-width: 12ch;
+  font-size: clamp(2.75rem, 7.5vw, 6rem);
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 .home-page__intro {
-  max-width: 40rem;
+  max-width: 40ch;
   color: var(--muted);
-  font-size: 1.125rem;
-  line-height: 1.6;
+  font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+  line-height: 1.55;
 }
 
 .home-page__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  align-items: center;
+  gap: 0.75rem 1.75rem;
   margin-top: 0.5rem;
 }
 
 .home-page__button {
-  padding: 0.75rem 1.25rem;
-  border: 1px solid var(--border);
-  border-radius: 0.25rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.875rem 1.75rem;
+  background: var(--valve-red);
+  color: var(--background);
+  font-weight: 700;
   text-decoration: none;
+  transition:
+    background-color 160ms ease-out,
+    transform 160ms ease-out;
 }
 
 .home-page__button:hover {
-  border-color: var(--accent);
+  background: var(--foreground);
 }
 
-.home-page__button--primary {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: var(--background);
+.home-page__button:active {
+  transform: scale(0.97);
 }
 
-.home-page__section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--border);
+.home-page__link,
+.home-page__more-link {
+  color: var(--foreground);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--muted);
+  text-underline-offset: 0.35em;
+  transition: text-decoration-color 160ms ease-out;
 }
 
-.home-page__section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.home-page__section-text {
-  max-width: 65ch;
-  line-height: 1.7;
+.home-page__link:hover,
+.home-page__more-link:hover {
+  text-decoration-color: currentColor;
 }
 
 .home-page__more-link {
   align-self: flex-start;
-  color: var(--accent);
+}
+
+.home-page__button:focus-visible,
+.home-page__link:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 4px;
+}
+
+.home-page__wheel {
+  justify-self: center;
+  width: clamp(12rem, 34vw, 26rem);
+  color: var(--valve-red);
+}
+
+.home-page__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: clamp(3rem, 6vw, 5rem);
+  border-top: 1px solid var(--line);
+}
+
+.home-page__stat {
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+  padding: 1.25rem 0;
+}
+
+.home-page__stat + .home-page__stat {
+  padding-left: 1.25rem;
+  border-left: 1px solid var(--line);
+}
+
+.home-page__stat-label {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.home-page__stat-value {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  font-stretch: 112%;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 48rem) {
+  .home-page__hero-inner {
+    grid-template-columns: 1.35fr 1fr;
+  }
+}
+
+/* Secciones numeradas, separadas por una tubería con su válvula (motivo industrial de Valve) */
+.home-page__sections {
+  display: grid;
+  padding: clamp(2rem, 5vw, 4rem) var(--gutter) clamp(4rem, 8vw, 6rem);
+  background: var(--surface);
+}
+
+.home-page__section {
+  position: relative;
+  display: grid;
+  gap: 1.5rem 3rem;
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  border-top: 2px solid var(--border);
+}
+
+.home-page__section::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--muted);
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+@media (min-width: 56rem) {
+  .home-page__section {
+    grid-template-columns: 16rem minmax(0, 1fr);
+  }
+
+  /* El número y el título acompañan al leer la sección */
+  .home-page__section-head {
+    position: sticky;
+    top: 2rem;
+    align-self: start;
+  }
+}
+
+.home-page__section-head {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.home-page__section-index {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.875rem;
+}
+
+.home-page__section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.home-page__section-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  min-width: 0;
+}
+
+.home-page__lead {
+  max-width: 52ch;
+  font-size: clamp(1.0625rem, 1.8vw, 1.3125rem);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+/* Ficha técnica de la empresa */
+.home-page__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+}
+
+.home-page__fact {
+  display: grid;
+  gap: 0.375rem;
+  padding: 1rem 1.25rem;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.home-page__fact-label {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+}
+
+.home-page__fact-value {
+  font-size: 1.125rem;
   font-weight: 600;
+}
+
+.home-page__subtitle {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.home-page__subtitle + .home-page__people {
+  margin-top: -1rem;
+}
+
+/* Fundadores: filas enteras clicables, con la flecha que avanza al señalarlas */
+.home-page__people {
+  display: grid;
+  border-top: 1px solid var(--border);
+}
+
+.home-page__person {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.25rem 1.5rem;
+  padding: 1.125rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+@media (min-width: 40rem) {
+  .home-page__person {
+    grid-template-columns: 14rem minmax(0, 1fr) auto;
+  }
+}
+
+.home-page__person-link {
+  color: var(--foreground);
+  font-size: 1.25rem;
+  font-weight: 700;
   text-decoration: none;
 }
 
-.home-page__more-link:hover {
-  text-decoration: underline;
+.home-page__person-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }
 
-.home-page__people {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.home-page__person-link:focus-visible {
+  outline: none;
+}
+
+.home-page__person:has(.home-page__person-link:focus-visible) {
+  outline: 2px solid var(--foreground);
+  outline-offset: 4px;
 }
 
 .home-page__person-role {
   color: var(--muted);
+}
+
+.home-page__person-arrow {
+  color: var(--muted);
+  transition:
+    translate 160ms ease-out,
+    color 160ms ease-out;
+}
+
+@media (hover: hover) {
+  .home-page__person:hover .home-page__person-arrow {
+    color: var(--foreground);
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .home-page__person:hover .home-page__person-arrow {
+    translate: 4px 0;
+  }
+}
+
+@media (max-width: 39.99rem) {
+  .home-page__person-role {
+    grid-column: 1;
+  }
+
+  .home-page__person-arrow {
+    grid-row: 1;
+    grid-column: 2;
+  }
+}
+
+/* Steam: el año de lanzamiento como cifra protagonista */
+.home-page__steam {
+  display: grid;
+  gap: 1.5rem 3rem;
+  align-items: end;
+}
+
+@media (min-width: 48rem) {
+  .home-page__steam {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+}
+
+.home-page__steam-year {
+  display: grid;
+  gap: 0.25rem;
+  font-size: clamp(4rem, 10vw, 7.5rem);
+  font-weight: 800;
+  font-stretch: 125%;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.home-page__steam-year-label {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 400;
+  font-stretch: 100%;
+  letter-spacing: 0;
+}
+
+.home-page__steam-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }

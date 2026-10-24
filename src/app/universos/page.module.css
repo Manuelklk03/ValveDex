@@ -1,32 +1,61 @@
 .universes-page {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: clamp(2.5rem, 5vw, 4rem);
   width: 100%;
   max-width: var(--content-width);
   margin-inline: auto;
-  padding: 3rem 1rem;
+  padding: clamp(3rem, 7vw, 5rem) 1rem clamp(4rem, 8vw, 6rem);
 }
 
 .universes-page__header {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.universes-page__eyebrow {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
 }
 
 .universes-page__title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 700;
+  font-size: clamp(2.75rem, 7vw, 5rem);
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
 }
 
 .universes-page__intro {
-  max-width: 40rem;
+  max-width: 48ch;
   color: var(--muted);
+  font-size: 1.125rem;
   line-height: 1.6;
+}
+
+/* La saga abierta ocupa todo el ancho: es la única puerta que hoy lleva a algún sitio */
+.universes-page__featured {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.universes-page__pending {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.universes-page__subtitle {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+  font-weight: 400;
 }
 
 .universes-page__list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
 }

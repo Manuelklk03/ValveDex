@@ -1,26 +1,80 @@
+/* Ficha archivada: franja superior con el color de su sector (variables --sector-* de globals.css) */
 .entry-card {
+  --sector-color: var(--muted);
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.625rem;
   height: 100%;
-  padding: 1rem;
+  padding: 1.125rem 1.125rem 1rem;
   border: 1px solid var(--border);
-  border-radius: 0.5rem;
+  border-top: 3px solid var(--sector-color);
   background: var(--surface);
+  transition:
+    border-color 160ms ease-out,
+    background-color 160ms ease-out,
+    transform 160ms ease-out;
+}
+
+.entry-card--lore {
+  --sector-color: var(--sector-lore);
+}
+
+.entry-card--maps {
+  --sector-color: var(--sector-maps);
+}
+
+.entry-card--weapons {
+  --sector-color: var(--sector-weapons);
+}
+
+.entry-card--characters {
+  --sector-color: var(--sector-characters);
+}
+
+.entry-card--enemies {
+  --sector-color: var(--sector-enemies);
+}
+
+.entry-card--trivia {
+  --sector-color: var(--sector-trivia);
+}
+
+.entry-card--easter-eggs {
+  --sector-color: var(--sector-easter-eggs);
 }
 
 .entry-card:hover {
-  border-color: var(--accent);
+  border-color: color-mix(in srgb, var(--sector-color) 60%, var(--border));
+  border-top-color: var(--sector-color);
+  background: color-mix(in srgb, var(--sector-color) 6%, var(--surface));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .entry-card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Contorno por dentro: el carrusel de /explorar (overflow-x: auto) recortaría uno exterior */
+.entry-card:has(.entry-card__link:focus-visible) {
+  outline: 2px solid var(--foreground);
+  outline-offset: -5px;
 }
 
 .entry-card__title {
   font-size: 1.125rem;
   font-weight: 700;
+  line-height: 1.25;
 }
 
 .entry-card__link {
+  color: var(--foreground);
   text-decoration: none;
+}
+
+.entry-card__link:focus-visible {
+  outline: none;
 }
 
 .entry-card__link::after {
@@ -30,7 +84,33 @@
 }
 
 .entry-card__summary {
+  display: -webkit-box;
+  flex: 1;
+  overflow: hidden;
   color: var(--muted);
   font-size: 0.875rem;
   line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.entry-card__meta {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border);
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+}
+
+.entry-card__arrow {
+  color: var(--sector-color);
+  transition: translate 160ms ease-out;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .entry-card:hover .entry-card__arrow {
+    translate: 3px 0;
+  }
 }

@@ -1,77 +1,147 @@
+/* Páginas de Valve (historia, personas, Steam): el mismo lenguaje que las secciones de la portada */
 .valve-page {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: clamp(2rem, 4vw, 3rem);
   width: 100%;
   max-width: var(--content-width);
   margin-inline: auto;
-  padding: 3rem 1rem;
+  padding: clamp(2rem, 5vw, 3.5rem) 1rem clamp(4rem, 8vw, 6rem);
 }
 
+/* Ruta de navegación: siempre en el mismo sitio, en monoespaciada */
 .valve-page__back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
   color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
   text-decoration: none;
+  transition: color 160ms ease-out;
 }
 
 .valve-page__back:hover {
-  color: var(--accent);
+  color: var(--foreground);
 }
 
 .valve-page__header {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  display: grid;
+  gap: 1rem;
+  padding-bottom: clamp(2rem, 4vw, 3rem);
 }
 
 .valve-page__eyebrow {
-  color: var(--accent);
-  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
+.valve-page__eyebrow::before {
+  content: "";
+  width: 2.5rem;
+  height: 1px;
+  background: currentColor;
+}
+
 .valve-page__title {
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  font-weight: 700;
-  line-height: 1.1;
+  max-width: 14ch;
+  font-size: clamp(2.75rem, 7vw, 5rem);
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 .valve-page__intro,
 .valve-page__text {
-  max-width: 65ch;
+  max-width: 60ch;
   line-height: 1.7;
+  text-wrap: pretty;
 }
 
 .valve-page__intro {
   color: var(--muted);
-  font-size: 1.125rem;
+  font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
 }
 
+/* Sección con la tubería y su válvula, como en la portada */
 .valve-page__section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--border);
+  position: relative;
+  display: grid;
+  gap: 1.25rem 3rem;
+  padding-top: clamp(2rem, 4vw, 3rem);
+  border-top: 2px solid var(--border);
+}
+
+.valve-page__section::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--muted);
+  border-radius: 50%;
+  background: var(--background);
+}
+
+@media (min-width: 56rem) {
+  .valve-page__section {
+    grid-template-columns: 16rem minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .valve-page__section > :not(:first-child) {
+    grid-column: 2;
+  }
 }
 
 .valve-page__section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: -0.01em;
 }
 
+/* Fuentes: filas numeradas en monoespaciada */
 .valve-page__sources {
+  display: grid;
+  border-top: 1px solid var(--border);
+  counter-reset: source;
+}
+
+.valve-page__sources > li {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid var(--border);
+  counter-increment: source;
+}
+
+.valve-page__sources > li::before {
+  content: counter(source, decimal-leading-zero);
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  line-height: 1.6rem;
 }
 
 .valve-page__source-link {
-  color: var(--muted);
+  color: var(--foreground);
   text-decoration: underline;
+  text-decoration-color: var(--muted);
+  text-underline-offset: 0.25em;
+  overflow-wrap: anywhere;
+  transition: text-decoration-color 160ms ease-out;
 }
 
 .valve-page__source-link:hover {
-  color: var(--accent);
+  text-decoration-color: currentColor;
 }

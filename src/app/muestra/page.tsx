@@ -20,7 +20,7 @@ import {
   getUniverses,
 } from "@/features/universes/get-universes";
 import { SampleMotion } from "./sample-motion";
-import { ValveWheel } from "./valve-wheel";
+import { ValveWheel } from "@/components/ui/valve-wheel";
 import styles from "./page.module.css";
 
 const archivo = Archivo({
@@ -139,7 +139,7 @@ export default function DesignSamplePage() {
               </Link>
             </div>
           </div>
-          <ValveWheel />
+          <ValveWheel className={styles["valve-hero__wheel"]} />
         </div>
 
         <dl className={styles["valve-hero__stats"]}>

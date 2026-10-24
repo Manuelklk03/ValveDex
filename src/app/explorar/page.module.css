@@ -1,25 +1,113 @@
 .explore-page {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: clamp(2rem, 4vw, 3rem);
   width: 100%;
   max-width: var(--content-width);
   margin-inline: auto;
-  padding: 3rem 1rem;
+  padding: clamp(3rem, 7vw, 5rem) 1rem clamp(4rem, 8vw, 6rem);
 }
 
 .explore-page__header {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.explore-page__eyebrow {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
 }
 
 .explore-page__title {
-  font-size: clamp(2rem, 6vw, 3rem);
-  font-weight: 700;
+  font-size: clamp(2.75rem, 7vw, 5rem);
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
 }
 
 .explore-page__intro {
+  max-width: 48ch;
   color: var(--muted);
+  font-size: 1.125rem;
   line-height: 1.6;
+}
+
+.explore-page__index {
+  padding-block: 1rem;
+  border-block: 1px solid var(--border);
+}
+
+.explore-page__index-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Señal de sector: cuadrado del color del apartado, nombre y recuento */
+.explore-page__index-link {
+  --sector-color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 2.75rem;
+  padding: 0 0.875rem;
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    border-color 160ms ease-out,
+    background-color 160ms ease-out;
+}
+
+.explore-page__index-link::before {
+  content: "";
+  width: 0.625rem;
+  height: 0.625rem;
+  background: var(--sector-color);
+}
+
+.explore-page__index-link:hover {
+  border-color: var(--sector-color);
+  background: color-mix(in srgb, var(--sector-color) 8%, transparent);
+}
+
+.explore-page__index-link--maps {
+  --sector-color: var(--sector-maps);
+}
+
+.explore-page__index-link--weapons {
+  --sector-color: var(--sector-weapons);
+}
+
+.explore-page__index-link--characters {
+  --sector-color: var(--sector-characters);
+}
+
+.explore-page__index-link--enemies {
+  --sector-color: var(--sector-enemies);
+}
+
+.explore-page__index-link--trivia {
+  --sector-color: var(--sector-trivia);
+}
+
+.explore-page__index-link--easter-eggs {
+  --sector-color: var(--sector-easter-eggs);
+}
+
+.explore-page__index-count {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+/* minmax(0, 1fr): sin él, cada fila crece hasta el ancho de su carrusel y desborda en móvil */
+.explore-page__rows {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2.5rem, 5vw, 3.5rem);
 }

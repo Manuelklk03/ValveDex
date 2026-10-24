@@ -6,7 +6,7 @@ import styles from "../valve-page.module.css";
 
 export const metadata: Metadata = {
   title: "Historia de Valve",
-  description: "Cronología de Valve,desde su fundación en 1996",
+  description: "Cronología de Valve, desde su fundación en 1996",
 };
 
 export default function ValveHistoryPage() {
@@ -23,7 +23,9 @@ export default function ValveHistoryPage() {
       <header className={styles["valve-page__header"]}>
         <p className={styles["valve-page__eyebrow"]}>Valve</p>
         <h1 className={styles["valve-page__title"]}>Historia de Valve</h1>
-        <p>Los momentos clave de Valve,desde su fundación en 1996</p>
+        <p className={styles["valve-page__intro"]}>
+          Los momentos clave de Valve, desde su fundación en 1996
+        </p>
       </header>
 
       <Timeline milestones={milestones} />

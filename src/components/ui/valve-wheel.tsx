@@ -3,11 +3,15 @@
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import styles from "./page.module.css";
 
 gsap.registerPlugin(useGSAP);
 
-export function ValveWheel() {
+type ValveWheelProps = {
+  className?: string;
+};
+
+// La válvula de Valve, con un giro de entrada; el color sale de `color` (currentColor)
+export function ValveWheel({ className }: ValveWheelProps) {
   const wheelRef = useRef<SVGSVGElement>(null);
 
   // useGSAP deshace la animación al desmontar; matchMedia respeta «reducir movimiento»
@@ -28,7 +32,7 @@ export function ValveWheel() {
   return (
     <svg
       ref={wheelRef}
-      className={styles["valve-hero__wheel"]}
+      className={className}
       viewBox="0 0 200 200"
       aria-hidden="true"
     >
