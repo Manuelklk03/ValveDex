@@ -6,16 +6,17 @@
   color: var(--foreground);
 }
 
-/* Half-Life: el archivo de Black Mesa. Papel de laboratorio pautado, tinta y naranja Half-Life */
+/* Half-Life: oscuro cálido que sale del negro de Valve, texto de papel de laboratorio y el naranja del HUD.
+   El papel claro chocaba con la cabecera y el pie negros (decisión de Manuel, 2026-10-24) */
 .universe-theme--half-life {
-  --background: #ece9e2;
-  --foreground: #1d1b18;
-  --surface: #e2ded5;
-  --border: #c4bfb3;
-  --muted: #57524a;
-  --accent: #96390a;
-  color-scheme: light;
-  background-image: linear-gradient(rgb(29 27 24 / 0.04) 1px, transparent 1px);
+  --background: #13110e;
+  --foreground: #ece4d6;
+  --surface: #1c1915;
+  --border: #3a332a;
+  --muted: #b3a895;
+  --accent: #f39a2e;
+  color-scheme: dark;
+  background-image: linear-gradient(rgb(236 228 214 / 0.025) 1px, transparent 1px);
   background-size: 100% 1.75rem;
   font-family: var(--font-barlow), sans-serif;
 }
