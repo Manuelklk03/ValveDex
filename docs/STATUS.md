@@ -1,6 +1,6 @@
 # Estado actual — ValveDex
 
-Última actualización: **2026-10-23**.
+Última actualización: **2026-10-24**.
 Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
@@ -259,33 +259,34 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 
 ## Pasos de la interfaz (guiados)
 
-| Paso   | Archivo(s)                                                                                            | Estado               |
-| ------ | ----------------------------------------------------------------------------------------------------- | -------------------- |
-| 1–4    | Layout, paleta base, cabecera y pie                                                                   | Hecho                |
-| 5–6    | Portada sobre Valve y Steam con la cronología                                                         | Hecho (PR #6–#8)     |
-| 7      | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`                                       | Hecho (PR #9)        |
-| 8      | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life                                          | Hecho (PR #10)       |
-| 9      | Hub de juego, apartados y tema propio por juego                                                       | Hecho (PR #11)       |
-| 10     | Fichas: modelo `Entry`, página de apartado y página de ficha                                          | Hecho (PR #14)       |
-| 11     | Página 404 propia                                                                                     | Hecho (PR #15)       |
-| 12     | `gameIds` → `appearances` (datos propios de cada juego)                                               | Hecho (PR #16)       |
-| 13     | Imágenes por aparición (`MediaAsset`, `next/image`)                                                   | Hecho (PR #17 y #18) |
-| 13b    | Comparador de imágenes original/HD (`ImageCompare`, componente de cliente)                            | Hecho (PR #20)       |
-| 14     | Pruebas de integridad de datos con Vitest                                                             | Hecho (PR #21)       |
-| 15     | Esqueleto: una ficha de muestra por categoría y apariciones en OF y BS                                | Hecho (PR #23)       |
-| 16     | Esqueleto: lore por juego y su página                                                                 | Hecho (PR #24)       |
-| 17     | Esqueleto: relaciones entre fichas y bloque «Relacionado»                                             | Hecho (PR #26)       |
-| 17b    | Esqueleto: prueba de integridad de las relaciones, alias `@/` y etiquetas sin género                  | Hecho (PR #27)       |
-| 18     | Esqueleto: `/explorar` con una fila horizontal por categoría y «Ver todo»                             | Hecho (PR #28)       |
-| 19     | Esqueleto: sección Valve (`/valve/historia`, `/valve/personas/[slug]`, `/valve/steam`)                | Hecho (PR #29)       |
-| 20     | Esqueleto: página de créditos generada desde los datos                                                | Hecho (PR #33)       |
-| 21     | Esqueleto: campos propios por categoría (unión discriminada) y sección «Datos»                        | Hecho (PR #34)       |
-| 22a    | Esqueleto: mods como juegos con `baseGameId` y su propio hub                                          | Hecho (PR #36)       |
-| 22b    | Esqueleto: proyectos cancelados como juegos con `status: "cancelled"`                                 | Hecho (PR #38)       |
-| —      | `v0.1.0`                                                                                              | Publicada 2026-10-23 |
-| D1     | Dirección de diseño ([design.md](design.md))                                                          | Hecho (PR #41)       |
-| D1b–D2 | Muestra visual y sistema de diseño                                                                    | Siguiente            |
-| Z1–Z4  | Por zonas, contenido real y diseño a la vez: Valve, universos, Half-Life, Opposing Force y Blue Shift | Después de D2        |
+| Paso  | Archivo(s)                                                                                            | Estado                               |
+| ----- | ----------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| 1–4   | Layout, paleta base, cabecera y pie                                                                   | Hecho                                |
+| 5–6   | Portada sobre Valve y Steam con la cronología                                                         | Hecho (PR #6–#8)                     |
+| 7     | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`                                       | Hecho (PR #9)                        |
+| 8     | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life                                          | Hecho (PR #10)                       |
+| 9     | Hub de juego, apartados y tema propio por juego                                                       | Hecho (PR #11)                       |
+| 10    | Fichas: modelo `Entry`, página de apartado y página de ficha                                          | Hecho (PR #14)                       |
+| 11    | Página 404 propia                                                                                     | Hecho (PR #15)                       |
+| 12    | `gameIds` → `appearances` (datos propios de cada juego)                                               | Hecho (PR #16)                       |
+| 13    | Imágenes por aparición (`MediaAsset`, `next/image`)                                                   | Hecho (PR #17 y #18)                 |
+| 13b   | Comparador de imágenes original/HD (`ImageCompare`, componente de cliente)                            | Hecho (PR #20)                       |
+| 14    | Pruebas de integridad de datos con Vitest                                                             | Hecho (PR #21)                       |
+| 15    | Esqueleto: una ficha de muestra por categoría y apariciones en OF y BS                                | Hecho (PR #23)                       |
+| 16    | Esqueleto: lore por juego y su página                                                                 | Hecho (PR #24)                       |
+| 17    | Esqueleto: relaciones entre fichas y bloque «Relacionado»                                             | Hecho (PR #26)                       |
+| 17b   | Esqueleto: prueba de integridad de las relaciones, alias `@/` y etiquetas sin género                  | Hecho (PR #27)                       |
+| 18    | Esqueleto: `/explorar` con una fila horizontal por categoría y «Ver todo»                             | Hecho (PR #28)                       |
+| 19    | Esqueleto: sección Valve (`/valve/historia`, `/valve/personas/[slug]`, `/valve/steam`)                | Hecho (PR #29)                       |
+| 20    | Esqueleto: página de créditos generada desde los datos                                                | Hecho (PR #33)                       |
+| 21    | Esqueleto: campos propios por categoría (unión discriminada) y sección «Datos»                        | Hecho (PR #34)                       |
+| 22a   | Esqueleto: mods como juegos con `baseGameId` y su propio hub                                          | Hecho (PR #36)                       |
+| 22b   | Esqueleto: proyectos cancelados como juegos con `status: "cancelled"`                                 | Hecho (PR #38)                       |
+| —     | `v0.1.0`                                                                                              | Publicada 2026-10-23                 |
+| D1    | Dirección de diseño ([design.md](design.md))                                                          | Hecho (PR #41)                       |
+| D1b   | Muestra visual `/muestra` (aprobada por Manuel como referencia estética)                              | Hecho (rama `feature/design-sample`) |
+| D2    | Sistema de diseño: tokens, fuentes, temas y componentes compartidos                                   | Siguiente                            |
+| Z1–Z4 | Por zonas, contenido real y diseño a la vez: Valve, universos, Half-Life, Opposing Force y Blue Shift | Después de D2                        |
 
 ## Siguiente paso
 
@@ -293,7 +294,8 @@ Esqueleto terminado y publicado como `v0.1.0` (2026-10-23). **Orden (decisión d
 
 1. **Fase de diseño, preparada el 2026-10-23** (rama `chore/design-phase-setup`): plugins de diseño reactivados, reglas de `CLAUDE.md`, `AGENTS.md` y `architecture.md` actualizadas. Decisiones de Manuel: librerías **una a una, al usarlas**; componentes propios en **CSS Modules + BEM** y shadcn/ui con sus utilidades de Tailwind; la preparación la hace Claude. Los plugins reactivados cargan al abrir una sesión nueva de Claude Code.
 2. **Paso D1, dirección de diseño: aprobada** el 2026-10-23 y documentada en [design.md](design.md): referencias capturadas con Playwright, lenguaje de Valve, Steam y Half-Life, diferencias entre los tres juegos, movimiento, recursos, tecnología y plan D1b–D9. Decisiones de Manuel: Half-Life como **archivo físico + señalética de las instalaciones** (A + C); **intro oficial de Valve** como grabación propia dentro del juego, según la política de vídeo de Valve (uso no comercial, sin distribuir los archivos del juego); **muestra D1b** aprobada. `.gitignore` ignora `.playwright-mcp/` (capturas de referencia).
-   **Siguiente: D1b**, una pantalla estática y aislada, sin librerías: cabecera de hub con sectores en las tres variantes (Half-Life, Opposing Force, Blue Shift) y primer pantallazo de la portada de Valve, revisada con capturas en escritorio y móvil, contraste y teclado.
+   **D1b hecho (2026-10-24, rama `feature/design-sample`):** Manuel escribió la primera versión (`dfbae08`); a petición suya, Claude la pulió con las skills de diseño y antislop: cabecera de Valve con la válvula animada (GSAP) y cifras reales, y tres expedientes con ficha técnica, apartados numerados, sellos, rótulo de canto, pie de registro y una ficha desplegable al pasar el ratón con la descripción y las primeras fichas de cada apartado. Lenis y la entrada al hacer scroll (GSAP + ScrollTrigger) solo en la muestra. Comprobado: `npm run check` (26 pruebas), capturas a 1440 y 390 px sin scroll horizontal y contraste AA de los textos nuevos. Manuel la aprueba como **primera referencia estética**: se mejorará cuando haya más contenido. Las imágenes que pasan al desplegar un apartado se dejan para la tanda de imágenes.
+   **Siguiente: D2**, sistema de diseño a partir de la muestra (tokens, fuentes, temas y componentes compartidos, incluidos cabecera y pie, que siguen en azul marino).
 3. Después de D1b y D2, **por zonas** (contenido real y diseño a la vez): Valve, entrada de universos, Half-Life, Opposing Force y Blue Shift ([design.md](design.md#9-plan-por-fases)). Los pendientes de contenido (más fichas, textos contrastados, revisión en navegador y E2E) se resuelven dentro de la zona a la que pertenecen. **La intro de Valve, las imágenes y el comparador con imágenes reales** van en tandas de recursos cuando haya varios juegos terminados (decisión de Manuel, 2026-10-24).
 4. Tras el esqueleto, revisión completa de la documentación y del README para presentar el proyecto como enciclopedia de todo Valve (aviso de Manuel, 2026-10-13).
 
