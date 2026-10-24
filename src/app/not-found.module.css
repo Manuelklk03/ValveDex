@@ -1,31 +1,44 @@
 .not-found-page {
-  display: flex;
+  display: grid;
   flex: 1;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
+  align-content: center;
+  align-items: center;
+  gap: 2rem 4rem;
   width: 100%;
   max-width: var(--content-width);
   margin-inline: auto;
-  padding: 4rem 1rem;
+  padding: clamp(3rem, 8vw, 6rem) 1rem;
+}
+
+@media (min-width: 56rem) {
+  .not-found-page {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+.not-found-page__content {
+  display: grid;
+  gap: 1.25rem;
+  justify-items: start;
 }
 
 .not-found-page__code {
-  color: var(--accent);
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
   font-size: 0.875rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .not-found-page__title {
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  font-weight: 700;
-  line-height: 1.1;
+  max-width: 12ch;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
 }
 
 .not-found-page__text {
-  max-width: 40rem;
+  max-width: 44ch;
   color: var(--muted);
   font-size: 1.125rem;
   line-height: 1.6;
@@ -34,24 +47,49 @@
 .not-found-page__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  align-items: center;
+  gap: 0.75rem 1.75rem;
   margin-top: 0.5rem;
 }
 
 .not-found-page__link {
-  padding: 0.75rem 1.25rem;
-  border: 1px solid var(--border);
-  border-radius: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--foreground);
   font-weight: 600;
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-color: var(--muted);
+  text-underline-offset: 0.35em;
+  transition:
+    background-color 160ms ease-out,
+    text-decoration-color 160ms ease-out;
 }
 
 .not-found-page__link:hover {
-  border-color: var(--accent);
+  text-decoration-color: currentColor;
 }
 
+/* Acción principal: el rojo de Valve, como en la portada */
 .not-found-page__link--primary {
-  border-color: var(--accent);
-  background: var(--accent);
+  padding: 0 1.75rem;
+  background: var(--valve-red);
   color: var(--background);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.not-found-page__link--primary:hover {
+  background: var(--foreground);
+}
+
+/* Cifra en contorno, sin relleno, para que no compita con el titular */
+.not-found-page__number {
+  color: transparent;
+  font-size: clamp(6rem, 22vw, 16rem);
+  font-weight: 800;
+  font-stretch: 125%;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  -webkit-text-stroke: 2px var(--border);
 }

@@ -9,7 +9,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 ### Añadido
 
 - Muestra visual D1b en `/muestra` (no indexada): cabecera de Valve con la válvula animada y tres expedientes (Half-Life, Opposing Force y Blue Shift) con sus apartados, ficha técnica, sellos y una ficha desplegable con las primeras fichas de cada apartado. Aprobada por Manuel como primera referencia estética.
-- Paleta y fuentes de Valve en toda la web (D2a): casi negro, blanco cálido y rojo solo en la válvula; Archivo e IBM Plex Mono en lugar de Geist; cabecera y pie nuevos.
+- Paleta y fuentes de Valve en toda la web (D2a): casi negro, blanco cálido y rojo solo en la válvula y la acción principal; Archivo e IBM Plex Mono en lugar de Geist; colores de sector globales (`--sector-*`).
+- Rediseño de las páginas de Valve: portada con la válvula, secciones numeradas con tubería y ficha técnica; línea de tiempo como línea de producción; `/universos` como acreditaciones de acceso; `/explorar` con índice de sectores y fichas con su color; páginas de Valve, créditos y 404 con el mismo lenguaje.
 - Dependencias de diseño: `gsap` y `@gsap/react` (giro de la válvula y entrada de los expedientes) y `lenis` (scroll suave), usadas solo en la muestra.
 
 ## [0.1.0] — 2026-10-23

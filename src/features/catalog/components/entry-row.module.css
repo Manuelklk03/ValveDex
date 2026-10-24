@@ -1,12 +1,66 @@
 .entry-row {
+  --sector-color: var(--muted);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
+  scroll-margin-top: 1.5rem;
+}
+
+.entry-row--lore {
+  --sector-color: var(--sector-lore);
+}
+
+.entry-row--maps {
+  --sector-color: var(--sector-maps);
+}
+
+.entry-row--weapons {
+  --sector-color: var(--sector-weapons);
+}
+
+.entry-row--characters {
+  --sector-color: var(--sector-characters);
+}
+
+.entry-row--enemies {
+  --sector-color: var(--sector-enemies);
+}
+
+.entry-row--trivia {
+  --sector-color: var(--sector-trivia);
+}
+
+.entry-row--easter-eggs {
+  --sector-color: var(--sector-easter-eggs);
+}
+
+/* Rótulo del sector: número, nombre, recuento y la franja de su color debajo */
+.entry-row__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--sector-color);
+}
+
+.entry-row__index {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
 }
 
 .entry-row__title {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: clamp(1.375rem, 3vw, 1.75rem);
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: -0.01em;
+}
+
+.entry-row__count {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
 }
 
 .entry-row__list {
@@ -18,19 +72,12 @@
 }
 
 .entry-row__item {
-  flex: 0 0 16rem;
+  flex: 0 0 17rem;
   scroll-snap-align: start;
 }
 
-.entry-row__header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem 1rem;
-}
-
 .entry-row__more {
+  margin-left: auto;
   color: var(--accent);
   font-size: 0.875rem;
   font-weight: 600;
