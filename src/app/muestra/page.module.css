@@ -350,17 +350,34 @@
   box-shadow: 0 16px 24px -16px rgb(0 0 0 / 0.45);
   opacity: 0;
   pointer-events: none;
-  translate: 0 -0.25rem;
-  transition:
-    opacity 160ms ease-out,
-    translate 160ms ease-out;
+  transition: opacity 160ms ease-out;
 }
 
 .dossier__sector:hover .dossier__sector-panel,
 .dossier__sector:focus-within .dossier__sector-panel {
   opacity: 1;
   pointer-events: auto;
-  translate: 0 0;
+}
+
+/* Escape la cierra (sample-motion.tsx); va después para ganar a :hover y :focus-within */
+.dossier__sector[data-dismissed] .dossier__sector-panel {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* El pequeño descenso solo si el sistema no pide movimiento reducido */
+@media (prefers-reduced-motion: no-preference) {
+  .dossier__sector-panel {
+    translate: 0 -0.25rem;
+    transition:
+      opacity 160ms ease-out,
+      translate 160ms ease-out;
+  }
+
+  .dossier__sector:hover .dossier__sector-panel,
+  .dossier__sector:focus-within .dossier__sector-panel {
+    translate: 0 0;
+  }
 }
 
 /* En pantallas táctiles no hay ratón: la ficha se ve siempre, dentro del apartado */

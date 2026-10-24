@@ -224,6 +224,7 @@ export default function DesignSamplePage() {
                     <li
                       key={section.id}
                       className={`${styles["dossier__sector"]} ${styles[`dossier__sector--${section.id}`]} ${isAvailable ? "" : styles["dossier__sector--empty"]}`}
+                      data-expandable={isAvailable || undefined}
                     >
                       <span
                         className={styles["dossier__sector-index"]}
@@ -254,28 +255,33 @@ export default function DesignSamplePage() {
                           →
                         </span>
                       )}
-                      <div className={styles["dossier__sector-panel"]}>
-                        <p className={styles["dossier__sector-description"]}>
-                          {section.description}
-                        </p>
-                        {entryNames.length > 0 && (
-                          <ul className={styles["dossier__sector-entries"]}>
-                            {entryNames.slice(0, PREVIEW_COUNT).map((name) => (
-                              <li
-                                key={name}
-                                className={styles["dossier__sector-entry"]}
-                              >
-                                {name}
-                              </li>
-                            ))}
-                            {entryNames.length > PREVIEW_COUNT && (
-                              <li className={styles["dossier__sector-entry"]}>
-                                y {entryNames.length - PREVIEW_COUNT} más
-                              </li>
-                            )}
-                          </ul>
-                        )}
-                      </div>
+                      {/* Solo los apartados con enlace despliegan: así el teclado también llega con :focus-within */}
+                      {isAvailable && (
+                        <div className={styles["dossier__sector-panel"]}>
+                          <p className={styles["dossier__sector-description"]}>
+                            {section.description}
+                          </p>
+                          {entryNames.length > 0 && (
+                            <ul className={styles["dossier__sector-entries"]}>
+                              {entryNames
+                                .slice(0, PREVIEW_COUNT)
+                                .map((name) => (
+                                  <li
+                                    key={name}
+                                    className={styles["dossier__sector-entry"]}
+                                  >
+                                    {name}
+                                  </li>
+                                ))}
+                              {entryNames.length > PREVIEW_COUNT && (
+                                <li className={styles["dossier__sector-entry"]}>
+                                  y {entryNames.length - PREVIEW_COUNT} más
+                                </li>
+                              )}
+                            </ul>
+                          )}
+                        </div>
+                      )}
                     </li>
                   ),
                 )}
