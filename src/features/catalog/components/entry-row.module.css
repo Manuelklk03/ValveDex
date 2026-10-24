@@ -34,9 +34,12 @@
   color: var(--accent);
   font-size: 0.875rem;
   font-weight: 600;
-  text-decoration: none;
+  /* Subrayado en reposo: con --accent blanco el color ya no distingue el enlace del texto */
+  text-decoration: underline;
+  text-decoration-color: var(--muted);
+  text-underline-offset: 0.3em;
 }
 
 .entry-row__more:hover {
-  text-decoration: underline;
+  text-decoration-color: currentColor;
 }
