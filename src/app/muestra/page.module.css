@@ -1,0 +1,277 @@
+.design-sample {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Valve: negro, blanco cálido y un único acento rojo (#F74843, medido en valvesoftware.com) */
+.valve-hero {
+  --valve-black: #0b0b0b;
+  --valve-white: #f2efe9;
+  --valve-red: #f74843;
+  display: grid;
+  align-items: end;
+  gap: 2rem;
+  min-height: min(88vh, 52rem);
+  padding: 4rem max(1rem, calc((100vw - 72rem) / 2)) 3rem;
+  background: var(--valve-black);
+  color: var(--valve-white);
+  font-family: var(--font-archivo), sans-serif;
+}
+
+.valve-hero__content {
+  display: grid;
+  gap: 1.25rem;
+  justify-items: start;
+}
+
+.valve-hero__eyebrow {
+  color: var(--valve-red);
+  font-weight: 600;
+}
+
+.valve-hero__title {
+  max-width: 14ch;
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  font-weight: 900;
+  font-stretch: 125%;
+  line-height: 0.95;
+}
+
+.valve-hero__intro {
+  max-width: 36ch;
+  font-size: 1.25rem;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.valve-hero__button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--valve-red);
+  color: var(--valve-black);
+  font-weight: 800;
+  text-decoration: none;
+  transition: background-color 150ms ease-out;
+}
+
+.valve-hero__button:hover {
+  background: var(--valve-white);
+}
+
+.valve-hero__button:focus-visible {
+  outline: 3px solid var(--valve-white);
+  outline-offset: 4px;
+}
+
+.valve-hero__wheel {
+  justify-self: end;
+  width: clamp(10rem, 40vw, 30rem);
+  color: var(--valve-red);
+}
+
+@media (min-width: 48rem) {
+  .valve-hero {
+    grid-template-columns: 1.4fr 1fr;
+  }
+
+  .valve-hero__wheel {
+    align-self: center;
+  }
+}
+
+.design-sample__dossiers {
+  display: grid;
+  gap: 4rem;
+  padding: 4rem max(1rem, calc((100vw - 72rem) / 2));
+}
+
+/* Expediente: base de papel de laboratorio (Half-Life); las variantes solo cambian variables y material */
+.dossier {
+  --dossier-paper: #ece9e2;
+  --dossier-ink: #1d1b18;
+  --dossier-muted: #5c574f;
+  --dossier-accent: #a8430c;
+  --dossier-radius: 2px;
+  --dossier-padding: clamp(1rem, 4vw, 2.5rem);
+  position: relative;
+  display: grid;
+  gap: 1.5rem;
+  padding: 2rem var(--dossier-padding);
+  border-radius: var(--dossier-radius);
+  background: var(--dossier-paper);
+  color: var(--dossier-ink);
+  font-family: var(--font-barlow), sans-serif;
+}
+
+.dossier__header {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.dossier__label {
+  color: var(--dossier-accent);
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dossier__code {
+  color: var(--dossier-muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+}
+
+.dossier__title {
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.dossier__meta {
+  color: var(--dossier-muted);
+}
+
+.dossier__summary {
+  max-width: 60ch;
+  line-height: 1.6;
+}
+
+.dossier__sectors {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 0.75rem;
+}
+
+/* Franja de color por sector, como las líneas de los pasillos de Black Mesa */
+.dossier__sector {
+  position: relative;
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--dossier-ink) 20%, transparent);
+  border-top: 6px solid var(--sector-color);
+}
+
+.dossier__sector--lore {
+  --sector-color: #5c574f;
+}
+
+.dossier__sector--maps {
+  --sector-color: #2e7d32;
+}
+
+.dossier__sector--weapons {
+  --sector-color: #c62828;
+}
+
+.dossier__sector--characters {
+  --sector-color: #1565c0;
+}
+
+.dossier__sector--enemies {
+  --sector-color: #ef6c00;
+}
+
+.dossier__sector--trivia {
+  --sector-color: #6a1b9a;
+}
+
+.dossier__sector--easter-eggs {
+  --sector-color: #f9a825;
+}
+
+/* Va después de los colores de sector para que un apartado vacío quede en gris */
+.dossier__sector--empty {
+  --sector-color: color-mix(in srgb, var(--dossier-ink) 25%, transparent);
+}
+
+.dossier__sector-link,
+.dossier__sector-name {
+  font-weight: 600;
+}
+
+.dossier__sector-link {
+  color: var(--dossier-ink);
+  text-decoration: none;
+}
+
+.dossier__sector-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.dossier__sector-link:hover {
+  text-decoration: underline;
+}
+
+.dossier__sector-link:focus-visible {
+  outline: 3px solid var(--dossier-ink);
+  outline-offset: 4px;
+}
+
+.dossier__sector-status {
+  color: var(--dossier-muted);
+  font-size: 0.875rem;
+}
+
+/* Half-Life: carpeta de laboratorio con pestaña */
+.dossier--half-life {
+  margin-top: 1.25rem;
+}
+
+.dossier--half-life::before {
+  content: "";
+  position: absolute;
+  top: -1.25rem;
+  left: var(--dossier-padding);
+  width: 9rem;
+  height: 1.25rem;
+  border-radius: 6px 6px 0 0;
+  background: var(--dossier-paper);
+}
+
+/* Opposing Force: lona oliva y estarcido militar; verde ácido de la cápsula oficial */
+.dossier--opposing-force {
+  --dossier-paper: #2f3a24;
+  --dossier-ink: #e8ecd9;
+  --dossier-muted: #b9c2a4;
+  --dossier-accent: #9bd23c;
+  border: 2px solid #1c2416;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgb(255 255 255 / 0.03) 0 2px,
+    transparent 2px 6px
+  );
+}
+
+.dossier--opposing-force .dossier__title {
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Blue Shift: tarjeta de acreditación con banda azul de seguridad */
+.dossier--blue-shift {
+  --dossier-paper: #f4f6fa;
+  --dossier-ink: #14213d;
+  --dossier-muted: #4a5878;
+  --dossier-accent: #3d3de0;
+  --dossier-radius: 14px;
+  padding-top: 0;
+  overflow: hidden;
+}
+
+.dossier--blue-shift .dossier__header {
+  --dossier-ink: #ffffff;
+  --dossier-muted: #dbe4f5;
+  --dossier-accent: #ffffff;
+  margin-inline: calc(-1 * var(--dossier-padding));
+  padding: 1.5rem var(--dossier-padding);
+  background: #1f4fa8;
+  color: var(--dossier-ink);
+}
