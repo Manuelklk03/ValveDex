@@ -6,11 +6,22 @@
   color: var(--foreground);
 }
 
+/* Half-Life: el archivo de Black Mesa. Papel de laboratorio pautado, tinta y naranja Half-Life */
 .universe-theme--half-life {
-  --background: #1a1915;
-  --foreground: #e6e1d3;
-  --surface: #25231d;
-  --border: #4a4433;
-  --muted: #a39e8e;
-  --accent: #f28c28;
+  --background: #ece9e2;
+  --foreground: #1d1b18;
+  --surface: #e2ded5;
+  --border: #c4bfb3;
+  --muted: #57524a;
+  --accent: #96390a;
+  color-scheme: light;
+  background-image: linear-gradient(rgb(29 27 24 / 0.04) 1px, transparent 1px);
+  background-size: 100% 1.75rem;
+  font-family: var(--font-barlow), sans-serif;
+}
+
+/* Títulos con la letra estrecha de la señalética; :where no suma especificidad */
+.universe-theme--half-life :where(h1, h2, h3) {
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-stretch: normal;
 }
