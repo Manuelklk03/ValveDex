@@ -9,13 +9,14 @@
   background-color: var(--background);
 }
 
-/* Opposing Force: lona oliva y verde ácido de la cápsula oficial; títulos estarcidos en mayúsculas */
+/* Opposing Force: lona oliva y verde ácido de la cápsula oficial; títulos estarcidos en mayúsculas.
+   Un punto más oscuro que antes para enlazar con el negro de la cabecera */
 .game-theme--half-life-opposing-force {
-  --background: #252e1c;
-  --foreground: #e8ecd9;
-  --surface: #2f3a24;
-  --border: #4a5640;
-  --muted: #b9c2a4;
+  --background: #1b2214;
+  --foreground: #e6ebd6;
+  --surface: #252e1c;
+  --border: #3e4a32;
+  --muted: #b2bc9d;
   --accent: #9bd23c;
   color-scheme: dark;
   background-image: repeating-linear-gradient(
@@ -30,14 +31,14 @@
   text-transform: uppercase;
 }
 
-/* Blue Shift: plástico claro de acreditación y azul de seguridad */
+/* Blue Shift: marino del uniforme de seguridad y el azul del HUD del casco (RGB 95 95 255, aclarado para AA) */
 .game-theme--half-life-blue-shift {
-  --background: #f4f6fa;
-  --foreground: #14213d;
-  --surface: #e6ebf4;
-  --border: #c3cde0;
-  --muted: #4a5878;
-  --accent: #1f4fa8;
-  color-scheme: light;
+  --background: #0e1320;
+  --foreground: #e0e6f3;
+  --surface: #161d2e;
+  --border: #2b3651;
+  --muted: #a5b0c9;
+  --accent: #8a8aff;
+  color-scheme: dark;
   background-image: none;
 }
