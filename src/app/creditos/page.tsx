@@ -65,7 +65,7 @@ export default function CreditsPage() {
         </h2>
         {imageCredits.length > 0 ? (
           <ul className={styles["credits-page__list"]}>
-            {imageCredits.map(({ image, entryName, gameName }) => (
+            {imageCredits.map(({ image, usedIn }) => (
               <li key={image.src} className={styles["credits-page__item"]}>
                 <a
                   href={image.source.url}
@@ -74,7 +74,7 @@ export default function CreditsPage() {
                   {image.source.title}
                 </a>
                 <p className={styles["credits-page__meta"]}>
-                  {entryName} · {gameName}
+                  {usedIn}
                   {image.credit && ` · ${image.credit}`}
                   {image.license && ` · ${image.license}`}
                 </p>

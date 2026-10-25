@@ -1,3 +1,4 @@
+import { decorImages } from "@/data/decor-images";
 import { entries } from "@/data/entries";
 import { gameLore } from "@/data/game-lore";
 import { games } from "@/data/games";
@@ -13,8 +14,7 @@ export type SourceCredit = {
 
 export type ImageCredit = {
   image: MediaAsset;
-  entryName: string;
-  gameName: string;
+  usedIn: string;
 };
 
 const gameNames = new Map(games.map((game) => [game.id, game.name]));
@@ -68,15 +68,16 @@ export function getSourceCredits(): SourceCredit[] {
 }
 
 export function getImageCredits(): ImageCredit[] {
-  return entries.flatMap((entry) =>
+  const entryImages = entries.flatMap((entry) =>
     entry.appearances.flatMap((appearance) =>
       [appearance.images?.original, appearance.images?.hd]
         .filter((image) => image !== undefined)
         .map((image) => ({
           image,
-          entryName: entry.name,
-          gameName: getGameName(appearance.gameId),
+          usedIn: `${entry.name} · ${getGameName(appearance.gameId)}`,
         })),
     ),
   );
+
+  return [...entryImages, ...decorImages];
 }

@@ -6,6 +6,7 @@ import { expansionAppearances } from "./expansion-appearances";
 import { entryRelations } from "./entry-relations";
 import { gameSections } from "./game-sections";
 import { games } from "./games";
+import { decorImages } from "./decor-images";
 import { gameLore } from "./game-lore";
 import { valveMilestones } from "./valve-milestones";
 import { valvePeople } from "./valve-people";
@@ -26,6 +27,12 @@ const entryImages = entries.flatMap((entry) =>
       })),
   ),
 );
+
+// Las de las fichas y las decorativas pasan las mismas comprobaciones de archivo, tamaño y fuente
+const allImages = [
+  ...entryImages,
+  ...decorImages.map(({ image, usedIn }) => ({ label: usedIn, image })),
+];
 
 describe("universos", () => {
   it("tienen id y slug únicos", () => {
@@ -191,9 +198,9 @@ describe("apariciones en las expansiones", () => {
   });
 });
 
-describe("imágenes de las fichas", () => {
+describe("imágenes", () => {
   it("existen en public/", () => {
-    const missing = entryImages
+    const missing = allImages
       .filter(({ image }) => !existsSync(join("public", image.src)))
       .map(({ label, image }) => `${label}: ${image.src}`);
 
@@ -201,7 +208,7 @@ describe("imágenes de las fichas", () => {
   });
 
   it("tienen tamaño, texto alternativo y fuente", () => {
-    for (const { label, image } of entryImages) {
+    for (const { label, image } of allImages) {
       expect(image.width, label).toBeGreaterThan(0);
       expect(image.height, label).toBeGreaterThan(0);
       expect(image.alt.trim(), label).not.toBe("");
@@ -209,10 +216,8 @@ describe("imágenes de las fichas", () => {
     }
   });
 
-  it("no se repiten entre fichas", () => {
-    expect(findDuplicates(entryImages.map(({ image }) => image.src))).toEqual(
-      [],
-    );
+  it("no se repiten", () => {
+    expect(findDuplicates(allImages.map(({ image }) => image.src))).toEqual([]);
   });
 
   it("la original y la HD miden lo mismo (para el comparador)", () => {

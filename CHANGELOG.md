@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Entrada al universo Half-Life por etapas (U1–U3): GoldSrc (Half-Life 1, Opposing Force y Blue Shift, más el multijugador anunciado), Source (Half-Life 2 y sus episodios) y Source 2 (Half-Life: Alyx), estas dos en preparación. Cada juego tiene un dossier que abre su hub y enlaza a sus apartados con desplegables; Source lleva la λ de la Resistencia y Source 2 el emblema de la Alianza (acreditado en `/creditos`). Entrada de los dossiers con GSAP y scroll suave con Lenis, desactivados con movimiento reducido. Diseño provisional, aprobado como primera versión.
 - Muestra visual D1b en `/muestra` (no indexada): cabecera de Valve con la válvula animada y tres expedientes (Half-Life, Opposing Force y Blue Shift) con sus apartados, ficha técnica, sellos y una ficha desplegable con las primeras fichas de cada apartado. Aprobada por Manuel como primera referencia estética.
 - Paleta y fuentes de Valve en toda la web (D2a): casi negro, blanco cálido y rojo solo en la válvula y la acción principal; Archivo e IBM Plex Mono en lugar de Geist; colores de sector globales (`--sector-*`).
 - Temas de Half-Life (D2b), oscuros para enlazar con la cabecera y el pie negros: Half-Life en carbón cálido con texto de papel y el naranja del HUD; Opposing Force en lona oliva con verde ácido y títulos en mayúsculas; Blue Shift en el marino del uniforme con el azul del HUD. Barlow y Barlow Condensed en todo el universo Half-Life.
