@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { notFound } from "next/navigation";
 import {
   getValvePeople,
@@ -36,11 +36,9 @@ export default async function ValvePersonPage({
 
   return (
     <main className={styles["valve-page"]}>
-      <nav aria-label="Ruta de navegación">
-        <Link href="/" className={styles["valve-page__back"]}>
-          ← Inicio
-        </Link>
-      </nav>
+      <Breadcrumb
+        items={[{ label: "Inicio", href: "/" }, { label: person.name }]}
+      />
       <header className={styles["valve-page__header"]}>
         <p className={styles["valve-page__eyebrow"]}>{person.role}</p>
         <h1 className={styles["valve-page__title"]}>{person.name}</h1>

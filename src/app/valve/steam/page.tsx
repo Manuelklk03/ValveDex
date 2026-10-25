@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import styles from "../valve-page.module.css";
 
 export const metadata: Metadata = {
@@ -10,11 +10,9 @@ export const metadata: Metadata = {
 export default function SteamPage() {
   return (
     <main className={styles["valve-page"]}>
-      <nav aria-label="Ruta de navegación">
-        <Link href="/" className={styles["valve-page__back"]}>
-          ← Inicio
-        </Link>
-      </nav>
+      <Breadcrumb
+        items={[{ label: "Inicio", href: "/" }, { label: "Steam" }]}
+      />
 
       <header className={styles["valve-page__header"]}>
         <p className={styles["valve-page__eyebrow"]}>Valve</p>

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { DossierHeader } from "@/components/ui/dossier-header";
 import { ImageCompare } from "@/components/ui/image-compare";
 import { getEntries, getEntryBySlug } from "@/features/catalog/get-entries";
 import { getRelatedEntries } from "@/features/catalog/get-related-entries";
@@ -54,36 +56,48 @@ export default async function EntryPage({
     return game && universe ? [{ appearance, game, universe }] : [];
   });
 
+  // La ruta sigue al primer juego de la ficha, el mismo que pone el tema en layout.tsx
+  const first = gameAppearances[0];
+  const firstGamePath = first
+    ? `/universos/${first.universe.slug}/${first.game.slug}`
+    : undefined;
+
   return (
     <main className={styles["entry-page"]}>
-      <header className={styles["entry-page__header"]}>
-        {section && (
-          <p className={styles["entry-page__category"]}>{section.name}</p>
-        )}
-        <h1 className={styles["entry-page__title"]}>{entry.name}</h1>
-        <p className={styles["entry-page__summary"]}>{entry.summary}</p>
-      </header>
+      <Breadcrumb
+        items={[
+          { label: "Universos", href: "/universos" },
+          ...(first && firstGamePath
+            ? [
+                {
+                  label: first.universe.name,
+                  href: `/universos/${first.universe.slug}`,
+                },
+                { label: first.game.name, href: firstGamePath },
+              ]
+            : []),
+          ...(section && firstGamePath
+            ? [
+                {
+                  label: section.name,
+                  href: `${firstGamePath}/${section.slug}`,
+                },
+              ]
+            : []),
+          { label: entry.name },
+        ]}
+      />
 
-      {facts.length > 0 && (
-        <section
-          className={styles["entry-page__section"]}
-          aria-labelledby="facts-title"
-        >
-          <h2 id="facts-title" className={styles["entry-page__section-title"]}>
-            Datos
-          </h2>
-          <dl className={styles["entry-page__facts"]}>
-            {facts.map((fact) => (
-              <div key={fact.label} className={styles["entry-page__fact"]}>
-                <dt className={styles["entry-page__fact-label"]}>
-                  {fact.label}
-                </dt>
-                <dd>{fact.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      )}
+      {/* El ID estable se muestra como número de registro y los datos como hoja técnica (docs/design.md) */}
+      <DossierHeader
+        title={entry.name}
+        summary={entry.summary}
+        specs={[
+          { label: "Registro", value: entry.id },
+          ...(section ? [{ label: "Categoría", value: section.name }] : []),
+          ...facts,
+        ]}
+      />
 
       <section
         className={styles["entry-page__section"]}

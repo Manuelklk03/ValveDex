@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import {
   getImageCredits,
   getSourceCredits,
@@ -17,11 +17,12 @@ export default function CreditsPage() {
 
   return (
     <main className={styles["credits-page"]}>
-      <nav aria-label="Ruta de Navegación">
-        <Link href="/" className={styles["credits-page__back"]}>
-          ← Inicio
-        </Link>
-      </nav>
+      <Breadcrumb
+        items={[
+          { label: "Inicio", href: "/" },
+          { label: "Créditos y fuentes" },
+        ]}
+      />
 
       <header className={styles["credits-page__header"]}>
         <h1 className={styles["credits-page__title"]}>Créditos y fuentes</h1>
