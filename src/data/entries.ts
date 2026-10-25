@@ -14,6 +14,7 @@ export const entries: Entry[] = [
       {
         title: "Crowbar - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/Crowbar",
+        kind: "wiki",
       },
     ],
   },
@@ -30,6 +31,7 @@ export const entries: Entry[] = [
       {
         title: "9mm Pistol (Half-Life) - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/9mm_Pistol_(Half-Life)",
+        kind: "wiki",
       },
     ],
   },
@@ -45,6 +47,7 @@ export const entries: Entry[] = [
       {
         title: ".357 Magnum - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/.357_Magnum",
+        kind: "wiki",
       },
     ],
   },
@@ -67,6 +70,7 @@ export const entries: Entry[] = [
             source: {
               title: "File:W shotgun hd.jpg - Combine OverWiki",
               url: "https://combineoverwiki.net/wiki/File:W_shotgun_hd.jpg",
+              kind: "wiki",
             },
             credit: "Modelo del Half-Life High Definition Pack",
             license: "Material del juego © Valve",
@@ -78,6 +82,7 @@ export const entries: Entry[] = [
       {
         title: "Shotgun (Half-Life) - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/Shotgun_(Half-Life)",
+        kind: "wiki",
       },
     ],
   },
@@ -86,7 +91,10 @@ export const entries: Entry[] = [
     slug: "black-mesa-inbound",
     name: "Black Mesa Inbound",
     category: "maps",
-    details: { chapter: 1 },
+    details: {
+      chapter: 1,
+      mapFiles: ["c0a0", "c0a0a", "c0a0b", "c0a0c", "c0a0d", "c0a0e"],
+    },
     summary:
       "Capítulo inicial de Half-Life: Gordon Freeman llega a su puesto de trabajo en el tranvía de Black Mesa.",
     appearances: [{ gameId: "half-life" }],
@@ -94,6 +102,12 @@ export const entries: Entry[] = [
       {
         title: "Half-Life storyline - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/Half-Life_storyline#Chapter_1:_Black_Mesa_Inbound",
+        kind: "wiki",
+      },
+      {
+        title: "Black Mesa Inbound - Valve Developer Community",
+        url: "https://developer.valvesoftware.com/wiki/Black_Mesa_Inbound",
+        kind: "wiki",
       },
     ],
   },
@@ -122,6 +136,7 @@ export const entries: Entry[] = [
       {
         title: "Gordon Freeman - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/Gordon_Freeman",
+        kind: "wiki",
       },
     ],
   },
@@ -142,6 +157,7 @@ export const entries: Entry[] = [
       {
         title: "Headcrab - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/Headcrab",
+        kind: "wiki",
       },
     ],
   },
@@ -161,6 +177,7 @@ export const entries: Entry[] = [
       {
         title: "GoldSrc - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/GoldSrc",
+        kind: "wiki",
       },
     ],
   },
@@ -176,6 +193,7 @@ export const entries: Entry[] = [
       {
         title: "Gordon Freeman - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/Gordon_Freeman",
+        kind: "wiki",
       },
     ],
   },

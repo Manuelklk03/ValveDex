@@ -16,6 +16,7 @@ export const games: Game[] = [
       {
         title: "Half-Life - Wikipedia",
         url: "https://es.wikipedia.org/wiki/Half-Life",
+        kind: "wiki",
       },
     ],
   },
@@ -33,6 +34,7 @@ export const games: Game[] = [
       {
         title: "Half-Life: Opposing Force - Wikipedia",
         url: "https://es.wikipedia.org/wiki/Half-Life:_Opposing_Force",
+        kind: "wiki",
       },
     ],
   },
@@ -50,6 +52,7 @@ export const games: Game[] = [
       {
         title: "Half-Life: Blue Shift - Wikipedia",
         url: "https://es.wikipedia.org/wiki/Half-Life:_Blue_Shift",
+        kind: "wiki",
       },
     ],
   },
@@ -68,6 +71,7 @@ export const games: Game[] = [
       {
         title: "Sven Co-op - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/Sven_Co-op",
+        kind: "wiki",
       },
     ],
   },
@@ -86,6 +90,7 @@ export const games: Game[] = [
       {
         title: "Half-Life Dreamcast - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/Half-Life_Dreamcast",
+        kind: "wiki",
       },
     ],
   },

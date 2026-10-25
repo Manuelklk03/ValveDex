@@ -128,11 +128,27 @@ export default async function SectionPage({
 
       {data.kind === "lore" && (
         <article className={styles["section-page__lore"]}>
-          {data.lore.paragraphs.map((paragraph, index) => (
-            <p key={index} className={styles["section-page__lore-text"]}>
-              {paragraph}
-            </p>
-          ))}
+          {data.lore.paragraphs
+            .filter((paragraph) => !paragraph.spoiler)
+            .map((paragraph, index) => (
+              <p key={index} className={styles["section-page__lore-text"]}>
+                {paragraph.text}
+              </p>
+            ))}
+          {data.lore.paragraphs.some((paragraph) => paragraph.spoiler) && (
+            <details className={styles["section-page__spoilers"]}>
+              <summary className={styles["section-page__spoilers-toggle"]}>
+                Contiene spoilers: mostrar el resto de la historia
+              </summary>
+              {data.lore.paragraphs
+                .filter((paragraph) => paragraph.spoiler)
+                .map((paragraph, index) => (
+                  <p key={index} className={styles["section-page__lore-text"]}>
+                    {paragraph.text}
+                  </p>
+                ))}
+            </details>
+          )}
           <p className={styles["section-page__sources"]}>
             Fuente:{" "}
             {data.lore.sources.map((source, index) => (

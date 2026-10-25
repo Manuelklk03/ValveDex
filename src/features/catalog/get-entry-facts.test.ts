@@ -25,4 +25,22 @@ describe("getEntryFacts", () => {
     expect(factLabels("motor-goldsrc")).toEqual([]);
     expect(factLabels("gordon-empleado-del-mes")).toEqual([]);
   });
+
+  it("muestra el daño por dificultad cuando el arma lo tiene", () => {
+    const facts = getEntryFacts({
+      id: "arma-de-prueba",
+      slug: "arma-de-prueba",
+      name: "Arma de prueba",
+      summary: "",
+      appearances: [],
+      sources: [],
+      category: "weapons",
+      details: { slot: 1, damage: { easy: 5, medium: 10, hard: 15 } },
+    });
+
+    expect(facts).toContainEqual({
+      label: "Daño (fácil / normal / difícil)",
+      value: "5 / 10 / 15",
+    });
+  });
 });
