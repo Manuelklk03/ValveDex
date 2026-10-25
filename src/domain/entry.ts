@@ -43,6 +43,8 @@ export type MapDetails = {
 
 export type CharacterDetails = {
   affiliation: string;
+  voiceActor?: string;
+  designers?: string[];
 };
 
 export type EnemyDetails = {

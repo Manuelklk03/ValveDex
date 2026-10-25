@@ -2,40 +2,13 @@ import type { Entry } from "@/domain/entry";
 import { halfLifeChapters } from "./half-life-chapters";
 import { halfLifeWeapons } from "./half-life-weapons";
 import { halfLifeEnemies } from "./half-life-enemies";
+import { halfLifeCharacters } from "./half-life-characters";
 
 export const entries: Entry[] = [
   ...halfLifeChapters,
   ...halfLifeWeapons,
   ...halfLifeEnemies,
-  {
-    id: "gordon-freeman",
-    slug: "gordon-freeman",
-    name: "Gordon Freeman",
-    category: "characters",
-    details: { affiliation: "Black Mesa" },
-    summary:
-      "Físico teórico de Black Mesa y protagonista de Half-Life, equipado con el traje HEV.",
-    appearances: [
-      { gameId: "half-life" },
-      {
-        gameId: "half-life-opposing-force",
-        summary:
-          "Adrian Shephard lo ve teletransportarse a Xen en el complejo Lambda.",
-      },
-      {
-        gameId: "half-life-blue-shift",
-        summary:
-          "Barney Calhoun lo ve varias veces, entre ellas esperando el tranvía y cuando los marines se lo llevan.",
-      },
-    ],
-    sources: [
-      {
-        title: "Gordon Freeman - Combine OverWiki",
-        url: "https://combineoverwiki.net/wiki/Gordon_Freeman",
-        kind: "wiki",
-      },
-    ],
-  },
+  ...halfLifeCharacters,
   {
     id: "goldsrc-engine",
     slug: "motor-goldsrc",
