@@ -239,6 +239,13 @@ export default async function EntryPage({
               >
                 {source.title}
               </a>
+              {/* Decisión de Manuel: lo que viene de foros y comunidades se distingue a simple vista */}
+              {source.kind === "community" && (
+                <span className={styles["entry-page__source-kind"]}>
+                  {" "}
+                  (comunidad)
+                </span>
+              )}
             </li>
           ))}
         </ul>
