@@ -101,3 +101,9 @@
   color: var(--accent);
   font-family: var(--font-plex-mono), monospace;
 }
+
+.entry-page__source-kind {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+}

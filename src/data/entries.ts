@@ -1,93 +1,10 @@
 import type { Entry } from "@/domain/entry";
 import { halfLifeChapters } from "./half-life-chapters";
+import { halfLifeWeapons } from "./half-life-weapons";
 
 export const entries: Entry[] = [
   ...halfLifeChapters,
-  {
-    id: "crowbar",
-    slug: "palanca",
-    name: "Palanca",
-    category: "weapons",
-    details: { slot: 1 },
-    summary:
-      "Arma cuerpo a cuerpo de Gordon Freeman y primera que consigue en el juego.",
-    appearances: [{ gameId: "half-life" }],
-    sources: [
-      {
-        title: "Crowbar - Combine OverWiki",
-        url: "https://combineoverwiki.net/wiki/Crowbar",
-        kind: "wiki",
-      },
-    ],
-  },
-  {
-    id: "glock-17",
-    slug: "pistola-9mm",
-    name: "Pistola de 9 mm",
-    category: "weapons",
-    details: { slot: 2, ammo: "9 mm" },
-    summary:
-      "Pistola semiautomática estándar del personal de seguridad de Black Mesa.",
-    appearances: [{ gameId: "half-life" }],
-    sources: [
-      {
-        title: "9mm Pistol (Half-Life) - Combine OverWiki",
-        url: "https://combineoverwiki.net/wiki/9mm_Pistol_(Half-Life)",
-        kind: "wiki",
-      },
-    ],
-  },
-  {
-    id: "colt-python",
-    slug: "revolver-357",
-    name: "Revólver .357",
-    category: "weapons",
-    details: { slot: 2, ammo: ".357 Magnum" },
-    summary: "Revólver de gran potencia y cargador de seis balas.",
-    appearances: [{ gameId: "half-life" }],
-    sources: [
-      {
-        title: ".357 Magnum - Combine OverWiki",
-        url: "https://combineoverwiki.net/wiki/.357_Magnum",
-        kind: "wiki",
-      },
-    ],
-  },
-  {
-    id: "spas-12",
-    slug: "escopeta",
-    name: "Escopeta",
-    category: "weapons",
-    details: { slot: 3, ammo: "Cartuchos del calibre 12" },
-    summary: "Escopeta con disparo simple y doble, eficaz a corta distancia.",
-    appearances: [
-      {
-        gameId: "half-life",
-        images: {
-          hd: {
-            src: "/images/entries/spas-12-half-life.jpg",
-            alt: "Modelo HD de la escopeta de Half-Life",
-            width: 731,
-            height: 453,
-            source: {
-              title: "File:W shotgun hd.jpg - Combine OverWiki",
-              url: "https://combineoverwiki.net/wiki/File:W_shotgun_hd.jpg",
-              kind: "wiki",
-            },
-            credit: "Modelo del Half-Life High Definition Pack",
-            license: "Material del juego © Valve",
-          },
-        },
-      },
-    ],
-    sources: [
-      {
-        title: "Shotgun (Half-Life) - Combine OverWiki",
-        url: "https://combineoverwiki.net/wiki/Shotgun_(Half-Life)",
-        kind: "wiki",
-      },
-    ],
-  },
+  ...halfLifeWeapons,
   {
     id: "gordon-freeman",
     slug: "gordon-freeman",

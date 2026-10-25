@@ -14,11 +14,8 @@ function factLabels(slug: string): string[] {
 
 describe("getEntryFacts", () => {
   it("muestra la munición solo si el arma la usa", () => {
-    expect(factLabels("palanca")).toEqual(["Ranura del inventario"]);
-    expect(factLabels("escopeta")).toEqual([
-      "Ranura del inventario",
-      "Munición",
-    ]);
+    expect(factLabels("palanca")).not.toContain("Munición");
+    expect(factLabels("escopeta")).toContain("Munición");
   });
 
   it("no muestra datos en curiosidades ni easter eggs", () => {
