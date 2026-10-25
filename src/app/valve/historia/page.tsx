@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Timeline } from "@/components/ui/timeline";
 import { getValveMilestones } from "@/features/valve/get-valve-milestones";
 import styles from "../valve-page.module.css";
@@ -14,11 +14,9 @@ export default function ValveHistoryPage() {
 
   return (
     <main className={styles["valve-page"]}>
-      <nav aria-label="Ruta de navegación">
-        <Link href="/" className={styles["valve-page__back"]}>
-          ← Inicio
-        </Link>
-      </nav>
+      <Breadcrumb
+        items={[{ label: "Inicio", href: "/" }, { label: "Historia de Valve" }]}
+      />
 
       <header className={styles["valve-page__header"]}>
         <p className={styles["valve-page__eyebrow"]}>Valve</p>

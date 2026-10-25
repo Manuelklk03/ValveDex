@@ -20,6 +20,7 @@ import {
   getUniverses,
 } from "@/features/universes/get-universes";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { DossierHeader } from "@/components/ui/dossier-header";
 import styles from "./page.module.css";
 
 function hasSectionContent(gameId: string, section: GameSection): boolean {
@@ -110,10 +111,20 @@ export default async function SectionPage({
         ]}
       />
 
-      <header className={styles["section-page__header"]}>
-        <h1 className={styles["section-page__title"]}>{section.name}</h1>
-        <p className={styles["section-page__intro"]}>{section.description}</p>
-      </header>
+      <DossierHeader
+        title={section.name}
+        summary={section.description}
+        specs={[
+          { label: "Juego", value: game.name },
+          {
+            label: "Contenido",
+            value:
+              data.kind === "lore"
+                ? `${data.lore.paragraphs.length} ${data.lore.paragraphs.length === 1 ? "párrafo" : "párrafos"}`
+                : `${data.entries.length} ${data.entries.length === 1 ? "ficha" : "fichas"}`,
+          },
+        ]}
+      />
 
       {data.kind === "lore" && (
         <article className={styles["section-page__lore"]}>

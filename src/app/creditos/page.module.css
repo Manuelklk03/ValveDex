@@ -9,21 +9,6 @@
   padding: clamp(2rem, 5vw, 3.5rem) 1rem clamp(4rem, 8vw, 6rem);
 }
 
-.credits-page__back {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.75rem;
-  color: var(--muted);
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.8125rem;
-  text-decoration: none;
-  transition: color 160ms ease-out;
-}
-
-.credits-page__back:hover {
-  color: var(--foreground);
-}
-
 .credits-page__header {
   display: grid;
   gap: 1rem;

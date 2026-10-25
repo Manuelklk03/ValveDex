@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { notFound } from "next/navigation";
 import { isEntryCategory } from "@/domain/entry";
 import { EntryCard } from "@/features/catalog/components/entry-card";
@@ -56,11 +56,12 @@ export default async function CategoryPage({
 
   return (
     <main className={styles["category-page"]}>
-      <nav aria-label="Ruta de navegación">
-        <Link href="/explorar" className={styles["category-page__back"]}>
-          ← Explorar
-        </Link>
-      </nav>
+      <Breadcrumb
+        items={[
+          { label: "Explorar", href: "/explorar" },
+          { label: section.name },
+        ]}
+      />
 
       <header className={styles["category-page__header"]}>
         <h1 className={styles["category-page__title"]}>{section.name}</h1>
