@@ -300,9 +300,15 @@ Esqueleto terminado y publicado como `v0.1.0` (2026-10-23). **Orden (decisión d
    - D2c-2 `DossierHeader` (`src/components/ui`, PR #49): título, resumen, `children` y ficha técnica (`<dl>`).
    - D2c-3 `SectorSign` (`src/features/games/components`, PR #50) con `getSectionStatuses()` y 4 pruebas con `vi.mock`: franja del color del sector, número y desplegable dentro del flujo (`grid-template-rows` 0fr → 1fr), sin JavaScript.
    - D2c-4 (Claude, a petición de Manuel, PR #51): `Breadcrumb` en `/explorar/[categoría]`, `/valve/*` y `/creditos`; `DossierHeader` en la página de apartado y en la ficha, que muestra el ID como «Registro» y sus datos en la ficha técnica (desaparece la sección «Datos»).
-     **D2 terminado.** **Siguiente: zonas Z1–Z4** (contenido real con fuentes y diseño a la vez), empezando por la que elija Manuel.
-3. Después de D1b y D2, **por zonas** (contenido real y diseño a la vez): Valve, entrada de universos, Half-Life, Opposing Force y Blue Shift ([design.md](design.md#9-plan-por-fases)). Los pendientes de contenido (más fichas, textos contrastados, revisión en navegador y E2E) se resuelven dentro de la zona a la que pertenecen. **La intro de Valve, las imágenes y el comparador con imágenes reales** van en tandas de recursos cuando haya varios juegos terminados (decisión de Manuel, 2026-10-24).
-4. Tras el esqueleto, revisión completa de la documentación y del README para presentar el proyecto como enciclopedia de todo Valve (aviso de Manuel, 2026-10-13).
+     **D2 terminado.**
+3. **Z3: Half-Life 1, en marcha (2026-10-25).** Manuel elige empezar por esta zona (al terminarla toca `v0.2.0`). Claude investiga a fondo (wikis, Valve Developer Community, The Cutting Room Floor y también foros y comunidades de fans) y Manuel escribe las fichas guiado; Codex revisa con `token-efficient-workflow`. Decisiones de Manuel:
+   - **Spoilers:** la premisa se ve; lo que destripa la historia va oculto tras un botón (`<details>`), marcado con `spoiler: true` en los datos.
+   - **Mapas:** una ficha por capítulo, con sus archivos de mapa (`c0a0`, `c0a0a`…) como dato técnico.
+   - **Fuentes:** cada fuente lleva su tipo (`official`, `wiki` o `community`); lo que solo cuenta la comunidad se presenta como «según la comunidad».
+   - **Cifras:** daño, munición y salud solo si vienen de los archivos del juego (`skill.cfg`, por dificultad) con su fuente; nunca estimadas.
+     **Siguiente: Z3-0**, ampliar los tipos (`Source.kind`, `DifficultyValues`, campos nuevos de armas, mapas y enemigos, párrafos de lore con spoiler) antes de meter contenido.
+4. Después de D1b y D2, **por zonas** (contenido real y diseño a la vez): Valve, entrada de universos, Half-Life, Opposing Force y Blue Shift ([design.md](design.md#9-plan-por-fases)). Los pendientes de contenido (más fichas, textos contrastados, revisión en navegador y E2E) se resuelven dentro de la zona a la que pertenecen. **La intro de Valve, las imágenes y el comparador con imágenes reales** van en tandas de recursos cuando haya varios juegos terminados (decisión de Manuel, 2026-10-24).
+5. Tras el esqueleto, revisión completa de la documentación y del README para presentar el proyecto como enciclopedia de todo Valve (aviso de Manuel, 2026-10-13).
 
 ## Versiones del proyecto
 

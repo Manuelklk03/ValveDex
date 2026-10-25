@@ -12,6 +12,7 @@ export const valvePeople: ValvePerson[] = [
       {
         title: "Gabe Newell - Wikipedia",
         url: "https://es.wikipedia.org/wiki/Gabe_Newell",
+        kind: "wiki",
       },
     ],
   },
@@ -26,6 +27,7 @@ export const valvePeople: ValvePerson[] = [
       {
         title: "Valve Corporation - Wikipedia",
         url: "https://es.wikipedia.org/wiki/Valve_Corporation",
+        kind: "wiki",
       },
     ],
   },

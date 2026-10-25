@@ -69,6 +69,20 @@
 .section-page__lore-text {
   line-height: 1.7;
 }
+/* Bloque de spoilers: plegado hasta que se pulsa */
+.section-page__spoilers {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px dashed var(--border);
+}
+
+.section-page__spoilers-toggle {
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+}
 
 .section-page__sources {
   color: var(--muted);

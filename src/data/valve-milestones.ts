@@ -1,8 +1,10 @@
 import type { Milestone } from "@/domain/milestone";
+import type { Source } from "@/domain/source";
 
-const valveWikipedia = {
+const valveWikipedia: Source = {
   title: "Valve Corporation - Wikipedia",
   url: "https://es.wikipedia.org/wiki/Valve_Corporation",
+  kind: "wiki",
 };
 
 export const valveMilestones: Milestone[] = [
@@ -32,6 +34,7 @@ export const valveMilestones: Milestone[] = [
       {
         title: "Steam - Wikipedia",
         url: "https://es.wikipedia.org/wiki/Steam",
+        kind: "wiki",
       },
     ],
   },

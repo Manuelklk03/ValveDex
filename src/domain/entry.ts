@@ -1,6 +1,7 @@
 import type { GameSectionId } from "./game-section";
 import type { Source } from "./source";
 import type { MediaAsset } from "./media-asset";
+import type { DifficultyValues } from "./difficulty";
 
 export type EntryCategory = Exclude<GameSectionId, "lore">;
 
@@ -27,10 +28,13 @@ type EntryBase = {
 export type WeaponDetails = {
   slot: number;
   ammo?: string;
+  maxAmmo?: number;
+  damage?: DifficultyValues;
 };
 
 export type MapDetails = {
   chapter: number;
+  mapFiles: string[];
 };
 
 export type CharacterDetails = {
@@ -39,6 +43,7 @@ export type CharacterDetails = {
 
 export type EnemyDetails = {
   origin: string;
+  health?: DifficultyValues;
 };
 
 export type Entry =
