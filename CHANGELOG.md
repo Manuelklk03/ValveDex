@@ -6,6 +6,10 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+## [0.2.0] — 2026-10-26
+
+Segunda versión: el **bloque Half-Life 1** completo (Half-Life 1, Opposing Force y Blue Shift) con contenido real y fuentes, el primer diseño de ValveDex y la entrada al universo Half-Life por etapas. El diseño es provisional y se irá mejorando; las imágenes llegan en la fase de recursos visuales.
+
 ### Añadido
 
 - Entrada al universo Half-Life por etapas (U1–U3): GoldSrc (Half-Life 1, Opposing Force y Blue Shift, más el multijugador anunciado), Source (Half-Life 2 y sus episodios) y Source 2 (Half-Life: Alyx), estas dos en preparación. Cada juego tiene un dossier que abre su hub y enlaza a sus apartados con desplegables; Source lleva la λ de la Resistencia y Source 2 el emblema de la Alianza (acreditado en `/creditos`). Entrada de los dossiers con GSAP y scroll suave con Lenis, desactivados con movimiento reducido. Diseño provisional, aprobado como primera versión.
@@ -21,7 +25,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 - Opposing Force y Blue Shift (Z4): capítulos, armas y enemigos nuevos de Opposing Force, personajes, curiosidades y lore completo de las dos expansiones, y las apariciones en ellas de las fichas de Half-Life 1.
 - Componentes compartidos (D2c): ruta de navegación (`Breadcrumb`) en todas las páginas interiores, cabecera de expediente (`DossierHeader`) en el hub, los apartados y las fichas (el ID de cada ficha se muestra como número de registro) y señal de sector (`SectorSign`) con desplegable en el hub. El primer juego se muestra como «Half-Life 1».
 - Rediseño de las páginas de Valve: portada con la válvula, secciones numeradas con tubería y ficha técnica; línea de tiempo como línea de producción; `/universos` como acreditaciones de acceso; `/explorar` con índice de sectores y fichas con su color; páginas de Valve, créditos y 404 con el mismo lenguaje.
-- Dependencias de diseño: `gsap` y `@gsap/react` (giro de la válvula y entrada de los expedientes) y `lenis` (scroll suave), usadas solo en la muestra.
+- Dependencias de diseño: `gsap` y `@gsap/react` (giro de la válvula y entrada de los expedientes) y `lenis` (scroll suave), usadas en la muestra `/muestra` y en la página del universo.
 
 ## [0.1.0] — 2026-10-23
 

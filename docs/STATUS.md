@@ -1,12 +1,12 @@
 # Estado actual — ValveDex
 
-Última actualización: **2026-10-25**.
+Última actualización: **2026-10-26**.
 Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
-## Versión actual: `v0.1.0` (esqueleto terminado)
+## Versión actual: `v0.2.0` (bloque Half-Life 1)
 
-El 2026-10-23 se cerró el **esqueleto** (pasos 15–22): todas las rutas y piezas existen, funcionan con datos de muestra y tienen pruebas. Se publica como `v0.1.0` (tag de Git y GitHub Release sobre el merge de la PR de documentación de ese día). **Lo siguiente es la fase de diseño** (ver [roadmap.md](roadmap.md#fase-de-diseño-después-del-esqueleto)); el asistente debe recordar a Manuel lo acordado para ella al empezar.
+El 2026-10-26 se prepara `v0.2.0` (rama `docs/release-v0.2.0`): el contenido completo de Half-Life 1, Opposing Force y Blue Shift con fuentes (Z3 y Z4), el primer diseño de la web (D1b y D2) y la entrada al universo Half-Life por etapas (U1–U3). Tag de Git y GitHub Release sobre el merge de esa rama, cuando Manuel los cree. Anterior: `v0.1.0` (2026-10-23, esqueleto). **Lo siguiente es la fase de recursos visuales del bloque Half-Life 1** (ver [roadmap.md](roadmap.md#después-de-half-life-1-decisiones-de-manuel-2026-10-25)).
 
 ## Modo de trabajo
 
@@ -346,7 +346,8 @@ Esqueleto terminado y publicado como `v0.1.0` (2026-10-23). **Orden (decisión d
        - _U3b (Manuel con Claude, `d66be1e`):_ `UniverseStage` (`src/features/universes/components`, dossiers como `children`) y su CSS; el precinto de la Zona de Cuarentena pasa a `::after`; GoldSrc anuncia el multijugador en `plannedGames`.
        - _U3c (Claude, a petición de Manuel, sin commit):_ `/universos/[universeSlug]` con la entrada (título, presentación, λ e índice de etapas) y una `UniverseStage` por etapa; `DossierMotion` (entrada GSAP y Escape) y `SmoothScroll` (`src/components/ui`, Lenis con `anchors`, desactivado con movimiento reducido). Codex encontró que el `overflow: hidden` del dossier de Blue Shift recortaba el contorno de foco y los desplegables (corregido: la banda azul redondea sus esquinas). Comprobado: `npm run check` (37 pruebas), `npm run build` (198 páginas), capturas a 1440 y 390 px sin scroll horizontal, clics (dossier → hub, apartado → categoría), orden de tabulación (índice, «Abrir el dossier de…» y sus apartados), foco visible, Escape y el índice bajando con Lenis. Sin comprobar en navegador: movimiento reducido.
      - _U3d (Claude, sin commit):_ `src/data/decor-images.ts` con el emblema de la Alianza (fuente comprobada: 200); `getImageCredits()` devuelve `{ image, usedIn }` e incluye las imágenes decorativas, que salen en `/creditos`; las pruebas de imágenes de `data-integrity.test.ts` cubren también las decorativas. Borrada la muestra `/muestra/universo` (y `.next/dev`, con tipos antiguos que apuntaban a ella). Documentados design, roadmap, architecture y CHANGELOG. Codex (con `vercel-react-best-practices`) señaló que la prueba de créditos solo contaba imágenes: ahora comprueba cada imagen decorativa con su uso y que no se repitan. Comprobado: `npm run check` (38 pruebas), `npm run build` (197 páginas) y el emblema en `/creditos`.
-     - _Siguiente paso:_ PR y merge de U3 (Manuel); después, la fase de recursos visuales del bloque Half-Life 1 con `v0.2.0`, cuando Manuel lo indique.
+     - _U3 publicado:_ commit, PR y merge (`e4bb818`), con mensaje propio mediante `--subject` y `--body-file`.
+     - _Siguiente paso:_ `v0.2.0` (rama `docs/release-v0.2.0`: `package.json` 0.2.0, CHANGELOG y STATUS); después, la fase de recursos visuales del bloque Half-Life 1.
      - Después: recursos visuales del bloque Half-Life 1 y `v0.2.0`, cuando Manuel lo indique.
 4. Después de D1b y D2, **por zonas** (contenido real y diseño a la vez): Valve, entrada de universos, Half-Life, Opposing Force y Blue Shift ([design.md](design.md#9-plan-por-fases)). Los pendientes de contenido (más fichas, textos contrastados, revisión en navegador y E2E) se resuelven dentro de la zona a la que pertenecen. **La intro de Valve, las imágenes y el comparador con imágenes reales** van en tandas de recursos cuando haya varios juegos terminados (decisión de Manuel, 2026-10-24).
 5. Tras el esqueleto, revisión completa de la documentación y del README para presentar el proyecto como enciclopedia de todo Valve (aviso de Manuel, 2026-10-13).
@@ -363,7 +364,7 @@ Decisión de Manuel (2026-10-16): versionado semántico con tags de Git y GitHub
 | `v1.0.0` | **Todo el universo Half-Life**: todos sus juegos, expansiones y episodios, con proyectos cancelados y mods, revisado y desplegado |
 | `v1.x.0` | Cada universo nuevo (Portal, Team Fortress…) o funcionalidad grande posterior                                                     |
 
-Publicadas: **`v0.1.0`** (2026-10-23, esqueleto).
+Publicadas: **`v0.1.0`** (2026-10-23, esqueleto) y **`v0.2.0`** (2026-10-26, bloque Half-Life 1; preparada, pendiente del tag y la Release de Manuel).
 
 Cómo se crea una versión, cuando Manuel lo indique (siempre sobre `main` actualizado y con `npm run check` y `npm run build` superados):
 
