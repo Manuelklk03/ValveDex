@@ -7,7 +7,10 @@ export type EntryFact = {
 };
 
 function formatDifficulty(values: DifficultyValues): string {
-  return `${values.easy} / ${values.medium} / ${values.hard}`;
+  // toLocaleString("es") escribe la coma decimal: 2,5 y no 2.5
+  return [values.easy, values.medium, values.hard]
+    .map((value) => value.toLocaleString("es"))
+    .join(" / ");
 }
 
 export function getEntryFacts(entry: Entry): EntryFact[] {
