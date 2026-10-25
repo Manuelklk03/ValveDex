@@ -1,385 +1,5 @@
-/* Muestra U2: entrada al universo Half-Life. Se borra al integrar la página real en U3 */
-.universe-sample {
-  --stage-bg: var(--background);
-  display: grid;
-  width: 100%;
-}
-
-/* Entrada: el universo entero, con la λ que comparten las tres etapas */
-.universe-hero {
-  position: relative;
-  display: grid;
-  gap: clamp(2rem, 4vw, 3rem);
-  width: 100%;
-  max-width: var(--content-width);
-  margin-inline: auto;
-  padding: clamp(2rem, 5vw, 3.5rem) 1rem clamp(3rem, 6vw, 4.5rem);
-  overflow: hidden;
-}
-
-.universe-hero__body {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  gap: 1.25rem;
-  max-width: 40rem;
-}
-
-.universe-hero__title {
-  font-size: clamp(4rem, 13vw, 9rem);
-  font-weight: 800;
-  line-height: 0.85;
-}
-
-.universe-hero__intro {
-  max-width: 34rem;
-  color: var(--muted);
-  font-size: 1.1875rem;
-  line-height: 1.55;
-}
-
-/* λ dentro de un círculo, como el logotipo del primer juego */
-.universe-hero__mark {
-  position: absolute;
-  top: clamp(1.5rem, 4vw, 2.5rem);
-  right: clamp(-6rem, -4vw, -2rem);
-  display: grid;
-  place-items: center;
-  width: clamp(14rem, 34vw, 26rem);
-  aspect-ratio: 1;
-  border: clamp(0.75rem, 1.8vw, 1.375rem) solid currentColor;
-  border-radius: 50%;
-  color: var(--accent);
-  font-size: clamp(9rem, 22vw, 17rem);
-  font-weight: 600;
-  line-height: 1;
-  opacity: 0.14;
-  pointer-events: none;
-}
-
-.universe-hero__stages {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.5rem;
-}
-
-.universe-hero__stage-link {
-  display: grid;
-  align-content: start;
-  gap: 0.25rem;
-  height: 100%;
-  padding: 0.75rem 0.875rem 0.875rem;
-  border: 1px solid var(--border);
-  border-top: 4px solid var(--stage-color);
-  background: var(--surface);
-  color: var(--foreground);
-  text-decoration: none;
-  transition: background-color 160ms ease-out;
-}
-
-.universe-hero__stage-link:hover {
-  background: color-mix(in srgb, var(--surface) 80%, var(--stage-color));
-}
-
-.universe-hero__stage-link:focus-visible {
-  outline: 3px solid var(--stage-color);
-  outline-offset: 3px;
-}
-
-.universe-hero__stage-link--goldsrc {
-  --stage-color: var(--accent);
-}
-
-.universe-hero__stage-link--source {
-  --stage-color: #5fb4c9;
-}
-
-.universe-hero__stage-link--source-2 {
-  --stage-color: #d9b13b;
-}
-
-.universe-hero__stage-name {
-  font-family: var(--font-barlow-condensed), sans-serif;
-  font-size: clamp(1.125rem, 3vw, 1.625rem);
-  font-weight: 800;
-  line-height: 1;
-}
-
-.universe-hero__stage-subtitle {
-  color: var(--muted);
-  font-size: 0.8125rem;
-  line-height: 1.35;
-}
-
-@media (min-width: 48rem) {
-  .universe-hero__stages {
-    gap: 0.75rem;
-    max-width: 48rem;
-  }
-
-  .universe-hero__stage-subtitle {
-    font-size: 0.9375rem;
-  }
-}
-
-/* Etapa: cada una cambia el material de toda la franja */
-.stage {
-  position: relative;
-  display: grid;
-  gap: clamp(2rem, 4vw, 3rem);
-  padding: clamp(3rem, 6vw, 5rem) max(1rem, calc((100% - 72rem) / 2));
-  background-color: var(--stage-bg);
-  scroll-margin-top: 1rem;
-  overflow: hidden;
-}
-
-.stage__plate {
-  display: grid;
-  gap: 0.625rem;
-  max-width: 46rem;
-  padding-left: clamp(1rem, 2.5vw, 1.5rem);
-  border-left: 6px solid var(--stage-color);
-}
-
-.stage__name {
-  font-size: clamp(2.75rem, 7vw, 5rem);
-  font-weight: 800;
-  line-height: 0.9;
-}
-
-.stage__subtitle {
-  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
-  font-weight: 600;
-}
-
-.stage__summary {
-  max-width: 60ch;
-  color: var(--muted);
-  line-height: 1.6;
-}
-
-.stage__meta {
-  color: var(--stage-color);
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.8125rem;
-}
-
-.stage__dossiers {
-  display: grid;
-  gap: clamp(3rem, 6vw, 4.5rem);
-}
-
-.stage__pending-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.5rem 1rem;
-  padding: 1rem 1.25rem;
-  border: 1px dashed var(--border);
-  color: var(--muted);
-}
-
-.stage__pending-name {
-  font-weight: 600;
-}
-
-.stage__pending-status {
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.8125rem;
-}
-
-/* GoldSrc: el archivo de Black Mesa sobre el carbón del universo */
-.stage--goldsrc {
-  --stage-color: var(--accent);
-}
-
-/* Source: hormigón de la Ciudad 17 y pantalla de la Alianza; colores provisionales */
-.stage--source {
-  --stage-color: #5fb4c9;
-  --stage-bg: #171b1f;
-  --foreground: #dfe5e9;
-  --muted: #a3afb8;
-  --border: #354049;
-  --surface: #1f262c;
-  color: var(--foreground);
-  background-image:
-    linear-gradient(90deg, rgb(255 255 255 / 0.025) 1px, transparent 1px),
-    linear-gradient(rgb(255 255 255 / 0.025) 1px, transparent 1px);
-  background-size: 6rem 3rem;
-}
-
-.stage--source .stage__subtitle {
-  letter-spacing: 0.06em;
-}
-
-/* Source 2: Zona de Cuarentena, con la señalización amarilla de la Alianza; colores provisionales */
-.stage--source-2 {
-  --stage-color: #d9b13b;
-  --stage-bg: #15160f;
-  --foreground: #ebe8d8;
-  --muted: #b2ae98;
-  --border: #3d3d2c;
-  --surface: #1f2017;
-  color: var(--foreground);
-}
-
-.stage--source-2::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 0.75rem;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--stage-color) 0 1rem,
-    var(--stage-bg) 1rem 2rem
-  );
-}
-
-/* Source: λ de la Resistencia pintada sobre el hormigón, con el halo de un spray */
-.stage--source::after {
-  content: "λ" / "";
-  position: absolute;
-  top: 50%;
-  right: max(1rem, calc((100% - 72rem) / 2));
-  color: #e07b32;
-  font-family: var(--font-barlow-condensed), sans-serif;
-  font-size: clamp(16rem, 34vw, 28rem);
-  font-weight: 800;
-  line-height: 0.8;
-  opacity: 0.3;
-  pointer-events: none;
-  rotate: -8deg;
-  text-shadow: 0 0 0.75rem rgb(224 123 50 / 0.7);
-  translate: 0 -50%;
-}
-
-/* Source 2: emblema de la Alianza al fondo de la Zona de Cuarentena.
-   SVG de Combine OverWiki (File:Combine_main_symbol.svg, vectorizado por Klow a partir de Half-Life 2; material © Valve) */
-.stage--source-2::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: max(1rem, calc((100% - 72rem) / 2));
-  width: clamp(12rem, 30vw, 24rem);
-  aspect-ratio: 1410 / 1395;
-  background: var(--stage-color);
-  mask: url("/images/decor/combine-main-symbol.svg") center / contain no-repeat;
-  opacity: 0.12;
-  pointer-events: none;
-  translate: 0 -50%;
-}
-
-/* El contenido va por encima de la λ y del emblema */
-.stage__plate,
-.stage__sealed {
-  position: relative;
-  z-index: 1;
-}
-
-/* Expediente cerrado de una etapa sin contenido: nombra sus juegos sin enlazarlos */
-.stage__sealed {
-  position: relative;
-  display: grid;
-  gap: 1rem;
-  max-width: 46rem;
-  padding: clamp(1.5rem, 4vw, 2.5rem);
-  border: 1px solid var(--border);
-  background: var(--surface);
-  overflow: hidden;
-}
-
-.stage__sealed-status {
-  color: var(--stage-color);
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.8125rem;
-}
-
-.stage__planned {
-  display: grid;
-  gap: 0.25rem;
-}
-
-.stage__planned-game {
-  font-family: var(--font-barlow-condensed), sans-serif;
-  font-size: clamp(1.5rem, 4vw, 2rem);
-  font-weight: 800;
-  line-height: 1.1;
-}
-
-.stage__sealed-note {
-  color: var(--muted);
-  font-size: 0.9375rem;
-}
-
-.stage__sealed-mark {
-  position: absolute;
-  pointer-events: none;
-}
-
-/* Barra segmentada de los paneles de la Alianza, común a Source y Source 2 */
-.stage__sealed::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 4px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--stage-color) 0 2.5rem,
-    transparent 2.5rem 3rem
-  );
-  opacity: 0.8;
-}
-
-/* Source: monitor de la Alianza con líneas de barrido */
-.stage--source .stage__sealed {
-  background:
-    repeating-linear-gradient(
-      rgb(95 180 201 / 0.05) 0 1px,
-      transparent 1px 4px
-    ),
-    var(--surface);
-  box-shadow:
-    inset 0 0 0 1px rgb(95 180 201 / 0.3),
-    0 0 48px -16px rgb(95 180 201 / 0.35);
-}
-
-/* Source 2: precinto de la Zona de Cuarentena cruzando la esquina; deja hueco a la derecha */
-.stage--source-2 .stage__sealed {
-  padding-right: clamp(6rem, 22vw, 14rem);
-}
-
-.stage--source-2 .stage__sealed-mark {
-  top: 2.25rem;
-  right: -4.5rem;
-  width: 18rem;
-  padding: 0.75rem 0;
-  background:
-    repeating-linear-gradient(
-        -45deg,
-        #15160f 0 0.5rem,
-        var(--stage-color) 0.5rem 1rem
-      )
-      top / 100% 0.375rem no-repeat,
-    repeating-linear-gradient(
-        -45deg,
-        #15160f 0 0.5rem,
-        var(--stage-color) 0.5rem 1rem
-      )
-      bottom / 100% 0.375rem no-repeat,
-    var(--stage-color);
-  color: #15160f;
-  letter-spacing: 0.08em;
-  font-family: var(--font-barlow-condensed), sans-serif;
-  font-size: 0.875rem;
-  font-weight: 800;
-  text-align: center;
-  rotate: 35deg;
-}
-
 /* Expediente: base de papel de laboratorio (Half-Life); las variantes solo cambian variables y material */
-.dossier {
+.game-dossier {
   --dossier-paper: #ece9e2;
   --dossier-ink: #1d1b18;
   --dossier-muted: #5c574f;
@@ -398,7 +18,7 @@
   font-family: var(--font-barlow), sans-serif;
 }
 
-.dossier__header {
+.game-dossier__header {
   display: grid;
   gap: 1.5rem 3rem;
   padding-bottom: 1.75rem;
@@ -406,18 +26,18 @@
 }
 
 @media (min-width: 56rem) {
-  .dossier__header {
+  .game-dossier__header {
     grid-template-columns: minmax(0, 1fr) 17rem;
     align-items: end;
   }
 }
 
-.dossier__heading {
+.game-dossier__heading {
   display: grid;
   gap: 0.75rem;
 }
 
-.dossier__label {
+.game-dossier__label {
   color: var(--dossier-accent);
   font-family: var(--font-barlow-condensed), sans-serif;
   font-size: 0.875rem;
@@ -426,7 +46,7 @@
   text-transform: uppercase;
 }
 
-.dossier__title {
+.game-dossier__title {
   font-family: var(--font-barlow-condensed), sans-serif;
   font-size: clamp(2.25rem, 5.5vw, 4rem);
   font-weight: 800;
@@ -434,19 +54,19 @@
   text-wrap: balance;
 }
 
-.dossier__summary {
+.game-dossier__summary {
   max-width: 56ch;
   line-height: 1.6;
 }
 
 /* Ficha técnica en monoespaciada, como el pie de un documento */
-.dossier__specs {
+.game-dossier__specs {
   display: grid;
   font-family: var(--font-plex-mono), monospace;
   font-size: 0.8125rem;
 }
 
-.dossier__spec {
+.game-dossier__spec {
   display: grid;
   grid-template-columns: 5rem 1fr;
   gap: 1rem;
@@ -454,7 +74,7 @@
   border-bottom: 1px dashed var(--dossier-line);
 }
 
-.dossier__spec-label {
+.game-dossier__spec-label {
   align-self: center;
   color: var(--dossier-muted);
   font-size: 0.6875rem;
@@ -462,18 +82,18 @@
   text-transform: uppercase;
 }
 
-.dossier__spec-value {
+.game-dossier__spec-value {
   overflow-wrap: anywhere;
 }
 
-.dossier__sectors {
+.game-dossier__sectors {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
   gap: 0.75rem;
 }
 
 /* Franja de color por sector, como las líneas de los pasillos de Black Mesa */
-.dossier__sector {
+.game-dossier__sector {
   position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
@@ -488,36 +108,36 @@
     background-color 160ms ease-out;
 }
 
-.dossier__sector--lore {
+.game-dossier__sector--lore {
   --sector-color: #5c574f;
 }
 
-.dossier__sector--maps {
+.game-dossier__sector--maps {
   --sector-color: #2e7d32;
 }
 
-.dossier__sector--weapons {
+.game-dossier__sector--weapons {
   --sector-color: #c62828;
 }
 
-.dossier__sector--characters {
+.game-dossier__sector--characters {
   --sector-color: #1565c0;
 }
 
-.dossier__sector--enemies {
+.game-dossier__sector--enemies {
   --sector-color: #ef6c00;
 }
 
-.dossier__sector--trivia {
+.game-dossier__sector--trivia {
   --sector-color: #6a1b9a;
 }
 
-.dossier__sector--easter-eggs {
+.game-dossier__sector--easter-eggs {
   --sector-color: #f9a825;
 }
 
 /* Va después de los colores de sector para que un apartado vacío quede en gris */
-.dossier__sector--empty {
+.game-dossier__sector--empty {
   --sector-color: color-mix(in srgb, var(--dossier-ink) 25%, transparent);
   border-style: dashed;
   border-top-style: solid;
@@ -525,13 +145,13 @@
 }
 
 /* El apartado señalado pasa por encima de sus vecinos para que su ficha desplegada no quede tapada */
-.dossier__sector:hover,
-.dossier__sector:focus-within {
+.game-dossier__sector:hover,
+.game-dossier__sector:focus-within {
   z-index: 2;
 }
 
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .dossier__sector:has(.dossier__sector-link:hover) {
+  .game-dossier__sector:has(.game-dossier__sector-link:hover) {
     transform: translateY(-2px);
     background: color-mix(
       in srgb,
@@ -542,7 +162,7 @@
 }
 
 /* Ficha desplegable: descripción del apartado y las primeras fichas, al pasar el ratón o con el foco */
-.dossier__sector-panel {
+.game-dossier__sector-panel {
   position: absolute;
   top: 100%;
   right: -1px;
@@ -559,36 +179,36 @@
   transition: opacity 160ms ease-out;
 }
 
-.dossier__sector:hover .dossier__sector-panel,
-.dossier__sector:focus-within .dossier__sector-panel {
+.game-dossier__sector:hover .game-dossier__sector-panel,
+.game-dossier__sector:focus-within .game-dossier__sector-panel {
   opacity: 1;
   pointer-events: auto;
 }
 
 /* Escape la cierra (sample-motion.tsx); va después para ganar a :hover y :focus-within */
-.dossier__sector[data-dismissed] .dossier__sector-panel {
+.game-dossier__sector[data-dismissed] .game-dossier__sector-panel {
   opacity: 0;
   pointer-events: none;
 }
 
 /* El pequeño descenso solo si el sistema no pide movimiento reducido */
 @media (prefers-reduced-motion: no-preference) {
-  .dossier__sector-panel {
+  .game-dossier__sector-panel {
     translate: 0 -0.25rem;
     transition:
       opacity 160ms ease-out,
       translate 160ms ease-out;
   }
 
-  .dossier__sector:hover .dossier__sector-panel,
-  .dossier__sector:focus-within .dossier__sector-panel {
+  .game-dossier__sector:hover .game-dossier__sector-panel,
+  .game-dossier__sector:focus-within .game-dossier__sector-panel {
     translate: 0 0;
   }
 }
 
 /* En pantallas táctiles no hay ratón: la ficha se ve siempre, dentro del apartado */
 @media (hover: none) {
-  .dossier__sector-panel {
+  .game-dossier__sector-panel {
     position: static;
     grid-column: 2;
     margin-top: 0.5rem;
@@ -602,24 +222,24 @@
   }
 }
 
-.dossier__sector-description {
+.game-dossier__sector-description {
   font-size: 0.8125rem;
   line-height: 1.45;
 }
 
-.dossier__sector-entries {
+.game-dossier__sector-entries {
   display: flex;
   flex-wrap: wrap;
   gap: 0.375rem;
 }
 
-.dossier__sector-entry {
+.game-dossier__sector-entry {
   padding: 0.125rem 0.5rem;
   border: 1px solid var(--dossier-line);
   font-size: 0.75rem;
 }
 
-.dossier__sector-index {
+.game-dossier__sector-index {
   grid-row: span 2;
   padding-top: 0.2rem;
   color: var(--dossier-muted);
@@ -627,39 +247,39 @@
   font-size: 0.75rem;
 }
 
-.dossier__sector-link,
-.dossier__sector-name {
+.game-dossier__sector-link,
+.game-dossier__sector-name {
   font-weight: 600;
 }
 
-.dossier__sector-name {
+.game-dossier__sector-name {
   color: var(--dossier-muted);
 }
 
-.dossier__sector-link {
+.game-dossier__sector-link {
   color: var(--dossier-ink);
   text-decoration: none;
 }
 
-.dossier__sector-link::after {
+.game-dossier__sector-link::after {
   content: "";
   position: absolute;
   inset: 0;
 }
 
-.dossier__sector-link:focus-visible {
+.game-dossier__sector-link:focus-visible {
   outline: 3px solid var(--dossier-ink);
   outline-offset: 4px;
 }
 
-.dossier__sector-status {
+.game-dossier__sector-status {
   color: var(--dossier-muted);
   font-family: var(--font-plex-mono), monospace;
   font-size: 0.75rem;
 }
 
 /* Flecha de los apartados con contenido: se desplaza al pasar el ratón */
-.dossier__sector-arrow {
+.game-dossier__sector-arrow {
   position: absolute;
   top: 0.875rem;
   right: 1rem;
@@ -671,21 +291,22 @@
 }
 
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .dossier__sector:has(.dossier__sector-link:hover) .dossier__sector-arrow {
+  .game-dossier__sector:has(.game-dossier__sector-link:hover)
+    .game-dossier__sector-arrow {
     color: var(--dossier-ink);
     translate: 3px 0;
   }
 }
 
 /* Contenido por encima de las marcas decorativas (λ, esquinas) */
-.dossier__header,
-.dossier__sectors,
-.dossier__footer {
+.game-dossier__header,
+.game-dossier__sectors,
+.game-dossier__footer {
   position: relative;
   z-index: 1;
 }
 
-.dossier__meter {
+.game-dossier__meter {
   display: block;
   width: 100%;
   height: 4px;
@@ -695,22 +316,22 @@
   background: var(--dossier-line);
 }
 
-.dossier__meter::-webkit-meter-bar {
+.game-dossier__meter::-webkit-meter-bar {
   border: 0;
   border-radius: 0;
   background: var(--dossier-line);
 }
 
-.dossier__meter::-webkit-meter-optimum-value {
+.game-dossier__meter::-webkit-meter-optimum-value {
   background: var(--dossier-accent);
 }
 
-.dossier__meter::-moz-meter-bar {
+.game-dossier__meter::-moz-meter-bar {
   background: var(--dossier-accent);
 }
 
 /* Pie de registro: código de barras, código del juego y número de fuentes reales */
-.dossier__footer {
+.game-dossier__footer {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -722,7 +343,7 @@
   font-size: 0.75rem;
 }
 
-.dossier__barcode {
+.game-dossier__barcode {
   width: 6.5rem;
   height: 1.75rem;
   background: repeating-linear-gradient(
@@ -739,14 +360,14 @@
   opacity: 0.8;
 }
 
-.dossier__sources {
+.game-dossier__sources {
   margin-left: auto;
   padding: 0.25rem 0.625rem;
   border: 1px solid currentColor;
 }
 
 /* Rótulo vertical en el canto, con la instalación o la unidad de cada juego */
-.dossier__edge {
+.game-dossier__edge {
   position: absolute;
   z-index: 1;
   top: 50%;
@@ -765,13 +386,13 @@
 }
 
 @media (min-width: 64rem) {
-  .dossier__edge {
+  .game-dossier__edge {
     display: block;
   }
 }
 
 /* Sello de tinta: solo en pantallas anchas, donde no tapa el título */
-.dossier__stamp {
+.game-dossier__stamp {
   position: absolute;
   z-index: 2;
   top: clamp(1.5rem, 3vw, 2.25rem);
@@ -791,32 +412,32 @@
 }
 
 @media (min-width: 56rem) {
-  .dossier__stamp {
+  .game-dossier__stamp {
     display: block;
   }
 
   /* Hueco para el sello encima de la ficha técnica */
-  .dossier__specs {
+  .game-dossier__specs {
     padding-top: 3.5rem;
   }
 }
 
-.dossier__tab {
+.game-dossier__tab {
   display: none;
 }
 
 /* Half-Life: carpeta de laboratorio con pestaña, papel pautado, taladros y λ de agua */
-.dossier--half-life {
+.game-dossier--half-life {
   margin-top: 1.5rem;
   background-image:
     radial-gradient(
       circle at 0.75rem 28%,
-      var(--stage-bg) 0 0.35rem,
+      var(--stage-bg, var(--background)) 0 0.35rem,
       transparent 0.4rem
     ),
     radial-gradient(
       circle at 0.75rem 72%,
-      var(--stage-bg) 0 0.35rem,
+      var(--stage-bg, var(--background)) 0 0.35rem,
       transparent 0.4rem
     ),
     linear-gradient(rgb(29 27 24 / 0.04) 1px, transparent 1px);
@@ -829,7 +450,7 @@
 
 /* En móvil el margen es estrecho y los taladros tocarían el texto */
 @media (max-width: 47.99rem) {
-  .dossier--half-life {
+  .game-dossier--half-life {
     background-image: linear-gradient(
       rgb(29 27 24 / 0.04) 1px,
       transparent 1px
@@ -838,7 +459,7 @@
   }
 }
 
-.dossier--half-life .dossier__tab {
+.game-dossier--half-life .game-dossier__tab {
   position: absolute;
   top: -1.5rem;
   left: var(--dossier-padding);
@@ -854,7 +475,7 @@
   letter-spacing: 0.08em;
 }
 
-.dossier--half-life::after {
+.game-dossier--half-life::after {
   content: "λ" / "";
   position: absolute;
   right: clamp(1rem, 4vw, 3rem);
@@ -868,12 +489,12 @@
   pointer-events: none;
 }
 
-.dossier--half-life .dossier__stamp {
+.game-dossier--half-life .game-dossier__stamp {
   color: #b3261e;
 }
 
 /* Opposing Force: lona oliva, estarcido militar, franja de peligro y esquinas de visor */
-.dossier--opposing-force {
+.game-dossier--opposing-force {
   --dossier-paper: #2f3a24;
   --dossier-ink: #e8ecd9;
   --dossier-muted: #b9c2a4;
@@ -887,7 +508,7 @@
   );
 }
 
-.dossier--opposing-force::before {
+.game-dossier--opposing-force::before {
   content: "";
   position: absolute;
   inset: 0 0 auto;
@@ -899,7 +520,7 @@
   );
 }
 
-.dossier--opposing-force::after {
+.game-dossier--opposing-force::after {
   --corner: linear-gradient(var(--dossier-accent), var(--dossier-accent));
   content: "";
   position: absolute;
@@ -918,12 +539,12 @@
   pointer-events: none;
 }
 
-.dossier--opposing-force .dossier__title {
+.game-dossier--opposing-force .game-dossier__title {
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-.dossier--opposing-force .dossier__stamp {
+.game-dossier--opposing-force .game-dossier__stamp {
   border-style: solid;
   border-width: 2px;
   letter-spacing: 0.32em;
@@ -931,7 +552,7 @@
 }
 
 /* Blue Shift: tarjeta de acreditación con banda azul, ranura para la pinza y chip */
-.dossier--blue-shift {
+.game-dossier--blue-shift {
   --dossier-paper: #f4f6fa;
   --dossier-ink: #14213d;
   --dossier-muted: #4a5878;
@@ -939,10 +560,9 @@
   --dossier-line: rgb(20 33 61 / 0.16);
   --dossier-radius: 14px;
   padding-top: 0;
-  overflow: hidden;
 }
 
-.dossier--blue-shift::before {
+.game-dossier--blue-shift::before {
   content: "";
   position: absolute;
   z-index: 2;
@@ -951,12 +571,12 @@
   width: 4rem;
   height: 0.5rem;
   border-radius: 999px;
-  background: var(--stage-bg);
+  background: var(--stage-bg, var(--background));
   box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.6);
   translate: -50% 0;
 }
 
-.dossier--blue-shift .dossier__header {
+.game-dossier--blue-shift .game-dossier__header {
   --dossier-ink: #ffffff;
   --dossier-muted: #dbe4f5;
   --dossier-accent: #ffffff;
@@ -964,6 +584,8 @@
   margin-inline: calc(-1 * var(--dossier-padding));
   padding: 2.5rem var(--dossier-padding) 1.75rem;
   border-bottom: 0;
+  /* La banda redondea sus esquinas; el dossier no recorta (dejaría sin foco visible ni desplegables) */
+  border-radius: var(--dossier-radius) var(--dossier-radius) 0 0;
   background:
     repeating-linear-gradient(
       -60deg,
@@ -974,7 +596,7 @@
   color: var(--dossier-ink);
 }
 
-.dossier--blue-shift .dossier__stamp {
+.game-dossier--blue-shift .game-dossier__stamp {
   border: 1px solid currentColor;
   border-radius: 999px;
   color: #ffffff;
@@ -984,7 +606,7 @@
 }
 
 /* Chip de la tarjeta, junto al código de barras */
-.dossier--blue-shift .dossier__footer::before {
+.game-dossier--blue-shift .game-dossier__footer::before {
   content: "";
   width: 2.25rem;
   height: 1.75rem;
@@ -1005,7 +627,7 @@
 }
 
 /* Half-Life: esquina doblada del papel */
-.dossier--half-life::before {
+.game-dossier--half-life::before {
   content: "";
   position: absolute;
   right: 0;
@@ -1014,24 +636,24 @@
   height: 2.25rem;
   background: linear-gradient(
     315deg,
-    var(--stage-bg) 50%,
+    var(--stage-bg, var(--background)) 50%,
     color-mix(in srgb, var(--dossier-paper) 80%, var(--dossier-ink)) 50%
   );
 }
 
 /* Blue Shift: el rótulo va en la parte blanca para no cruzar la banda azul */
-.dossier--blue-shift .dossier__edge {
+.game-dossier--blue-shift .game-dossier__edge {
   top: auto;
   bottom: 1.5rem;
   translate: none;
 }
 
 /* Blue Shift: reflejo de tarjeta plastificada que cruza la banda al pasar el ratón */
-.dossier--blue-shift .dossier__header {
+.game-dossier--blue-shift .game-dossier__header {
   overflow: hidden;
 }
 
-.dossier--blue-shift .dossier__header::after {
+.game-dossier--blue-shift .game-dossier__header::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -1046,7 +668,7 @@
 }
 
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .dossier--blue-shift:hover .dossier__header::after {
+  .game-dossier--blue-shift:hover .game-dossier__header::after {
     translate: 100% 0;
     transition: translate 900ms ease-out;
   }
@@ -1054,34 +676,34 @@
 
 /* Enlace principal del dossier: una capa que cubre la carpeta entera, sin anidar enlaces.
    La cabecera y el pie dejan pasar el clic; los apartados quedan por encima con sus propios enlaces */
-.dossier__open {
+.game-dossier__open {
   position: absolute;
   z-index: 1;
   inset: 0;
   border-radius: var(--dossier-radius);
 }
 
-.dossier__open:focus-visible {
+.game-dossier__open:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 6px;
 }
 
-.dossier__header,
-.dossier__footer {
+.game-dossier__header,
+.game-dossier__footer {
   pointer-events: none;
 }
 
-.dossier__sectors {
+.game-dossier__sectors {
   z-index: 2;
   pointer-events: none;
 }
 
-.dossier__sector {
+.game-dossier__sector {
   pointer-events: auto;
 }
 
 /* Pista visible de la acción principal */
-.dossier__cue {
+.game-dossier__cue {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -1097,29 +719,29 @@
   transition: box-shadow 160ms ease-out;
 }
 
-.dossier:has(.dossier__open:hover) .dossier__cue,
-.dossier:has(.dossier__open:focus-visible) .dossier__cue {
+.game-dossier:has(.game-dossier__open:hover) .game-dossier__cue,
+.game-dossier:has(.game-dossier__open:focus-visible) .game-dossier__cue {
   box-shadow: inset 0 0 0 1px currentColor;
 }
 
-.dossier__cue-arrow {
+.game-dossier__cue-arrow {
   transition: translate 160ms ease-out;
 }
 
 /* La carpeta se levanta al señalarla, no al señalar un apartado */
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .dossier {
+  .game-dossier {
     transition:
       translate 200ms ease-out,
       box-shadow 200ms ease-out;
   }
 
-  .dossier:has(.dossier__open:hover) {
+  .game-dossier:has(.game-dossier__open:hover) {
     translate: 0 -4px;
     box-shadow: 0 36px 60px -28px rgb(0 0 0 / 0.85);
   }
 
-  .dossier:has(.dossier__open:hover) .dossier__cue-arrow {
+  .game-dossier:has(.game-dossier__open:hover) .game-dossier__cue-arrow {
     translate: 4px 0;
   }
 }

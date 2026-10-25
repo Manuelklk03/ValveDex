@@ -9,6 +9,8 @@ export const universeStages: UniverseStage[] = [
     summary:
       "El primer Half-Life (1998) y las expansiones de Gearbox cuentan el incidente de Black Mesa desde tres puntos de vista: un científico, un marine y un guardia de seguridad.",
     status: "available",
+    // El multijugador tendrá su propio apartado; hasta entonces se anuncia aquí
+    plannedGames: ["Multijugador de Half-Life 1"],
   },
   {
     id: "source",

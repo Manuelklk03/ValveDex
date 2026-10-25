@@ -134,7 +134,7 @@ Acordado con Manuel el 2026-10-22. El esqueleto actual es solo estructura y dato
 
 1. Revisar y completar el contenido de Half-Life 1, Opposing Force y Blue Shift (hecho, PR #59).
 2. Comprobar su coherencia y cerrar los pendientes de esta etapa.
-3. **Adelantado (2026-10-25): rediseñar la entrada al universo Half-Life** con las etapas GoldSrc, Source y Source 2 y dossiers por juego (propuesta en [design.md](design.md#propuesta-para-la-entrada-al-universo-pendiente-de-aplicar)). La reforma del resto de universos sigue en el punto 7.
+3. **Adelantado (2026-10-25), hecho en U1–U3: rediseñar la entrada al universo Half-Life** con las etapas GoldSrc, Source y Source 2 y dossiers por juego (propuesta en [design.md](design.md#propuesta-para-la-entrada-al-universo-aplicada-en-u3-2026-10-26)). La reforma del resto de universos sigue en el punto 7.
 4. Recopilar y preparar los recursos visuales de ese bloque (ver «Recursos visuales del bloque Half-Life 1»).
 5. Half-Life 2.
 6. Half-Life: Alyx y los demás contenidos previstos.

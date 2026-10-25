@@ -103,7 +103,7 @@ Dentro del universo, los juegos se agruparán con títulos y separadores cuidado
 
 **Adelantado (decisión de Manuel, 2026-10-25):** la entrada al universo Half-Life se rediseña **antes de Half-Life 2**, adelantándose a la fase actual. La reforma general del resto de universos sigue prevista para más adelante.
 
-#### Propuesta para la entrada al universo (pendiente de aplicar)
+#### Propuesta para la entrada al universo (aplicada en U3, 2026-10-26)
 
 - **Tres etapas** como agrupación editorial, con el nombre del motor como título y los juegos como subtítulo: **GoldSrc** («Half-Life 1 y sus expansiones», más el acceso al futuro «Multijugador»), **Source** («Half-Life 2 y sus episodios») y **Source 2** («Half-Life: Alyx»). La etapa no es el motor estricto: Half-Life: Source y Black Mesa (motor Source) van en GoldSrc porque rehacen Half-Life 1; Alyx va en Source 2 aunque su historia ocurra antes de Half-Life 2.
 - **Navegación:** universo → etapa (sección con ancla, `/universos/half-life#goldsrc`, sin ruta nueva) → dossier del juego (enlace principal a su hub actual) → categorías (accesos directos) → ficha. No cambian las URL.
@@ -114,14 +114,14 @@ Dentro del universo, los juegos se agruparán con títulos y separadores cuidado
 
 #### Dirección aprobada en U2 (Manuel, 2026-10-25, primera versión a mejorar)
 
-Muestra en `/muestra/universo` (temporal, se borra en U3):
+Aplicada en la página real `/universos/half-life` (U3); la muestra temporal `/muestra/universo` se borró:
 
 - **Idea central:** la página cambia de material al bajar por las etapas: archivo de Black Mesa, hormigón de la Ciudad 17 y Zona de Cuarentena. La **λ** une las tres: el círculo del logotipo en la entrada y la λ pintada por la Resistencia en Source.
 - **Entrada:** título «Half-Life» grande, texto del universo entero sin spoilers y un índice de las tres etapas (enlaces a sus anclas). Sin la válvula ni la presentación de Valve.
 - **Dossiers de juego (GoldSrc):** los de `/muestra`, con sus desplegables por apartado. **Todo el dossier abre el hub** mediante un enlace en capa al fondo de la carpeta («Abrir dossier»), y los apartados quedan por encima con sus propios enlaces: sin enlaces anidados. La carpeta se levanta solo al señalar el dossier, no un apartado.
 - **Source:** rejilla de hormigón, panel de pantalla de la Alianza (líneas de barrido y barra segmentada) y una **λ grande pintada por la Resistencia** sobre el hormigón: Half-Life 2 es la historia de la Resistencia. Acento provisional `#5fb4c9`.
 - **Source 2:** franja de peligro, el mismo panel en amarillo, precinto «Zona de cuarentena» y **emblema de la Alianza** de fondo, solo en esta etapa (decisión de Manuel): Alyx transcurre dentro de la zona aislada por la Alianza. Acento provisional `#d9b13b`.
-- **Emblema de la Alianza:** `public/images/decor/combine-main-symbol.svg`, de [Combine OverWiki](https://combineoverwiki.net/wiki/File:Combine_main_symbol.svg) (vectorizado por Klow a partir de una textura de Half-Life 2; material © Valve, uso legítimo). Se usa como máscara CSS para teñirlo con el color de la etapa. Debe aparecer en `/creditos` al integrarlo en U3.
+- **Emblema de la Alianza:** `public/images/decor/combine-main-symbol.svg`, de [Combine OverWiki](https://combineoverwiki.net/wiki/File:Combine_main_symbol.svg) (vectorizado por Klow a partir de una textura de Half-Life 2; material © Valve, uso legítimo). Se usa como máscara CSS para teñirlo con el color de la etapa. Se acredita en `/creditos` desde `src/data/decor-images.ts`.
 - **Movimiento:** la entrada de los dossiers con GSAP, como en `/muestra`, y la respuesta al señalar; nada más se anima solo.
 - **Pendiente de comprobar:** los colores de Source y Source 2 con capturas del juego, la λ de la Resistencia en Alyx (por eso Source 2 no la lleva) y el recorrido completo con teclado.
 
