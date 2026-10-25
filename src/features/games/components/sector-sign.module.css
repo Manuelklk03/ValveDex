@@ -1,0 +1,152 @@
+/* Señal de sector: franja superior con el color del apartado (variables --sector-* de globals.css) */
+.sector-sign {
+  --sector-color: var(--muted);
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 0.75rem;
+  row-gap: 0.25rem;
+  padding: 1rem 1.125rem 1.125rem;
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--sector-color);
+  background: var(--surface);
+  transition: border-color 160ms ease-out;
+}
+
+.sector-sign--lore {
+  --sector-color: var(--sector-lore);
+}
+
+.sector-sign--maps {
+  --sector-color: var(--sector-maps);
+}
+
+.sector-sign--weapons {
+  --sector-color: var(--sector-weapons);
+}
+
+.sector-sign--characters {
+  --sector-color: var(--sector-characters);
+}
+
+.sector-sign--enemies {
+  --sector-color: var(--sector-enemies);
+}
+
+.sector-sign--trivia {
+  --sector-color: var(--sector-trivia);
+}
+
+.sector-sign--easter-eggs {
+  --sector-color: var(--sector-easter-eggs);
+}
+
+/* Va después de los colores para que un apartado vacío quede sin color */
+.sector-sign--empty {
+  --sector-color: var(--border);
+  border-style: dashed;
+  border-top-style: solid;
+  background: transparent;
+}
+
+.sector-sign:not(.sector-sign--empty):hover {
+  border-color: color-mix(in srgb, var(--sector-color) 60%, var(--border));
+  border-top-color: var(--sector-color);
+}
+
+.sector-sign:has(.sector-sign__link:focus-visible) {
+  outline: 2px solid var(--foreground);
+  outline-offset: 3px;
+}
+
+.sector-sign__index {
+  grid-row: span 2;
+  padding-top: 0.2rem;
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+}
+
+.sector-sign__title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.sector-sign--empty .sector-sign__title {
+  color: var(--muted);
+}
+
+.sector-sign__link {
+  color: var(--foreground);
+  text-decoration: none;
+}
+
+/* Toda la tarjeta es clicable; el contorno de foco lo dibuja la tarjeta */
+.sector-sign__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.sector-sign__link:focus-visible {
+  outline: none;
+}
+
+.sector-sign__status {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+}
+
+/* Desplegable dentro del flujo: crece de 0fr a 1fr y empuja la fila de abajo en vez de taparla */
+.sector-sign__details {
+  display: grid;
+  grid-column: 2;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 200ms ease-out;
+}
+
+.sector-sign:hover .sector-sign__details,
+.sector-sign:focus-within .sector-sign__details {
+  grid-template-rows: 1fr;
+}
+
+.sector-sign__details-inner {
+  display: grid;
+  gap: 0.625rem;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sector-sign__description {
+  margin-top: 0.75rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.sector-sign__entries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.sector-sign__entry {
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+}
+
+/* En pantallas táctiles no hay ratón: el desplegable se ve siempre */
+@media (hover: none) {
+  .sector-sign__details {
+    grid-template-rows: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sector-sign__details {
+    transition: none;
+  }
+}

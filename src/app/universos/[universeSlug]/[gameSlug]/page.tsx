@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { isEntryCategory } from "@/domain/entry";
+import { SectorSign } from "@/features/games/components/sector-sign";
+import { getSectionStatuses } from "@/features/games/get-section-statuses";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { getEntriesByGameAndCategory } from "@/features/catalog/get-entries";
-import { getGameLore } from "@/features/games/get-game-lore";
-import { getGameSections } from "@/features/games/get-game-sections";
 import { getGameYearLabel } from "@/features/games/get-game-year-label";
 import {
   getGameById,
@@ -55,17 +53,12 @@ export default async function GamePage({
   }
 
   const { universe, game } = result;
-  const sections = getGameSections();
+  const statuses = getSectionStatuses(game.id);
 
   const baseGame = game.baseGameId ? getGameById(game.baseGameId) : undefined;
   const mods = getModsByGame(game.id);
   const cancelledGames = getCancelledGamesByGame(game.id);
-  const availableCount = sections.filter(
-    (section) =>
-      (isEntryCategory(section.id) &&
-        getEntriesByGameAndCategory(game.id, section.id).length > 0) ||
-      (section.id === "lore" && getGameLore(game.id) !== undefined),
-  ).length;
+  const availableCount = statuses.filter((status) => status.isAvailable).length;
 
   return (
     <main className={styles["game-page"]}>
@@ -84,7 +77,7 @@ export default async function GamePage({
           { label: "Estudio", value: game.developer },
           {
             label: "Apartados",
-            value: `${availableCount} de ${sections.length}`,
+            value: `${availableCount} de ${statuses.length}`,
           },
         ]}
       >
@@ -122,43 +115,14 @@ export default async function GamePage({
           Apartados
         </h2>
         <ul className={styles["game-page__sections"]}>
-          {sections.map((section) => {
-            const entryCount = isEntryCategory(section.id)
-              ? getEntriesByGameAndCategory(game.id, section.id).length
-              : 0;
-            const hasLore =
-              section.id === "lore" && getGameLore(game.id) !== undefined;
-            const isAvailable = entryCount > 0 || hasLore;
-            const cardClassName = isAvailable
-              ? `${styles["game-page__card"]} ${styles["game-page__card--available"]}`
-              : styles["game-page__card"];
-            const badge = hasLore
-              ? "Disponible"
-              : entryCount > 0
-                ? `${entryCount} ${entryCount === 1 ? "ficha" : "fichas"}`
-                : "Próximamente";
-
-            return (
-              <li key={section.id} className={cardClassName}>
-                <h3 className={styles["game-page__card-title"]}>
-                  {isAvailable ? (
-                    <Link
-                      href={`/universos/${universe.slug}/${game.slug}/${section.slug}`}
-                      className={styles["game-page__card-link"]}
-                    >
-                      {section.name}
-                    </Link>
-                  ) : (
-                    section.name
-                  )}
-                </h3>
-                <p className={styles["game-page__card-description"]}>
-                  {section.description}
-                </p>
-                <span className={styles["game-page__badge"]}>{badge}</span>
-              </li>
-            );
-          })}
+          {statuses.map((status, index) => (
+            <SectorSign
+              key={status.section.id}
+              index={index + 1}
+              status={status}
+              href={`/universos/${universe.slug}/${game.slug}/${status.section.slug}`}
+            />
+          ))}
         </ul>
       </section>
 
