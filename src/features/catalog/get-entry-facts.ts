@@ -37,8 +37,22 @@ export function getEntryFacts(entry: Entry): EntryFact[] {
       ];
     case "maps":
       return [
-        { label: "Capítulo", value: String(entry.details.chapter) },
+        {
+          label: "Capítulo",
+          value:
+            entry.details.chapter === 0
+              ? "Entrenamiento opcional"
+              : String(entry.details.chapter),
+        },
         { label: "Archivos de mapa", value: entry.details.mapFiles.join(", ") },
+        ...(entry.details.designers
+          ? [
+              {
+                label: "Diseño",
+                value: entry.details.designers.join(", "),
+              },
+            ]
+          : []),
       ];
 
     case "characters":

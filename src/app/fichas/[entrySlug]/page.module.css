@@ -80,3 +80,24 @@
   color: var(--muted);
   font-size: 0.875rem;
 }
+
+/* Notas del archivo: una por línea, con una marca en monoespaciada */
+.entry-page__notes {
+  display: grid;
+  gap: 0.875rem;
+  max-width: 70ch;
+}
+
+.entry-page__note {
+  position: relative;
+  padding-left: 1.5rem;
+  line-height: 1.6;
+}
+
+.entry-page__note::before {
+  content: "·" / "";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-family: var(--font-plex-mono), monospace;
+}

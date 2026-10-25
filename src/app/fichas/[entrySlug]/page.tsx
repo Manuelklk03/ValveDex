@@ -99,6 +99,24 @@ export default async function EntryPage({
         ]}
       />
 
+      {entry.notes && entry.notes.length > 0 && (
+        <section
+          className={styles["entry-page__section"]}
+          aria-labelledby="notes-title"
+        >
+          <h2 id="notes-title" className={styles["entry-page__section-title"]}>
+            Desarrollo y curiosidades
+          </h2>
+          <ul className={styles["entry-page__notes"]}>
+            {entry.notes.map((note) => (
+              <li key={note} className={styles["entry-page__note"]}>
+                {note}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section
         className={styles["entry-page__section"]}
         aria-labelledby="appearances-title"
