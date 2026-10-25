@@ -112,6 +112,19 @@ Dentro del universo, los juegos se agruparán con títulos y separadores cuidado
 - **Personalidad por etapa:** GoldSrc, archivo y señalética de Black Mesa (los tres dossiers actuales); Source, avisos de la Alianza y hormigón de la Ciudad 17; Source 2, el mundo de Alyx. Antes de diseñar Source y Source 2 se capturan referencias, como en D1.
 - **Etapas sin contenido:** Source y Source 2 muestran «En preparación» y sus juegos como texto, sin enlaces ni fichas vacías.
 
+#### Dirección aprobada en U2 (Manuel, 2026-10-25, primera versión a mejorar)
+
+Muestra en `/muestra/universo` (temporal, se borra en U3):
+
+- **Idea central:** la página cambia de material al bajar por las etapas: archivo de Black Mesa, hormigón de la Ciudad 17 y Zona de Cuarentena. La **λ** une las tres: el círculo del logotipo en la entrada y la λ pintada por la Resistencia en Source.
+- **Entrada:** título «Half-Life» grande, texto del universo entero sin spoilers y un índice de las tres etapas (enlaces a sus anclas). Sin la válvula ni la presentación de Valve.
+- **Dossiers de juego (GoldSrc):** los de `/muestra`, con sus desplegables por apartado. **Todo el dossier abre el hub** mediante un enlace en capa al fondo de la carpeta («Abrir dossier»), y los apartados quedan por encima con sus propios enlaces: sin enlaces anidados. La carpeta se levanta solo al señalar el dossier, no un apartado.
+- **Source:** rejilla de hormigón, panel de pantalla de la Alianza (líneas de barrido y barra segmentada) y una **λ grande pintada por la Resistencia** sobre el hormigón: Half-Life 2 es la historia de la Resistencia. Acento provisional `#5fb4c9`.
+- **Source 2:** franja de peligro, el mismo panel en amarillo, precinto «Zona de cuarentena» y **emblema de la Alianza** de fondo, solo en esta etapa (decisión de Manuel): Alyx transcurre dentro de la zona aislada por la Alianza. Acento provisional `#d9b13b`.
+- **Emblema de la Alianza:** `public/images/decor/combine-main-symbol.svg`, de [Combine OverWiki](https://combineoverwiki.net/wiki/File:Combine_main_symbol.svg) (vectorizado por Klow a partir de una textura de Half-Life 2; material © Valve, uso legítimo). Se usa como máscara CSS para teñirlo con el color de la etapa. Debe aparecer en `/creditos` al integrarlo en U3.
+- **Movimiento:** la entrada de los dossiers con GSAP, como en `/muestra`, y la respuesta al señalar; nada más se anima solo.
+- **Pendiente de comprobar:** los colores de Source y Source 2 con capturas del juego, la λ de la Resistencia en Alyx (por eso Source 2 no la lleva) y el recorrido completo con teclado.
+
 ### Otros universos (ideas para más adelante, no se desarrollan ahora)
 
 - **Portal:** carteles de las cámaras de prueba de Aperture Science, que son el recurso más reconocible del juego (número de cámara y pictogramas).
