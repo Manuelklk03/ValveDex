@@ -1,10 +1,12 @@
 import type { Entry } from "@/domain/entry";
 import { halfLifeChapters } from "./half-life-chapters";
 import { halfLifeWeapons } from "./half-life-weapons";
+import { halfLifeEnemies } from "./half-life-enemies";
 
 export const entries: Entry[] = [
   ...halfLifeChapters,
   ...halfLifeWeapons,
+  ...halfLifeEnemies,
   {
     id: "gordon-freeman",
     slug: "gordon-freeman",
@@ -30,27 +32,6 @@ export const entries: Entry[] = [
       {
         title: "Gordon Freeman - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/Gordon_Freeman",
-        kind: "wiki",
-      },
-    ],
-  },
-  {
-    id: "headcrab",
-    slug: "headcrab",
-    name: "Headcrab",
-    category: "enemies",
-    details: { origin: "Xen" },
-    summary:
-      "Criatura de Xen que salta a la cabeza de sus víctimas y las convierte en zombis.",
-    appearances: [
-      { gameId: "half-life" },
-      { gameId: "half-life-opposing-force" },
-      { gameId: "half-life-blue-shift" },
-    ],
-    sources: [
-      {
-        title: "Headcrab - Combine OverWiki",
-        url: "https://combineoverwiki.net/wiki/Headcrab",
         kind: "wiki",
       },
     ],
