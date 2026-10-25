@@ -17,6 +17,7 @@ import {
 } from "@/features/universes/get-universes";
 
 import styles from "./page.module.css";
+import { DossierHeader } from "@/components/ui/dossier-header";
 
 export function generateStaticParams() {
   return getUniverses()
@@ -59,6 +60,12 @@ export default async function GamePage({
   const baseGame = game.baseGameId ? getGameById(game.baseGameId) : undefined;
   const mods = getModsByGame(game.id);
   const cancelledGames = getCancelledGamesByGame(game.id);
+  const availableCount = sections.filter(
+    (section) =>
+      (isEntryCategory(section.id) &&
+        getEntriesByGameAndCategory(game.id, section.id).length > 0) ||
+      (section.id === "lore" && getGameLore(game.id) !== undefined),
+  ).length;
 
   return (
     <main className={styles["game-page"]}>
@@ -69,10 +76,18 @@ export default async function GamePage({
           { label: game.name },
         ]}
       />
-      <header className={styles["game-page__header"]}>
-        <p className={styles["game-page__meta"]}>
-          {getGameYearLabel(game)} · {game.developer}
-        </p>
+      <DossierHeader
+        title={game.name}
+        summary={game.description}
+        specs={[
+          { label: "Año", value: getGameYearLabel(game) },
+          { label: "Estudio", value: game.developer },
+          {
+            label: "Apartados",
+            value: `${availableCount} de ${sections.length}`,
+          },
+        ]}
+      >
         {baseGame && (
           <p className={styles["game-page__meta"]}>
             {game.status === "cancelled"
@@ -86,9 +101,6 @@ export default async function GamePage({
             </Link>
           </p>
         )}
-
-        <h1 className={styles["game-page__title"]}>{game.name}</h1>
-        <p className={styles["game-page__intro"]}>{game.description}</p>
         <p className={styles["game-page__sources"]}>
           Fuente:{" "}
           {game.sources.map((source, index) => (
@@ -100,7 +112,7 @@ export default async function GamePage({
             </span>
           ))}
         </p>
-      </header>
+      </DossierHeader>
 
       <section
         className={styles["game-page__section"]}

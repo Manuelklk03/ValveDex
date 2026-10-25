@@ -8,30 +8,11 @@
   padding: 3rem 1rem;
 }
 
-.game-page__header {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
 .game-page__meta {
   color: var(--accent);
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.05em;
-}
-
-.game-page__title {
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  font-weight: 700;
-  line-height: 1.1;
-}
-
-.game-page__intro {
-  max-width: 40rem;
-  color: var(--muted);
-  font-size: 1.125rem;
-  line-height: 1.6;
 }
 
 .game-page__sources {
