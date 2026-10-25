@@ -44,56 +44,9 @@
 
 .game-page__sections {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-  gap: 1.25rem;
-}
-
-.game-page__card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1.25rem;
-  border: 1px solid var(--border);
-  border-radius: 0.5rem;
-  background: var(--surface);
-  position: relative;
-}
-
-.game-page__card-title {
-  font-size: 1.125rem;
-  font-weight: 700;
-}
-
-.game-page__card-description {
-  flex: 1;
-  color: var(--muted);
-  line-height: 1.5;
-}
-
-.game-page__badge {
-  color: var(--muted);
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.game-page__card--available:hover {
-  border-color: var(--accent);
-}
-
-.game-page__card--available .game-page__badge {
-  color: var(--accent);
-}
-
-.game-page__card-link {
-  text-decoration: none;
-}
-
-.game-page__card-link::after {
-  content: "";
-  position: absolute;
-  inset: 0;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  align-items: start;
+  gap: 1rem;
 }
 
 .game-page__mods,
