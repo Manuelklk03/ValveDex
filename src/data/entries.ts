@@ -3,12 +3,14 @@ import { halfLifeChapters } from "./half-life-chapters";
 import { halfLifeWeapons } from "./half-life-weapons";
 import { halfLifeEnemies } from "./half-life-enemies";
 import { halfLifeCharacters } from "./half-life-characters";
+import { halfLifeExtras } from "./half-life-extras";
 
 export const entries: Entry[] = [
   ...halfLifeChapters,
   ...halfLifeWeapons,
   ...halfLifeEnemies,
   ...halfLifeCharacters,
+  ...halfLifeExtras,
   {
     id: "goldsrc-engine",
     slug: "motor-goldsrc",
