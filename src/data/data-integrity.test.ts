@@ -10,6 +10,7 @@ import { gameLore } from "./game-lore";
 import { valveMilestones } from "./valve-milestones";
 import { valvePeople } from "./valve-people";
 import { universes } from "./universes";
+import { universeStages } from "./universe-stages";
 
 function findDuplicates(values: string[]): string[] {
   return values.filter((value, index) => values.indexOf(value) !== index);
@@ -34,6 +35,56 @@ describe("universos", () => {
     expect(findDuplicates(universes.map((universe) => universe.slug))).toEqual(
       [],
     );
+  });
+});
+
+describe("etapas de los universos", () => {
+  it("tienen id único y pertenecen a un universo existente", () => {
+    const universeIds = new Set(universes.map((universe) => universe.id));
+
+    expect(findDuplicates(universeStages.map((stage) => stage.id))).toEqual([]);
+    expect(
+      universeStages
+        .filter((stage) => !universeIds.has(stage.universeId))
+        .map((stage) => stage.id),
+    ).toEqual([]);
+  });
+
+  it("las disponibles tienen juegos y las que están en preparación nombran los previstos", () => {
+    for (const stage of universeStages) {
+      const stageGames = games.filter((game) => game.stageId === stage.id);
+
+      if (stage.status === "available") {
+        expect(stageGames.length, stage.id).toBeGreaterThan(0);
+      } else {
+        const plannedNames = (stage.plannedGames ?? []).filter(
+          (name) => name.trim() !== "",
+        );
+        expect(plannedNames.length, stage.id).toBeGreaterThan(0);
+        expect(plannedNames, stage.id).toEqual(stage.plannedGames);
+      }
+    }
+  });
+
+  it("cada juego oficial está en una etapa de su universo; los mods y los cancelados, en ninguna", () => {
+    const wrongGames = games
+      .filter((game) => {
+        const isOfficial =
+          game.status === "released" && game.baseGameId === undefined;
+        const universeHasStages = universeStages.some(
+          (stage) => stage.universeId === game.universeId,
+        );
+
+        if (!isOfficial || !universeHasStages) {
+          return game.stageId !== undefined;
+        }
+
+        const stage = universeStages.find((s) => s.id === game.stageId);
+        return stage?.universeId !== game.universeId;
+      })
+      .map((game) => `${game.id} → ${game.stageId ?? "sin etapa"}`);
+
+    expect(wrongGames).toEqual([]);
   });
 });
 

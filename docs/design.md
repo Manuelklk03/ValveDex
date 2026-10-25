@@ -101,7 +101,16 @@ Hoy la página del universo Half-Life se apoya en Black Mesa y en el primer jueg
 
 Dentro del universo, los juegos se agruparán con títulos y separadores cuidados: **Half-Life 1 y sus expansiones**, **Half-Life 2 y sus entregas** y **Half-Life: Alyx**. La agrupación sirve para navegar y presentar el contenido; no son universos independientes ni un orden cronológico de la ficción.
 
-Esta reforma visual se hará en la próxima fase de diseño, cuando haya bastantes universos desarrollados; hasta entonces no se rediseña.
+**Adelantado (decisión de Manuel, 2026-10-25):** la entrada al universo Half-Life se rediseña **antes de Half-Life 2**, adelantándose a la fase actual. La reforma general del resto de universos sigue prevista para más adelante.
+
+#### Propuesta para la entrada al universo (pendiente de aplicar)
+
+- **Tres etapas** como agrupación editorial, con el nombre del motor como título y los juegos como subtítulo: **GoldSrc** («Half-Life 1 y sus expansiones», más el acceso al futuro «Multijugador»), **Source** («Half-Life 2 y sus episodios») y **Source 2** («Half-Life: Alyx»). La etapa no es el motor estricto: Half-Life: Source y Black Mesa (motor Source) van en GoldSrc porque rehacen Half-Life 1; Alyx va en Source 2 aunque su historia ocurra antes de Half-Life 2.
+- **Navegación:** universo → etapa (sección con ancla, `/universos/half-life#goldsrc`, sin ruta nueva) → dossier del juego (enlace principal a su hub actual) → categorías (accesos directos) → ficha. No cambian las URL.
+- **Referencia:** solo los dossiers de `/muestra` (materiales, profundidad, tipografía, apertura y entrada). La válvula y la presentación de Valve no pasan al universo.
+- **Dossier de juego:** el título es el enlace principal («Abrir dossier») y su zona clicable cubre la cabecera; las categorías son enlaces hermanos debajo, nunca anidados. Funciona igual con ratón, teclado y pantalla táctil.
+- **Personalidad por etapa:** GoldSrc, archivo y señalética de Black Mesa (los tres dossiers actuales); Source, avisos de la Alianza y hormigón de la Ciudad 17; Source 2, el mundo de Alyx. Antes de diseñar Source y Source 2 se capturan referencias, como en D1.
+- **Etapas sin contenido:** Source y Source 2 muestran «En preparación» y sus juegos como texto, sin enlaces ni fichas vacías.
 
 ### Otros universos (ideas para más adelante, no se desarrollan ahora)
 

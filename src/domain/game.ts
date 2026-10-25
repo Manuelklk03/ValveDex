@@ -8,6 +8,7 @@ type GameBase = {
   developer: string;
   description: string;
   baseGameId?: string;
+  stageId?: string;
   sources: Source[];
 };
 

@@ -5,6 +5,7 @@ export const games: Game[] = [
     id: "half-life",
     slug: "half-life",
     universeId: "half-life",
+    stageId: "goldsrc",
     status: "released",
     // «1» para distinguirlo del universo Half-Life y de Half-Life 2 (decisión de Manuel)
     name: "Half-Life 1",
@@ -24,6 +25,7 @@ export const games: Game[] = [
     id: "half-life-opposing-force",
     slug: "opposing-force",
     universeId: "half-life",
+    stageId: "goldsrc",
     name: "Half-Life: Opposing Force",
     status: "released",
     releaseYear: 1999,
@@ -42,6 +44,7 @@ export const games: Game[] = [
     id: "half-life-blue-shift",
     slug: "blue-shift",
     universeId: "half-life",
+    stageId: "goldsrc",
     name: "Half-Life: Blue Shift",
     status: "released",
     releaseYear: 2001,

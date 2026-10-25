@@ -5,7 +5,8 @@ export const universes: Universe[] = [
     id: "half-life",
     slug: "half-life",
     name: "Half-Life",
-    description: "La saga de Gordon Freeman, Black Mesa y la invasión de Xen.",
+    description:
+      "La saga de Black Mesa, la invasión de Xen y la Ciudad 17 bajo la Alianza.",
     status: "available",
   },
   {

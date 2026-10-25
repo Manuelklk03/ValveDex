@@ -1,7 +1,9 @@
 import { games } from "@/data/games";
 import { universes } from "@/data/universes";
+import { universeStages } from "@/data/universe-stages";
 import { getGameYear, type Game } from "@/domain/game";
 import type { Universe } from "@/domain/universe";
+import type { UniverseStage } from "@/domain/universe-stage";
 
 export function getUniverses(): Universe[] {
   return [...universes];
@@ -66,4 +68,14 @@ export function getCancelledGamesByGame(gameId: string): Game[] {
   return games
     .filter((game) => game.status === "cancelled" && game.baseGameId === gameId)
     .sort((a, b) => a.name.localeCompare(b.name, "es"));
+}
+
+export function getStagesByUniverse(universeId: string): UniverseStage[] {
+  return universeStages.filter((stage) => stage.universeId === universeId);
+}
+
+export function getGamesByStage(stageId: string): Game[] {
+  return games
+    .filter((game) => game.stageId === stageId)
+    .sort((a, b) => getGameYear(a) - getGameYear(b));
 }
