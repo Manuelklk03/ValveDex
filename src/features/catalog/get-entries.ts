@@ -2,6 +2,20 @@ import type { Entry, EntryCategory, EntryAppearance } from "@/domain/entry";
 import { entries } from "@/data/entries";
 import type { MediaAsset } from "@/domain/media-asset";
 
+// Los capítulos de un mismo juego van en su orden; el resto, por nombre.
+// Entre juegos distintos se agrupan por juego para no intercalar sus capítulos
+export function compareEntries(a: Entry, b: Entry): number {
+  if (a.category === "maps" && b.category === "maps") {
+    const gameA = a.appearances[0]?.gameId ?? "";
+    const gameB = b.appearances[0]?.gameId ?? "";
+
+    return gameA === gameB
+      ? a.details.chapter - b.details.chapter
+      : gameA.localeCompare(gameB);
+  }
+  return a.name.localeCompare(b.name, "es");
+}
+
 export function getEntriesByGameAndCategory(
   gameId: string,
   category: EntryCategory,
@@ -12,7 +26,7 @@ export function getEntriesByGameAndCategory(
         entry.category === category &&
         entry.appearances.some((appearance) => appearance.gameId === gameId),
     )
-    .sort((a, b) => a.name.localeCompare(b.name, "es"));
+    .sort(compareEntries);
 }
 
 export function getEntries(): Entry[] {
@@ -50,5 +64,5 @@ export function getEntryById(id: string): Entry | undefined {
 export function getEntriesByCategory(category: EntryCategory) {
   return entries
     .filter((entry) => entry.category === category)
-    .sort((a, b) => a.name.localeCompare(b.name, "es"));
+    .sort(compareEntries);
 }

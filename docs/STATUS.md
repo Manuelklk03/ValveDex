@@ -306,7 +306,9 @@ Esqueleto terminado y publicado como `v0.1.0` (2026-10-23). **Orden (decisión d
    - **Mapas:** una ficha por capítulo, con sus archivos de mapa (`c0a0`, `c0a0a`…) como dato técnico.
    - **Fuentes:** cada fuente lleva su tipo (`official`, `wiki` o `community`); lo que solo cuenta la comunidad se presenta como «según la comunidad».
    - **Cifras:** daño, munición y salud solo si vienen de los archivos del juego (`skill.cfg`, por dificultad) con su fuente; nunca estimadas.
-     **Siguiente: Z3-0**, ampliar los tipos (`Source.kind`, `DifficultyValues`, campos nuevos de armas, mapas y enemigos, párrafos de lore con spoiler) antes de meter contenido.
+     **Z3-0 hecho (PR #52):** `Source.kind`, `DifficultyValues`, campos de armas, mapas y enemigos y párrafos de lore con spoiler.
+     **Z3-1 hecho (Claude, a petición de Manuel):** los 20 capítulos de Half-Life 1 en `src/data/half-life-chapters.ts` (Hazard Course como «Entrenamiento opcional», 1–18 y Endgame como 19, según Combine OverWiki), con archivos de mapa, diseñadores con fuente y notas de desarrollo (campo nuevo `notes`, sección «Desarrollo y curiosidades» de la ficha). Los 9 capítulos sin página propia en Combine OverWiki toman los mapas de una guía de Kosgames (`kind: "community"`). Los capítulos se ordenan por juego y número (`compareEntries`, 2 pruebas). Codex comprobó los datos de 4 capítulos contra la fuente.
+     **Siguiente: Z3-2, las armas** (daño y munición de `skill.cfg`).
 4. Después de D1b y D2, **por zonas** (contenido real y diseño a la vez): Valve, entrada de universos, Half-Life, Opposing Force y Blue Shift ([design.md](design.md#9-plan-por-fases)). Los pendientes de contenido (más fichas, textos contrastados, revisión en navegador y E2E) se resuelven dentro de la zona a la que pertenecen. **La intro de Valve, las imágenes y el comparador con imágenes reales** van en tandas de recursos cuando haya varios juegos terminados (decisión de Manuel, 2026-10-24).
 5. Tras el esqueleto, revisión completa de la documentación y del README para presentar el proyecto como enciclopedia de todo Valve (aviso de Manuel, 2026-10-13).
 

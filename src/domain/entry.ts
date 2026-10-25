@@ -21,6 +21,8 @@ type EntryBase = {
   slug: string;
   name: string;
   summary: string;
+  // Datos de desarrollo y curiosidades, cada uno respaldado por las fuentes de la ficha
+  notes?: string[];
   appearances: EntryAppearance[];
   sources: Source[];
 };
@@ -33,8 +35,10 @@ export type WeaponDetails = {
 };
 
 export type MapDetails = {
+  // 0 = Hazard Course (entrenamiento opcional, fuera de la numeración del juego)
   chapter: number;
   mapFiles: string[];
+  designers?: string[];
 };
 
 export type CharacterDetails = {

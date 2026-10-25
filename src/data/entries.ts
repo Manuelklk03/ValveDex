@@ -1,6 +1,8 @@
 import type { Entry } from "@/domain/entry";
+import { halfLifeChapters } from "./half-life-chapters";
 
 export const entries: Entry[] = [
+  ...halfLifeChapters,
   {
     id: "crowbar",
     slug: "palanca",
@@ -82,31 +84,6 @@ export const entries: Entry[] = [
       {
         title: "Shotgun (Half-Life) - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/Shotgun_(Half-Life)",
-        kind: "wiki",
-      },
-    ],
-  },
-  {
-    id: "black-mesa-inbound",
-    slug: "black-mesa-inbound",
-    name: "Black Mesa Inbound",
-    category: "maps",
-    details: {
-      chapter: 1,
-      mapFiles: ["c0a0", "c0a0a", "c0a0b", "c0a0c", "c0a0d", "c0a0e"],
-    },
-    summary:
-      "Capítulo inicial de Half-Life: Gordon Freeman llega a su puesto de trabajo en el tranvía de Black Mesa.",
-    appearances: [{ gameId: "half-life" }],
-    sources: [
-      {
-        title: "Half-Life storyline - Combine OverWiki",
-        url: "https://combineoverwiki.net/wiki/Half-Life_storyline#Chapter_1:_Black_Mesa_Inbound",
-        kind: "wiki",
-      },
-      {
-        title: "Black Mesa Inbound - Valve Developer Community",
-        url: "https://developer.valvesoftware.com/wiki/Black_Mesa_Inbound",
         kind: "wiki",
       },
     ],
