@@ -95,6 +95,14 @@ Comparten estructura (cabecera de expediente, sectores y fichas) y cambian de **
 
 **HUD de cada juego (revisado el 2026-10-23):** el de Half-Life es naranja; el de Opposing Force, verde, RGB 0 160 0, y forma parte del chaleco del protagonista; el de Blue Shift, azul, RGB 95 95 255, ligado al casco. Los valores RGB vienen de un borrador de usuario de [Combine OverWiki](https://combineoverwiki.net/wiki/User:Barnz/Heads-up_display), no de un artículo revisado: se tomarán como referencia de color, no como dato de la web. Los menús y la señalética se revisarán con capturas del juego en D7.
 
+### Universo Half-Life para toda la saga (decisión de Manuel, 2026-10-25)
+
+Hoy la página del universo Half-Life se apoya en Black Mesa y en el primer juego. Al incorporar Half-Life 2 y Half-Life: Alyx se revisarán su descripción, su texto de entrada, sus elementos decorativos y referencias visuales, y la presentación de los bloques de juegos, para que la identidad general reúna detalles reconocibles de los tres (el archivo de Black Mesa, la Ciudad 17 y la Alianza, el mundo de Alyx) con una composición coherente. Cada juego conserva después su propia estética.
+
+Dentro del universo, los juegos se agruparán con títulos y separadores cuidados: **Half-Life 1 y sus expansiones**, **Half-Life 2 y sus entregas** y **Half-Life: Alyx**. La agrupación sirve para navegar y presentar el contenido; no son universos independientes ni un orden cronológico de la ficción.
+
+Esta reforma visual se hará en la próxima fase de diseño, cuando haya bastantes universos desarrollados; hasta entonces no se rediseña.
+
 ### Otros universos (ideas para más adelante, no se desarrollan ahora)
 
 - **Portal:** carteles de las cámaras de prueba de Aperture Science, que son el recurso más reconocible del juego (número de cámara y pictogramas).

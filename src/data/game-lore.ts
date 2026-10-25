@@ -47,7 +47,22 @@ export const gameLore: GameLore[] = [
     gameId: "half-life-opposing-force",
     paragraphs: [
       {
-        text: "Adrian Shephard es uno de los marines enviados a Black Mesa. Su historia transcurre en paralelo a la de Half-Life, y en ella se cruza con lugares y sucesos del juego original, entre ellos el propio Gordon Freeman.",
+        text: "El cabo Adrian Shephard, de la HECU, es enviado a Black Mesa durante el incidente, pero su Osprey cae derribado antes de aterrizar y queda separado de su unidad.",
+      },
+      {
+        text: "Solo y sin órdenes, tiene que sobrevivir en una instalación invadida por las criaturas de Xen y por una nueva amenaza alienígena. Su historia transcurre en paralelo a la de Half-Life y se cruza con lugares y sucesos del juego original.",
+      },
+      {
+        spoiler: true,
+        text: "Tras el accidente, Shephard despierta en una enfermería y descubre que el ejército se retira. Llega tarde al punto de extracción y se queda atrás, y el G-Man tiene que ver con ello. Se une a otros marines abandonados mientras la raza X empieza su propia invasión.",
+      },
+      {
+        spoiler: true,
+        text: "Descubre que los Black Ops han venido a eliminar a los marines que quedan y a borrar el incidente con una cabeza nuclear. Pasando por Xen y el Sector E vence al pit worm, cruza los canales infestados de voltigores hasta la presa y, en «The Package», desactiva la bomba, aunque el G-Man vuelve a activarla.",
+      },
+      {
+        spoiler: true,
+        text: "En Worlds Collide mata al gusano gen con los láseres montados y un portal lo engulle. Despierta en un Osprey frente al G-Man mientras la bomba destruye Black Mesa. El G-Man le dice que le recuerda a sí mismo, pero que, como sus empleadores le consideran un testigo peligroso, quedará retenido «en un lugar donde no pueda hacer ningún daño».",
       },
     ],
     sources: [
@@ -62,7 +77,22 @@ export const gameLore: GameLore[] = [
     gameId: "half-life-blue-shift",
     paragraphs: [
       {
-        text: "Barney Calhoun, guardia de seguridad de Black Mesa, vive el mismo desastre desde su puesto en el sector subterráneo e intenta escapar junto a un grupo de científicos.",
+        text: "Barney Calhoun, guardia de seguridad de nivel medio de Black Mesa, empieza lo que parece una jornada normal: baja en tranvía desde los dormitorios, recoge su uniforme y le mandan a ayudar a unos científicos con un ascensor.",
+      },
+      {
+        text: "Mientras tanto ocurre el mismo desastre que vive Gordon Freeman. Barney tiene que sobrevivir a la invasión alienígena y encontrar una forma de salir de las instalaciones junto a un grupo de científicos.",
+      },
+      {
+        spoiler: true,
+        text: "La cascada de resonancia le sorprende arreglando el ascensor, y despierta en el fondo del hueco. Cruza los canales de residuos y descubre que los marines de la HECU están encubriendo el desastre. En el patio de mercancías libera al doctor Rosenberg y a otros científicos retenidos.",
+      },
+      {
+        spoiler: true,
+        text: "El plan de Rosenberg es usar un viejo teletransportador prototipo de los laboratorios tapiados de la Sección A-17. Barney viaja a Xen para alinear el Focuser y después baja a una central eléctrica a recargar las baterías del aparato.",
+      },
+      {
+        spoiler: true,
+        text: "Hace pasar por el portal a Rosenberg, Walter Bennet y Simmons y los sigue. Una descarga le lanza por varios lugares, entre ellos Xen y un rincón de Black Mesa donde ve cómo los soldados se llevan a Gordon. Al final se reúne con los científicos junto al túnel de acceso sur, donde han arreglado un todoterreno, y Walter abre la verja para escapar.",
       },
     ],
     sources: [

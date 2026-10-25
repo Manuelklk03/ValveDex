@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { entries } from "./entries";
+import { expansionAppearances } from "./expansion-appearances";
 import { entryRelations } from "./entry-relations";
 import { gameSections } from "./game-sections";
 import { games } from "./games";
@@ -126,6 +127,16 @@ describe("fichas", () => {
         expect(source.url, entry.id).toMatch(/^https:\/\//);
       }
     }
+  });
+});
+
+describe("apariciones en las expansiones", () => {
+  it("solo añaden apariciones a fichas que existen", () => {
+    const entryIds = new Set(entries.map((entry) => entry.id));
+
+    expect(
+      Object.keys(expansionAppearances).filter((id) => !entryIds.has(id)),
+    ).toEqual([]);
   });
 });
 
