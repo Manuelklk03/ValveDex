@@ -1,0 +1,59 @@
+/* Cabecera de expediente (docs/design.md): los colores salen del tema del juego */
+/* Sin borde inferior: la sección que sigue ya trae su línea superior */
+.dossier-header {
+  display: grid;
+  gap: 1.5rem 3rem;
+}
+
+@media (min-width: 56rem) {
+  .dossier-header {
+    grid-template-columns: minmax(0, 1fr) 17rem;
+    align-items: end;
+  }
+}
+
+.dossier-header__heading {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+}
+
+.dossier-header__title {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+.dossier-header__summary {
+  max-width: 56ch;
+  color: var(--muted);
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+/* Ficha técnica en monoespaciada, como el pie de un documento */
+.dossier-header__specs {
+  display: grid;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+}
+
+.dossier-header__spec {
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed var(--border);
+}
+
+.dossier-header__spec-label {
+  color: var(--muted);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dossier-header__spec-value {
+  overflow-wrap: anywhere;
+}
