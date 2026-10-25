@@ -1,6 +1,6 @@
 # Estado actual — ValveDex
 
-Última actualización: **2026-10-24**.
+Última actualización: **2026-10-25**.
 Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
@@ -313,7 +313,27 @@ Esqueleto terminado y publicado como `v0.1.0` (2026-10-23). **Orden (decisión d
      **Z3-4 hecho (Claude):** 7 personajes de Half-Life 1 en `src/data/half-life-characters.ts` (Gordon conserva id y apariciones), con afiliación, voz y diseño (campos nuevos `voiceActor` y `designers`) y notas de desarrollo. Eli, Kleiner y Barney Calhoun se presentan como personajes que recibieron nombre después de Half-Life. Se quitó un spoiler antiguo del resumen de Gordon en Blue Shift. El asistente holográfico y la megafonía (tecnología) quedan para Z3-6; Walter Bennet, para Opposing Force; el Administrador, para Half-Life 2 (su identidad sería spoiler).
      **Z3-5 hecho (Claude):** el lore de Half-Life 1 tiene 2 párrafos visibles sin spoilers y 6 ocultos tras el botón (`spoiler: true`) con la historia completa hasta la elección final, según Combine OverWiki. La premisa ya no dice que el ejército viene a silenciar el incidente.
      **Z3-6 hecho (Claude):** 9 easter eggs y 10 curiosidades de Half-Life 1 en `src/data/half-life-extras.ts` (taquillas de los desarrolladores, la taquilla de Gordon, la megafonía Vox, el asistente holográfico, la versión alemana, Day One, Uplink, la alfa de 1997, los nombres en clave…). Fuera a propósito: el chiste de la caja de munición (sensible), los récords de speedrun (cambian a menudo) y un dato de Reddit que no se pudo leer. **Con esto, el contenido de Half-Life 1 (Z3) está completo: punto adecuado para `v0.2.0` cuando Manuel lo indique.**
-     **Siguiente: Z4, Opposing Force y Blue Shift**, o la versión `v0.2.0` si Manuel la pide antes.
+     **Z4: cierre del bloque Half-Life 1 (Claude, 2026-10-25, rama `feature/hl1-expansions`, sin commit por indicación de Manuel).**
+
+     _Trabajo completado:_
+     - **Opposing Force** (`src/data/opposing-force.ts`): 14 capítulos (Boot Camp, 1–12 y Conclusion) con archivos de mapa, 9 armas nuevas, 8 enemigos nuevos (incluida la raza X), 6 personajes (Shephard, Barnes, Sharp, Otis, ingenieros y médicos de la HECU y Walter Bennet), una curiosidad y su lore completo (2 párrafos visibles y 3 con spoiler).
+     - **Blue Shift** (`src/data/blue-shift.ts`): 9 capítulos (Hazard Course, 1–8), 3 personajes nuevos (Rosenberg, Simmons y Harold), 3 curiosidades (chaleco y casco, «Guard Duty», High Definition Pack), 4 easter eggs y su lore completo (2 visibles y 3 con spoiler). No tiene armas ni enemigos nuevos.
+     - **Apariciones compartidas** (`src/data/expansion-appearances.ts`): 27 fichas de Half-Life 1 aparecen en Opposing Force y 22 en Blue Shift (más Otis y Walter Bennet, que se comparten entre las dos), según la lista de apariciones de su página de Combine OverWiki; Barney Calhoun tiene resumen propio en Blue Shift. `entries.ts` las fusiona y una prueba nueva comprueba que apuntan a fichas existentes.
+     - Ficha de GoldSrc ampliada; «Gordon, empleado del mes» con su capítulo y su fuente.
+
+     _Resultados comprobados:_ `npm run check` (34 pruebas); las 134 fuentes distintas del catálogo responden 200; capturas del hub de Opposing Force (7 de 7 apartados) y de la ficha del cañón desplazador. Total: 141 fichas (Half-Life 1: 84 apariciones; Opposing Force: 70; Blue Shift: 46).
+
+     _Pendientes y bloqueos:_
+     - Las cifras de Opposing Force salen de un volcado de variables y de una copia de `skill.cfg` publicados por la comunidad (marcados así): Valve no ha publicado los de esta expansión.
+     - La salud del gusano gen no tiene cifra: las variables (70/90/100) contradicen a Combine OverWiki (840/1080/1200).
+     - Los mapas de los capítulos de Opposing Force y Blue Shift sin página propia salen de la wiki de SourceRuns y de la tabla de localizaciones de Combine OverWiki; la Valve Developer Community bloquea las descargas automáticas.
+     - Las armas que solo están en multijugador (por ejemplo, el .357 o la ballesta en Opposing Force) no se han marcado como apariciones: irán al apartado «Multijugador».
+     - Sven Co-op y Half-Life para Dreamcast siguen solo con su hub: su contenido no forma parte de este bloque.
+     - Los datos de `src/data/games.ts` siguen sin contrastar con fuentes (pendiente antiguo).
+
+     _Decisiones futuras documentadas_ (Manuel, 2026-10-25; detalle en [roadmap.md](roadmap.md#después-de-half-life-1-decisiones-de-manuel-2026-10-25), [design.md](design.md#universo-half-life-para-toda-la-saga-decisión-de-manuel-2026-10-25) y [architecture.md](architecture.md#4-datos-y-contenido)): el universo Half-Life representará toda la saga al entrar Half-Life 2 y Alyx; juegos agrupados por bloques con títulos; apartado «Multijugador» para Half-Life 1; fase de recursos visuales (variantes original, HD oficial y de terceros); comportamiento de los NPC; fichas de creadores. Nada de esto está implementado.
+
+     _Siguiente paso:_ revisar este bloque (Codex), hacer el commit cuando Manuel lo indique y, después, la fase de recursos visuales del bloque Half-Life 1. `v0.2.0` queda como punto adecuado cuando Manuel lo pida.
 4. Después de D1b y D2, **por zonas** (contenido real y diseño a la vez): Valve, entrada de universos, Half-Life, Opposing Force y Blue Shift ([design.md](design.md#9-plan-por-fases)). Los pendientes de contenido (más fichas, textos contrastados, revisión en navegador y E2E) se resuelven dentro de la zona a la que pertenecen. **La intro de Valve, las imágenes y el comparador con imágenes reales** van en tandas de recursos cuando haya varios juegos terminados (decisión de Manuel, 2026-10-24).
 5. Tras el esqueleto, revisión completa de la documentación y del README para presentar el proyecto como enciclopedia de todo Valve (aviso de Manuel, 2026-10-13).
 

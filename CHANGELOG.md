@@ -17,6 +17,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 - Half-Life 1, personajes (Z3-4): 7 personajes con afiliación, voz, diseño y curiosidades del desarrollo, sin spoilers.
 - Half-Life 1, lore (Z3-5): la historia completa, con la premisa visible y el resto oculto tras el botón de spoilers.
 - Half-Life 1, easter eggs y curiosidades (Z3-6): 9 easter eggs y 10 curiosidades del desarrollo, las versiones y la recepción del juego.
+- Opposing Force y Blue Shift (Z4): capítulos, armas y enemigos nuevos de Opposing Force, personajes, curiosidades y lore completo de las dos expansiones, y las apariciones en ellas de las fichas de Half-Life 1.
 - Componentes compartidos (D2c): ruta de navegación (`Breadcrumb`) en todas las páginas interiores, cabecera de expediente (`DossierHeader`) en el hub, los apartados y las fichas (el ID de cada ficha se muestra como número de registro) y señal de sector (`SectorSign`) con desplegable en el hub. El primer juego se muestra como «Half-Life 1».
 - Rediseño de las páginas de Valve: portada con la válvula, secciones numeradas con tubería y ficha técnica; línea de tiempo como línea de producción; `/universos` como acreditaciones de acceso; `/explorar` con índice de sectores y fichas con su color; páginas de Valve, créditos y 404 con el mismo lenguaje.
 - Dependencias de diseño: `gsap` y `@gsap/react` (giro de la válvula y entrada de los expedientes) y `lenis` (scroll suave), usadas solo en la muestra.

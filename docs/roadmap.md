@@ -128,6 +128,36 @@ Acordado con Manuel el 2026-10-22. El esqueleto actual es solo estructura y dato
 - [ ] D2. Sistema de diseño: tokens (tipografía, espaciado, radios, sombras, movimiento) en `globals.css` y paletas de los temas revisadas con la comprobación de contraste de `antislop`.
 - [ ] Después, por zonas, cada una con su contenido real y su diseño a la vez (orden en [design.md](design.md#9-plan-por-fases)): portada y sección Valve (con la intro), entrada de universos, Half-Life, Opposing Force, Blue Shift; más adelante, Steam y los demás universos. Cada librería se instala cuando la zona la necesita, y cada zona se revisa en móvil, teclado y `prefers-reduced-motion`.
 
+## Después de Half-Life 1 (decisiones de Manuel, 2026-10-25)
+
+**Orden de trabajo:**
+
+1. Revisar y completar el contenido de Half-Life 1, Opposing Force y Blue Shift (en curso).
+2. Comprobar su coherencia y cerrar los pendientes de esta etapa.
+3. Recopilar y preparar los recursos visuales de ese bloque (ver «Recursos visuales del bloque Half-Life 1»).
+4. Half-Life 2.
+5. Half-Life: Alyx y los demás contenidos previstos.
+6. Reforma visual, cuando haya suficientes universos desarrollados.
+
+La investigación de animaciones puede ir después si necesita herramientas o recursos adicionales: no forma parte del cierre de la etapa actual.
+
+**Universo Half-Life para toda la saga.** Al entrar Half-Life 2 y Alyx se actualizarán la descripción del universo, su texto de entrada, sus elementos decorativos y la presentación de sus bloques de juegos, para que la identidad general reúna detalles reconocibles de Half-Life 1, Half-Life 2 y Alyx. Cada juego conserva después su propia estética. La reforma visual se hará en la próxima fase de diseño (detalle en [design.md](design.md#universo-half-life-para-toda-la-saga-decisión-de-manuel-2026-10-25)).
+
+**Juegos agrupados por bloques.** Dentro del universo, los juegos se presentarán en grupos con títulos y separadores cuidados: Half-Life 1 y sus expansiones; Half-Life 2 y sus entregas; Half-Life: Alyx. Es una agrupación para navegar, no universos separados ni un orden cronológico de la ficción. Ajuste de modelo propuesto en [architecture.md](architecture.md#4-datos-y-contenido).
+
+**Multijugador de Half-Life 1.** Un apartado propio («Multijugador») dentro del bloque de Half-Life 1 para Half-Life Deathmatch: información general, modos, mapas, armas o mecánicas según el contenido real y diferencias con la campaña. Alcance reducido: no tendrá las mismas categorías que un juego narrativo y reutilizará las fichas compartidas (por ejemplo, un arma) con información específica del multijugador, sin duplicarlas. Es una sección nueva: su estructura se hace guiada antes de meter los datos.
+
+**Recursos visuales del bloque Half-Life 1** (tras cerrar el contenido; no se mezcla con los textos):
+
+- Imágenes de personajes, enemigos, armas y otros elementos para el comparador original/HD: sin fondo cuando se pueda, con encuadre, escala y orientación comparables, y con la versión y la procedencia claras.
+- Distinguir el modelo original, el del High Definition Pack oficial y las mejoras de terceros: más resolución no convierte una imagen en «HD».
+- Si no hay imagen adecuada, documentar la alternativa (otra vista, una captura del juego o ninguna).
+- No dar por disponible un recurso que todavía no se tiene. Para cada ficha se apuntará qué falta buscar y con qué variante.
+
+**Comportamiento de los NPC (más adelante).** Algunas fichas podrán explicar cómo se comporta un personaje o enemigo en el juego: comportamiento, ataques y habilidades, funciones e interacción con el jugador, y animaciones o demostraciones. Solo donde haya información relevante (por ejemplo, los ataques del vortigaunt o del houndeye, o cuándo cura un científico). Antes de elegir cómo mostrar animaciones reales (vídeo, captura animada o modelo compatible) hay que estudiar disponibilidad, formatos, fidelidad, permisos de uso, compatibilidad web y rendimiento, y distinguir la animación de un modelo de la demostración de una mecánica. El planteamiento debe servir también para otros universos (por ejemplo, los infectados especiales de Left 4 Dead) sin reglas de Half-Life en los componentes. No se construye ningún visor ni se instala nada todavía.
+
+**Fichas de creadores (más adelante).** Habrá fichas de personas que participaron en los juegos (diseño conceptual, modelado, animación, interpretación…), vinculadas a juegos o fichas concretas con fuentes verificadas y con su función distinguida. No se atribuye la creación completa de un personaje a una persona sin comprobar su contribución.
+
 ## Ampliación posterior
 
 La sección Valve ya tiene páginas propias (PR #29): historia completa (5 hitos), personas (los dos fundadores) y Steam. Crecerá con más hitos, más personas clave, motores (GoldSrc, Source, Source 2), hardware y curiosidades, siempre con fuentes.

@@ -98,10 +98,10 @@ El diseño inicial contempla estas entidades; sus tipos exactos se escribirán a
 | `Entry`           | ID, slug único, nombre, categoría, resumen común, `appearances` y fuentes, más `details` propios de armas, mapas, personajes y enemigos (unión discriminada por `category`); implementado                             |
 | `EntryAppearance` | `gameId`, resumen propio e `images` (`EntryImages`: `original?` y `hd?`) de una ficha en ese juego; implementado. Estadísticas por juego pendientes                                                                   |
 | `EntryRelation`   | `fromId`, `toId` y `type` (`used-by`, `found-in`); implementado en `src/domain/entry-relation.ts`, datos en `src/data/entry-relations.ts`. Se guarda una vez y se muestra en las dos fichas con `getRelatedEntries()` |
-| `Source`          | URL y título (implementado); fecha de consulta pendiente                                                                                                                                                              |
+| `Source`          | URL, título y `kind` (`official`, `wiki` o `community`; la ficha marca «(comunidad)»), implementado; fecha de consulta pendiente                                                                                      |
 | `Milestone`       | ID, año, título, descripción y fuentes (implementado)                                                                                                                                                                 |
 | `MediaAsset`      | `src`, `alt`, `width`, `height`, fuente, crédito y licencia; implementado en `src/domain/media-asset.ts`                                                                                                              |
-| `GameLore`        | `gameId`, `paragraphs` y fuentes; implementado en `src/domain/game-lore.ts`, datos en `src/data/game-lore.ts`, lectura con `getGameLore()`                                                                            |
+| `GameLore`        | `gameId`, `paragraphs` (`LoreParagraph`: `text` y `spoiler?`; la página oculta los spoilers tras un `<details>`) y fuentes; implementado                                                                              |
 
 Cuando una aparición tiene imagen original y HD, la ficha las muestra con `ImageCompare` (`src/components/ui`), el único componente de cliente del catálogo: guarda la posición del deslizador en estado local (`useState`) y recibe ambas imágenes por props. Las dos deben medir lo mismo (lo comprueba una prueba). Las imágenes definitivas serán recortadas, sin fondo (PNG o WebP con transparencia); se incorporarán en la fase de contenido.
 
@@ -122,6 +122,16 @@ Las fichas (`src/domain/entry.ts`) usan `EntryCategory = Exclude<GameSectionId, 
 **Créditos:** `src/features/credits/get-credits.ts` reúne las fuentes de juegos, lore, fichas, hitos y personas, las agrupa por URL con un `Map` y anota dónde se usa cada una; también lista las imágenes con su crédito y licencia. `/creditos` solo pinta ese resultado. Sus pruebas viven junto a la función, porque prueban lógica y no datos.
 
 **Imágenes:** se guardan en `public/images/entries/<id>-<juego>.<ext>` y se muestran con `next/image`, con `width` y `height` reales para reservar su espacio. Cada imagen registra su fuente (preferiblemente la página del archivo, donde constan autor y licencia), su crédito y su licencia. En la ficha la imagen es contenido (`alt` descriptivo, `<figure>` con crédito); en las tarjetas es decorativa (`alt=""`), porque el nombre ya está en el enlace.
+
+**Contenido de Half-Life 1 (Z3, 2026-10-25):** los datos de cada bloque viven en su propio archivo (`src/data/half-life-chapters.ts`, `-weapons`, `-enemies`, `-characters`, `-extras`), que `src/data/entries.ts` reúne con `...spread`. `EntryBase` tiene `notes?` (desarrollo y curiosidades, respaldadas por las fuentes de la ficha). Los `details` se ampliaron: armas con `maxAmmo?` y `damage?`, enemigos con `health?` (ambos `DifficultyValues`, de `src/domain/difficulty.ts`), mapas con `mapFiles` y `designers?`, personajes con `voiceActor?` y `designers?`. `compareEntries()` ordena los mapas por juego y número de capítulo.
+
+**Ajustes propuestos para fases siguientes (no implementados):**
+
+- **Bloques de juegos dentro de un universo:** un campo opcional en `Game`, por ejemplo `series` (`"half-life-1"`, `"half-life-2"`, `"half-life-alyx"`), y una lista de series con su título y orden para que la página del universo agrupe los juegos con títulos. No cambia rutas ni el resto del modelo.
+- **Multijugador de Half-Life 1:** un apartado nuevo (`GameSectionId` `"multiplayer"`) que solo se muestra si el juego tiene contenido, con fichas propias pequeñas (modos y mapas) y la información específica de las fichas compartidas (por ejemplo, el daño en multijugador de un arma) como dato de su aparición, sin duplicar fichas.
+- **Variantes de imagen:** `MediaAsset` con la variante (`original`, `hd-pack` oficial o `third-party`) y si tiene fondo transparente, para que el comparador solo enfrente variantes comparables.
+- **Comportamiento de los NPC:** bloques opcionales y genéricos en la ficha (comportamiento, ataques y habilidades, interacción con el jugador, demostraciones), solo cuando haya información; sin reglas propias de Half-Life en los componentes.
+- **Personas y autorías:** un tipo de persona con sus funciones (diseño conceptual, modelado, animación, interpretación, diseño de niveles…) vinculadas a juegos o fichas concretas y con fuentes; sustituirá a los campos `designers` y `voiceActor` de texto cuando exista.
 
 **404:** `src/app/not-found.tsx` responde tanto a `notFound()` como a las URLs sin ruta. Se pinta dentro del layout raíz con la paleta de Valve y ofrece enlaces a Inicio y Universos.
 
