@@ -59,7 +59,15 @@ export function getEntryFacts(entry: Entry): EntryFact[] {
       ];
 
     case "characters":
-      return [{ label: "Afiliación", value: entry.details.affiliation }];
+      return [
+        { label: "Afiliación", value: entry.details.affiliation },
+        ...(entry.details.voiceActor
+          ? [{ label: "Voz", value: entry.details.voiceActor }]
+          : []),
+        ...(entry.details.designers
+          ? [{ label: "Diseño", value: entry.details.designers.join(", ") }]
+          : []),
+      ];
     case "enemies":
       return [
         { label: "Origen", value: entry.details.origin },
