@@ -560,7 +560,6 @@
   --dossier-line: rgb(20 33 61 / 0.16);
   --dossier-radius: 14px;
   padding-top: 0;
-  overflow: hidden;
 }
 
 .game-dossier--blue-shift::before {
@@ -585,6 +584,8 @@
   margin-inline: calc(-1 * var(--dossier-padding));
   padding: 2.5rem var(--dossier-padding) 1.75rem;
   border-bottom: 0;
+  /* La banda redondea sus esquinas; el dossier no recorta (dejaría sin foco visible ni desplegables) */
+  border-radius: var(--dossier-radius) var(--dossier-radius) 0 0;
   background:
     repeating-linear-gradient(
       -60deg,
