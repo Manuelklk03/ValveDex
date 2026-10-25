@@ -6,7 +6,8 @@ export const games: Game[] = [
     slug: "half-life",
     universeId: "half-life",
     status: "released",
-    name: "Half-Life",
+    // «1» para distinguirlo del universo Half-Life y de Half-Life 2 (decisión de Manuel)
+    name: "Half-Life 1",
     releaseYear: 1998,
     developer: "Valve",
     description:

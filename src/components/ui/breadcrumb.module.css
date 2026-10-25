@@ -1,0 +1,45 @@
+/* Ruta de navegación en monoespaciada, como las fichas técnicas; la barra la pone el CSS */
+.breadcrumb {
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+}
+
+.breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.breadcrumb__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Separador entre pasos: decorativo, por eso va en CSS y no en el texto */
+.breadcrumb__item + .breadcrumb__item::before {
+  content: "/" / "";
+  padding-inline: 0.625rem;
+  color: var(--muted);
+}
+
+.breadcrumb__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--muted);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.3em;
+  transition:
+    color 160ms ease-out,
+    text-decoration-color 160ms ease-out;
+}
+
+.breadcrumb__link:hover {
+  color: var(--foreground);
+  text-decoration-color: currentColor;
+}
+
+.breadcrumb__current {
+  color: var(--foreground);
+}

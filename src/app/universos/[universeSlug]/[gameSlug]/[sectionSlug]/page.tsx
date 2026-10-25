@@ -19,6 +19,7 @@ import {
   getUniverseAndGame,
   getUniverses,
 } from "@/features/universes/get-universes";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import styles from "./page.module.css";
 
 function hasSectionContent(gameId: string, section: GameSection): boolean {
@@ -97,14 +98,17 @@ export default async function SectionPage({
 
   return (
     <main className={styles["section-page"]}>
-      <nav aria-label="Ruta de navegación">
-        <Link
-          href={`/universos/${universe.slug}/${game.slug}`}
-          className={styles["section-page__back"]}
-        >
-          ← {game.name}
-        </Link>
-      </nav>
+      <Breadcrumb
+        items={[
+          { label: "Universos", href: "/universos" },
+          { label: universe.name, href: `/universos/${universe.slug}` },
+          {
+            label: game.name,
+            href: `/universos/${universe.slug}/${game.slug}`,
+          },
+          { label: section.name },
+        ]}
+      />
 
       <header className={styles["section-page__header"]}>
         <h1 className={styles["section-page__title"]}>{section.name}</h1>

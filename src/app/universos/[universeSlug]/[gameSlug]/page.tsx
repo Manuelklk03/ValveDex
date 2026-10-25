@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isEntryCategory } from "@/domain/entry";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { getEntriesByGameAndCategory } from "@/features/catalog/get-entries";
 import { getGameLore } from "@/features/games/get-game-lore";
 import { getGameSections } from "@/features/games/get-game-sections";
@@ -61,15 +62,13 @@ export default async function GamePage({
 
   return (
     <main className={styles["game-page"]}>
-      <nav aria-label="Ruta de navegación">
-        <Link
-          href={`/universos/${universe.slug}`}
-          className={styles["game-page__back"]}
-        >
-          ← {universe.name}
-        </Link>
-      </nav>
-
+      <Breadcrumb
+        items={[
+          { label: "Universos", href: "/universos" },
+          { label: universe.name, href: `/universos/${universe.slug}` },
+          { label: game.name },
+        ]}
+      />
       <header className={styles["game-page__header"]}>
         <p className={styles["game-page__meta"]}>
           {getGameYearLabel(game)} · {game.developer}
