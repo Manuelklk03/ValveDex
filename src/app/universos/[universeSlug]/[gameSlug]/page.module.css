@@ -8,15 +8,6 @@
   padding: 3rem 1rem;
 }
 
-.game-page__back {
-  color: var(--muted);
-  text-decoration: none;
-}
-
-.game-page__back:hover {
-  color: var(--accent);
-}
-
 .game-page__header {
   display: flex;
   flex-direction: column;

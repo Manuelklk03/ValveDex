@@ -16,7 +16,10 @@
   --muted: #b3a895;
   --accent: #f39a2e;
   color-scheme: dark;
-  background-image: linear-gradient(rgb(236 228 214 / 0.025) 1px, transparent 1px);
+  background-image: linear-gradient(
+    rgb(236 228 214 / 0.025) 1px,
+    transparent 1px
+  );
   background-size: 100% 1.75rem;
   font-family: var(--font-barlow), sans-serif;
 }

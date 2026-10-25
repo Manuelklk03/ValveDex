@@ -8,15 +8,6 @@
   padding: 3rem 1rem;
 }
 
-.section-page__back {
-  color: var(--muted);
-  text-decoration: none;
-}
-
-.section-page__back:hover {
-  color: var(--accent);
-}
-
 .section-page__header {
   display: flex;
   flex-direction: column;
