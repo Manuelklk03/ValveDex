@@ -6,6 +6,10 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+### Corregido
+
+- El comparador original/HD dejaba ver el original a través de las zonas transparentes de la imagen HD; ahora cada versión solo se pinta en su lado.
+
 ### Añadido
 
 - Primeras imágenes propias (fase R, piloto): científicos, guardias de seguridad, marine de la HECU, palanca y pistola de 9 mm con su modelo original y el del High Definition Pack, capturados del juego con fondo transparente y la misma cámara. El comparador original/HD se ve por primera vez en una ficha real, con un fondo de vitrina propio.

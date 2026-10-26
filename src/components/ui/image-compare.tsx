@@ -29,6 +29,8 @@ export function ImageCompare({
           width={before.width}
           height={before.height}
           className={styles["image-compare__image"]}
+          // Las capturas no tienen fondo: sin este recorte, el original asomaría por las zonas transparentes del HD
+          style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
         />
         <Image
           src={after.src}
