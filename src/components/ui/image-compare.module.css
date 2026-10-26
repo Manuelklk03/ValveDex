@@ -6,15 +6,27 @@
   max-width: 32rem;
 }
 
+/* Vitrina: las capturas no tienen fondo, así que el marco pone un foco de luz con los colores del tema */
 .image-compare__frame {
   position: relative;
   overflow: hidden;
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 50% 60%,
+      color-mix(in srgb, var(--accent) 16%, var(--surface)),
+      transparent 70%
+    ),
+    var(--surface);
 }
 
+/* Alto máximo para los modelos altos; las dos imágenes usan contain y siguen superpuestas */
 .image-compare__image {
   display: block;
   width: 100%;
   height: auto;
+  max-height: 28rem;
+  object-fit: contain;
 }
 
 .image-compare__image--after {

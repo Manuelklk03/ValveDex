@@ -1,5 +1,6 @@
 import type { Entry } from "@/domain/entry";
 import type { Source } from "@/domain/source";
+import { halfLifeModelImages } from "./model-captures";
 
 // Armas de Half-Life 1 (Z3-2). Daño: skill.cfg (mismo valor en las tres dificultades);
 // munición máxima: weapons.h del SDK de Valve; notas: Combine OverWiki, el SDK y la wiki de SourceRuns.
@@ -57,7 +58,18 @@ export const halfLifeWeapons: Entry[] = [
       "Tras el lanzamiento de Half-Life, Sierra regaló a Valve una palanca dorada con la dedicatoria «Congratulations for Raising the Bar on Action Games», expuesta en la recepción de Valve.",
       "Valve probó a incluir una palanca en Half-Life: Alyx, pero la descartó, en parte porque los jugadores habrían pensado que eran Gordon Freeman.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "crowbar",
+          model: "w_crowbar.mdl",
+          subject: "Palanca",
+          width: 553,
+          height: 129,
+        }),
+      },
+    ],
     sources: [overwiki("Crowbar", "Crowbar"), skillCfg, sdk("crowbar.cpp")],
   },
   {
@@ -73,7 +85,18 @@ export const halfLifeWeapons: Entry[] = [
       "Se inspira en la Glock 17; el modelo del High Definition Pack se basa en la Beretta M9.",
       "Iba a tener silenciador: se recortó, pero sus animaciones de poner y quitar siguen dentro del modelo.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "glock-17",
+          model: "w_9mmhandgun.mdl",
+          subject: "Pistola de 9 mm",
+          width: 533,
+          height: 266,
+        }),
+      },
+    ],
     sources: [
       overwiki("9mm_Pistol_(Half-Life)", "9mm Pistol (Half-Life)"),
       skillCfg,

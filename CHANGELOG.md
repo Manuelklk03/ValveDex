@@ -6,6 +6,10 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+### Añadido
+
+- Primeras imágenes propias (fase R, piloto): científicos, guardias de seguridad, marine de la HECU, palanca y pistola de 9 mm con su modelo original y el del High Definition Pack, capturados del juego con fondo transparente y la misma cámara. El comparador original/HD se ve por primera vez en una ficha real, con un fondo de vitrina propio.
+
 ## [0.2.0] — 2026-10-26
 
 Segunda versión: el **bloque Half-Life 1** completo (Half-Life 1, Opposing Force y Blue Shift) con contenido real y fuentes, el primer diseño de ValveDex y la entrada al universo Half-Life por etapas. El diseño es provisional y se irá mejorando; las imágenes llegan en la fase de recursos visuales.

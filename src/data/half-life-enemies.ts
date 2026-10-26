@@ -1,5 +1,6 @@
 import type { Entry } from "@/domain/entry";
 import type { Source } from "@/domain/source";
+import { halfLifeModelImages } from "./model-captures";
 
 // Enemigos de Half-Life 1 (Z3-3). Salud: skill.cfg o, si no tiene variable, el código del SDK;
 // notas: Combine OverWiki y el SDK de Valve. Sin spoilers de la historia.
@@ -298,7 +299,18 @@ export const halfLifeEnemies: Entry[] = [
       "En la versión alemana censurada, unos soldados robot sustituyen a los marines.",
       "Ted Backman diseñó los modelos originales.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "hecu-marine",
+          model: "hgrunt.mdl",
+          subject: "Marine de la HECU",
+          width: 333,
+          height: 574,
+        }),
+      },
+    ],
     sources: [
       overwiki(
         "Hazardous_Environment_Combat_Unit",
