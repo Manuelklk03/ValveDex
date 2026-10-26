@@ -6,11 +6,11 @@ Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
 ## Versión actual: `v0.2.0` (bloque Half-Life 1)
 
-El 2026-10-26 se prepara `v0.2.0` (rama `docs/release-v0.2.0`): el contenido completo de Half-Life 1, Opposing Force y Blue Shift con fuentes (Z3 y Z4), el primer diseño de la web (D1b y D2) y la entrada al universo Half-Life por etapas (U1–U3). Tag de Git y GitHub Release sobre el merge de esa rama, cuando Manuel los cree. Anterior: `v0.1.0` (2026-10-23, esqueleto). **Lo siguiente es la fase de recursos visuales del bloque Half-Life 1** (ver [roadmap.md](roadmap.md#después-de-half-life-1-decisiones-de-manuel-2026-10-25)).
+El 2026-10-26 se publica `v0.2.0`: el contenido completo de Half-Life 1, Opposing Force y Blue Shift con fuentes (Z3 y Z4), el primer diseño de la web (D1b y D2) y la entrada al universo Half-Life por etapas (U1–U3). Publicada el mismo día: PR #63, merge `cc1fbd9`, tag anotado `v0.2.0` y GitHub Release «v0.2.0 — bloque Half-Life 1» (los hizo Claude a petición de Manuel). Anterior: `v0.1.0` (2026-10-23, esqueleto). **Lo siguiente es la fase de recursos visuales del bloque Half-Life 1** (ver [roadmap.md](roadmap.md#después-de-half-life-1-decisiones-de-manuel-2026-10-25)).
 
 ## Modo de trabajo
 
-Manuel escribe el código guiado paso a paso. En **modo plan**, el asistente explica cada archivo, por qué se usa y su lógica, con respuestas breves. En cada cambio sobre un archivo existente indica las líneas exactas que hay que modificar y explica por qué y para qué se hace. Al final de cada paso entrega el mensaje de commit (ver «Git»). En **modo auto**, el asistente solo actualiza documentación (este archivo y, si corresponde, roadmap y CHANGELOG) y no toca código, configuración ni dependencias. Solo implementa código cuando Manuel lo pide expresamente (tareas tediosas). No se pasa al paso siguiente hasta que Manuel confirma que ha terminado el actual.
+Detalle completo en [workflow.md](workflow.md). En resumen: Manuel escribe guiado lo grande y nuevo (páginas, componentes, tipos, lógica), con «para qué sirve» cada archivo y las líneas exactas de cada cambio; el asistente hace los pasos de datos y contenido con sus ajustes pequeños, la documentación y los arreglos que señala Codex, y cualquier paso que Manuel le pida. Codex revisa cada paso en solo lectura con `token-efficient-workflow`. No se pasa al paso siguiente hasta que Manuel lo confirma.
 
 ## Visión del producto (decidida el 2026-10-07)
 
@@ -153,7 +153,7 @@ Comprobado por Claude Code el 2026-10-23 en `main` (`a0267e4`, PR #38 fusionada)
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- `main` en `af6252a`, con el tag `v0.1.0`. PRs fusionadas:
+- `main` en `cc1fbd9`, con los tags `v0.1.0` y `v0.2.0`. PRs #40–#63 en GitHub (diseño D1–D2, contenido Z3–Z4, entrada al universo U1–U3 y `v0.2.0`). PRs fusionadas hasta `v0.1.0`:
   - #1–#6: historial reconstruido.
   - #7 `fix/errores-css`.
   - #8 `feature/valve-timeline`.
@@ -200,7 +200,7 @@ Comprobado por Claude Code el 2026-10-23 en `main` (`a0267e4`, PR #38 fusionada)
 - **Mensajes de commit:** los redacta la IA y los escribe Manuel (2026-10-16). Al final de cada paso, el asistente entrega el mensaje completo: título Conventional Commits en español (`feat(valve): …`), línea en blanco y descripción en lista con `- ` (las líneas que continúan un punto van sangradas con dos espacios). El asistente no hace el commit salvo petición expresa.
 - **Trabajo entre dos PCs:** para continuar una rama sin terminar en el otro equipo, `git push` en el primero y, en el segundo, `git fetch`, `git switch <rama>` y `git pull --ff-only`. La PR se crea cuando la rama está completa. Antes de cambiar de equipo, `git status` debe indicar el árbol limpio y la rama al día con el remoto.
 - Es `gh pr`, no `git pr`. En Git Bash, si falta `gh`: `export PATH="$PATH:/c/Program Files/GitHub CLI"`.
-- Rama abierta: `chore/design-phase-setup`, creada por Claude el 2026-10-23 desde `af6252a` (tag `v0.1.0`) con la preparación de la fase de diseño.
+- Rama abierta: `feature/hl1-visual-resources` (fase R, recursos visuales), creada por Claude el 2026-10-26 desde `cc1fbd9`.
 - **Vim:** el commit `b031b14` terminó con una línea `i` suelta en la descripción. Pulsa `i` solo una vez al abrir el editor y, antes de `:wq`, `Esc`; si la `i` se cuela en el texto, bórrala antes de guardar.
 - **`git pull` en `main`:** la configuración global `merge.ff=false` hace que un `git pull` normal cree un commit de merge local. Usar `git pull --ff-only` o configurar una vez `git config --global pull.ff only`.
 - Criterio: una rama = una funcionalidad completa.
@@ -347,8 +347,14 @@ Esqueleto terminado y publicado como `v0.1.0` (2026-10-23). **Orden (decisión d
        - _U3c (Claude, a petición de Manuel, sin commit):_ `/universos/[universeSlug]` con la entrada (título, presentación, λ e índice de etapas) y una `UniverseStage` por etapa; `DossierMotion` (entrada GSAP y Escape) y `SmoothScroll` (`src/components/ui`, Lenis con `anchors`, desactivado con movimiento reducido). Codex encontró que el `overflow: hidden` del dossier de Blue Shift recortaba el contorno de foco y los desplegables (corregido: la banda azul redondea sus esquinas). Comprobado: `npm run check` (37 pruebas), `npm run build` (198 páginas), capturas a 1440 y 390 px sin scroll horizontal, clics (dossier → hub, apartado → categoría), orden de tabulación (índice, «Abrir el dossier de…» y sus apartados), foco visible, Escape y el índice bajando con Lenis. Sin comprobar en navegador: movimiento reducido.
      - _U3d (Claude, sin commit):_ `src/data/decor-images.ts` con el emblema de la Alianza (fuente comprobada: 200); `getImageCredits()` devuelve `{ image, usedIn }` e incluye las imágenes decorativas, que salen en `/creditos`; las pruebas de imágenes de `data-integrity.test.ts` cubren también las decorativas. Borrada la muestra `/muestra/universo` (y `.next/dev`, con tipos antiguos que apuntaban a ella). Documentados design, roadmap, architecture y CHANGELOG. Codex (con `vercel-react-best-practices`) señaló que la prueba de créditos solo contaba imágenes: ahora comprueba cada imagen decorativa con su uso y que no se repitan. Comprobado: `npm run check` (38 pruebas), `npm run build` (197 páginas) y el emblema en `/creditos`.
      - _U3 publicado:_ commit, PR y merge (`e4bb818`), con mensaje propio mediante `--subject` y `--body-file`.
-     - _Siguiente paso:_ `v0.2.0` (rama `docs/release-v0.2.0`: `package.json` 0.2.0, CHANGELOG y STATUS); después, la fase de recursos visuales del bloque Half-Life 1.
-     - Después: recursos visuales del bloque Half-Life 1 y `v0.2.0`, cuando Manuel lo indique.
+     - _`v0.2.0` publicada (2026-10-26)._
+
+     **R: recursos visuales del bloque Half-Life 1 (en marcha desde el 2026-10-26, rama `feature/hl1-visual-resources`).** Decisiones de Manuel:
+     - **Origen:** capturas propias de los modelos con su juego instalado (`H:\SteamLibrary\steamapps\common\Half-Life`: `valve` y `valve_hd`, `gearbox` y `gearbox_hd`, `bshift` y `bshift_hd`) y el visor gratuito Half-Life Asset Manager 3.0.0. Solo se hace con los juegos que lo permitan; las wikis quedan como alternativa.
+     - **Sin fondo:** Manuel captura con un fondo verde plano; Claude lo quita por script con `sharp` (ya instalado con Next.js), recorta, alinea original y HD en el mismo lienzo y exporta WebP con transparencia. El fondo lo pone la web.
+     - **Piloto:** científico, guardia de seguridad, marine de la HECU, palanca y pistola de 9 mm, que existen en `valve` y `valve_hd`. Después, el resto de parejas HD y una imagen única para lo que no cambió con el HD Pack.
+     - **Animaciones y comportamiento de los NPC:** después de las imágenes, con el mismo visor.
+     - _Siguiente paso:_ R1, Manuel instala el visor y captura el piloto; Claude procesa las imágenes y las integra en las fichas.
 4. Después de D1b y D2, **por zonas** (contenido real y diseño a la vez): Valve, entrada de universos, Half-Life, Opposing Force y Blue Shift ([design.md](design.md#9-plan-por-fases)). Los pendientes de contenido (más fichas, textos contrastados, revisión en navegador y E2E) se resuelven dentro de la zona a la que pertenecen. **La intro de Valve, las imágenes y el comparador con imágenes reales** van en tandas de recursos cuando haya varios juegos terminados (decisión de Manuel, 2026-10-24).
 5. Tras el esqueleto, revisión completa de la documentación y del README para presentar el proyecto como enciclopedia de todo Valve (aviso de Manuel, 2026-10-13).
 
@@ -364,7 +370,7 @@ Decisión de Manuel (2026-10-16): versionado semántico con tags de Git y GitHub
 | `v1.0.0` | **Todo el universo Half-Life**: todos sus juegos, expansiones y episodios, con proyectos cancelados y mods, revisado y desplegado |
 | `v1.x.0` | Cada universo nuevo (Portal, Team Fortress…) o funcionalidad grande posterior                                                     |
 
-Publicadas: **`v0.1.0`** (2026-10-23, esqueleto) y **`v0.2.0`** (2026-10-26, bloque Half-Life 1; preparada, pendiente del tag y la Release de Manuel).
+Publicadas: **`v0.1.0`** (2026-10-23, esqueleto) y **`v0.2.0`** (2026-10-26, bloque Half-Life 1).
 
 Cómo se crea una versión, cuando Manuel lo indique (siempre sobre `main` actualizado y con `npm run check` y `npm run build` superados):
 
@@ -382,4 +388,4 @@ Describe el estado vigente sin acumular sesiones antiguas. Registra fecha y fuen
 
 ## Para continuar en otra IA
 
-Comparte el repositorio o, como mínimo, `AGENTS.md`, `CLAUDE.md`, este archivo, `architecture.md`, `roadmap.md` y los archivos de código afectados.
+Comparte el repositorio o, como mínimo, `AGENTS.md`, `CLAUDE.md`, este archivo, `workflow.md`, `architecture.md`, `roadmap.md` y los archivos de código afectados.

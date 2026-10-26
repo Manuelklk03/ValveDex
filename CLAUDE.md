@@ -2,6 +2,7 @@
 
 @AGENTS.md
 @docs/STATUS.md
+@docs/workflow.md
 
 Las reglas comunes y el estado se mantienen en los archivos importados.
 Consulta `docs/architecture.md` y `docs/roadmap.md` cuando la tarea lo requiera.
