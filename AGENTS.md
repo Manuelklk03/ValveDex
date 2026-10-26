@@ -17,6 +17,8 @@ Este documento define reglas estables. El avance actual se registra en [docs/STA
 
 ## Forma de ayudar a Manuel
 
+El reparto del trabajo, las explicaciones, Git, la revisión con Codex y el diseño se detallan en [docs/workflow.md](docs/workflow.md). Léelo al empezar, también en un PC nuevo: la memoria de cada asistente es local y no viaja con el repositorio.
+
 - Responde en español, de forma directa y con pasos concretos.
 - Explica brevemente el concepto que se practica y distingue React de Next.js cuando corresponda.
 - Durante un paso de aprendizaje, identifica la parte que hará Manuel y la comprobación final. Si pide una implementación completa, hazla y explica después lo esencial.
