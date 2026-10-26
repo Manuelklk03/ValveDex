@@ -47,8 +47,9 @@ export function ImageCompare({
         />
       </div>
 
+      {/* Cada etiqueta va en el extremo hacia el que hay que llevar el control para ver esa versión entera */}
       <label className={styles["image-compare__control"]}>
-        <span>{beforeLabel}</span>
+        <span>{afterLabel}</span>
         <input
           type="range"
           min={0}
@@ -58,7 +59,7 @@ export function ImageCompare({
           className={styles["image-compare__range"]}
           aria-label={`Comparar ${beforeLabel} y ${afterLabel}`}
         />
-        <span>{afterLabel}</span>
+        <span>{beforeLabel}</span>
       </label>
     </div>
   );
