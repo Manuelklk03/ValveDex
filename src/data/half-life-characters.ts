@@ -1,5 +1,6 @@
 import type { Entry } from "@/domain/entry";
 import type { Source } from "@/domain/source";
+import { halfLifeModelImages } from "./model-captures";
 
 // Personajes de Half-Life 1 (Z3-4), según Combine OverWiki. Sin spoilers de la historia:
 // nada del papel real del G-Man ni del final.
@@ -85,7 +86,18 @@ export const halfLifeCharacters: Entry[] = [
       "El primer modelo se parecía al actor Don Knotts, y de ahí el apodo, por Barney Fife, su personaje en The Andy Griffith Show.",
       "Una de sus frases al azar es «Hey, catch me later, I'll buy you a beer», a la que Half-Life 2 hace un guiño.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "black-mesa-security-guards",
+          model: "barney.mdl",
+          subject: "Guardia de seguridad de Black Mesa",
+          width: 236,
+          height: 629,
+        }),
+      },
+    ],
     sources: [
       overwiki("Black_Mesa_Security_Force", "Black Mesa Security Force"),
       overwiki("Barney_Calhoun", "Barney Calhoun"),
@@ -129,7 +141,18 @@ export const halfLifeCharacters: Entry[] = [
       "Los científicos pueden curar 25 puntos al jugador cuando este tiene 50 de salud o menos; los que llevan traje aislante no pueden.",
       "La presentación dice que Black Mesa ofrece igualdad de oportunidades, pero la única mujer del juego es el asistente holográfico: las científicas se recortaron.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "black-mesa-scientists",
+          model: "scientist.mdl",
+          subject: "Científico de Black Mesa",
+          width: 202,
+          height: 600,
+        }),
+      },
+    ],
     sources: [overwiki("Black_Mesa_Science_Team", "Black Mesa Science Team")],
   },
   {
