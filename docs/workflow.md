@@ -66,6 +66,7 @@ Instaladas según Manuel: Headroom, MemPalace (local), Task Observer, Graphify, 
 - **Comprobar antes de usar:** que estén instaladas no obliga a usarlas; solo cuando la tarea lo pida, y siempre con las normas de este proyecto.
 - **Memoria de sesiones:** `claude-mem` sigue desactivado en ValveDex (`.claude/settings.json`) porque MemPalace y claude-mem pueden guardar la misma sesión. No activar los dos.
 - **Oh My ClaudeCode:** está habilitado, pero su configuración inicial sobre el `CLAUDE.md` global no se ha ejecutado. No ejecutarla sin que Manuel lo pida.
+- **Graphify:** el grafo del proyecto se genera en `graphify-out/` (`graph.html`, `GRAPH_REPORT.md`, `graph.json`) y se consulta con `graphify query "<pregunta>"`. Está en `.gitignore`: el repositorio es público y esos archivos llevan rutas del PC. Primera versión, 2026-10-27: código y documentos, sin las imágenes.
 - **Usos previstos en ValveDex:** Chrome DevTools para revisar páginas (peso y nitidez de las imágenes servidas, consola, rendimiento); las skills de Vercel, pedidas a Codex en las revisiones de código de React y Next.js (`vercel-react-best-practices`); Claudex, para abrir una sesión entera con las skills de Codex.
 
 ## Entorno y vistas previas

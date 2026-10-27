@@ -49,3 +49,6 @@ next-env.d.ts
 
 # Caché del hook de diseño de impeccable
 .impeccable/hook.cache.json
+
+# Grafo de graphify: se genera en local y lleva rutas del PC (no se versiona)
+graphify-out/
