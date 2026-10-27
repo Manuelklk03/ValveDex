@@ -13,6 +13,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Imágenes de 15 fichas más de Half-Life 1 (fase R2): zombi, houndeye, bullsquid, vortigaunt, G-Man y diez armas, con su modelo original y el del High Definition Pack. La escopeta cambia la imagen de la wiki por su pareja propia.
 - Primeras imágenes propias (fase R, piloto): científicos, guardias de seguridad, marine de la HECU, palanca y pistola de 9 mm con su modelo original y el del High Definition Pack, capturados del juego con fondo transparente y la misma cámara. El comparador original/HD se ve por primera vez en una ficha real, con un fondo de vitrina propio.
 
 ## [0.2.0] — 2026-10-26

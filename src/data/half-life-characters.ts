@@ -65,7 +65,18 @@ export const halfLifeCharacters: Entry[] = [
       "«G-Man» no se dice nunca en los juegos: viene del nombre de su modelo y de su entidad en Half-Life, que se mantuvo en los juegos siguientes.",
       "Parece inspirado en el Fumador de Expediente X, una serie que se cita entre las influencias de Half-Life.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "g-man",
+          model: "gman.mdl",
+          subject: "G-Man",
+          width: 194,
+          height: 578,
+        }),
+      },
+    ],
     sources: [overwiki("The_G-Man", "The G-Man")],
   },
   {
