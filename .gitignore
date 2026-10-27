@@ -52,3 +52,6 @@ next-env.d.ts
 
 # Grafo de graphify: se genera en local y lleva rutas del PC (no se versiona)
 graphify-out/
+
+# Estado local de Oh My ClaudeCode: sesiones, tareas y memoria del plugin (no se versiona)
+.omc/
