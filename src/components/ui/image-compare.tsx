@@ -5,6 +5,9 @@ import { useState } from "react";
 import type { MediaAsset } from "@/domain/media-asset";
 import styles from "./image-compare.module.css";
 
+// El marco mide como máximo 32rem (image-compare.module.css)
+const IMAGE_SIZES = "(max-width: 32rem) 100vw, 32rem";
+
 type ImageCompareProps = {
   before: MediaAsset;
   after: MediaAsset;
@@ -28,6 +31,9 @@ export function ImageCompare({
           alt={before.alt}
           width={before.width}
           height={before.height}
+          // Calidad 100 (permitida en next.config.ts): a 75 las capturas se emborronan; sizes evita bajar el original entero en móvil
+          quality={100}
+          sizes={IMAGE_SIZES}
           className={styles["image-compare__image"]}
           // Las capturas no tienen fondo: sin este recorte, el original asomaría por las zonas transparentes del HD
           style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
@@ -37,6 +43,8 @@ export function ImageCompare({
           alt={after.alt}
           width={after.width}
           height={after.height}
+          quality={100}
+          sizes={IMAGE_SIZES}
           className={`${styles["image-compare__image"]} ${styles["image-compare__image--after"]}`}
           style={{ clipPath: `inset(0 0 0 ${position}%)` }}
         />

@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Corregido
 
+- Las imágenes del comparador se ven más nítidas: capturas más grandes, sin pérdida y servidas sin recomprimir. Al marine de la HECU original ya no le tapa la cara el arma.
 - El comparador original/HD dejaba ver el original a través de las zonas transparentes de la imagen HD; ahora cada versión solo se pinta en su lado.
 - En el comparador, llevar el control hacia una etiqueta muestra ahora esa versión (antes mostraba la contraria).
 
