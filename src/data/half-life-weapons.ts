@@ -149,7 +149,18 @@ export const halfLifeWeapons: Entry[] = [
       "Se inspira en el H&K MP5: el modelo en primera persona recuerda al MP5SD6 y el del suelo al MP5A3.",
       "El High Definition Pack lo cambia por una carabina M4, que sigue compartiendo munición de 9 mm con la pistola.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "mp5",
+          model: "w_9mmar.mdl",
+          subject: "Subfusil MP5",
+          width: 831,
+          height: 287,
+        }),
+      },
+    ],
     sources: [
       overwiki("Submachine_Gun_(Half-Life)", "Submachine Gun (Half-Life)"),
       skillCfg,
@@ -178,21 +189,13 @@ export const halfLifeWeapons: Entry[] = [
     appearances: [
       {
         gameId: "half-life",
-        images: {
-          hd: {
-            src: "/images/entries/spas-12-half-life.jpg",
-            alt: "Modelo HD de la escopeta de Half-Life",
-            width: 731,
-            height: 453,
-            source: {
-              title: "File:W shotgun hd.jpg - Combine OverWiki",
-              url: "https://combineoverwiki.net/wiki/File:W_shotgun_hd.jpg",
-              kind: "wiki",
-            },
-            credit: "Modelo del Half-Life High Definition Pack",
-            license: "Material del juego © Valve",
-          },
-        },
+        images: halfLifeModelImages({
+          entryId: "spas-12",
+          model: "w_shotgun.mdl",
+          subject: "Escopeta",
+          width: 640,
+          height: 160,
+        }),
       },
     ],
     sources: [
@@ -216,7 +219,18 @@ export const halfLifeWeapons: Entry[] = [
       "Las asesinas de operaciones encubiertas iban a llevar ballestas; todavía llevan el carcaj a la espalda.",
       "En multijugador, los virotes llevaban escrito el nombre del jugador que los disparaba; se quitó porque no se podía leer.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "crossbow",
+          model: "w_crossbow.mdl",
+          subject: "Ballesta",
+          width: 538,
+          height: 270,
+        }),
+      },
+    ],
     sources: [
       overwiki("Crossbow_(Half-Life)", "Crossbow (Half-Life)"),
       skillCfg,
@@ -238,7 +252,18 @@ export const halfLifeWeapons: Entry[] = [
       "Una captura temprana lo muestra en la tercera ranura de armas.",
       "El cañón incendiario de Team Fortress Classic reutiliza su modelo.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "rpg",
+          model: "w_rpg.mdl",
+          subject: "Lanzacohetes",
+          width: 576,
+          height: 189,
+        }),
+      },
+    ],
     sources: [
       overwiki(
         "Rocket-Propelled_Grenade_Launcher_(Half-Life)",
@@ -263,7 +288,18 @@ export const halfLifeWeapons: Entry[] = [
       "Según la comunidad de speedrun, el «gauss boosting» consiste en cargarlo, darse la vuelta, saltar y disparar en el aire para salir impulsado por el retroceso.",
       "Según la misma comunidad, con el «selfgauss» el disparo secundario contra ciertas paredes daña al jugador y lo lanza hacia arriba.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "tau-cannon",
+          model: "w_gauss.mdl",
+          subject: "Cañón tau",
+          width: 551,
+          height: 148,
+        }),
+      },
+    ],
     sources: [
       overwiki("Tau_Cannon", "Tau Cannon"),
       skillCfg,
@@ -286,7 +322,18 @@ export const halfLifeWeapons: Entry[] = [
       "En el lanzamiento, el haz era azul puro y dejaba una pequeña nube; ambas cosas se quitaron en actualizaciones posteriores y volvieron con la actualización del 25.º aniversario.",
       "Existe una entidad de munición sin usar, «ammo_egonclip» («energy recharge unit»), que usa como provisional la caja de munición de la ametralladora.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "gluon-gun",
+          model: "w_egon.mdl",
+          subject: "Cañón de gluones",
+          width: 568,
+          height: 571,
+        }),
+      },
+    ],
     sources: [
       overwiki("Gluon_Gun", "Gluon Gun"),
       skillCfg,
@@ -308,7 +355,18 @@ export const halfLifeWeapons: Entry[] = [
       "El arte conceptual la llama «Alien Organic Assault Rifle», y su diseño final sale de una «Alien Organic Chainsaw» recortada.",
       "Al principio no tenía modelo propio: iba integrada en la mano derecha del alien grunt.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "hivehand",
+          model: "w_hgun.mdl",
+          subject: "Hivehand",
+          width: 562,
+          height: 180,
+        }),
+      },
+    ],
     sources: [
       overwiki("Hivehand", "Hivehand"),
       sdk("gamerules.cpp"),
@@ -329,7 +387,18 @@ export const halfLifeWeapons: Entry[] = [
       "En Half-Life: Day One se podían llevar 25 granadas, frente a las 10 del juego final; por eso hay alijos de 15 en lugares como Unforeseen Consequences.",
       "Según la comunidad de speedrun, mantenerla pulsada y soltarla cuando la mecha está a punto de agotarse hace que estalle al instante, y la explosión sirve para impulsarse.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "hand-grenade",
+          model: "w_grenade.mdl",
+          subject: "Granada de mano",
+          width: 354,
+          height: 540,
+        }),
+      },
+    ],
     sources: [
       overwiki(
         "Fragmentation_Grenade_(Half-Life)",
@@ -357,7 +426,18 @@ export const halfLifeWeapons: Entry[] = [
       "En Surface Tension, un soldado lanza una de estas cargas a un conducto; la salida prevista es tirarse al agua antes de las llamas.",
       "En el SDK siguen sus texturas tempranas de prueba («ptest»).",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "satchel-charge",
+          model: "w_satchel.mdl",
+          subject: "Carga de mochila",
+          width: 348,
+          height: 451,
+        }),
+      },
+    ],
     sources: [overwiki("Satchel_Charge", "Satchel Charge"), skillCfg, weaponsH],
   },
   {
@@ -393,7 +473,18 @@ export const halfLifeWeapons: Entry[] = [
       "Iban a parpadear: las texturas de sus párpados siguen sin usar en el SDK.",
       "Según la comunidad de speedrun, con el «snark climbing» el jugador se sube a un snark junto a una pared y sus ataques lo van elevando; es más lento que impulsarse con explosiones, pero no quita vida.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "snark",
+          model: "w_squeak.mdl",
+          subject: "Snark (nido)",
+          width: 552,
+          height: 503,
+        }),
+      },
+    ],
     sources: [
       overwiki("Snark", "Snark"),
       skillCfg,

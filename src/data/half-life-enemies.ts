@@ -73,7 +73,18 @@ export const halfLifeEnemies: Entry[] = [
       "En Half-Life se les ve «alimentándose»: arrancan carne de científicos y soldados muertos y se la meten en la boca que les abre el pecho.",
       "La expansión cancelada Hostile Takeover iba a tener monos zombi, rápidos y muy fuertes, creados a partir de los monos de laboratorio.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "zombie",
+          model: "zombie.mdl",
+          subject: "Zombi",
+          width: 344,
+          height: 612,
+        }),
+      },
+    ],
     sources: [
       overwiki("Classic_Zombie", "Classic Zombie"),
       overwiki("Zombie", "Zombie"),
@@ -93,7 +104,18 @@ export const halfLifeEnemies: Entry[] = [
       "Se diseñó como una criatura amistosa, pero los jugadores de las pruebas le disparaban nada más verla.",
       "Su modelo conserva una animación sin usar de jefe de manada, «leaderlook».",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "houndeye",
+          model: "houndeye.mdl",
+          subject: "Houndeye",
+          width: 471,
+          height: 679,
+        }),
+      },
+    ],
     sources: [overwiki("Houndeye", "Houndeye"), skillCfg],
   },
   {
@@ -108,7 +130,18 @@ export const halfLifeEnemies: Entry[] = [
       "Antes de tener su nombre definitivo se llamaba «Bullchicken», y los archivos del juego todavía lo usan.",
       "Ted Backman lo creó después de que Gabe Newell propusiera un juego al estilo de La niebla de Stephen King; la primera geometría que hizo entró en el juego sin cambios.",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "bullsquid",
+          model: "bullsquid.mdl",
+          subject: "Bullsquid",
+          width: 359,
+          height: 218,
+        }),
+      },
+    ],
     sources: [overwiki("Bullsquid", "Bullsquid"), skillCfg],
   },
   {
@@ -141,7 +174,18 @@ export const halfLifeEnemies: Entry[] = [
       "La sección «Monster of the Week» de Online Gaming Review, antes del lanzamiento, le dio el nombre científico «Xenotherium subservilia».",
       "En los archivos del juego se llama «islave» (alien slave).",
     ],
-    appearances: halfLife,
+    appearances: [
+      {
+        gameId: "half-life",
+        images: halfLifeModelImages({
+          entryId: "vortigaunt",
+          model: "islave.mdl",
+          subject: "Vortigaunt",
+          width: 361,
+          height: 553,
+        }),
+      },
+    ],
     sources: [overwiki("Vortigaunt", "Vortigaunt"), skillCfg],
   },
   {
