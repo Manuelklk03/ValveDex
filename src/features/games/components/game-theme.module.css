@@ -5,7 +5,8 @@
 }
 
 .game-theme--half-life-opposing-force,
-.game-theme--half-life-blue-shift {
+.game-theme--half-life-blue-shift,
+.game-theme--half-life-decay {
   background-color: var(--background);
 }
 
@@ -41,4 +42,24 @@
   --accent: #8a8aff;
   color-scheme: dark;
   background-image: none;
+}
+
+/* Decay: cooperativa PS2, dos científicas (Gina Cross y Colette Green).
+   HUD Gina: RGB(160,160,192) periwinkle apagado / HUD Colette: RGB(255,128,64) coral.
+   Estética: sala de control / monitor de test, fondo técnico neutro, acento dual sutil. */
+.game-theme--half-life-decay {
+  --background: #0f1115;
+  --foreground: #e8e8ec;
+  --surface: #161a20;
+  --border: #2a2f3d;
+  --muted: #8a8d9e;
+  --accent: #a0a0c0;
+  --accent-secondary: #ff8040;
+  color-scheme: dark;
+  background-image:
+    linear-gradient(rgb(160 160 192 / 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(160 160 192 / 0.03) 1px, transparent 1px);
+  background-size:
+    3rem 3rem,
+    3rem 3rem;
 }

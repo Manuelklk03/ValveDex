@@ -97,4 +97,23 @@ export const games: Game[] = [
       },
     ],
   },
+  {
+    id: "half-life-decay",
+    slug: "decay",
+    universeId: "half-life",
+    stageId: "goldsrc",
+    name: "Half-Life: Decay",
+    status: "released",
+    releaseYear: 2001,
+    developer: "Gearbox Software",
+    description:
+      "Expansión cooperativa exclusiva de PlayStation 2 protagonizada por las doctoras Gina Cross y Colette Green, científicas del laboratorio de Materiales Anómalos de Black Mesa.",
+    sources: [
+      {
+        title: "Half-Life: Decay - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life:_Decay",
+        kind: "wiki",
+      },
+    ],
+  },
 ];
