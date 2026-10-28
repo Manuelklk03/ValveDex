@@ -5,7 +5,8 @@
 }
 
 .game-theme--half-life-opposing-force,
-.game-theme--half-life-blue-shift {
+.game-theme--half-life-blue-shift,
+.game-theme--half-life-decay {
   background-color: var(--background);
 }
 
@@ -41,4 +42,31 @@
   --accent: #8a8aff;
   color-scheme: dark;
   background-image: none;
+}
+
+/* Decay: PS2 exclusivo, cooperativo en pantalla dividida.
+   HUD Gina Cross: RGB(160,160,192) periwinkle apagado / HUD Colette Green: RGB(255,128,64) coral.
+   Estética de informe de experimento del sector de Materiales Anómalos: fondo oscuro técnico,
+   acentos duales (los dos científicos), rejilla de monitor CRT, esquinas de panel de test. */
+.game-theme--half-life-decay {
+  --background: #0d0f14;
+  --foreground: #e8e8ec;
+  --surface: #141820;
+  --border: #2a2f3d;
+  --muted: #8a8d9e;
+  --accent: #a0a0c0;
+  --accent-secondary: #ff8040;
+  color-scheme: dark;
+  background-image:
+    linear-gradient(rgb(160 160 192 / 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(160 160 192 / 0.025) 1px, transparent 1px),
+    radial-gradient(
+      ellipse at 50% 0%,
+      rgb(255 128 64 / 0.04) 0%,
+      transparent 60%
+    );
+  background-size:
+    3rem 3rem,
+    3rem 3rem,
+    100% 100%;
 }
