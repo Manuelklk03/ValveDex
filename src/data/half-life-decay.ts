@@ -27,6 +27,7 @@ const mapList: Source = {
 
 const decayPage = overwiki("Half-Life:_Decay", "Half-Life: Decay");
 const decay = [{ gameId: "half-life-decay" }];
+const scienceTeam = "Black Mesa (equipo científico)";
 
 export const halfLifeDecayChapters: Entry[] = [
   {
@@ -207,5 +208,84 @@ export const halfLifeDecayChapters: Entry[] = [
       mapList,
       decayPage,
     ],
+  },
+];
+
+export const halfLifeDecayCharacters: Entry[] = [
+  {
+    id: "decay-gina-cross",
+    slug: "decay-gina-cross",
+    name: "Doctora Gina Cross",
+    category: "characters",
+    details: {
+      affiliation: scienceTeam,
+      voiceActor: "Kathy Levin",
+    },
+    summary:
+      "Supervisora de entornos peligrosos de Black Mesa y diseñadora del traje HEV, cuyo aspecto y voz prestó al holograma del Hazard Course. En Decay entrega la muestra a Gordon y es una de las dos protagonistas.",
+    notes: [
+      "Su modelo original se basó en Mona Lisa Guthrie, entonces directora de oficina de Valve, y el nombre interno de la holograma en el Hazard Course es «mona».",
+      "En Decay el HUD de Gina es azul claro y el de Colette, naranja rojizo.",
+      "En Opposing Force aparece un cadáver con su modelo en una zona de Xen; el director creativo Randy Pitchford confirmó que la intención era que fuera ella.",
+    ],
+    appearances: decay,
+    sources: [overwiki("Gina_Cross", "Gina Cross")],
+  },
+  {
+    id: "decay-colette-green",
+    slug: "decay-colette-green",
+    name: "Doctora Colette Green",
+    category: "characters",
+    details: {
+      affiliation: scienceTeam,
+      voiceActor: "Lani Minella",
+    },
+    summary:
+      "Investigadora asociada del laboratorio de Materiales Anómalos, especialista en ingeniería eléctrica y robótica. Es la otra protagonista de Decay: activa el espectrómetro y acompaña a Gina durante toda la huida.",
+    notes: [
+      "Es doctora por Carnegie Mellon y en el manual de PlayStation 2 tiene 31 años.",
+      "En los archivos del juego hay datos biográficos sin usar que no coinciden con el manual: le dan 37 años y un doctorado sin robótica.",
+      "Sus líneas de combate son mucho más entusiastas que las de Gina, hasta el punto de reírse al derribar enemigos.",
+    ],
+    appearances: decay,
+    sources: [overwiki("Colette_Green", "Colette Green")],
+  },
+  {
+    id: "decay-richard-keller",
+    slug: "decay-richard-keller",
+    name: "Doctor Richard Keller",
+    category: "characters",
+    details: {
+      affiliation: scienceTeam,
+      voiceActor: "Brice Armstrong",
+    },
+    summary:
+      "Científico de nivel 5 que dirige la prueba desde la sala de control y, después del accidente, guía a Gina y Colette por radio en su plan para revertir la cascada de resonancia.",
+    notes: [
+      "Originalmente iba a ser el doctor Kleiner; las texturas de su modelo conservan el prefijo «Kleiner».",
+      "Se desplaza en una silla de ruedas motorizada de la marca Invacare y su nombre de entidad es «Wheels».",
+      "En los archivos queda una animación sin usar en la que se levanta de la silla, de cuando el personaje iba a revelarse como un manipulador.",
+      "Es el primer personaje con discapacidad visible de la saga.",
+    ],
+    appearances: decay,
+    sources: [overwiki("Richard_Keller", "Richard Keller"), decayPage],
+  },
+  {
+    id: "decay-x-8973-r-4913",
+    slug: "decay-x-8973-r-4913",
+    name: "X-8973 y R-4913",
+    category: "characters",
+    details: {
+      affiliation: "Xen (Nihilanth)",
+    },
+    summary:
+      "Pareja de vortigaunts que protagonizan la misión extra Xen Attacks: Nihilanth los envía a Black Mesa para recuperar los cristales que los humanos robaron de Xen.",
+    notes: [
+      "La misión solo se desbloquea con la nota máxima en las nueve misiones de la campaña.",
+      "El escenario conecta con el aparcamiento del final de Opposing Force, donde Shephard desactiva la ojiva nuclear.",
+      "Como vortigaunts, los jugadores usan descargas eléctricas cargadas y zarpazos en lugar de las armas de Half-Life.",
+    ],
+    appearances: decay,
+    sources: [overwiki("X-8973_and_R-4913", "X-8973 and R-4913"), decayPage],
   },
 ];

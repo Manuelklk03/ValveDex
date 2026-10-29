@@ -6,7 +6,10 @@ import { halfLifeCharacters } from "./half-life-characters";
 import { halfLifeExtras } from "./half-life-extras";
 import { blueShiftEntries } from "./blue-shift";
 import { opposingForceEntries } from "./opposing-force";
-import { halfLifeDecayChapters } from "./half-life-decay";
+import {
+  halfLifeDecayChapters,
+  halfLifeDecayCharacters,
+} from "./half-life-decay";
 import { expansionAppearances } from "./expansion-appearances";
 
 const baseEntries: Entry[] = [
@@ -18,6 +21,7 @@ const baseEntries: Entry[] = [
   ...opposingForceEntries,
   ...blueShiftEntries,
   ...halfLifeDecayChapters,
+  ...halfLifeDecayCharacters,
   {
     id: "goldsrc-engine",
     slug: "motor-goldsrc",
