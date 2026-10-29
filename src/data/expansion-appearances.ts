@@ -70,6 +70,42 @@ const withSummary: Record<string, EntryAppearance[]> = {
   ],
 };
 
+// Fichas de Half-Life 1 que también salen en Half-Life: Decay. Comprobadas una a una en la
+// lista de apariciones de su página de Combine OverWiki. Quedan fuera el cañón tau, el cañón
+// de gluones, la ballesta, el revólver .357 y las criaturas que la wiki no lista en Decay
+// (barnacle, ictiosaurio, gonarca, gargantúa, tentáculo y sanguijuela).
+const decay: string[] = [
+  "crowbar",
+  "glock-17",
+  "mp5",
+  "spas-12",
+  "rpg",
+  "hivehand",
+  "hand-grenade",
+  "satchel-charge",
+  "tripmine",
+  "snark",
+  "headcrab",
+  "zombie",
+  "houndeye",
+  "bullsquid",
+  "vortigaunt",
+  "alien-grunt",
+  "alien-controller",
+  "hecu-marine",
+  "female-assassin",
+  "sentry-gun",
+  "automatic-turret",
+  "apache",
+  "osprey",
+  "g-man",
+  "barney-calhoun",
+  "black-mesa-security-guards",
+  "black-mesa-scientists",
+  "holographic-assistant",
+  "rosenberg",
+];
+
 export const expansionAppearances: Record<string, EntryAppearance[]> = {};
 
 for (const id of opposingForce) {
@@ -79,6 +115,9 @@ for (const id of opposingForce) {
 }
 for (const id of blueShift) {
   (expansionAppearances[id] ??= []).push({ gameId: "half-life-blue-shift" });
+}
+for (const id of decay) {
+  (expansionAppearances[id] ??= []).push({ gameId: "half-life-decay" });
 }
 for (const [id, appearances] of Object.entries(withSummary)) {
   (expansionAppearances[id] ??= []).push(...appearances);

@@ -9,6 +9,7 @@ import { opposingForceEntries } from "./opposing-force";
 import {
   halfLifeDecayChapters,
   halfLifeDecayCharacters,
+  halfLifeDecayExtras,
 } from "./half-life-decay";
 import { expansionAppearances } from "./expansion-appearances";
 
@@ -22,6 +23,7 @@ const baseEntries: Entry[] = [
   ...blueShiftEntries,
   ...halfLifeDecayChapters,
   ...halfLifeDecayCharacters,
+  ...halfLifeDecayExtras,
   {
     id: "goldsrc-engine",
     slug: "motor-goldsrc",

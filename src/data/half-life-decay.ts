@@ -289,3 +289,170 @@ export const halfLifeDecayCharacters: Entry[] = [
     sources: [overwiki("X-8973_and_R-4913", "X-8973 and R-4913"), decayPage],
   },
 ];
+
+export const halfLifeDecayExtras: Entry[] = [
+  // Easter eggs
+  {
+    id: "decay-konami-code",
+    slug: "decay-codigo-konami",
+    name: "El código Konami del port",
+    category: "easter-eggs",
+    summary:
+      "El port no oficial de PC esconde un código de trucos sin documentar que desbloquea todas las misiones, incluida la extra Xen Attacks. La combinación es una referencia al código Konami.",
+    appearances: decay,
+    sources: [decayPage],
+  },
+  {
+    id: "decay-strangelove-line",
+    slug: "decay-mein-fuhrer-i-can-walk",
+    name: "«Mein Führer, I can walk!»",
+    category: "easter-eggs",
+    summary:
+      "Entre los sonidos sin usar de Keller hay una línea en la que grita «Mein Führer, I can walk!» con acento alemán. Es una cita de la película Dr. Strangelove, en la que el doctor que va en silla de ruedas se levanta de repente.",
+    notes: [
+      "El archivo se llama «dk_furher.wav» y encaja con la idea descartada de que Keller caminara al final del juego.",
+    ],
+    appearances: decay,
+    sources: [overwiki("Richard_Keller", "Richard Keller")],
+  },
+  {
+    id: "decay-orange-hev-suits",
+    slug: "decay-trajes-naranjas-del-trailer",
+    name: "Los trajes naranjas del tráiler",
+    category: "easter-eggs",
+    summary:
+      "En el primer tráiler de la versión de PlayStation 2, Gina y Colette llevaban el mismo traje HEV naranja que Gordon. En el juego final cambiaron de color, pero los guardias de seguridad todavía mencionan los trajes naranjas en sus diálogos.",
+    appearances: decay,
+    sources: [
+      overwiki("Gina_Cross", "Gina Cross"),
+      overwiki("Colette_Green", "Colette Green"),
+    ],
+  },
+  {
+    id: "decay-dr-cross-call",
+    slug: "decay-llamada-a-la-doctora-cross",
+    name: "«Dr. Cross, call 729»",
+    category: "easter-eggs",
+    summary:
+      "Al principio de Half-Life, la megafonía de Black Mesa llama por los altavoces a una «doctora Cross» que debe llamar al 729. Decay convirtió ese nombre suelto en la protagonista Gina Cross, aunque el juego nunca confirma que sea la misma persona.",
+    appearances: decay,
+    sources: [overwiki("Gina_Cross", "Gina Cross")],
+  },
+  {
+    id: "decay-nuclear-mission-jam",
+    slug: "decay-nuclear-mission-jam",
+    name: "«Nuclear Mission Jam» en los créditos",
+    category: "easter-eggs",
+    summary:
+      "Los créditos de Decay suenan con «Nuclear Mission Jam», uno de los temas de la banda sonora de Half-Life.",
+    appearances: decay,
+    sources: [decayPage],
+  },
+  // Curiosidades
+  {
+    id: "decay-hazard-team",
+    slug: "decay-hazard-team",
+    name: "Hazard Team, el nombre antes de Decay",
+    category: "trivia",
+    summary:
+      "El proyecto cooperativo se llamó primero «Hazard Team» y, en algún momento, «Operation Decay». Los nombres de los archivos de mapa todavía conservan el prefijo «ht» de aquella primera versión.",
+    appearances: decay,
+    sources: [decayPage],
+  },
+  {
+    id: "decay-name",
+    slug: "decay-por-que-se-llama-decay",
+    name: "Por qué se llama Decay",
+    category: "trivia",
+    summary:
+      "El título final se adoptó antes del E3 de 2001 y sigue la costumbre de la saga de usar términos científicos: «decay» es la desintegración exponencial de una sustancia radiactiva.",
+    appearances: decay,
+    sources: [decayPage],
+  },
+  {
+    id: "decay-cut-missions",
+    slug: "decay-misiones-recortadas",
+    name: "Las tres misiones recortadas",
+    category: "trivia",
+    summary:
+      "Decay iba a tener doce misiones de campaña y se publicó con nueve. Las tres que faltan están documentadas por la comunidad a partir de los archivos y de material previo al lanzamiento.",
+    appearances: decay,
+    sources: [
+      overwiki(
+        "Cut_missions_from_Half-Life:_Decay",
+        "Cut missions from Half-Life: Decay",
+      ),
+      decayPage,
+    ],
+  },
+  {
+    id: "decay-ranking",
+    slug: "decay-notas-de-la-f-a-la-a",
+    name: "Notas de la F a la A",
+    category: "trivia",
+    summary:
+      "Cada misión se puntúa de la F a la A según la puntería, el número de enemigos eliminados y el daño recibido. Conseguir una «A» en las nueve misiones desbloquea la extra Xen Attacks.",
+    appearances: decay,
+    sources: [decayPage],
+  },
+  {
+    id: "decay-chapter-select",
+    slug: "decay-primera-seleccion-de-capitulos",
+    name: "La primera selección de capítulos",
+    category: "trivia",
+    summary:
+      "Decay es el primer juego de Half-Life con un menú para elegir capítulo, consecuencia directa de estar dividido en misiones independientes en lugar de una sola campaña continua.",
+    appearances: decay,
+    sources: [decayPage],
+  },
+  {
+    id: "decay-models",
+    slug: "decay-modelos-del-doble-de-detalle",
+    name: "Modelos del doble de detalle",
+    category: "trivia",
+    summary:
+      "La versión de PlayStation 2 usa modelos nuevos, con el doble de detalle que los del High Definition Pack y animaciones faciales que aquel pack no tenía.",
+    appearances: decay,
+    sources: [decayPage],
+  },
+  {
+    id: "decay-pc-port",
+    slug: "decay-port-no-oficial-de-pc",
+    name: "El port no oficial de 2008",
+    category: "trivia",
+    summary:
+      "Gearbox terminó un port de Decay para PC que nunca llegó a publicarse. En 2008, un grupo de aficionados ucranianos descifró los archivos de la versión de PlayStation 2 y lo publicó como mod de Half-Life, con juego en línea que la versión original no tenía. Decay no está en Steam.",
+    appearances: decay,
+    sources: [decayPage],
+  },
+  {
+    id: "decay-hev-containers",
+    slug: "decay-los-dos-trajes-hev-vacios",
+    name: "Los dos trajes HEV vacíos",
+    category: "trivia",
+    summary:
+      "Cuando Gordon se pone el traje en Half-Life ve otros dos contenedores vacíos. Según Gearbox, son los de Gina y Colette, que ya se habían llevado los suyos antes de que él llegara.",
+    appearances: decay,
+    sources: [decayPage],
+  },
+  {
+    id: "decay-coop",
+    slug: "decay-cooperativo-a-pantalla-partida",
+    name: "Cooperativo a pantalla partida",
+    category: "trivia",
+    summary:
+      "Decay se diseñó para dos jugadores a pantalla partida y sus puzles obligan a cooperar. Se puede jugar solo alternando entre Gina y Colette, pero la crítica coincidió en que pierde mucho así.",
+    appearances: decay,
+    sources: [decayPage],
+  },
+  {
+    id: "decay-gina-freeman",
+    slug: "decay-gina-freeman",
+    name: "Gina Freeman, la protagonista descartada",
+    category: "trivia",
+    summary:
+      "En una versión muy temprana de Half-Life se pensó en elegir entre Gordon y un personaje femenino, y Gina llegó a ser la protagonista alternativa. En la compilación Net Test 1 su modelo se llamaba «Gina Freeman».",
+    appearances: decay,
+    sources: [overwiki("Gina_Cross", "Gina Cross")],
+  },
+];
