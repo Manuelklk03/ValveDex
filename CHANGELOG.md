@@ -14,6 +14,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Half-Life: Decay como cuarto juego del universo Half-Life: hub, dossier y tema visual propio (PlayStation 2, 2001) en `/universos/half-life` (PR #74, #75 y #77).
+- Contenido de Half-Life: Decay: 10 fichas de mapa (las 9 misiones y la extra Xen Attacks), 4 personajes (Gina Cross, Colette Green, Richard Keller y los vortigaunts X-8973 y R-4913), lore en 8 párrafos con los 6 últimos tras el botón de spoilers, 5 easter eggs, 11 curiosidades y las 29 apariciones que comparten las fichas de Half-Life 1 con Decay. Fuentes: Combine OverWiki y SourceRuns (comunidad) para los nombres de mapa de las misiones sin página propia.
 - Imágenes de 15 fichas más de Half-Life 1 (fase R2): zombi, houndeye, bullsquid, vortigaunt, G-Man y diez armas, con su modelo original y el del High Definition Pack. La escopeta cambia la imagen de la wiki por su pareja propia.
 - Primeras imágenes propias (fase R, piloto): científicos, guardias de seguridad, marine de la HECU, palanca y pistola de 9 mm con su modelo original y el del High Definition Pack, capturados del juego con fondo transparente y la misma cámara. El comparador original/HD se ve por primera vez en una ficha real, con un fondo de vitrina propio.
 

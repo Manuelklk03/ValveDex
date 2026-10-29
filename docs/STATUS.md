@@ -1,12 +1,13 @@
+
 # Estado actual — ValveDex
 
-Última actualización: **2026-10-26**.
+Última actualización: **2026-10-29**.
 Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
 ## Versión actual: `v0.2.0` (bloque Half-Life 1)
 
-El 2026-10-26 se publica `v0.2.0`: el contenido completo de Half-Life 1, Opposing Force y Blue Shift con fuentes (Z3 y Z4), el primer diseño de la web (D1b y D2) y la entrada al universo Half-Life por etapas (U1–U3). Publicada el mismo día: PR #63, merge `cc1fbd9`, tag anotado `v0.2.0` y GitHub Release «v0.2.0 — bloque Half-Life 1» (los hizo Claude a petición de Manuel). Anterior: `v0.1.0` (2026-10-23, esqueleto). **Lo siguiente es la fase de recursos visuales del bloque Half-Life 1** (ver [roadmap.md](roadmap.md#después-de-half-life-1-decisiones-de-manuel-2026-10-25)).
+El 2026-10-26 se publica `v0.2.0`: el contenido completo de Half-Life 1, Opposing Force y Blue Shift con fuentes (Z3 y Z4), el primer diseño de la web (D1b y D2) y la entrada al universo Half-Life por etapas (U1–U3). Publicada el mismo día: PR #63, merge `cc1fbd9`, tag anotado `v0.2.0` y GitHub Release «v0.2.0 — bloque Half-Life 1» (los hizo Claude a petición de Manuel). Anterior: `v0.1.0` (2026-10-23, esqueleto). Después llegaron la fase de recursos visuales (R1 y R2) y Half-Life: Decay, que ya tiene dossier, tema y contenido completo en la rama `feature/decay-content` (ver [roadmap.md](roadmap.md#después-de-half-life-1-decisiones-de-manuel-2026-10-25)). **Lo siguiente es cerrar esa rama con su PR y continuar R3**, las parejas HD de Opposing Force y Blue Shift.
 
 ## Modo de trabajo
 
@@ -19,7 +20,7 @@ Detalle completo en [workflow.md](workflow.md). En resumen: Manuel escribe guiad
 3. **Hub de cada juego:** lore, mapas, armas, personajes, enemigos, curiosidades, easter eggs…
 4. **Hub principal `/explorar`:** buscador global con carruseles horizontales por categoría (armas, mapas…) que mezclan todos los juegos. Previsto para la Entrega 2.
 
-Primer contenido: universo Half-Life con Half-Life, Opposing Force y Blue Shift. Detalle técnico en [architecture.md](architecture.md) (rutas, temas por variables CSS) y objetivos en [roadmap.md](roadmap.md).
+Primer contenido: universo Half-Life con Half-Life, Opposing Force, Blue Shift y Half-Life: Decay. Detalle técnico en [architecture.md](architecture.md) (rutas, temas por variables CSS) y objetivos en [roadmap.md](roadmap.md).
 
 ## Estado confirmado
 
@@ -153,7 +154,7 @@ Comprobado por Claude Code el 2026-10-23 en `main` (`a0267e4`, PR #38 fusionada)
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- `main` en `cc1fbd9`, con los tags `v0.1.0` y `v0.2.0`. PRs #40–#63 en GitHub (diseño D1–D2, contenido Z3–Z4, entrada al universo U1–U3 y `v0.2.0`). PRs fusionadas hasta `v0.1.0`:
+- `main` en `6b4804e`, con los tags `v0.1.0` y `v0.2.0`. PRs #40–#77 en GitHub (diseño D1–D2, contenido Z3–Z4, entrada al universo U1–U3, `v0.2.0`, recursos visuales R1–R2 —#64–#71— y el dossier de Half-Life: Decay —#74, #75 y #77—). PRs fusionadas hasta `v0.1.0`:
   - #1–#6: historial reconstruido.
   - #7 `fix/errores-css`.
   - #8 `feature/valve-timeline`.
@@ -200,13 +201,23 @@ Comprobado por Claude Code el 2026-10-23 en `main` (`a0267e4`, PR #38 fusionada)
 - **Mensajes de commit:** los redacta la IA y los escribe Manuel (2026-10-16). Al final de cada paso, el asistente entrega el mensaje completo: título Conventional Commits en español (`feat(valve): …`), línea en blanco y descripción en lista con `- ` (las líneas que continúan un punto van sangradas con dos espacios). El asistente no hace el commit salvo petición expresa.
 - **Trabajo entre dos PCs:** para continuar una rama sin terminar en el otro equipo, `git push` en el primero y, en el segundo, `git fetch`, `git switch <rama>` y `git pull --ff-only`. La PR se crea cuando la rama está completa. Antes de cambiar de equipo, `git status` debe indicar el árbol limpio y la rama al día con el remoto.
 - Es `gh pr`, no `git pr`. En Git Bash, si falta `gh`: `export PATH="$PATH:/c/Program Files/GitHub CLI"`.
-- Rama abierta: `feature/hl1-visual-resources` (fase R, recursos visuales), creada por Claude el 2026-10-26 desde `cc1fbd9`.
+- Rama abierta: `feature/decay-content` (contenido de Half-Life: Decay), creada desde `6b4804e` el 2026-10-29.
 - **Vim:** el commit `b031b14` terminó con una línea `i` suelta en la descripción. Pulsa `i` solo una vez al abrir el editor y, antes de `:wq`, `Esc`; si la `i` se cuela en el texto, bórrala antes de guardar.
 - **`git pull` en `main`:** la configuración global `merge.ff=false` hace que un `git pull` normal cree un commit de merge local. Usar `git pull --ff-only` o configurar una vez `git config --global pull.ff only`.
 - Criterio: una rama = una funcionalidad completa.
 - **Si editas algo en GitHub** (por ejemplo, el README), haz `git checkout main && git pull` antes de seguir. Si la rama local ya tenía cambios en el mismo archivo, `git merge origin/main` producirá un conflicto que hay que resolver.
 
 ## Comprobaciones
+
+Ejecutadas por Claude el 2026-10-29 en `feature/decay-content`, con Next.js 16.4.2:
+
+| Comando         | Resultado                                                                                                                                                         |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run check` | Superado: lint, tipos, formato y 38 pruebas de Vitest (5 archivos)                                                                                                |
+| `npm run build` | Superado: 235 páginas estáticas, entre ellas `/universos/half-life/decay`, sus apartados y las fichas nuevas                                                      |
+| HTML generado   | El hub de Decay cuenta 10 mapas, 4 personajes, 11 curiosidades y 5 easter eggs; `/fichas/palanca` y `/fichas/rosenberg` muestran Half-Life: Decay en «Aparece en» |
+
+Diagnóstico de esa sesión: un `next start` antiguo seguía sirviendo un build viejo en el puerto 3001 y hacía que los apartados de Decay mostraran «0 fichas». Se cerraron todos los procesos `next start -p 3001`, se borró `.next` y se reconstruyó. Antes de comprobar HTML servido, revisa `Get-CimInstance Win32_Process -Filter "Name='node.exe'"`.
 
 Ejecutadas por Claude el 2026-10-23 en `feature/cancelled-projects` (el contenido de la PR #38), con Next.js 16.4.2 instalado mediante `npm ci`:
 
@@ -248,9 +259,8 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 - `Frase para IA.txt` versionado en la raíz: decidir si se mueve a `docs/` o se elimina.
 - CI pendiente.
 - Comprobar con las fuentes los datos de `src/data/games.ts` y los textos de `src/data/entries.ts`, y si las armas aparecen también en las expansiones. Los enlaces de las fichas ya se han verificado (2026-10-12).
-- Half-Life no tiene easter eggs todavía (el apartado sigue en «Próximamente»); el texto del lore es solo la premisa, a la espera del control de spoilers.
 - Las pruebas no comprueban que los textos coincidan con las fuentes: eso sigue siendo revisión manual.
-- El comparador original/HD no tiene ninguna ficha con las dos imágenes: no se ha visto funcionando en una página real. Se deja para la tanda de recursos (imágenes sin fondo, PNG o WebP con transparencia, original y HD del mismo tamaño): ver [design.md](design.md#recursos-en-tandas-decisión-de-manuel-2026-10-24).
+- El comparador original/HD ya se ve en 20 fichas de Half-Life 1 (R1 y R2); faltan las parejas de Opposing Force y Blue Shift (R3) y una imagen única para lo que no cambió con el High Definition Pack. Ver [design.md](design.md#recursos-en-tandas-decisión-de-manuel-2026-10-24).
 - Las tablas del README sobre el universo Half-Life completo, los proyectos cancelados y los mods se escribieron sin contrastar con fuentes; llevan la nota «Lista en revisión».
 - Los textos de las personas de Valve y de `/valve/steam` no los ha contrastado el agente con sus fuentes.
 - La fuente de `/valve/steam` está escrita en la página: no sale en `/creditos` hasta que ese texto pase a `src/data`.
@@ -259,36 +269,39 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 
 ## Pasos de la interfaz (guiados)
 
-| Paso  | Archivo(s)                                                                                            | Estado               |
-| ----- | ----------------------------------------------------------------------------------------------------- | -------------------- |
-| 1–4   | Layout, paleta base, cabecera y pie                                                                   | Hecho                |
-| 5–6   | Portada sobre Valve y Steam con la cronología                                                         | Hecho (PR #6–#8)     |
-| 7     | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`                                       | Hecho (PR #9)        |
-| 8     | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life                                          | Hecho (PR #10)       |
-| 9     | Hub de juego, apartados y tema propio por juego                                                       | Hecho (PR #11)       |
-| 10    | Fichas: modelo `Entry`, página de apartado y página de ficha                                          | Hecho (PR #14)       |
-| 11    | Página 404 propia                                                                                     | Hecho (PR #15)       |
-| 12    | `gameIds` → `appearances` (datos propios de cada juego)                                               | Hecho (PR #16)       |
-| 13    | Imágenes por aparición (`MediaAsset`, `next/image`)                                                   | Hecho (PR #17 y #18) |
-| 13b   | Comparador de imágenes original/HD (`ImageCompare`, componente de cliente)                            | Hecho (PR #20)       |
-| 14    | Pruebas de integridad de datos con Vitest                                                             | Hecho (PR #21)       |
-| 15    | Esqueleto: una ficha de muestra por categoría y apariciones en OF y BS                                | Hecho (PR #23)       |
-| 16    | Esqueleto: lore por juego y su página                                                                 | Hecho (PR #24)       |
-| 17    | Esqueleto: relaciones entre fichas y bloque «Relacionado»                                             | Hecho (PR #26)       |
-| 17b   | Esqueleto: prueba de integridad de las relaciones, alias `@/` y etiquetas sin género                  | Hecho (PR #27)       |
-| 18    | Esqueleto: `/explorar` con una fila horizontal por categoría y «Ver todo»                             | Hecho (PR #28)       |
-| 19    | Esqueleto: sección Valve (`/valve/historia`, `/valve/personas/[slug]`, `/valve/steam`)                | Hecho (PR #29)       |
-| 20    | Esqueleto: página de créditos generada desde los datos                                                | Hecho (PR #33)       |
-| 21    | Esqueleto: campos propios por categoría (unión discriminada) y sección «Datos»                        | Hecho (PR #34)       |
-| 22a   | Esqueleto: mods como juegos con `baseGameId` y su propio hub                                          | Hecho (PR #36)       |
-| 22b   | Esqueleto: proyectos cancelados como juegos con `status: "cancelled"`                                 | Hecho (PR #38)       |
-| —     | `v0.1.0`                                                                                              | Publicada 2026-10-23 |
-| D1    | Dirección de diseño ([design.md](design.md))                                                          | Hecho (PR #41)       |
-| D1b   | Muestra visual `/muestra` (aprobada por Manuel como referencia estética)                              | Hecho (PR #44)       |
-| D2    | Sistema de diseño: tokens, fuentes, temas y componentes compartidos                                   | Hecho (PR #45–#51)   |
-| Z1–Z4 | Por zonas, contenido real y diseño a la vez: Valve, universos, Half-Life, Opposing Force y Blue Shift | Siguiente            |
+| Paso  | Archivo(s)                                                                                            | Estado                                                          |
+| ----- | ----------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| 1–4   | Layout, paleta base, cabecera y pie                                                                   | Hecho                                                           |
+| 5–6   | Portada sobre Valve y Steam con la cronología                                                         | Hecho (PR #6–#8)                                                |
+| 7     | Tipos `Universe` y `Game`, datos, `UniverseCard` y `/universos`                                       | Hecho (PR #9)                                                   |
+| 8     | `/universos/[universeSlug]` con juegos, 404 y tema Half-Life                                          | Hecho (PR #10)                                                  |
+| 9     | Hub de juego, apartados y tema propio por juego                                                       | Hecho (PR #11)                                                  |
+| 10    | Fichas: modelo `Entry`, página de apartado y página de ficha                                          | Hecho (PR #14)                                                  |
+| 11    | Página 404 propia                                                                                     | Hecho (PR #15)                                                  |
+| 12    | `gameIds` → `appearances` (datos propios de cada juego)                                               | Hecho (PR #16)                                                  |
+| 13    | Imágenes por aparición (`MediaAsset`, `next/image`)                                                   | Hecho (PR #17 y #18)                                            |
+| 13b   | Comparador de imágenes original/HD (`ImageCompare`, componente de cliente)                            | Hecho (PR #20)                                                  |
+| 14    | Pruebas de integridad de datos con Vitest                                                             | Hecho (PR #21)                                                  |
+| 15    | Esqueleto: una ficha de muestra por categoría y apariciones en OF y BS                                | Hecho (PR #23)                                                  |
+| 16    | Esqueleto: lore por juego y su página                                                                 | Hecho (PR #24)                                                  |
+| 17    | Esqueleto: relaciones entre fichas y bloque «Relacionado»                                             | Hecho (PR #26)                                                  |
+| 17b   | Esqueleto: prueba de integridad de las relaciones, alias `@/` y etiquetas sin género                  | Hecho (PR #27)                                                  |
+| 18    | Esqueleto: `/explorar` con una fila horizontal por categoría y «Ver todo»                             | Hecho (PR #28)                                                  |
+| 19    | Esqueleto: sección Valve (`/valve/historia`, `/valve/personas/[slug]`, `/valve/steam`)                | Hecho (PR #29)                                                  |
+| 20    | Esqueleto: página de créditos generada desde los datos                                                | Hecho (PR #33)                                                  |
+| 21    | Esqueleto: campos propios por categoría (unión discriminada) y sección «Datos»                        | Hecho (PR #34)                                                  |
+| 22a   | Esqueleto: mods como juegos con `baseGameId` y su propio hub                                          | Hecho (PR #36)                                                  |
+| 22b   | Esqueleto: proyectos cancelados como juegos con `status: "cancelled"`                                 | Hecho (PR #38)                                                  |
+| —     | `v0.1.0`                                                                                              | Publicada 2026-10-23                                            |
+| D1    | Dirección de diseño ([design.md](design.md))                                                          | Hecho (PR #41)                                                  |
+| D1b   | Muestra visual `/muestra` (aprobada por Manuel como referencia estética)                              | Hecho (PR #44)                                                  |
+| D2    | Sistema de diseño: tokens, fuentes, temas y componentes compartidos                                   | Hecho (PR #45–#51)                                              |
+| Z1–Z4 | Por zonas, contenido real y diseño a la vez: Valve, universos, Half-Life, Opposing Force y Blue Shift | Hecho (PR #52–#59)                                              |
+| Z4H   | Half-Life: Decay: dossier, tema y contenido completo                                                  | Hecho (PR #74, #75 y #77; contenido en `feature/decay-content`) |
 
 ## Siguiente paso
+
+**Situación el 2026-10-29:** Half-Life: Decay ya tiene dossier, tema y contenido en la rama `feature/decay-content`; falta abrir su PR, revisarla y fusionarla. Después toca **R3**, las parejas HD de Opposing Force y Blue Shift, y más adelante Half-Life 2.
 
 Esqueleto terminado y publicado como `v0.1.0` (2026-10-23). **Orden (decisión de Manuel, 2026-10-23):** el esqueleto está hecho y solo tiene datos de muestra y textos provisionales. En lugar de «todo el diseño y después todo el contenido», se hace primero el **sistema de diseño** (D1b y D2) y después **cada zona a la vez: su contenido real con fuentes y su diseño**. No se diseña una zona que todavía no tiene contenido (Steam por épocas, Portal, Left 4 Dead…): sus ideas quedan apuntadas en [design.md](design.md).
 
@@ -365,6 +378,17 @@ Esqueleto terminado y publicado como `v0.1.0` (2026-10-23). **Orden (decisión d
        - _Pruebas:_ la última ejecución en `main` antes de este cambio pasó `npm run check` (lint, tipos, formato y 38 pruebas de Vitest) y `npm run build` (197 páginas). Este cambio solo toca este archivo; no se han vuelto a ejecutar.
        - _Falta:_ R3, las parejas HD de Opposing Force (`gearbox` y `gearbox_hd`) y Blue Shift (`bshift` y `bshift_hd`); imagen única para lo que no cambió con el HD Pack (headcrab, revólver .357, mina láser y el resto de criaturas y objetos); revisión con teclado y movimiento reducido del comparador; los scripts de captura viven fuera del repositorio, solo en el PC de sobremesa.
        - _Siguiente paso concreto:_ en una rama `feature/hl1-visual-resources-r3`, listar los modelos que existen en `gearbox` y `gearbox_hd` y cruzarlos con las fichas de `src/data/opposing-force.ts`, antes de capturar nada.
+         **Half-Life: Decay (2026-10-28 y 2026-10-29).** Cuarto juego del universo Half-Life, añadido tras R2 por decisión de Manuel.
+     - _Dossier y tema (2026-10-28, PR #74, #75 y #77):_ `main` queda en `6b4804e` con Decay como juego propio del bloque GoldSrc: hub, dossier, tema visual propio (PlayStation 2, 2001) y su tarjeta en `/universos/half-life`.
+     - _Contenido (rama `feature/decay-content`, commits `8d88696`, `c2573c9` y `1c0a4fc`):_ un solo archivo `src/data/half-life-decay.ts` con tres exports, siguiendo el patrón de `opposing-force.ts`:
+       - `halfLifeDecayChapters`: 10 fichas de mapa, las 9 misiones de la campaña y la extra Xen Attacks, con archivos de mapa, diseñadores y notas. Los nombres de mapa de las misiones sin página propia salen de SourceRuns (`kind: "community"`), como en Z3-1.
+       - `halfLifeDecayCharacters`: 4 fichas (Gina Cross, Colette Green, Richard Keller y la pareja de vortigaunts X-8973 y R-4913), con afiliación, voz y notas de desarrollo.
+       - `halfLifeDecayExtras`: 5 easter eggs y 11 curiosidades.
+       - Lore de 8 párrafos en `src/data/game-lore.ts` (2 visibles y 6 con `spoiler: true`).
+       - `src/data/expansion-appearances.ts`: lista `decay` con 29 fichas de Half-Life 1 que también aparecen en Decay, comprobadas una a una en la lista de apariciones de su página de Combine OverWiki. Quedan fuera el cañón tau, el cañón de gluones, la ballesta, el revólver .357, el barnacle, el ictiosaurio, la gonarca, la gargantúa, el tentáculo y la sanguijuela. Gordon Freeman y Kleiner solo se mencionan.
+     - _Cifras:_ 170 fichas en total (141 anteriores + 29 apariciones compartidas); Decay tiene 30 fichas propias (10 mapas, 4 personajes, 11 curiosidades y 5 easter eggs) y 235 páginas estáticas.
+     - _Comprobado:_ `npm run check` (38 pruebas) y `npm run build` (235 páginas); el hub de Decay muestra 10 mapas, 4 personajes, 11 curiosidades y 5 easter eggs, y `/fichas/palanca` y `/fichas/rosenberg` listan Half-Life: Decay.
+     - _Publicación:_ contenido en la rama, **pendiente de PR y merge** al escribir esto.
 4. Después de D1b y D2, **por zonas** (contenido real y diseño a la vez): Valve, entrada de universos, Half-Life, Opposing Force y Blue Shift ([design.md](design.md#9-plan-por-fases)). Los pendientes de contenido (más fichas, textos contrastados, revisión en navegador y E2E) se resuelven dentro de la zona a la que pertenecen. **La intro de Valve, las imágenes y el comparador con imágenes reales** van en tandas de recursos cuando haya varios juegos terminados (decisión de Manuel, 2026-10-24).
 5. Tras el esqueleto, revisión completa de la documentación y del README para presentar el proyecto como enciclopedia de todo Valve (aviso de Manuel, 2026-10-13).
 

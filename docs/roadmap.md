@@ -2,9 +2,9 @@
 
 Estado inicial: **2026-09-30**. Plan de trabajo personal; el orden puede ajustarse según lo aprendido. Las casillas solo se marcarán con trabajo comprobado.
 
-Última actualización: **2026-10-14** (tras la PR #26).
+Última actualización: **2026-10-29** (tras el contenido de Half-Life: Decay).
 
-Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la navegación Valve → Universos → Juego descrita en la [arquitectura](architecture.md). La primera fase de contenido mantiene el universo Half-Life con Half-Life, Opposing Force y Blue Shift. Consulta [STATUS.md](STATUS.md) para saber dónde retomar el trabajo.
+Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la navegación Valve → Universos → Juego descrita en la [arquitectura](architecture.md). La primera fase de contenido mantiene el universo Half-Life con Half-Life, Opposing Force, Blue Shift y Half-Life: Decay. Consulta [STATUS.md](STATUS.md) para saber dónde retomar el trabajo.
 
 ## Entrega 0 — Base y documentación
 
@@ -136,9 +136,10 @@ Acordado con Manuel el 2026-10-22. El esqueleto actual es solo estructura y dato
 2. Comprobar su coherencia y cerrar los pendientes de esta etapa.
 3. **Adelantado (2026-10-25), hecho en U1–U3: rediseñar la entrada al universo Half-Life** con las etapas GoldSrc, Source y Source 2 y dossiers por juego (propuesta en [design.md](design.md#propuesta-para-la-entrada-al-universo-aplicada-en-u3-2026-10-26)). La reforma del resto de universos sigue en el punto 7.
 4. Recopilar y preparar los recursos visuales de ese bloque (ver «Recursos visuales del bloque Half-Life 1»).
-5. Half-Life 2.
-6. Half-Life: Alyx y los demás contenidos previstos.
-7. Reforma visual, cuando haya suficientes universos desarrollados.
+5. Half-Life: Decay (hecho el 2026-10-28 y el 2026-10-29: dossier, tema visual y contenido completo con capítulos, personajes, lore, curiosidades, easter eggs y apariciones compartidas).
+6. Half-Life 2.
+7. Half-Life: Alyx y los demás contenidos previstos.
+8. Reforma visual, cuando haya suficientes universos desarrollados.
 
 La investigación de animaciones puede ir después si necesita herramientas o recursos adicionales: no forma parte del cierre de la etapa actual.
 
@@ -163,7 +164,7 @@ La investigación de animaciones puede ir después si necesita herramientas o re
 
 La sección Valve ya tiene páginas propias (PR #29): historia completa (5 hitos), personas (los dos fundadores) y Steam. Crecerá con más hitos, más personas clave, motores (GoldSrc, Source, Source 2), hardware y curiosidades, siempre con fuentes.
 
-**Universo Half-Life completo (según Manuel, 2026-10-12):** después de Half-Life, Opposing Force y Blue Shift se añadirán Uplink, Decay, Half-Life: Source, Half-Life 2 (con Deathmatch y Lost Coast), los episodios, Half-Life Deathmatch: Source, Half-Life 2: Survivor y Half-Life: Alyx. La lista del README está pendiente de contrastar con fuentes.
+**Universo Half-Life completo (según Manuel, 2026-10-12):** después de Half-Life, Opposing Force, Blue Shift y Half-Life: Decay se añadirán Uplink, Half-Life: Source, Half-Life 2 (con Deathmatch y Lost Coast), los episodios, Half-Life Deathmatch: Source, Half-Life 2: Survivor y Half-Life: Alyx. La lista del README está pendiente de contrastar con fuentes.
 
 **Proyectos cancelados y mods famosos (según Manuel, 2026-10-12):** cada saga tendrá un apartado de proyectos cancelados y prototipos (por ejemplo, Half-Life para Dreamcast, Episode Three o Return to Ravenholm) y otro de mods famosos de cada juego (por ejemplo, Black Mesa, Sven Co-op o Garry's Mod). Necesitarán sus propios tipos de datos (proyecto cancelado y mod, con juego base, autores, estado y fuentes); se diseñarán cuando toque.
 

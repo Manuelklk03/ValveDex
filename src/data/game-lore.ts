@@ -103,4 +103,51 @@ export const gameLore: GameLore[] = [
       },
     ],
   },
+  {
+    gameId: "half-life-decay",
+    paragraphs: [
+      {
+        text: "Half-Life: Decay es la expansión cooperativa que Gearbox incluyó en la versión de PlayStation 2 de Half-Life. Sus protagonistas son Gina Cross y Colette Green, dos científicas de Materiales Anómalos que preparan la prueba del espectrómetro antimasa del mismo día en que Gordon Freeman llega tarde a su puesto.",
+      },
+      {
+        text: "Cuando la prueba provoca la cascada de resonancia, las dos doctoras sobreviven al accidente y tienen que abrirse paso por una instalación llena de criaturas para pedir ayuda desde la superficie.",
+      },
+      {
+        spoiler: true,
+        text: "Junto al doctor Rosenberg cruzan el Hazard Course en ruinas hasta la superficie y él lanza una llamada al ejército. Rosenberg se queda a esperar a los militares y Gina y Colette vuelven con el doctor Keller.",
+      },
+      {
+        spoiler: true,
+        text: "Keller dirige un plan para cerrar la grieta: reactivan los campos de amortiguación, consiguen en los dormitorios de nivel 3 el código de desbloqueo aéreo que solo conoce un guardia, toman el Control Aéreo de Black Mesa y ponen el satélite en órbita.",
+      },
+      {
+        spoiler: true,
+        text: "En los Laboratorios Gamma suben a mano el balizador de desplazamiento y activan en los Laboratorios de Cuarentena Alienígena la matriz de haces que lo alimenta. Con el satélite en posición, Keller inicia una reversión de resonancia.",
+      },
+      {
+        spoiler: true,
+        text: "Mientras defienden el balizador de una oleada de criaturas xen, Gina y Colette quedan atrapadas en un «reflujo armónico». En ese momento se oye a Rosenberg avisar de que el portal se va a cerrar, el mismo cruce de Xen que vive Barney Calhoun en Blue Shift. Las dos vuelven ilesas y Keller las felicita por el éxito de la operación.",
+      },
+      {
+        spoiler: true,
+        text: "La misión extra Xen Attacks, que se desbloquea con la nota máxima en las nueve misiones, cambia de bando: dos vortigaunts enviados por Nihilanth recorren Black Mesa para recuperar los cristales que los humanos robaron de Xen.",
+      },
+      {
+        spoiler: true,
+        text: "El juego no muestra qué ocurre después con Gina y Colette, y sus compañeros de Black Mesa nunca vuelven a saber de ellas. Tampoco queda claro si sobrevivieron a la explosión nuclear del final de Opposing Force.",
+      },
+    ],
+    sources: [
+      {
+        title: "Half-Life: Decay storyline - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life:_Decay_storyline",
+        kind: "wiki",
+      },
+      {
+        title: "Half-Life: Decay - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life:_Decay",
+        kind: "wiki",
+      },
+    ],
+  },
 ];
