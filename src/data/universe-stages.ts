@@ -19,13 +19,9 @@ export const universeStages: UniverseStage[] = [
     subtitle: "Half-Life 2 y sus episodios",
     summary:
       "Half-Life 2 (2004) y sus episodios llevan la historia años después a la Ciudad 17, bajo el control de la Alianza.",
-    status: "coming-soon",
-    // shortcut: nombres en texto hasta que estos juegos entren en games.ts; entonces se borran
-    plannedGames: [
-      "Half-Life 2",
-      "Half-Life 2: Episode One",
-      "Half-Life 2: Episode Two",
-    ],
+    status: "available",
+    // Los episodios se anuncian en texto hasta que entren en games.ts; entonces se borran
+    plannedGames: ["Half-Life 2: Episode One", "Half-Life 2: Episode Two"],
   },
   {
     id: "source-2",
