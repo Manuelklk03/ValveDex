@@ -55,3 +55,6 @@ graphify-out/
 
 # Estado local de Oh My ClaudeCode: sesiones, tareas y memoria del plugin (no se versiona)
 .omc/
+
+.playwright-mcp/
+.playwright-cli/

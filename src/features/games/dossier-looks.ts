@@ -1,6 +1,7 @@
 // Material y rótulos del dossier de cada juego; un juego sin entrada usa el dossier base
 export type DossierLook = {
-  variant: "half-life" | "opposing-force" | "blue-shift" | "decay";
+  variant:
+    "half-life" | "opposing-force" | "blue-shift" | "decay" | "half-life-2";
   label: string;
   stamp: string;
   edge: string;
@@ -30,6 +31,12 @@ const dossierLooks: Record<string, DossierLook> = {
     label: "Informe de experimento — Materiales Anómalos",
     stamp: "Experimento Δ-32",
     edge: "Black Mesa · Sector C · Materiales Anómalos",
+  },
+  "half-life-2": {
+    variant: "half-life-2",
+    label: "Aviso de la Alianza · Ciudad 17",
+    stamp: "Protección Civil",
+    edge: "Ciudad 17 · Distrito 17 · Alianza",
   },
 };
 

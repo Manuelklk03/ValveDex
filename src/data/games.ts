@@ -116,4 +116,23 @@ export const games: Game[] = [
       },
     ],
   },
+  {
+    id: "half-life-2",
+    slug: "half-life-2",
+    universeId: "half-life",
+    stageId: "source",
+    status: "released",
+    releaseYear: 2004,
+    developer: "Valve",
+    name: "Half-Life 2",
+    description:
+      "Gordon Freeman despierta años después en la Ciudad 17, bajo la ocupación de la Alianza, y se une a la Resistencia para liberar la Tierra.",
+    sources: [
+      {
+        title: "Half-Life 2 - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life_2",
+        kind: "wiki",
+      },
+    ],
+  },
 ];

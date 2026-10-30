@@ -2,7 +2,7 @@
 
 Estado inicial: **2026-09-30**. Plan de trabajo personal; el orden puede ajustarse según lo aprendido. Las casillas solo se marcarán con trabajo comprobado.
 
-Última actualización: **2026-10-29** (tras el contenido de Half-Life: Decay).
+Última actualización: **2026-10-30** (primer dossier de Half-Life 2 en la etapa Source).
 
 Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la navegación Valve → Universos → Juego descrita en la [arquitectura](architecture.md). La primera fase de contenido mantiene el universo Half-Life con Half-Life, Opposing Force, Blue Shift y Half-Life: Decay. Consulta [STATUS.md](STATUS.md) para saber dónde retomar el trabajo.
 
@@ -137,7 +137,7 @@ Acordado con Manuel el 2026-10-22. El esqueleto actual es solo estructura y dato
 3. **Adelantado (2026-10-25), hecho en U1–U3: rediseñar la entrada al universo Half-Life** con las etapas GoldSrc, Source y Source 2 y dossiers por juego (propuesta en [design.md](design.md#propuesta-para-la-entrada-al-universo-aplicada-en-u3-2026-10-26)). La reforma del resto de universos sigue en el punto 7.
 4. Recopilar y preparar los recursos visuales de ese bloque (ver «Recursos visuales del bloque Half-Life 1»).
 5. Half-Life: Decay (hecho el 2026-10-28 y el 2026-10-29: dossier, tema visual y contenido completo con capítulos, personajes, lore, curiosidades, easter eggs y apariciones compartidas).
-6. Half-Life 2.
+6. Half-Life 2 (en curso: primer dossier de la etapa Source hecho el 2026-10-30, con la paleta y el material de la Ciudad 17; faltan sus fichas y el resto de apartados).
 7. Half-Life: Alyx y los demás contenidos previstos.
 8. Reforma visual, cuando haya suficientes universos desarrollados.
 

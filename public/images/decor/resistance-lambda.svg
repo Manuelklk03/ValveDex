@@ -1,0 +1,16 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 64 64"
+  role="presentation"
+>
+  <!-- λ de la Resistencia: plantilla de dos trazos rectos, sin el círculo del logotipo de Half-Life 1.
+       Se pinta con máscara CSS para tomar el color del dossier. -->
+  <path
+    d="M18.5 52.5 29 14.5 55.5 57"
+    fill="none"
+    stroke="#fff"
+    stroke-width="11"
+    stroke-linecap="butt"
+    stroke-linejoin="miter"
+  />
+</svg>

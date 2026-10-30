@@ -6,7 +6,8 @@
 
 .game-theme--half-life-opposing-force,
 .game-theme--half-life-blue-shift,
-.game-theme--half-life-decay {
+.game-theme--half-life-decay,
+.game-theme--half-life-2 {
   background-color: var(--background);
 }
 
@@ -62,4 +63,27 @@
   background-size:
     3rem 3rem,
     3rem 3rem;
+}
+
+/* Half-Life 2: hormigón de la Ciudad 17, con el naranja del HUD y de la Resistencia como acento
+   principal y el cian de los paneles de la Alianza como secundario. Los paneles prefabricados del
+   fondo son la junta de las placas de hormigón de los edificios de la ciudad, no una rejilla decorativa. */
+.game-theme--half-life-2 {
+  --background: #141a1e;
+  --foreground: #eef2f4;
+  --surface: #1b2328;
+  --border: #33424a;
+  --muted: #a4b2ba;
+  --accent: #ff9b21;
+  color-scheme: dark;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+  background-size:
+    100% 5rem,
+    6rem 100%;
+}
+
+.game-theme--half-life-2 :where(h1, h2) {
+  letter-spacing: 0.01em;
 }

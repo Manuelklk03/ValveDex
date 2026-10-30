@@ -41,6 +41,8 @@
 }
 
 .universe-stage__dossiers {
+  position: relative;
+  z-index: 1;
   display: grid;
   gap: clamp(3rem, 6vw, 4.5rem);
 }
@@ -111,23 +113,8 @@
   );
 }
 
-/* Source: λ de la Resistencia pintada sobre el hormigón, con el halo de un spray */
-.universe-stage--source::after {
-  content: "λ" / "";
-  position: absolute;
-  top: 50%;
-  right: max(1rem, calc((100% - 72rem) / 2));
-  color: #e07b32;
-  font-family: var(--font-barlow-condensed), sans-serif;
-  font-size: clamp(16rem, 34vw, 28rem);
-  font-weight: 800;
-  line-height: 0.8;
-  opacity: 0.3;
-  pointer-events: none;
-  rotate: -8deg;
-  text-shadow: 0 0 0.75rem rgb(224 123 50 / 0.7);
-  translate: 0 -50%;
-}
+/* Source: la λ de la Resistencia vive en el dossier de Half-Life 2, no en el fondo de la etapa:
+   detrás de la tarjeta solo asomaba un recorte naranja */
 
 /* Source 2: emblema de la Alianza al fondo de la Zona de Cuarentena.
    SVG de Combine OverWiki (File:Combine_main_symbol.svg, vectorizado por Klow a partir de Half-Life 2; material © Valve) */
