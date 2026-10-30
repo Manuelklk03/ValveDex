@@ -186,4 +186,39 @@ export const gameLore: GameLore[] = [
       },
     ],
   },
+  {
+    gameId: "half-life-2-episode-one",
+    paragraphs: [
+      {
+        text: "Half-Life 2: Episode One comienza inmediatamente después de los eventos de Half-Life 2. Gordon Freeman y Alyx Vance escapan de la Ciudad 17 tras la destrucción del reactor de energía oscura, que ha provocado una grieta en la realidad. La ciudad se está colapsando debido al caos que sigue a la apertura de la grieta.",
+      },
+      {
+        text: "Mientras escapan, Gordon y Alyx descubren que el Dr. Kleiner ha creado un dispositivo para contener la grieta. Sin embargo, el dispositivo necesita ser activado en una instalación de la Alianza fuera de la ciudad. En el camino, enfrentan a soldados de la Alianza y criaturas de la grieta.",
+      },
+      {
+        spoiler: true,
+        text: "La grieta en la realidad permite que criaturas de otros dimensiones atraviesen la Tierra. Gordon y Alyx trabajan para contener la amenaza mientras la Resistencia organiza una evacuación de la Ciudad 17.",
+      },
+      {
+        spoiler: true,
+        text: "Alyx sufre un ataque cardíaco debido al estrés extreme y la falta de oxígeno en la ciudad en ruinas. Gordon debe decidir si salvar a Alyx o activar el dispositivo de contención de la grieta.",
+      },
+      {
+        spoiler: true,
+        text: "Si Gordon salva a Alyx, el dispositivo de contención no se activa a tiempo, y la grieta se expande. Sin embargo, los Vortigaunts llegan en el último momento y usan su energía colectiva para contener la grieta, salvando a Gordon, Alyx y a otros supervivientes de la Ciudad 17.",
+      },
+    ],
+    sources: [
+      {
+        title: "Half-Life 2: Episode One storyline - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life_2:_Episode_One_storyline",
+        kind: "wiki",
+      },
+      {
+        title: "Half-Life 2: Episode One - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life_2:_Episode_One",
+        kind: "wiki",
+      },
+    ],
+  },
 ];
