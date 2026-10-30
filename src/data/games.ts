@@ -154,4 +154,23 @@ export const games: Game[] = [
       },
     ],
   },
+  {
+    id: "half-life-2-episode-two",
+    slug: "episode-two",
+    universeId: "half-life",
+    stageId: "source",
+    status: "released",
+    releaseYear: 2007,
+    developer: "Valve",
+    name: "Half-Life 2: Episode Two",
+    description:
+      "Gordon Freeman y Alyx Vance viajan a White Forest, una base de la Resistencia en las montañas, para detener la Alianza de transmitir una señal de alerta a la Tierra.",
+    sources: [
+      {
+        title: "Half-Life 2: Episode Two - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life_2:_Episode_Two",
+        kind: "wiki",
+      },
+    ],
+  },
 ];
