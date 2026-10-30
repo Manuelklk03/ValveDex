@@ -215,8 +215,55 @@ export const gameLore: GameLore[] = [
         kind: "wiki",
       },
       {
-        title: "Half-Life 2: Episode One - Combine OverWiki",
+        title:
+          "Half-Life 2: Episode One - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/Half-Life_2:_Episode_One",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    gameId: "half-life-2-episode-two",
+    paragraphs: [
+      {
+        text:
+          "Half-Life 2: Episode Two continúa la historia de Gordon Freeman y Alyx Vance tras la destrucción de la Ciudad 17. Escapan del colapso del Citadel en un tren que es derailado por la onda de choque. Atrapados en las minas de Outlands, son separados cuando un Hunter ataca a Alyx.",
+      },
+      {
+        text:
+          "Gordon viaja solo a través de las minas, enfrentando Antlions y un Antlion Guardian. Un Vortigaunt solitario le ayuda a obtener el extracto de larva necesario para salvar a Alyx. Los Vortigaunts la curan y el G-Man le advierte a Gordon sobre el destino de Alyx.",
+      },
+      {
+        spoiler: true,
+        text:
+          "La historia se centra en la carrera hacia White Forest, una base de la Resistencia en las montañas. Gordon y Alyx descubren que la Alianza está intentando abrir un superportal para enviar refuerzos desde el mundo combinado.",
+      },
+      {
+        spoiler: true,
+        text:
+          "En el camino, los dos combaten Hunters, Striders y Advisors. Aprenden que Judith Mossman descubrió la nave Borealis de Aperture Science, una nave desaparecida con tecnología avanzada. Eli Vance insiste en destruirla por miedo a repetir el incidente de Black Mesa.",
+      },
+      {
+        spoiler: true,
+        text:
+          "La resistencia lanza un cohete para cerrar el superportal. Gordon defiende la base usando Magnusson Devices contra Striders. El cohete es lanzado exitosamente, salvando a la Tierra de la invasión combinada.",
+      },
+      {
+        spoiler: true,
+        text:
+          "Tras la victoria, Alyx revela que encontró un helicóptero para ir a la Borealis. Sin embargo, dos Advisors atacan el hangar. Eli Vance es asesinado por un Advisor mientras le dice a Alyx que destruye la Borealis y que le quiere. Dog llega y lucha contra los Advisors, salvando a Gordon y Alyx.",
+      },
+    ],
+    sources: [
+      {
+        title:
+          "Half-Life 2: Episode Two storyline - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life_2:_Episode_Two_storyline",
+        kind: "wiki",
+      },
+      {
+        title: "Half-Life 2: Episode Two - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life_2:_Episode_Two",
         kind: "wiki",
       },
     ],
