@@ -20,7 +20,6 @@ export const universeStages: UniverseStage[] = [
     summary:
       "Half-Life 2 (2004) y sus episodios llevan la historia años después a la Ciudad 17, bajo el control de la Alianza.",
     status: "available",
-    plannedGames: ["Half-Life 2: Episode Two"],
   },
   {
     id: "source-2",

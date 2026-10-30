@@ -37,6 +37,12 @@ const gameThemes: Record<string, DossierLook> = {
     stamp: "Resistencia",
     edge: "Interior Ciudadela · Distrito 17 · Alianza",
   },
+  "half-life-2-episode-two": {
+    variant: "half-life-2-episode-two",
+    label: "Informe de rescate · White Forest",
+    stamp: "Resistencia",
+    edge: "White Forest · Montañas del norte · Resistencia",
+  },
 };
 
 export function getGameTheme(gameId: string): DossierLook | undefined {

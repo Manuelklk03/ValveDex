@@ -127,3 +127,14 @@
   --muted: #8a9ba8;
   --accent: #ff9b21;
 }
+
+/* Half-Life 2: Episode Two - White Forest, hormigas león, Vortigaunts */
+.game-page--half-life-2-episode-two {
+  --background: #2a3a4a;
+  --foreground: #e0e8ed;
+  --surface: #3a4a5a;
+  --border: rgb(255 221 0 / 0.15);
+  --muted: #8a9ba8;
+  --accent: #ffdd00;
+  --accent-2: #00ccff;
+}
