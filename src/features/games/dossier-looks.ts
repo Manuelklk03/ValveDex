@@ -1,7 +1,7 @@
 // Material y rótulos del dossier de cada juego; un juego sin entrada usa el dossier base
 export type DossierLook = {
   variant:
-    "half-life" | "opposing-force" | "blue-shift" | "decay" | "half-life-2";
+    "half-life" | "opposing-force" | "blue-shift" | "decay" | "half-life-2" | "half-life-2-episode-one";
   label: string;
   stamp: string;
   edge: string;
@@ -37,6 +37,12 @@ const dossierLooks: Record<string, DossierLook> = {
     label: "Aviso de la Alianza · Ciudad 17",
     stamp: "Protección Civil",
     edge: "Ciudad 17 · Distrito 17 · Alianza",
+  },
+  "half-life-2-episode-one": {
+    variant: "half-life-2-episode-one",
+    label: "Archivo de rescate · Interior Ciudadela",
+    stamp: "Resistencia",
+    edge: "Interior Ciudadela · Distrito 17 · Alianza",
   },
 };
 

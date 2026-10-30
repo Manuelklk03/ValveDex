@@ -135,4 +135,23 @@ export const games: Game[] = [
       },
     ],
   },
+  {
+    id: "half-life-2-episode-one",
+    slug: "episode-one",
+    universeId: "half-life",
+    stageId: "source",
+    status: "released",
+    releaseYear: 2006,
+    developer: "Valve",
+    name: "Half-Life 2: Episode One",
+    description:
+      "Continuación de Half-Life 2. Gordon Freeman y Alyx Vance luchan por escapar de la Ciudad 17 tras la apertura de la grieta.",
+    sources: [
+      {
+        title: "Half-Life 2: Episode One - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life_2:_Episode_One",
+        kind: "wiki",
+      },
+    ],
+  },
 ];
