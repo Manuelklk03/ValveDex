@@ -11,6 +11,13 @@ import {
   halfLifeDecayCharacters,
   halfLifeDecayExtras,
 } from "./half-life-decay";
+import {
+  halfLife2Chapters,
+  halfLife2Weapons,
+  halfLife2Characters,
+  halfLife2Enemies,
+  halfLife2Extras,
+} from "./half-life-2-content";
 import { expansionAppearances } from "./expansion-appearances";
 
 const baseEntries: Entry[] = [
@@ -24,6 +31,11 @@ const baseEntries: Entry[] = [
   ...halfLifeDecayChapters,
   ...halfLifeDecayCharacters,
   ...halfLifeDecayExtras,
+  ...halfLife2Chapters,
+  ...halfLife2Weapons,
+  ...halfLife2Characters,
+  ...halfLife2Enemies,
+  ...halfLife2Extras,
   {
     id: "goldsrc-engine",
     slug: "motor-goldsrc",
