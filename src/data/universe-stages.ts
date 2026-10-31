@@ -28,7 +28,6 @@ export const universeStages: UniverseStage[] = [
     subtitle: "Half-Life: Alyx",
     summary:
       "Half-Life: Alyx (2020), creado para realidad virtual, vuelve a la Ciudad 17 con Alyx Vance como protagonista. Su historia ocurre antes de Half-Life 2.",
-    status: "coming-soon",
-    plannedGames: ["Half-Life: Alyx"],
+    status: "available",
   },
 ];

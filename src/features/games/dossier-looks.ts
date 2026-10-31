@@ -7,7 +7,8 @@ export type DossierLook = {
     | "decay"
     | "half-life-2"
     | "half-life-2-episode-one"
-    | "half-life-2-episode-two";
+    | "half-life-2-episode-two"
+    | "half-life-alyx";
   label: string;
   stamp: string;
   edge: string;
@@ -55,6 +56,12 @@ const dossierLooks: Record<string, DossierLook> = {
     label: "Hoja de registro · Base de White Forest",
     stamp: "White Forest",
     edge: "Afueras · Vortigaunts · Hormigas león · Hunters",
+  },
+  "half-life-alyx": {
+    variant: "half-life-alyx",
+    label: "Informe de campo · Zona de Cuarentena",
+    stamp: "Resistencia · City 17",
+    edge: "Ciudad 17 · Alianza · Contenedores · Russell",
   },
 };
 
