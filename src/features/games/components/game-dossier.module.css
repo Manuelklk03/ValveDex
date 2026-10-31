@@ -708,6 +708,7 @@
     var(--decay-gina) 0 50%,
     var(--decay-colette) 50%
   );
+  pointer-events: none;
 }
 
 /* Marca de registro de laboratorio en la esquina inferior */
@@ -866,6 +867,7 @@
     var(--ep1-core) 0 2.5rem,
     transparent 2.5rem 3rem
   );
+  pointer-events: none;
 }
 
 /* La Ciudadela al fondo, detrás de la ficha técnica */
@@ -959,6 +961,7 @@
     transparent 0 3rem,
     var(--ep2-antlion) 3rem 3.75rem
   );
+  pointer-events: none;
 }
 
 /* Hunter de la Alianza, la amenaza del camino */
@@ -975,8 +978,8 @@
   pointer-events: none;
 }
 
-/* En móvil el pie se parte en varias líneas y estas marcas taparían el texto */
-@media (max-width: 47.99rem) {
+/* En pantallas estrechas el pie se parte en varias líneas y estas marcas taparían el texto */
+@media (max-width: 63.99rem) {
   .game-dossier--decay::after,
   .game-dossier--half-life-2-episode-two::after {
     display: none;
