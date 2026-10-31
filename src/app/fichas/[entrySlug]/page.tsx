@@ -162,6 +162,7 @@ export default async function EntryPage({
                     after={hd}
                     beforeLabel="Original"
                     afterLabel="HD Pack"
+                    models={appearance.images?.models}
                   />
                 ) : (
                   single && (

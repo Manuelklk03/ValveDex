@@ -220,6 +220,20 @@ describe("imágenes", () => {
     expect(findDuplicates(allImages.map(({ image }) => image.src))).toEqual([]);
   });
 
+  it("los modelos 3D existen en public/", () => {
+    const missing = entries.flatMap((entry) =>
+      entry.appearances.flatMap(({ images }) =>
+        images?.models
+          ? [images.models.original, images.models.hd].filter(
+              (src) => !existsSync(join("public", src)),
+            )
+          : [],
+      ),
+    );
+
+    expect(missing).toEqual([]);
+  });
+
   it("la original y la HD miden lo mismo (para el comparador)", () => {
     const mismatched = entries.flatMap((entry) =>
       entry.appearances.flatMap((appearance) => {
