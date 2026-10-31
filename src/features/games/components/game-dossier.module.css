@@ -981,7 +981,8 @@
 /* En pantallas estrechas el pie se parte en varias líneas y estas marcas taparían el texto */
 @media (max-width: 63.99rem) {
   .game-dossier--decay::after,
-  .game-dossier--half-life-2-episode-two::after {
+  .game-dossier--half-life-2-episode-two::after,
+  .game-dossier--half-life-alyx::after {
     display: none;
   }
 }
@@ -991,6 +992,103 @@
   border-radius: 999px;
   color: var(--ep2-antlion);
   rotate: -3deg;
+}
+
+/* Half-Life: Alyx: informe de campo de la Resistencia en la Zona de Cuarentena de City 17.
+   Muros de la Alianza, precintos amarillos, atmósfera tóxica, contenedores y la pistola de Alyx */
+.game-dossier--half-life-alyx {
+  --dossier-paper: #1a1f26;
+  --dossier-ink: #e8ecf0;
+  --dossier-muted: #8a9bb8;
+  --dossier-accent: #00d4ff;
+  --dossier-line: rgb(0 212 255 / 0.14);
+  --alyx-toxic: #7ec84a;
+  --alyx-warn: #ffcc00;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgb(0 212 255 / 0.03) 0 1px,
+      transparent 1px 4rem
+    ),
+    linear-gradient(180deg, transparent 60%, rgb(126 200 74 / 0.06));
+  border-left: 6px solid var(--dossier-accent);
+}
+
+/* Precinto de la Alianza en el canto superior */
+.game-dossier--half-life-alyx::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--alyx-warn) 0 1.5rem,
+    var(--dossier-paper) 1.5rem 2rem,
+    var(--dossier-accent) 2rem 3.5rem,
+    var(--dossier-paper) 3.5rem 4rem
+  );
+  pointer-events: none;
+}
+
+/* Pistola de Alyx en el hueco entre texto y ficha técnica (solo ≥64rem) */
+.game-dossier--half-life-alyx::after {
+  content: "";
+  position: absolute;
+  top: 2rem;
+  right: calc(var(--dossier-padding) + 18rem);
+  display: none;
+  width: clamp(5rem, 10vw, 8rem);
+  aspect-ratio: 180 / 110;
+  background: var(--dossier-accent);
+  mask: url("/images/decor/alyx-pistol-silhouette.svg") center / contain
+    no-repeat;
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+@media (min-width: 64rem) {
+  .game-dossier--half-life-alyx::after {
+    display: block;
+  }
+}
+
+/* Emblema de la Alianza delante del rótulo */
+.game-dossier--half-life-alyx .game-dossier__label {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.game-dossier--half-life-alyx .game-dossier__label::before {
+  content: "";
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: currentColor;
+  mask: url("/images/decor/combine-main-symbol.svg") center / contain no-repeat;
+}
+
+.game-dossier--half-life-alyx .game-dossier__title {
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Sello: texto con subrayado, como un visado de campo */
+.game-dossier--half-life-alyx .game-dossier__stamp {
+  border: 0;
+  border-bottom: 2px solid currentColor;
+  color: var(--alyx-toxic);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  opacity: 0.95;
+  rotate: -2deg;
 }
 
 /* Enlace principal del dossier: una capa que cubre la carpeta entera, sin anidar enlaces.

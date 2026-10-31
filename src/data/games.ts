@@ -173,4 +173,23 @@ export const games: Game[] = [
       },
     ],
   },
+  {
+    id: "half-life-alyx",
+    slug: "alyx",
+    universeId: "half-life",
+    stageId: "source-2",
+    status: "released",
+    releaseYear: 2020,
+    developer: "Valve",
+    name: "Half-Life: Alyx",
+    description:
+      "Alyx Vance y su padre Eli investigan la Zona de Cuarentena de la Ciudad 17 para robar un arma de la Alianza antes de los eventos de Half-Life 2.",
+    sources: [
+      {
+        title: "Half-Life: Alyx - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life:_Alyx",
+        kind: "wiki",
+      },
+    ],
+  },
 ];

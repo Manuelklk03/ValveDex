@@ -9,7 +9,8 @@
 .game-theme--half-life-decay,
 .game-theme--half-life-2,
 .game-theme--half-life-2-episode-one,
-.game-theme--half-life-2-episode-two {
+.game-theme--half-life-2-episode-two,
+.game-theme--half-life-alyx {
   background-color: var(--background);
 }
 
@@ -108,4 +109,25 @@
   --muted: #a9b8ac;
   --accent: #7cc46f;
   color-scheme: dark;
+}
+
+/* Half-Life: Alyx: Zona de Cuarentena de City 17. Paleta de la Alianza (cian/azul),
+   tóxico (verde lima/amarillo) y acento Resistencia. Igual que su dossier, en oscuro. */
+.game-theme--half-life-alyx {
+  --background: #12171c;
+  --foreground: #e8ecf0;
+  --surface: #191f27;
+  --border: #2d3a47;
+  --muted: #8a9bb8;
+  --accent: #00d4ff;
+  --accent-toxic: #7ec84a;
+  --accent-warn: #ffcc00;
+  color-scheme: dark;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgb(0 212 255 / 0.02) 0 1px,
+      transparent 1px 5rem
+    ),
+    linear-gradient(180deg, transparent 55%, rgb(126 200 74 / 0.04));
 }
