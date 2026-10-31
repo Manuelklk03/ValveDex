@@ -674,265 +674,136 @@
   }
 }
 
-/* Decay: cooperativa PS2, informe de experimento Sector C (Materiales Anómalos).
-   Dual HUD: Gina periwinkle #a0a0c0 (RGB 160,160,192) / Colette coral #ff8040 (RGB 255,128,64).
-   Estética: documento técnico, monitor de test, acento dual con intención, sin ruido decorativo. */
+/* Decay: hoja de registro del laboratorio de Materiales Anómalos, firmada por las dos científicas.
+   Papel de calibración y los dos colores del HUD de la cooperativa: lavanda de Gina Cross y coral de
+   Colette Green (oscurecidos para que el texto pase AA sobre el papel) */
 .game-dossier--decay {
-  --dossier-paper: #0f1115;
-  --dossier-ink: #e8e8ec;
-  --dossier-muted: #6a6d7e;
-  --dossier-accent: #a0a0c0;
-  --dossier-accent-2: #ff8040;
-  --dossier-line: rgb(160 160 192 / 0.12);
-  --dossier-radius: 0;
-  border: 2px solid #1a1d26;
+  --dossier-paper: #e6e8ee;
+  --dossier-ink: #181b28;
+  --dossier-muted: #4a4f66;
+  --dossier-accent: #a8431a;
+  --dossier-line: rgb(24 27 40 / 0.16);
+  --decay-gina: #5a5a94;
+  --decay-colette: #c4521c;
   background-image:
-    linear-gradient(rgb(160 160 192 / 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(160 160 192 / 0.025) 1px, transparent 1px);
+    linear-gradient(rgb(90 90 148 / 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(90 90 148 / 0.1) 1px, transparent 1px),
+    linear-gradient(rgb(90 90 148 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(90 90 148 / 0.045) 1px, transparent 1px);
   background-size:
-    2.5rem 2.5rem,
-    2.5rem 2.5rem;
-  box-shadow:
-    0 24px 48px -24px rgb(0 0 0 / 0.8),
-    inset 0 0 0 1px rgb(160 160 192 / 0.06);
+    6rem 6rem,
+    6rem 6rem,
+    1.5rem 1.5rem,
+    1.5rem 1.5rem;
 }
 
+/* Banda de los dos jugadores: mitad Gina, mitad Colette */
 .game-dossier--decay::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #a0a0c0 50%, #ff8040 50%);
-  background-size: 8px 100%;
+  inset: 0 0 auto;
+  height: 6px;
+  background: linear-gradient(
+    90deg,
+    var(--decay-gina) 0 50%,
+    var(--decay-colette) 50%
+  );
+  pointer-events: none;
 }
 
-.game-dossier--decay .game-dossier__header {
-  border-bottom: 1px solid var(--dossier-line);
+/* Marca de registro de laboratorio en la esquina inferior */
+.game-dossier--decay::after {
+  content: "";
+  position: absolute;
+  right: 1.5rem;
+  bottom: 4.75rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 2px solid var(--decay-gina);
+  border-radius: 50%;
   background:
-    linear-gradient(135deg, rgb(160 160 192 / 0.04) 0%, transparent 50%),
-    linear-gradient(225deg, rgb(255 128 64 / 0.04) 0%, transparent 50%);
+    linear-gradient(var(--decay-gina), var(--decay-gina)) center / 2px 100%
+      no-repeat,
+    linear-gradient(var(--decay-gina), var(--decay-gina)) center / 100% 2px
+      no-repeat;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.game-dossier--decay .game-dossier__label {
+  color: var(--decay-gina);
 }
 
 .game-dossier--decay .game-dossier__stamp {
-  border: 1px solid var(--dossier-accent);
-  border-radius: 0;
   color: var(--dossier-accent);
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.625rem;
-  letter-spacing: 0.12em;
-  opacity: 0.8;
-  rotate: 0deg;
-  background: transparent;
+  rotate: -4deg;
 }
 
-.game-dossier--decay .game-dossier__specs {
-  padding-top: 2.5rem;
-  border-top: 1px dashed var(--dossier-line);
-}
-
-.game-dossier--decay .game-dossier__sector {
-  --sector-color: var(--dossier-accent);
-  border: 1px solid var(--dossier-line);
-  border-left: 3px solid var(--sector-color);
-  background:
-    linear-gradient(90deg, rgb(160 160 192 / 0.03) 0%, transparent 100%),
-    var(--dossier-paper);
-}
-
-.game-dossier--decay .game-dossier__sector:nth-child(odd) {
-  --sector-color: var(--dossier-accent-2);
-  border-left-color: var(--dossier-accent-2);
-  background:
-    linear-gradient(90deg, rgb(255 128 64 / 0.03) 0%, transparent 100%),
-    var(--dossier-paper);
-}
-
-.game-dossier--decay .game-dossier__sector--empty {
-  --sector-color: var(--dossier-muted);
-  border-left-color: var(--dossier-muted);
-  border-style: dashed;
-  border-left-style: solid;
-  background: var(--dossier-paper);
-}
-
-.game-dossier--decay .game-dossier__sector-link {
+/* Visado de las dos científicas en el pie, como en un informe de experimento */
+.game-dossier--decay .game-dossier__footer::before {
+  content: "Visado · Dra. G. Cross · Dra. C. Green" / "";
+  order: 3;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--dossier-ink);
   color: var(--dossier-ink);
+  font-style: italic;
 }
 
-.game-dossier--decay .game-dossier__sector-link:focus-visible {
-  outline-color: var(--dossier-accent);
-}
-
-.game-dossier--decay .game-dossier__sector-panel {
-  border: 1px solid var(--dossier-line);
-  border-top: 0;
-  background: var(--dossier-paper);
-  box-shadow:
-    0 16px 24px -16px rgb(0 0 0 / 0.6),
-    inset 0 0 0 1px rgb(160 160 192 / 0.04);
-}
-
-.game-dossier--decay .game-dossier__sector-entry {
-  border-color: var(--dossier-line);
-  background: linear-gradient(
-    90deg,
-    rgb(160 160 192 / 0.04) 0%,
-    transparent 100%
-  );
-}
-
-.game-dossier--decay .game-dossier__meter {
-  background: var(--dossier-line);
-}
-
-.game-dossier--decay .game-dossier__meter::-webkit-meter-optimum-value {
-  background: linear-gradient(
-    90deg,
-    var(--dossier-accent),
-    var(--dossier-accent-2)
-  );
-}
-
-.game-dossier--decay .game-dossier__meter::-moz-meter-bar {
-  background: linear-gradient(
-    90deg,
-    var(--dossier-accent),
-    var(--dossier-accent-2)
-  );
-}
-
-.game-dossier--decay .game-dossier__footer {
-  border-top: 1px dashed var(--dossier-line);
-  color: var(--dossier-muted);
-}
-
-.game-dossier--decay .game-dossier__barcode {
-  background: repeating-linear-gradient(
-    90deg,
-    var(--dossier-accent) 0 1px,
-    transparent 1px 2px,
-    var(--dossier-accent-2) 2px 3px,
-    transparent 3px 4px,
-    var(--dossier-accent) 4px 5px,
-    transparent 5px 8px
-  );
-  opacity: 0.5;
-}
-
-.game-dossier--decay .game-dossier__sources {
-  border-color: var(--dossier-accent);
-  color: var(--dossier-accent);
-}
-
-.game-dossier--decay .game-dossier__edge {
-  color: var(--dossier-accent-2);
-  opacity: 0.5;
-}
-
-.game-dossier--decay .game-dossier__cue {
-  border-color: var(--dossier-accent);
-  color: var(--dossier-ink);
-  background: linear-gradient(
-    90deg,
-    rgb(160 160 192 / 0.08) 0%,
-    rgb(255 128 64 / 0.08) 100%
-  );
-}
-
-.game-dossier:has(.game-dossier__open:hover)
-  .game-dossier--decay
-  .game-dossier__cue,
-.game-dossier:has(.game-dossier__open:focus-visible)
-  .game-dossier--decay
-  .game-dossier__cue {
-  box-shadow:
-    inset 0 0 0 1px var(--dossier-accent),
-    inset 0 0 0 2px var(--dossier-accent-2);
-}
-
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .game-dossier--decay:has(.game-dossier__open:hover) {
-    box-shadow:
-      0 36px 60px -28px rgb(0 0 0 / 0.9),
-      inset 0 0 0 1px var(--dossier-accent),
-      inset 0 0 60px -10px rgb(255 128 64 / 0.08);
-  }
-}
-
-/* Half-Life 2: aviso de la Protección Civil sobre el hormigón de la Ciudad 17.
-   Naranja del HUD y de la Resistencia (#ff9b21) como acento principal; cian de los paneles de la
-   Alianza (#6fb9c9) para el mobiliario del sistema; hormigón #182026. Las juntas del fondo son las
-   placas prefabricadas de los edificios de la ciudad. */
+/* Half-Life 2: cartel de la Resistencia pegado con cinta sobre el hormigón de la Ciudad 17.
+   Naranja del traje HEV, la λ pintada con espray y Ravenholm en el sello */
 .game-dossier--half-life-2 {
-  --dossier-paper: #1c252b;
-  --dossier-ink: #eef2f4;
-  --dossier-muted: #a4b2ba;
-  --dossier-accent: #ff9b21;
-  --dossier-accent-2: #6fb9c9;
-  --dossier-line: rgb(111 185 201 / 0.2);
-  --dossier-radius: 0;
-  border: 1px solid #3b4b55;
-  background-color: var(--dossier-paper);
+  --dossier-paper: #2a2e2b;
+  --dossier-ink: #ecebe4;
+  --dossier-muted: #b6b8ae;
+  --dossier-accent: #f28a1b;
+  --dossier-line: rgb(236 235 228 / 0.16);
+  margin-top: 0.75rem;
   background-image:
-    linear-gradient(90deg, rgb(255 255 255 / 0.03) 1px, transparent 1px),
-    linear-gradient(rgb(255 255 255 / 0.02) 1px, transparent 1px),
-    radial-gradient(ellipse at 88% 0%, rgb(111 185 201 / 0.1), transparent 55%);
-  background-size:
-    6rem 100%,
-    100% 5rem,
-    auto;
-  box-shadow:
-    0 24px 48px -24px rgb(0 0 0 / 0.85),
-    inset 0 1px 0 rgb(255 255 255 / 0.06),
-    inset 0 0 0 1px rgb(111 185 201 / 0.06);
+    radial-gradient(
+      ellipse at 18% 22%,
+      rgb(255 255 255 / 0.05),
+      transparent 45%
+    ),
+    radial-gradient(ellipse at 85% 80%, rgb(0 0 0 / 0.25), transparent 50%),
+    repeating-linear-gradient(
+      0deg,
+      rgb(255 255 255 / 0.015) 0 2px,
+      transparent 2px 5px
+    );
 }
 
-/* Barra segmentada del panel de la Alianza, como en la etapa Source */
+/* Dos trozos de cinta de embalar que sujetan el cartel */
 .game-dossier--half-life-2::before {
   content: "";
   position: absolute;
-  inset: 0 0 auto;
-  height: 4px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--dossier-accent) 0 2.5rem,
-    transparent 2.5rem 3rem
-  );
-  opacity: 0.85;
-}
-
-/* λ de la Resistencia: pintada a spray, sin el círculo del logotipo de Half-Life 1 */
-.game-dossier--half-life-2 .game-dossier__label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--dossier-accent-2);
-}
-
-.game-dossier--half-life-2 .game-dossier__label::before {
-  content: "";
-  flex: none;
-  width: 1.25rem;
+  z-index: 2;
+  top: -0.75rem;
+  right: 2rem;
+  left: 2rem;
   height: 1.5rem;
-  background-color: var(--dossier-accent);
-  mask: url("/images/decor/resistance-lambda.svg") center / contain no-repeat;
-  rotate: -6deg;
-  filter: drop-shadow(0 0 0.35rem rgb(255 155 33 / 0.6));
+  background:
+    linear-gradient(rgb(226 214 178 / 0.7), rgb(226 214 178 / 0.7)) left /
+      4.5rem 100% no-repeat,
+    linear-gradient(rgb(226 214 178 / 0.7), rgb(226 214 178 / 0.7)) right /
+      4.5rem 100% no-repeat;
+  pointer-events: none;
 }
 
-/* Monitor de la Alianza: líneas de barrido y el cian del sistema sobre la cabecera */
-.game-dossier--half-life-2 .game-dossier__header {
-  position: relative;
-  overflow: hidden;
-  border-bottom: 1px solid rgb(111 185 201 / 0.35);
-  background:
-    repeating-linear-gradient(
-      rgb(111 185 201 / 0.06) 0 1px,
-      transparent 1px 4px
-    ),
-    linear-gradient(135deg, rgb(111 185 201 / 0.12), transparent 60%);
+/* λ de la Resistencia pintada con espray: bordes difuminados y algo torcida */
+.game-dossier--half-life-2::after {
+  content: "";
+  position: absolute;
+  top: 1.5rem;
+  right: calc(var(--dossier-padding) + 19rem);
+  display: none;
+  width: clamp(8rem, 13vw, 11rem);
+  aspect-ratio: 1;
+  background: var(--dossier-accent);
+  filter: blur(1px) drop-shadow(0 0 6px var(--dossier-accent));
+  mask: url("/images/decor/resistance-lambda.svg") center / contain no-repeat;
+  opacity: 0.16;
+  pointer-events: none;
+  rotate: -8deg;
 }
 
 .game-dossier--half-life-2 .game-dossier__title {
@@ -940,701 +811,186 @@
   text-transform: uppercase;
 }
 
-.game-dossier--half-life-2 .game-dossier__summary {
-  text-wrap: pretty;
-}
-
-/* Cifras de la ficha técnica alineadas en columna */
-.game-dossier--half-life-2 .game-dossier__specs {
-  font-variant-numeric: tabular-nums;
-}
-
-/* El foco del enlace principal usa el naranja del dossier, no el acento del universo */
-.game-dossier--half-life-2 .game-dossier__open:focus-visible {
-  outline-color: var(--dossier-accent);
-}
-
+/* Sello sin marco, a espray, como las pintadas de los canales */
 .game-dossier--half-life-2 .game-dossier__stamp {
-  border: 2px solid currentColor;
-  background: transparent;
-  color: var(--dossier-accent);
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.6875rem;
-  letter-spacing: 0.16em;
-  outline: 1px solid currentColor;
-  outline-offset: 2px;
-  opacity: 0.85;
-  rotate: -2deg;
+  border: 0;
+  border-bottom: 3px solid currentColor;
+  color: #ff6b3d;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 6px rgb(255 107 61 / 0.6);
+  opacity: 0.9;
+  rotate: -5deg;
 }
 
-/* Cinta de obra alterna: el cian del sistema y el naranja de la Resistencia marcan el ritmo */
-.game-dossier--half-life-2 .game-dossier__sectors {
-  position: relative;
-  isolation: isolate;
-}
-
-/* «17» estarcido en el hueco del tablón, sin tapar ningún dato */
-.game-dossier--half-life-2 .game-dossier__sectors::after {
-  content: "17" / "";
-  position: absolute;
-  z-index: -1;
-  right: 0;
-  bottom: -0.5rem;
-  color: var(--dossier-accent);
-  font-family: var(--font-barlow-condensed), sans-serif;
-  font-size: clamp(5rem, 9vw, 7.5rem);
-  font-weight: 800;
-  line-height: 0.8;
-  opacity: 0.08;
-  pointer-events: none;
-}
-
-.game-dossier--half-life-2 .game-dossier__sector {
-  --sector-color: var(--dossier-accent-2);
-  border: 1px solid var(--dossier-line);
-  border-left: 3px solid var(--sector-color);
-  background:
-    linear-gradient(90deg, rgb(111 185 201 / 0.06) 0%, transparent 70%),
-    var(--dossier-paper);
-}
-
-.game-dossier--half-life-2 .game-dossier__sector:nth-child(even) {
-  --sector-color: var(--dossier-accent);
-  border-left-color: var(--dossier-accent);
-  background:
-    linear-gradient(90deg, rgb(255 155 33 / 0.06) 0%, transparent 70%),
-    var(--dossier-paper);
-}
-
-.game-dossier--half-life-2 .game-dossier__sector--empty {
-  --sector-color: var(--dossier-muted);
-  border-left-color: var(--dossier-muted);
-  border-style: dashed;
-  border-left-style: solid;
-  background: var(--dossier-paper);
-}
-
-.game-dossier--half-life-2 .game-dossier__sector-link {
-  color: var(--dossier-ink);
-}
-
-.game-dossier--half-life-2 .game-dossier__sector-link:focus-visible {
-  outline-color: var(--dossier-accent);
-}
-
-.game-dossier--half-life-2 .game-dossier__sector-panel {
-  border: 1px solid var(--dossier-line);
-  border-top: 0;
-  background:
-    repeating-linear-gradient(
-      rgb(111 185 201 / 0.04) 0 1px,
-      transparent 1px 4px
-    ),
-    var(--dossier-paper);
-}
-
-.game-dossier--half-life-2 .game-dossier__sector-entry {
-  border-color: var(--dossier-line);
-  background: linear-gradient(
-    90deg,
-    rgb(111 185 201 / 0.07) 0%,
-    transparent 100%
-  );
-}
-
-.game-dossier--half-life-2 .game-dossier__meter {
-  background: var(--dossier-line);
-}
-
-.game-dossier--half-life-2 .game-dossier__meter::-webkit-meter-optimum-value {
-  background: var(--dossier-accent);
-}
-
-.game-dossier--half-life-2 .game-dossier__meter::-moz-meter-bar {
-  background: var(--dossier-accent);
-}
-
-.game-dossier--half-life-2 .game-dossier__footer {
-  border-top: 1px dashed var(--dossier-line);
-  color: var(--dossier-muted);
-}
-
-.game-dossier--half-life-2 .game-dossier__barcode {
-  background: repeating-linear-gradient(
-    90deg,
-    var(--dossier-accent) 0 1px,
-    transparent 1px 2px,
-    var(--dossier-accent-2) 2px 3px,
-    transparent 3px 4px,
-    var(--dossier-accent) 4px 5px,
-    transparent 5px 8px
-  );
-  opacity: 0.6;
-}
-
-.game-dossier--half-life-2 .game-dossier__sources {
-  border-color: var(--dossier-accent);
-  color: var(--dossier-accent);
-}
-
-.game-dossier--half-life-2 .game-dossier__edge {
-  color: var(--dossier-accent-2);
-  opacity: 0.5;
-}
-
-.game-dossier--half-life-2 .game-dossier__cue {
-  border-color: var(--dossier-accent);
-  color: var(--dossier-accent);
-  background: linear-gradient(
-    90deg,
-    rgb(255 155 33 / 0.14) 0%,
-    rgb(255 155 33 / 0.03) 100%
-  );
-}
-
-.game-dossier--half-life-2 .game-dossier__cue-arrow {
-  color: var(--dossier-accent);
-}
-
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .game-dossier--half-life-2:has(.game-dossier__open:hover) {
-    box-shadow:
-      0 36px 60px -28px rgb(0 0 0 / 0.9),
-      inset 0 0 0 1px rgb(255 155 33 / 0.45),
-      0 0 60px -20px rgb(255 155 33 / 0.3);
-  }
-}
-
-/* Half-Life 2: Episode One - Archivo de rescate de la resistencia desde la Ciudadela.
-   Inspirado por la tecnología de la Alianza: cian tecnológico (#00ffff), gris oscuro metálico (#1e2a3a)
-   y naranja de la Resistencia (#ff9b21) como acentos. Fondos con patrones tecnológicos y paneles. */
+/* Episode One: directiva impresa por la Alianza dentro de la Ciudadela.
+   Placas de metal frío, esquinas cortadas, el emblema de la Alianza y el rojo del núcleo inestable */
 .game-dossier--half-life-2-episode-one {
-  --dossier-paper: #1e2a3a;
-  --dossier-ink: #e0e8ed;
-  --dossier-muted: #8a9ba8;
-  --dossier-accent: #ff9b21;
-  --dossier-accent-2: #00ffff;
-  --dossier-line: rgb(0 255 255 / 0.15);
-  --dossier-radius: 0;
-  border: 1px solid #3b5a6f;
-  background-color: var(--dossier-paper);
+  --dossier-paper: #1d232a;
+  --dossier-ink: #e3eaef;
+  --dossier-muted: #a6b3bd;
+  --dossier-accent: #8fd0e6;
+  --dossier-line: rgb(227 234 239 / 0.14);
+  --ep1-core: #ef5a4b;
+  --ep1-cut: 1.5rem;
   background-image:
-    linear-gradient(90deg, rgb(0 255 255 / 0.06) 1px, transparent 1px),
-    linear-gradient(rgb(0 255 255 / 0.03) 1px, transparent 1px),
-    radial-gradient(ellipse at 88% 0%, rgb(0 255 255 / 0.08), transparent 55%),
-    repeating-linear-gradient(
+    linear-gradient(
+      225deg,
+      var(--stage-bg, var(--background)) var(--ep1-cut),
+      transparent var(--ep1-cut)
+    ),
+    linear-gradient(
       45deg,
-      rgb(255 155 33 / 0.02) 0 2px,
-      transparent 2px 6px
-    );
-  background-size:
-    3rem 100%,
-    100% 3rem,
-    auto,
-    auto;
+      var(--stage-bg, var(--background)) var(--ep1-cut),
+      transparent var(--ep1-cut)
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0.03) 0 1px,
+      transparent 1px 5rem
+    ),
+    linear-gradient(rgb(143 208 230 / 0.06), transparent 30%);
   box-shadow:
-    0 24px 48px -24px rgb(0 0 0 / 0.9),
-    inset 0 1px 0 rgb(0 255 255 / 0.1),
-    inset 0 0 0 1px rgb(0 255 255 / 0.06);
+    0 24px 48px -24px rgb(0 0 0 / 0.7),
+    inset 0 1px 0 rgb(143 208 230 / 0.25);
 }
 
-/* Barra de energía de la Ciudadela */
+/* Aviso del núcleo inestable en el canto superior */
 .game-dossier--half-life-2-episode-one::before {
   content: "";
   position: absolute;
-  inset: 0 0 auto;
-  height: 4px;
-  background: linear-gradient(
+  top: 0;
+  right: calc(var(--ep1-cut) + 1rem);
+  left: 0;
+  height: 6px;
+  background: repeating-linear-gradient(
     90deg,
-    var(--dossier-accent) 0 60%,
-    var(--dossier-accent-2) 60% 100%
+    var(--ep1-core) 0 2.5rem,
+    transparent 2.5rem 3rem
   );
-  opacity: 0.95;
-  box-shadow: 0 0 8px var(--dossier-accent-2);
+  pointer-events: none;
 }
 
-/* Símbolo de la Alianza como etiqueta */
+/* La Ciudadela al fondo, detrás de la ficha técnica */
+.game-dossier--half-life-2-episode-one::after {
+  content: "";
+  position: absolute;
+  top: 1.5rem;
+  right: calc(var(--dossier-padding) + 20rem);
+  display: none;
+  width: 5rem;
+  height: 15rem;
+  background: var(--dossier-accent);
+  mask: url("/images/decor/citadel-silhouette.svg") center / contain no-repeat;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+/* La λ y la Ciudadela solo caben en el hueco entre el texto y la ficha técnica de pantallas anchas */
+@media (min-width: 64rem) {
+  .game-dossier--half-life-2::after,
+  .game-dossier--half-life-2-episode-one::after {
+    display: block;
+  }
+}
+
+/* Emblema de la Alianza delante del rótulo, impreso como un membrete */
 .game-dossier--half-life-2-episode-one .game-dossier__label {
-  display: inline-flex;
+  display: flex;
+  gap: 0.625rem;
   align-items: center;
-  gap: 0.5rem;
-  color: var(--dossier-accent-2);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 
 .game-dossier--half-life-2-episode-one .game-dossier__label::before {
   content: "";
-  flex: none;
-  width: 1.5rem;
-  height: 1.5rem;
-  background-image: url("/images/decor/combine-symbol.svg");
-  background-size: contain;
-  background-repeat: no-repeat;
-  filter: drop-shadow(0 0 0.5rem rgb(0 255 255 / 0.6));
-}
-
-/* Panel de control de la Ciudadela */
-.game-dossier--half-life-2-episode-one .game-dossier__header {
-  position: relative;
-  overflow: hidden;
-  border-bottom: 1px solid rgb(0 255 255 / 0.3);
-  background:
-    repeating-linear-gradient(rgb(0 255 255 / 0.08) 0 1px, transparent 1px 3px),
-    linear-gradient(135deg, rgb(0 255 255 / 0.12), transparent 65%);
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__header::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("/images/decor/citadel-silhouette.svg");
-  background-size: 300px;
-  background-position: right bottom;
-  background-repeat: no-repeat;
-  opacity: 0.08;
-  pointer-events: none;
+  flex-shrink: 0;
+  width: 1.375rem;
+  height: 1.375rem;
+  background: currentColor;
+  mask: url("/images/decor/combine-main-symbol.svg") center / contain no-repeat;
 }
 
 .game-dossier--half-life-2-episode-one .game-dossier__title {
-  letter-spacing: 0.02em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--dossier-accent);
 }
 
-.game-dossier--half-life-2-episode-one .game-dossier__summary {
-  text-wrap: pretty;
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__specs {
-  font-variant-numeric: tabular-nums;
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__open:focus-visible {
-  outline-color: var(--dossier-accent);
-}
-
-/* Sello de la Protección Civil de la Alianza */
+/* Sello mecánico: recto, sin tinta corrida */
 .game-dossier--half-life-2-episode-one .game-dossier__stamp {
-  border: 2px solid currentColor;
-  background: transparent;
-  color: var(--dossier-accent-2);
+  border: 1px solid currentColor;
+  color: var(--ep1-core);
   font-family: var(--font-plex-mono), monospace;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
+  font-weight: 500;
   letter-spacing: 0.14em;
-  opacity: 0.9;
-  rotate: -2deg;
-  box-shadow: 0 0 8px var(--dossier-accent-2);
+  opacity: 1;
+  rotate: 0deg;
 }
 
-.game-dossier--half-life-2-episode-one .game-dossier__sectors {
-  position: relative;
-  isolation: isolate;
-}
-
-/* "17" estarcido en el estilo de la Ciudadela */
-.game-dossier--half-life-2-episode-one .game-dossier__sectors::after {
-  content: "17" / "";
-  position: absolute;
-  z-index: -1;
-  right: 0;
-  bottom: -0.5rem;
-  color: var(--dossier-accent-2);
-  font-family: var(--font-barlow-condensed), sans-serif;
-  font-size: clamp(5rem, 9vw, 7.5rem);
-  font-weight: 800;
-  line-height: 0.8;
-  opacity: 0.05;
-  pointer-events: none;
-  filter: blur(0.5px);
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__sector {
-  --sector-color: var(--dossier-accent-2);
-  border: 1px solid var(--dossier-line);
-  border-left: 3px solid var(--sector-color);
-  background:
-    linear-gradient(90deg, rgb(0 255 255 / 0.06) 0%, transparent 70%),
-    var(--dossier-paper);
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__sector:nth-child(even) {
-  --sector-color: var(--dossier-accent);
-  border-left-color: var(--dossier-accent);
-  background:
-    linear-gradient(90deg, rgb(255 155 33 / 0.06) 0%, transparent 70%),
-    var(--dossier-paper);
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__sector--empty {
-  --sector-color: var(--dossier-muted);
-  border-left-color: var(--dossier-muted);
-  border-style: dashed;
-  border-left-style: solid;
-  background: var(--dossier-paper);
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__sector-link {
-  color: var(--dossier-ink);
-}
-
-.game-dossier--half-life-2-episode-one
-  .game-dossier__sector-link:focus-visible {
-  outline-color: var(--dossier-accent);
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__sector-panel {
-  border: 1px solid var(--dossier-line);
-  border-top: 0;
-  background:
-    repeating-linear-gradient(rgb(0 255 255 / 0.04) 0 1px, transparent 1px 3px),
-    var(--dossier-paper);
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__sector-entry {
-  border-color: var(--dossier-line);
-  background: linear-gradient(
-    90deg,
-    rgb(0 255 255 / 0.06) 0%,
-    transparent 100%
-  );
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__meter {
-  background: var(--dossier-line);
-}
-
-.game-dossier--half-life-2-episode-one
-  .game-dossier__meter::-webkit-meter-optimum-value {
-  background: linear-gradient(
-    90deg,
-    var(--dossier-accent),
-    var(--dossier-accent-2)
-  );
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__meter::-moz-meter-bar {
-  background: linear-gradient(
-    90deg,
-    var(--dossier-accent),
-    var(--dossier-accent-2)
-  );
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__footer {
-  border-top: 1px dashed var(--dossier-line);
-  color: var(--dossier-muted);
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__barcode {
-  background: repeating-linear-gradient(
-    90deg,
-    var(--dossier-accent) 0 1px,
-    transparent 1px 2px,
-    var(--dossier-accent-2) 2px 3px,
-    transparent 3px 4px,
-    var(--dossier-accent) 4px 5px,
-    transparent 5px 8px
-  );
-  opacity: 0.5;
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__sources {
-  border-color: var(--dossier-accent-2);
-  color: var(--dossier-accent-2);
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__edge {
-  color: var(--dossier-accent-2);
-  opacity: 0.5;
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__cue {
-  border-color: var(--dossier-accent);
-  color: var(--dossier-accent);
-  background: linear-gradient(
-    90deg,
-    rgb(255 155 33 / 0.12) 0%,
-    rgb(0 255 255 / 0.08) 50%,
-    rgb(255 155 33 / 0.03) 100%
-  );
-}
-
-.game-dossier--half-life-2-episode-one .game-dossier__cue-arrow {
-  color: var(--dossier-accent-2);
-}
-
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .game-dossier--half-life-2-episode-one:has(.game-dossier__open:hover) {
-    box-shadow:
-      0 36px 60px -28px rgb(0 0 0 / 0.95),
-      inset 0 0 0 1px rgb(0 255 255 / 0.3),
-      0 0 60px -20px rgb(0 255 255 / 0.3);
-  }
-}
-
-/* Half-Life 2: Episode Two - White Forest, hormigas león, Vortigaunts.
-   Tema de bosque postapocalíptico: verde bosque (#2e8b57), gris piedra (#4a5a6a),
-   amarillo de las hormigas león (#ffdd00) y energía azul de los Vortigaunts (#00ccff). */
-
-/* Silueta de un Hunter de los Combine */
-.game-dossier--half-life-2-episode-two .game-dossier__label::before {
-  content: "";
-  flex: none;
-  width: 1.5rem;
-  height: 1.5rem;
-  background-image: url("/images/decor/hunter-silhouette.svg");
-  background-size: contain;
-  background-repeat: no-repeat;
-  filter: drop-shadow(0 0 0.5rem rgb(255 221 0 / 0.6));
-}
-
+/* Episode Two: hoja de registro de la base de White Forest, sobre un mapa topográfico de las afueras.
+   Verde de la energía vortigaunt, ámbar de las hormigas león y la silueta de un Hunter */
 .game-dossier--half-life-2-episode-two {
-  --dossier-paper: #2a3a4a;
-  --dossier-ink: #e0e8ed;
-  --dossier-muted: #8a9ba8;
-  --dossier-accent: #ffdd00;
-  --dossier-accent-2: #00ccff;
-  --dossier-accent-3: #2e8b57;
-  --dossier-line: rgb(255 221 0 / 0.15);
-  --dossier-radius: 0;
-  border: 1px solid #4a5a6a;
-  background-color: var(--dossier-paper);
+  --dossier-paper: #ebe8db;
+  --dossier-ink: #18241c;
+  --dossier-muted: #4b5a4f;
+  --dossier-accent: #2c7533;
+  --dossier-line: rgb(24 36 28 / 0.16);
+  --ep2-antlion: #7d5508;
   background-image:
-    linear-gradient(90deg, rgb(255 221 0 / 0.04) 1px, transparent 1px),
-    linear-gradient(rgb(255 221 0 / 0.02) 1px, transparent 1px),
-    radial-gradient(ellipse at 85% 0%, rgb(255 221 0 / 0.06), transparent 50%),
-    repeating-linear-gradient(
-      45deg,
-      rgb(46 139 87 / 0.04) 0 4px,
-      transparent 4px 10px
+    radial-gradient(circle at 0 0, rgb(44 117 51 / 0.14), transparent 18rem),
+    repeating-radial-gradient(
+      ellipse at 78% 115%,
+      transparent 0 1.6rem,
+      rgb(24 36 28 / 0.07) 1.6rem calc(1.6rem + 1px)
     );
-  background-size:
-    4rem 100%,
-    100% 4rem,
-    auto,
-    auto;
-  box-shadow:
-    0 24px 48px -24px rgb(0 0 0 / 0.9),
-    inset 0 1px 0 rgb(255 221 0 / 0.06),
-    inset 0 0 0 1px rgb(0 204 255 / 0.06);
+  border-left: 8px solid var(--dossier-accent);
 }
 
+/* Marcas de la cinta ámbar en el canto, como las balizas de la ruta de White Forest */
 .game-dossier--half-life-2-episode-two::before {
   content: "";
   position: absolute;
-  inset: 0 0 auto;
-  height: 4px;
-  background: linear-gradient(
-    90deg,
-    var(--dossier-accent) 0 50%,
-    var(--dossier-accent-2) 50% 100%
-  );
-  opacity: 0.95;
-  box-shadow: 0 0 8px var(--dossier-accent);
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--dossier-accent-2);
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__header {
-  position: relative;
-  overflow: hidden;
-  border-bottom: 1px solid rgb(255 221 0 / 0.25);
-  background:
-    repeating-linear-gradient(rgb(0 204 255 / 0.08) 0 1px, transparent 1px 3px),
-    linear-gradient(135deg, rgb(46 139 87 / 0.12), transparent 65%);
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__header::after {
-  content: "";
-  position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
   bottom: 0;
-  background-image: url("/images/decor/white-forest-silhouette.svg");
-  background-size: 300px;
-  background-position: right bottom;
-  background-repeat: no-repeat;
-  opacity: 0.08;
+  left: -8px;
+  width: 8px;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0 3rem,
+    var(--ep2-antlion) 3rem 3.75rem
+  );
   pointer-events: none;
 }
 
-.game-dossier--half-life-2-episode-two .game-dossier__title {
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--dossier-accent);
+/* Hunter de la Alianza, la amenaza del camino */
+.game-dossier--half-life-2-episode-two::after {
+  content: "";
+  position: absolute;
+  right: clamp(1rem, 4vw, 3rem);
+  bottom: 4rem;
+  width: clamp(7rem, 13vw, 10rem);
+  aspect-ratio: 120 / 110;
+  background: var(--dossier-ink);
+  mask: url("/images/decor/hunter-silhouette.svg") center / contain no-repeat;
+  opacity: 0.1;
+  pointer-events: none;
 }
 
-.game-dossier--half-life-2-episode-two .game-dossier__specs {
-  font-variant-numeric: tabular-nums;
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__open:focus-visible {
-  outline-color: var(--dossier-accent);
+/* En pantallas estrechas el pie se parte en varias líneas y estas marcas taparían el texto */
+@media (max-width: 63.99rem) {
+  .game-dossier--decay::after,
+  .game-dossier--half-life-2-episode-two::after {
+    display: none;
+  }
 }
 
 .game-dossier--half-life-2-episode-two .game-dossier__stamp {
   border: 2px solid currentColor;
-  background: transparent;
-  color: var(--dossier-accent-2);
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
-  opacity: 0.9;
-  rotate: -2deg;
-  box-shadow: 0 0 8px var(--dossier-accent-2);
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__sectors {
-  position: relative;
-  isolation: isolate;
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__sectors::after {
-  content: "VF" / "";
-  position: absolute;
-  z-index: -1;
-  right: 0;
-  bottom: -0.5rem;
-  color: var(--dossier-accent-3);
-  font-family: var(--font-barlow-condensed), sans-serif;
-  font-size: clamp(5rem, 9vw, 7.5rem);
-  font-weight: 800;
-  line-height: 0.8;
-  opacity: 0.05;
-  pointer-events: none;
-  filter: blur(0.5px);
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__sector {
-  --sector-color: var(--dossier-accent-3);
-  border: 1px solid var(--dossier-line);
-  border-left: 3px solid var(--sector-color);
-  background:
-    linear-gradient(90deg, rgb(0 204 255 / 0.06) 0%, transparent 70%),
-    var(--dossier-paper);
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__sector:nth-child(even) {
-  --sector-color: var(--dossier-accent);
-  border-left-color: var(--dossier-accent);
-  background:
-    linear-gradient(90deg, rgb(255 221 0 / 0.06) 0%, transparent 70%),
-    var(--dossier-paper);
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__sector--empty {
-  --sector-color: var(--dossier-muted);
-  border-left-color: var(--dossier-muted);
-  border-style: dashed;
-  border-left-style: solid;
-  background: var(--dossier-paper);
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__sector-link {
-  color: var(--dossier-ink);
-}
-
-.game-dossier--half-life-2-episode-two
-  .game-dossier__sector-link:focus-visible {
-  outline-color: var(--dossier-accent);
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__sector-panel {
-  border: 1px solid var(--dossier-line);
-  border-top: 0;
-  background:
-    repeating-linear-gradient(rgb(0 204 255 / 0.04) 0 1px, transparent 1px 3px),
-    var(--dossier-paper);
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__sector-entry {
-  border-color: var(--dossier-line);
-  background: linear-gradient(
-    90deg,
-    rgb(0 204 255 / 0.06) 0%,
-    transparent 100%
-  );
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__meter {
-  background: var(--dossier-line);
-}
-
-.game-dossier--half-life-2-episode-two
-  .game-dossier__meter::-webkit-meter-optimum-value {
-  background: linear-gradient(
-    90deg,
-    var(--dossier-accent),
-    var(--dossier-accent-2)
-  );
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__meter::-moz-meter-bar {
-  background: linear-gradient(
-    90deg,
-    var(--dossier-accent),
-    var(--dossier-accent-2)
-  );
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__footer {
-  border-top: 1px dashed var(--dossier-line);
-  color: var(--dossier-muted);
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__barcode {
-  background: repeating-linear-gradient(
-    90deg,
-    var(--dossier-accent) 0 1px,
-    transparent 1px 2px,
-    var(--dossier-accent-2) 2px 3px,
-    transparent 3px 4px,
-    var(--dossier-accent) 4px 5px,
-    transparent 5px 8px
-  );
-  opacity: 0.5;
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__sources {
-  border-color: var(--dossier-accent-2);
-  color: var(--dossier-accent-2);
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__edge {
-  color: var(--dossier-accent-2);
-  opacity: 0.5;
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__cue {
-  border-color: var(--dossier-accent);
-  color: var(--dossier-accent);
-  background: linear-gradient(
-    90deg,
-    rgb(255 221 0 / 0.12) 0%,
-    rgb(0 204 255 / 0.08) 50%,
-    rgb(255 221 0 / 0.03) 100%
-  );
-}
-
-.game-dossier--half-life-2-episode-two .game-dossier__cue-arrow {
-  color: var(--dossier-accent-2);
-}
-
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .game-dossier--half-life-2-episode-two:has(.game-dossier__open:hover) {
-    box-shadow:
-      0 36px 60px -28px rgb(0 0 0 / 0.95),
-      inset 0 0 0 1px rgb(0 204 255 / 0.3),
-      0 0 60px -20px rgb(0 204 255 / 0.3);
-  }
+  border-radius: 999px;
+  color: var(--ep2-antlion);
+  rotate: -3deg;
 }
 
 /* Enlace principal del dossier: una capa que cubre la carpeta entera, sin anidar enlaces.
