@@ -1,7 +1,13 @@
 // Material y rótulos del dossier de cada juego; un juego sin entrada usa el dossier base
 export type DossierLook = {
   variant:
-    "half-life" | "opposing-force" | "blue-shift" | "decay" | "half-life-2" | "half-life-2-episode-one" | "half-life-2-episode-two";
+    | "half-life"
+    | "opposing-force"
+    | "blue-shift"
+    | "decay"
+    | "half-life-2"
+    | "half-life-2-episode-one"
+    | "half-life-2-episode-two";
   label: string;
   stamp: string;
   edge: string;

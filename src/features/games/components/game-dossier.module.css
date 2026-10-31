@@ -1178,10 +1178,7 @@
   overflow: hidden;
   border-bottom: 1px solid rgb(0 255 255 / 0.3);
   background:
-    repeating-linear-gradient(
-      rgb(0 255 255 / 0.08) 0 1px,
-      transparent 1px 3px
-    ),
+    repeating-linear-gradient(rgb(0 255 255 / 0.08) 0 1px, transparent 1px 3px),
     linear-gradient(135deg, rgb(0 255 255 / 0.12), transparent 65%);
 }
 
@@ -1282,7 +1279,8 @@
   color: var(--dossier-ink);
 }
 
-.game-dossier--half-life-2-episode-one .game-dossier__sector-link:focus-visible {
+.game-dossier--half-life-2-episode-one
+  .game-dossier__sector-link:focus-visible {
   outline-color: var(--dossier-accent);
 }
 
@@ -1290,10 +1288,7 @@
   border: 1px solid var(--dossier-line);
   border-top: 0;
   background:
-    repeating-linear-gradient(
-      rgb(0 255 255 / 0.04) 0 1px,
-      transparent 1px 3px
-    ),
+    repeating-linear-gradient(rgb(0 255 255 / 0.04) 0 1px, transparent 1px 3px),
     var(--dossier-paper);
 }
 
@@ -1310,7 +1305,8 @@
   background: var(--dossier-line);
 }
 
-.game-dossier--half-life-2-episode-one .game-dossier__meter::-webkit-meter-optimum-value {
+.game-dossier--half-life-2-episode-one
+  .game-dossier__meter::-webkit-meter-optimum-value {
   background: linear-gradient(
     90deg,
     var(--dossier-accent),
@@ -1451,10 +1447,7 @@
   overflow: hidden;
   border-bottom: 1px solid rgb(255 221 0 / 0.25);
   background:
-    repeating-linear-gradient(
-      rgb(0 204 255 / 0.08) 0 1px,
-      transparent 1px 3px
-    ),
+    repeating-linear-gradient(rgb(0 204 255 / 0.08) 0 1px, transparent 1px 3px),
     linear-gradient(135deg, rgb(46 139 87 / 0.12), transparent 65%);
 }
 
@@ -1549,7 +1542,8 @@
   color: var(--dossier-ink);
 }
 
-.game-dossier--half-life-2-episode-two .game-dossier__sector-link:focus-visible {
+.game-dossier--half-life-2-episode-two
+  .game-dossier__sector-link:focus-visible {
   outline-color: var(--dossier-accent);
 }
 
@@ -1557,10 +1551,7 @@
   border: 1px solid var(--dossier-line);
   border-top: 0;
   background:
-    repeating-linear-gradient(
-      rgb(0 204 255 / 0.04) 0 1px,
-      transparent 1px 3px
-    ),
+    repeating-linear-gradient(rgb(0 204 255 / 0.04) 0 1px, transparent 1px 3px),
     var(--dossier-paper);
 }
 
@@ -1577,7 +1568,8 @@
   background: var(--dossier-line);
 }
 
-.game-dossier--half-life-2-episode-two .game-dossier__meter::-webkit-meter-optimum-value {
+.game-dossier--half-life-2-episode-two
+  .game-dossier__meter::-webkit-meter-optimum-value {
   background: linear-gradient(
     90deg,
     var(--dossier-accent),

@@ -11,20 +11,6 @@ import {
   halfLifeDecayCharacters,
   halfLifeDecayExtras,
 } from "./half-life-decay";
-import {
-  halfLife2Chapters,
-  halfLife2Weapons,
-  halfLife2Characters,
-  halfLife2Enemies,
-  halfLife2Extras,
-} from "./half-life-2-content";
-import {
-  halfLife2EpisodeTwoChapters,
-  halfLife2EpisodeTwoWeapons,
-  halfLife2EpisodeTwoCharacters,
-  halfLife2EpisodeTwoEnemies,
-  halfLife2EpisodeTwoExtras,
-} from "./half-life-2-episode-two-content";
 import { expansionAppearances } from "./expansion-appearances";
 
 const baseEntries: Entry[] = [
@@ -38,16 +24,6 @@ const baseEntries: Entry[] = [
   ...halfLifeDecayChapters,
   ...halfLifeDecayCharacters,
   ...halfLifeDecayExtras,
-  ...halfLife2Chapters,
-  ...halfLife2Weapons,
-  ...halfLife2Characters,
-  ...halfLife2Enemies,
-  ...halfLife2Extras,
-  ...halfLife2EpisodeTwoChapters,
-  ...halfLife2EpisodeTwoWeapons,
-  ...halfLife2EpisodeTwoCharacters,
-  ...halfLife2EpisodeTwoEnemies,
-  ...halfLife2EpisodeTwoExtras,
   {
     id: "goldsrc-engine",
     slug: "motor-goldsrc",

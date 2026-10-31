@@ -145,7 +145,7 @@ export const games: Game[] = [
     developer: "Valve",
     name: "Half-Life 2: Episode One",
     description:
-      "Continuación de Half-Life 2. Gordon Freeman y Alyx Vance luchan por escapar de la Ciudad 17 tras la apertura de la grieta.",
+      "Continuación directa de Half-Life 2: Gordon Freeman y Alyx Vance vuelven a entrar en la Ciudadela, cuyo núcleo está a punto de estallar, para huir después de la Ciudad 17.",
     sources: [
       {
         title: "Half-Life 2: Episode One - Combine OverWiki",
@@ -164,7 +164,7 @@ export const games: Game[] = [
     developer: "Valve",
     name: "Half-Life 2: Episode Two",
     description:
-      "Gordon Freeman y Alyx Vance viajan a White Forest, una base de la Resistencia en las montañas, para detener la Alianza de transmitir una señal de alerta a la Tierra.",
+      "Gordon Freeman y Alyx Vance cruzan las afueras de la Ciudad 17 hacia White Forest, una base de la Resistencia, con los datos robados de la Ciudadela para cerrar el superportal de la Alianza.",
     sources: [
       {
         title: "Half-Life 2: Episode Two - Combine OverWiki",

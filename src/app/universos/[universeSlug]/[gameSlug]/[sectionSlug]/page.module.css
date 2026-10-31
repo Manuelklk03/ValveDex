@@ -6,8 +6,6 @@
   max-width: var(--content-width);
   margin-inline: auto;
   padding: 3rem 1rem;
-  background-color: var(--background);
-  color: var(--foreground);
 }
 
 .section-page__entries {
@@ -100,73 +98,4 @@
 
 .section-page__source-link:hover {
   color: var(--accent);
-}
-
-/* Temas específicos por juego - sobreescritura de variables CSS globales */
-.section-page--half-life {
-  --background: #ece9e2;
-  --foreground: #1d1b18;
-  --surface: #e3e0d6;
-  --border: rgb(29 27 24 / 0.16);
-  --muted: #5c574f;
-  --accent: #a8430c;
-}
-
-/* Half-Life 2: tema de Ciudad 17 */
-.section-page--half-life-2 {
-  --background: #1c252b;
-  --foreground: #eef2f4;
-  --surface: #25303a;
-  --border: rgb(111 185 201 / 0.2);
-  --muted: #a4b2ba;
-  --accent: #ff9b21;
-}
-
-/* Half-Life 2: Episode One - tema de interior Ciudadela */
-.section-page--half-life-2-episode-one {
-  --background: #25303a;
-  --foreground: #e0e8ed;
-  --surface: #2c3a47;
-  --border: rgb(0 255 255 / 0.15);
-  --muted: #8a9ba8;
-  --accent: #ff9b21;
-}
-
-/* Half-Life 2: Episode Two - tema de White Forest */
-.section-page--half-life-2-episode-two {
-  --background: #2a3a4a;
-  --foreground: #e0e8ed;
-  --surface: #3a4a5a;
-  --border: rgb(255 221 0 / 0.15);
-  --muted: #8a9ba8;
-  --accent: #ffdd00;
-  --accent-2: #00ccff;
-}
-
-/* Otros temas */
-.section-page--opposing-force {
-  --background: #2f3a24;
-  --foreground: #e8ecd9;
-  --surface: #3b4a33;
-  --border: rgb(232 236 217 / 0.16);
-  --muted: #b9c2a4;
-  --accent: #9bd23c;
-}
-
-.section-page--blue-shift {
-  --background: #f4f6fa;
-  --foreground: #14213d;
-  --surface: #e9eef5;
-  --border: rgb(20 33 61 / 0.16);
-  --muted: #4a5878;
-  --accent: #3d3de0;
-}
-
-.section-page--decay {
-  --background: #0f1115;
-  --foreground: #e8e8ec;
-  --surface: #1a1d26;
-  --border: rgb(160 160 192 / 0.12);
-  --muted: #6a6d7e;
-  --accent: #a0a0c0;
 }
