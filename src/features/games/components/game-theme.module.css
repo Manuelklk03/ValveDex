@@ -47,67 +47,65 @@
   background-image: none;
 }
 
-/* Decay: cooperativa PS2, dos científicas (Gina Cross y Colette Green).
-   HUD Gina: RGB(160,160,192) periwinkle apagado / HUD Colette: RGB(255,128,64) coral.
-   Estética: sala de control / monitor de test, fondo técnico neutro, acento dual sutil. */
+/* Temas del hub, los apartados y las fichas de la etapa Source y de Decay: misma paleta que su dossier,
+   en oscuro para enlazar con la cabecera y el pie negros */
+
+/* Decay: lavanda de Gina Cross y coral de Colette Green sobre la rejilla del laboratorio */
 .game-theme--half-life-decay {
-  --background: #0f1115;
-  --foreground: #e8e8ec;
-  --surface: #161a20;
-  --border: #2a2f3d;
-  --muted: #8a8d9e;
-  --accent: #a0a0c0;
-  --accent-secondary: #ff8040;
+  --background: #12141c;
+  --foreground: #e8e9f0;
+  --surface: #1a1d28;
+  --border: #2c3042;
+  --muted: #a3a7bd;
+  --accent: #ff8a4c;
   color-scheme: dark;
   background-image:
-    linear-gradient(rgb(160 160 192 / 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(160 160 192 / 0.03) 1px, transparent 1px);
+    linear-gradient(rgb(160 160 192 / 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(160 160 192 / 0.04) 1px, transparent 1px);
   background-size:
-    3rem 3rem,
-    3rem 3rem;
+    1.5rem 1.5rem,
+    1.5rem 1.5rem;
 }
 
-/* Half-Life 2: hormigón de la Ciudad 17, con el naranja del HUD y de la Resistencia como acento
-   principal y el cian de los paneles de la Alianza como secundario. Los paneles prefabricados del
-   fondo son la junta de las placas de hormigón de los edificios de la ciudad, no una rejilla decorativa. */
+/* Half-Life 2: hormigón de la Ciudad 17 y el naranja del traje HEV */
 .game-theme--half-life-2 {
-  --background: #141a1e;
-  --foreground: #eef2f4;
-  --surface: #1b2328;
-  --border: #33424a;
-  --muted: #a4b2ba;
-  --accent: #ff9b21;
+  --background: #1b1f1d;
+  --foreground: #ecebe4;
+  --surface: #252a27;
+  --border: #3a403c;
+  --muted: #b6b8ae;
+  --accent: #f28a1b;
   color-scheme: dark;
-  background-image:
-    linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
-  background-size:
-    100% 5rem,
-    6rem 100%;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgb(255 255 255 / 0.015) 0 2px,
+    transparent 2px 5px
+  );
 }
 
-.game-theme--half-life-2 :where(h1, h2) {
-  letter-spacing: 0.01em;
-}
-
-/* Episode One y Episode Two: provisionales hasta el rediseño de sus dossiers; la página de juego,
-   los apartados y las fichas toman el tema de aquí y no de copias en cada página */
+/* Episode One: placas de metal de la Ciudadela y el azul pálido de la Alianza */
 .game-theme--half-life-2-episode-one {
-  --background: #1c242b;
-  --foreground: #e0e8ed;
-  --surface: #25303a;
-  --border: #36464f;
-  --muted: #a7b6c0;
-  --accent: #ff9b21;
+  --background: #151a20;
+  --foreground: #e3eaef;
+  --surface: #1d232a;
+  --border: #323c46;
+  --muted: #a6b3bd;
+  --accent: #8fd0e6;
   color-scheme: dark;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgb(255 255 255 / 0.025) 0 1px,
+    transparent 1px 5rem
+  );
 }
 
+/* Episode Two: bosque de White Forest y el verde de la energía vortigaunt */
 .game-theme--half-life-2-episode-two {
-  --background: #1e2a30;
-  --foreground: #e6ece8;
-  --surface: #27363c;
-  --border: #3a4c52;
-  --muted: #a9bab4;
-  --accent: #f2c14e;
+  --background: #141d17;
+  --foreground: #e8ece4;
+  --surface: #1d2a21;
+  --border: #33443a;
+  --muted: #a9b8ac;
+  --accent: #7cc46f;
   color-scheme: dark;
 }

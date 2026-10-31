@@ -3,7 +3,7 @@ import type { MediaAsset } from "@/domain/media-asset";
 // Imágenes decorativas de la interfaz: no pertenecen a ninguna ficha, pero se acreditan en /creditos
 export const decorImages: { image: MediaAsset; usedIn: string }[] = [
   {
-    usedIn: "Universo Half-Life · etapa Source 2",
+    usedIn: "Universo Half-Life · etapa Source 2 y dossier de Episode One",
     image: {
       src: "/images/decor/combine-main-symbol.svg",
       alt: "Emblema principal de la Alianza",
