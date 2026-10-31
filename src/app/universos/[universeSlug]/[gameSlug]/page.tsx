@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SectorSign } from "@/features/games/components/sector-sign";
 import { getSectionStatuses } from "@/features/games/get-section-statuses";
-import { getGameTheme } from "@/features/games/get-game-theme";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { getGameYearLabel } from "@/features/games/get-game-year-label";
 import {
@@ -55,19 +54,14 @@ export default async function GamePage({
 
   const { universe, game } = result;
   const statuses = getSectionStatuses(game.id);
-  const gameTheme = getGameTheme(game.id);
 
   const baseGame = game.baseGameId ? getGameById(game.baseGameId) : undefined;
   const mods = getModsByGame(game.id);
   const cancelledGames = getCancelledGamesByGame(game.id);
   const availableCount = statuses.filter((status) => status.isAvailable).length;
 
-  const gamePageClassName = gameTheme
-    ? `${styles["game-page"]} ${styles[`game-page--${gameTheme.variant}`]}`
-    : styles["game-page"];
-
   return (
-    <main className={gamePageClassName}>
+    <main className={styles["game-page"]}>
       <Breadcrumb
         items={[
           { label: "Universos", href: "/universos" },

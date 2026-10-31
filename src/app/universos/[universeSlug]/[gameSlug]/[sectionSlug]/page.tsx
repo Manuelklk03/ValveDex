@@ -10,7 +10,6 @@ import {
   getEntrySummaryForGame,
 } from "@/features/catalog/get-entries";
 import { getGameLore } from "@/features/games/get-game-lore";
-import { getGameTheme } from "@/features/games/get-game-theme";
 import {
   getGameSectionBySlug,
   getGameSections,
@@ -58,19 +57,17 @@ function getSectionPageData(
     return undefined;
   }
 
-  const gameTheme = getGameTheme(result.game.id);
-
   if (!isEntryCategory(section.id)) {
     const lore = getGameLore(result.game.id);
 
     return lore
-      ? { ...result, section, gameTheme, kind: "lore" as const, lore }
+      ? { ...result, section, kind: "lore" as const, lore }
       : undefined;
   }
 
   const entries = getEntriesByGameAndCategory(result.game.id, section.id);
 
-  return { ...result, section, gameTheme, kind: "entries" as const, entries };
+  return { ...result, section, kind: "entries" as const, entries };
 }
 
 export async function generateMetadata({
@@ -98,14 +95,10 @@ export default async function SectionPage({
     notFound();
   }
 
-  const { universe, game, section, gameTheme } = data;
-
-  const sectionClassName = gameTheme
-    ? `${styles["section-page"]} ${styles[`section-page--${gameTheme.variant}`]}`
-    : styles["section-page"];
+  const { universe, game, section } = data;
 
   return (
-    <main className={sectionClassName}>
+    <main className={styles["section-page"]}>
       <Breadcrumb
         items={[
           { label: "Universos", href: "/universos" },

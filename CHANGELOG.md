@@ -8,6 +8,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Corregido
 
+- Las páginas de juego y de apartado de Decay, Half-Life 2, Episode One y Episode Two ya no muestran la columna con un color y los laterales con otro: el tema de cada juego se define en un solo sitio.
+- Retiradas las fichas y el lore de Half-Life 2 y Episode Two (y el lore de Episode One), que tenían datos sin fuente y spoilers visibles; se rehará con fuentes.
 - Las imágenes del comparador se ven más nítidas: capturas más grandes, sin pérdida y servidas sin recomprimir. Al marine de la HECU original ya no le tapa la cara el arma.
 - El comparador original/HD dejaba ver el original a través de las zonas transparentes de la imagen HD; ahora cada versión solo se pinta en su lado.
 - En el comparador, llevar el control hacia una etiqueta muestra ahora esa versión (antes mostraba la contraria).

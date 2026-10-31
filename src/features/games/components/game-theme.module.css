@@ -7,7 +7,9 @@
 .game-theme--half-life-opposing-force,
 .game-theme--half-life-blue-shift,
 .game-theme--half-life-decay,
-.game-theme--half-life-2 {
+.game-theme--half-life-2,
+.game-theme--half-life-2-episode-one,
+.game-theme--half-life-2-episode-two {
   background-color: var(--background);
 }
 
@@ -86,4 +88,26 @@
 
 .game-theme--half-life-2 :where(h1, h2) {
   letter-spacing: 0.01em;
+}
+
+/* Episode One y Episode Two: provisionales hasta el rediseño de sus dossiers; la página de juego,
+   los apartados y las fichas toman el tema de aquí y no de copias en cada página */
+.game-theme--half-life-2-episode-one {
+  --background: #1c242b;
+  --foreground: #e0e8ed;
+  --surface: #25303a;
+  --border: #36464f;
+  --muted: #a7b6c0;
+  --accent: #ff9b21;
+  color-scheme: dark;
+}
+
+.game-theme--half-life-2-episode-two {
+  --background: #1e2a30;
+  --foreground: #e6ece8;
+  --surface: #27363c;
+  --border: #3a4c52;
+  --muted: #a9bab4;
+  --accent: #f2c14e;
+  color-scheme: dark;
 }
