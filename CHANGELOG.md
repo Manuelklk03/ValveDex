@@ -6,6 +6,10 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+### Cambiado
+
+- Nuevos dossiers de Half-Life: Decay, Half-Life 2, Episode One y Episode Two en el universo Half-Life, cada uno con su material propio, y la misma paleta en su hub, apartados y fichas.
+
 ### Corregido
 
 - Las páginas de juego y de apartado de Decay, Half-Life 2, Episode One y Episode Two ya no muestran la columna con un color y los laterales con otro: el tema de cada juego se define en un solo sitio.
