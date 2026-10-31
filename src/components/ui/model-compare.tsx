@@ -1,8 +1,16 @@
 "use client";
 
 import { Bounds, Center, OrbitControls, useGLTF } from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Suspense, useRef, type ComponentRef, type KeyboardEvent } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import {
+  Component,
+  Suspense,
+  useEffect,
+  useRef,
+  type ComponentRef,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
 import type { Group } from "three";
 import styles from "./image-compare.module.css";
 
@@ -20,13 +28,18 @@ function Models({ before, after, position }: Omit<ModelCompareProps, "label">) {
   const afterRef = useRef<Group>(null);
   const { scene: beforeScene } = useGLTF(before);
   const { scene: afterScene } = useGLTF(after);
+  const invalidate = useThree((state) => state.invalidate);
+
+  // El lienzo solo se repinta al girar (OrbitControls) o al mover la cortina
+  useEffect(() => invalidate(), [position, invalidate]);
 
   useFrame(({ gl, scene, camera, size }) => {
     if (!beforeRef.current || !afterRef.current) return;
     const split = Math.round((size.width * position) / 100);
     gl.autoClear = false;
-    gl.setScissorTest(true);
+    gl.setScissorTest(false);
     gl.clear();
+    gl.setScissorTest(true);
     for (const [visible, x, width] of [
       [beforeRef.current, 0, split],
       [afterRef.current, split, size.width - split],
@@ -56,6 +69,28 @@ function Models({ before, after, position }: Omit<ModelCompareProps, "label">) {
   );
 }
 
+// Si un modelo no se descarga o no se puede leer, el visor lo dice en vez de quedarse vacío
+class ModelError extends Component<
+  { children: ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  render() {
+    return this.state.failed ? (
+      <p className={styles["image-compare__loading"]}>
+        No se pudo cargar el modelo 3D. Vuelve a las capturas.
+      </p>
+    ) : (
+      this.props.children
+    );
+  }
+}
+
 export default function ModelCompare({
   before,
   after,
@@ -83,23 +118,25 @@ export default function ModelCompare({
   return (
     <div
       className={`${styles["image-compare__frame"]} ${styles["image-compare__frame--3d"]}`}
-      role="img"
+      role="application"
       aria-label={label}
       tabIndex={0}
       onKeyDown={handleKeyDown}
     >
-      <Canvas
-        camera={{ fov: 30, position: [2, 1.2, 3] }}
-        dpr={[1, 2]}
-        frameloop="always"
-      >
-        <hemisphereLight args={["#ffffff", "#3a3328", 2.2]} />
-        <directionalLight position={[3, 5, 4]} intensity={1.6} />
-        <Suspense fallback={null}>
-          <Models before={before} after={after} position={position} />
-        </Suspense>
-        <OrbitControls ref={controls} makeDefault enablePan={false} />
-      </Canvas>
+      <ModelError>
+        <Canvas
+          camera={{ fov: 30, position: [2, 1.2, 3] }}
+          dpr={[1, 2]}
+          frameloop="demand"
+        >
+          <hemisphereLight args={["#ffffff", "#3a3328", 2.2]} />
+          <directionalLight position={[3, 5, 4]} intensity={1.6} />
+          <Suspense fallback={null}>
+            <Models before={before} after={after} position={position} />
+          </Suspense>
+          <OrbitControls ref={controls} makeDefault enablePan={false} />
+        </Canvas>
+      </ModelError>
       <span
         className={styles["image-compare__divider"]}
         style={{ left: `${position}%` }}
