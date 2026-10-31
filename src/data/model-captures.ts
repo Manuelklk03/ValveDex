@@ -36,5 +36,16 @@ function capture(
 }
 
 export function halfLifeModelImages(model: ModelCapture): EntryImages {
-  return { original: capture(model, "original"), hd: capture(model, "hd") };
+  const images: EntryImages = {
+    original: capture(model, "original"),
+    hd: capture(model, "hd"),
+  };
+  // Las armas (modelos w_) también tienen su .glb para girarlas en 3D
+  if (model.model.startsWith("w_")) {
+    images.models = {
+      original: `/models/entries/${model.entryId}-half-life-original.glb`,
+      hd: `/models/entries/${model.entryId}-half-life-hd.glb`,
+    };
+  }
+  return images;
 }

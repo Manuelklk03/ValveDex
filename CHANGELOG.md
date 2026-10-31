@@ -6,6 +6,10 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+### Añadido
+
+- Las armas de Half-Life 1 se pueden girar en 3D desde su ficha («Ver en 3D»), comparando el modelo original y el del HD Pack con el mismo deslizador.
+
 ### Cambiado
 
 - Nuevos dossiers de Half-Life: Decay, Half-Life 2, Episode One y Episode Two en el universo Half-Life, cada uno con su material propio, y la misma paleta en su hub, apartados y fichas.

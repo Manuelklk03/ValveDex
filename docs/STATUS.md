@@ -316,6 +316,14 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 - Cada variante pasa de unas 250 líneas a unas 50; `GameTheme` usa la misma paleta en hub, apartados y fichas. Siluetas propias del Hunter y de la Ciudadela; borrados los SVG de Kilo sin uso.
 - Comprobado: `npm run check` (38 pruebas), `npm run build` (238 páginas), capturas a 1440 y 390 px sin scroll horizontal, contraste AA de los textos nuevos y revisión de Codex (2 hallazgos corregidos). Sin comprobar: recorrido con teclado y la animación de entrada sin movimiento reducido.
 
+**Visor 3D de las armas (Claude, 2026-10-31, rama `feature/weapon-3d-viewer`; decisión de Manuel tras `grill-me`: modelo 3D real, en el mismo comparador, antes de R3):**
+
+- `scripts/mdl-to-glb.mjs`: conversor propio de `.mdl` GoldSrc v10 a `.glb` (pose del fotograma 0, cuerpo y piel por defecto, texturas de 8 bits a PNG con `sharp`, también las de `*t.mdl`). Uso: `node scripts/mdl-to-glb.mjs <modelo.mdl> <salida.glb>`.
+- 24 `.glb` en `public/models/entries/` (12 armas de Half-Life 1, original y HD; unos 800 KB en total). `halfLifeModelImages()` añade `images.models` a los modelos `w_`.
+- `ImageCompare` gana el botón «Ver en 3D»; `ModelCompare` (Three.js 0.187, React Three Fiber 9, drei 10, cargado con `next/dynamic` solo al pulsarlo) pinta en un lienzo el original a la izquierda de la cortina y el HD a la derecha con la misma cámara; se gira arrastrando o con las flechas.
+- Prueba nueva: los modelos declarados existen en `public/` (39 pruebas).
+- Comprobado: `npm run check`, `npm run build` (238 páginas) y el visor en `/fichas/palanca` y `/fichas/canon-tau` (texturas, cortina y flechas). Riesgo aceptado por Manuel: los `.glb` publican geometría y texturas de Valve. Pendiente: acreditar los modelos en `/creditos`.
+
 **Situación el 2026-10-30:** Half-Life: Decay quedó integrado en `main` con la PR #78. Half-Life 2 abre la etapa Source con su primer dossier en la rama `feature/hl2-dossier`: aviso de la Protección Civil sobre el hormigón de la Ciudad 17, naranja del HUD y de la Resistencia (`#ff9b21`), cian de la Alianza (`#6fb9c9`), tema propio en el hub y una única λ dibujada en SVG. Faltan el contenido de Half-Life 2 (apartados y fichas) y **R3**, las parejas HD de Opposing Force y Blue Shift.
 
 Esqueleto terminado y publicado como `v0.1.0` (2026-10-23). **Orden (decisión de Manuel, 2026-10-23):** el esqueleto está hecho y solo tiene datos de muestra y textos provisionales. En lugar de «todo el diseño y después todo el contenido», se hace primero el **sistema de diseño** (D1b y D2) y después **cada zona a la vez: su contenido real con fuentes y su diseño**. No se diseña una zona que todavía no tiene contenido (Steam por épocas, Portal, Left 4 Dead…): sus ideas quedan apuntadas en [design.md](design.md).
