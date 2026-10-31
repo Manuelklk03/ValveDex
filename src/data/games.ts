@@ -192,4 +192,42 @@ export const games: Game[] = [
       },
     ],
   },
+  {
+    id: "team-fortress-classic",
+    slug: "team-fortress-classic",
+    universeId: "team-fortress",
+    stageId: "goldsrc-tf",
+    status: "released",
+    releaseYear: 1999,
+    developer: "Valve",
+    name: "Team Fortress Classic",
+    description:
+      "Adaptación oficial del mod QuakeTeam Fortress a Half-Life: nueve clases, dos equipos y mapas de captura de bandera y control de puntos.",
+    sources: [
+      {
+        title: "Team Fortress Classic - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Team_Fortress_Classic",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    id: "team-fortress-2",
+    slug: "team-fortress-2",
+    universeId: "team-fortress",
+    stageId: "source-tf",
+    status: "released",
+    releaseYear: 2007,
+    developer: "Valve",
+    name: "Team Fortress 2",
+    description:
+      "Shooter por equipos gratuito con nueve clases, estilo artístico único, humor característico y miles de objetos cosméticos.",
+    sources: [
+      {
+        title: "Team Fortress 2 - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Team_Fortress_2",
+        kind: "wiki",
+      },
+    ],
+  },
 ];

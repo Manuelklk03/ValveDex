@@ -131,3 +131,38 @@
     ),
     linear-gradient(180deg, transparent 55%, rgb(126 200 74 / 0.04));
 }
+
+/* Team Fortress Classic: base militar, lona, rojo/azul de equipo, clip metálico */
+.game-theme--team-fortress-classic {
+  --background: #1e1c17;
+  --foreground: #e8e4d9;
+  --surface: #2a2620;
+  --border: #4a4236;
+  --muted: #a8a08d;
+  --accent: #c83838;
+  --accent-2: #2b58a6;
+  color-scheme: dark;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgb(200 56 56 / 0.03) 0 3rem,
+    transparent 3rem 6rem,
+    rgb(43 88 166 / 0.03) 6rem 9rem,
+    transparent 9rem 12rem
+  );
+}
+
+/* Team Fortress 2: estilo ilustrado Mann Co., papel envejecido, rojo/azul, Australium */
+.game-theme--team-fortress-2 {
+  --background: #1a1712;
+  --foreground: #f2e8d0;
+  --surface: #24201a;
+  --border: #4a4034;
+  --muted: #b8a890;
+  --accent: #d14841;
+  --accent-blu: #2d6bd2;
+  --accent-australium: #c9a83c;
+  color-scheme: dark;
+  background-image:
+    radial-gradient(ellipse at 10% 10%, rgb(209 72 65 / 0.06), transparent 40%),
+    radial-gradient(ellipse at 90% 90%, rgb(45 107 210 / 0.06), transparent 40%);
+}
