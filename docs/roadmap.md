@@ -103,6 +103,18 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 
 **Se acepta cuando:** la demo funciona desde un dispositivo externo y el repositorio explica el alcance real, el acceso a la demo, las decisiones y las limitaciones conocidas.
 
+## Fase DevOps (al final, con el proyecto avanzado; decisión de Manuel, 2026-11-01)
+
+Manuel estudia DevOps en un bootcamp y quiere practicarlo en ValveDex cuando el contenido y el diseño estén terminados. No se empieza antes sin su indicación.
+
+- [ ] Pipelines de CI/CD (por ejemplo, GitHub Actions): `npm ci`, `npm run check` y `npm run build` en cada PR, y despliegue al fusionar en `main`.
+- [ ] Todo en Docker: `Dockerfile` (y `docker-compose` si hace falta) para desarrollo y producción.
+- [ ] Publicar la imagen en Docker Hub. **El token lo introduce Manuel** como secreto del repositorio cuando el asistente se lo pida; nunca va en el código, en un `.env` versionado ni en el chat.
+- [ ] Análisis del repositorio con SonarQube (o SonarCloud) en el pipeline; su token, igual que el de Docker Hub.
+- [ ] Modo guiado: Manuel lo practica paso a paso y el asistente explica cada archivo (`Dockerfile`, workflows, configuración de SonarQube).
+
+**Se acepta cuando:** cada PR pasa el pipeline, la imagen se construye y se publica en Docker Hub desde CI, SonarQube analiza el repositorio y ningún secreto está en el código.
+
 ## Fase de diseño (después del esqueleto)
 
 Acordado con Manuel el 2026-10-22. El esqueleto actual es solo estructura y datos de prueba: el diseño final será mucho más ambicioso (3D, animaciones, transiciones, efectos), con calidad de portfolio.
