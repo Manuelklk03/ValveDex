@@ -20,6 +20,10 @@
   --universe-accent: #f28c28;
 }
 
+.universe-card--team-fortress {
+  --universe-accent: #d14841;
+}
+
 .universe-card:not(.universe-card--coming-soon):hover {
   border-color: var(--universe-accent);
 }
@@ -35,40 +39,7 @@
   outline-offset: 4px;
 }
 
-/* Banda de la acreditación: estado y código */
-.universe-card__band {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-inline: -1.5rem;
-  padding: 0.625rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-  background: color-mix(in srgb, var(--universe-accent) 14%, var(--surface));
-  color: var(--foreground);
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.75rem;
-}
-
-.universe-card__band > span {
-  white-space: nowrap;
-}
-
-.universe-card__code {
-  overflow: hidden;
-  color: var(--muted);
-  text-overflow: ellipsis;
-}
-
-.universe-card__title {
-  margin-top: 0.5rem;
-  font-size: clamp(2.25rem, 6vw, 4rem);
-  font-weight: 800;
-  font-stretch: 112%;
-  line-height: 0.95;
-  letter-spacing: -0.02em;
-}
-
-/* Marca de agua de la saga: λ en Half-Life (decorativa, sin texto para lectores de pantalla) */
+/* Marca de agua de la saga: λ en Half-Life; icono de clase TF2 en Team Fortress */
 .universe-card--half-life::before {
   content: "λ" / "";
   position: absolute;
@@ -78,6 +49,19 @@
   font-size: clamp(12rem, 22vw, 18rem);
   font-weight: 600;
   line-height: 1;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.universe-card--team-fortress::before {
+  content: "";
+  position: absolute;
+  right: clamp(1rem, 4vw, 3rem);
+  bottom: -3rem;
+  width: clamp(12rem, 22vw, 18rem);
+  aspect-ratio: 1;
+  background: var(--universe-accent);
+  mask: url("/images/decor/tf2-class-silhouette.svg") center / contain no-repeat;
   opacity: 0.08;
   pointer-events: none;
 }
