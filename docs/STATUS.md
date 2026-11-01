@@ -457,3 +457,5 @@ Describe el estado vigente sin acumular sesiones antiguas. Registra fecha y fuen
 ## Para continuar en otra IA
 
 Comparte el repositorio o, como mínimo, `AGENTS.md`, `CLAUDE.md`, este archivo, `workflow.md`, `architecture.md`, `roadmap.md` y los archivos de código afectados.
+
+-   prueba   de   formato   del   CI
