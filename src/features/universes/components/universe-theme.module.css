@@ -29,3 +29,35 @@
   font-family: var(--font-barlow-condensed), sans-serif;
   font-stretch: normal;
 }
+
+/* Team Fortress: estilo ilustrado Mann Co., papel envejecido, rojo/azul de equipo, Australium.
+   Tipografía condensada como carteles de reclutamiento. */
+.universe-theme--team-fortress {
+  --background: #1a1712;
+  --foreground: #f2e8d0;
+  --surface: #24201a;
+  --border: #4a4034;
+  --muted: #b8a890;
+  --accent: #d14841;
+  --accent-blu: #2d6bd2;
+  --accent-australium: #c9a83c;
+  color-scheme: dark;
+  background-image:
+    radial-gradient(ellipse at 15% 15%, rgb(209 72 65 / 0.08), transparent 45%),
+    radial-gradient(
+      ellipse at 85% 85%,
+      rgb(45 107 210 / 0.08),
+      transparent 45%
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgb(139 90 43 / 0.02) 0 1px,
+      transparent 1px 4rem
+    );
+  font-family: var(--font-barlow), sans-serif;
+}
+
+.universe-theme--team-fortress :where(h1, h2, h3) {
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-stretch: normal;
+}

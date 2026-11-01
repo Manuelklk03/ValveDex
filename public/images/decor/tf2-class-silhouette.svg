@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="#fff">
+  <!-- Silueta genérica de clase TF2 (casco estilo soldado/heavy) para dossier -->
+  <path d="M50 5 L50 15 C50 25 60 25 60 35 C60 45 50 45 50 55 C40 45 30 45 30 35 C30 25 40 25 40 15 L40 5 Z" />
+  <path d="M25 35 L20 45 L20 75 L30 80 L80 80 L90 75 L90 45 L85 35 L75 35 L75 20 L70 20 L70 35 L30 35 L30 20 L25 20 Z" />
+  <ellipse cx="50" cy="38" rx="12" ry="8" />
+</svg>

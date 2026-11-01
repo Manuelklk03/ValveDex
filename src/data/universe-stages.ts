@@ -30,4 +30,22 @@ export const universeStages: UniverseStage[] = [
       "Half-Life: Alyx (2020), creado para realidad virtual, vuelve a la Ciudad 17 con Alyx Vance como protagonista. Su historia ocurre antes de Half-Life 2.",
     status: "available",
   },
+  {
+    id: "goldsrc-tf",
+    universeId: "team-fortress",
+    name: "GoldSrc",
+    subtitle: "Team Fortress Classic",
+    summary:
+      "Team Fortress Classic (1999), el mod de Half-Life que definió el shooter por clases. Dos equipos, nueve clases, un objetivo.",
+    status: "available",
+  },
+  {
+    id: "source-tf",
+    universeId: "team-fortress",
+    name: "Source",
+    subtitle: "Team Fortress 2",
+    summary:
+      "Team Fortress 2 (2007), la secuela libre que perfeccionó la fórmula con estilo artístico único, humor y actualizaciones constantes.",
+    status: "available",
+  },
 ];

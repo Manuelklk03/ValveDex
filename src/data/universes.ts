@@ -20,8 +20,9 @@ export const universes: Universe[] = [
     id: "team-fortress",
     slug: "team-fortress",
     name: "Team Fortress",
-    description: "Shooter multijugador por equipos con clases.",
-    status: "coming-soon",
+    description:
+      "Shooter multijugador por equipos con clases únicas, humor y estilo inconfundible.",
+    status: "available",
   },
   {
     id: "counter-strike",

@@ -1091,6 +1091,122 @@
   rotate: -2deg;
 }
 
+/* Team Fortress Classic: carpeta militar de los 90, papel tacto lona, nine classes,
+   franjas de equipo rojo/azul, clip de metal, sello "TF Classic" */
+.game-dossier--team-fortress-classic {
+  --dossier-paper: #e8e4d9;
+  --dossier-ink: #1a1815;
+  --dossier-muted: #5a554d;
+  --dossier-accent: #c83838;
+  --dossier-line: rgb(26 24 21 / 0.16);
+  --dossier-accent-2: #2b58a6;
+  border: 2px solid #2f2b23;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgb(200 56 56 / 0.04) 0 2rem,
+    transparent 2rem 4rem,
+    rgb(43 88 166 / 0.04) 4rem 6rem,
+    transparent 6rem 8rem
+  );
+}
+
+/* Clip metálico en el canto superior */
+.game-dossier--team-fortress-classic::before {
+  content: "";
+  position: absolute;
+  top: -0.5rem;
+  left: 2rem;
+  right: 2rem;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    #3a352c 0 0.25rem,
+    #c83838 0.25rem 1.25rem,
+    #3a352c 1.25rem 1.5rem,
+    #2b58a6 1.5rem 2.5rem,
+    #3a352c 2.5rem 2.75rem
+  );
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* Sello: estarcido militar */
+.game-dossier--team-fortress-classic .game-dossier__stamp {
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  color: var(--dossier-accent);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  opacity: 0.9;
+  rotate: -4deg;
+}
+
+/* Team Fortress 2: carpeta de Mann Co., papel amarillento, estilo ilustrado años 60,
+   nueve clases, rojo/azul, Australium dorado, humor en los sellos */
+.game-dossier--team-fortress-2 {
+  --dossier-paper: #f2e8d0;
+  --dossier-ink: #1d1a15;
+  --dossier-muted: #6d6558;
+  --dossier-accent: #d14841;
+  --dossier-line: rgb(29 26 21 / 0.14);
+  --tf2-blu: #2d6bd2;
+  --tf2-australium: #c9a83c;
+  --tf2-mann: #8b5a2b;
+  background-image:
+    radial-gradient(ellipse at 5% 5%, rgb(209 72 65 / 0.08), transparent 35%),
+    radial-gradient(
+      ellipse at 95% 95%,
+      rgb(45 107 210 / 0.08),
+      transparent 35%
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgb(139 90 43 / 0.03) 0 1px,
+      transparent 1px 3rem
+    );
+  border: 1px solid #c9b896;
+}
+
+/* Sello Mann Co. con toque dorado */
+.game-dossier--team-fortress-2 .game-dossier__stamp {
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  color: var(--tf2-mann);
+  background: linear-gradient(
+    135deg,
+    transparent 40%,
+    var(--tf2-australium) 40% 60%,
+    transparent 60%
+  );
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  opacity: 0.95;
+  rotate: 3deg;
+}
+
+/* Emblema de clase antes del rótulo (alterna rojo/azul en lista) */
+.game-dossier--team-fortress-2 .game-dossier__label {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.game-dossier--team-fortress-2 .game-dossier__label::before {
+  content: "";
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: currentColor;
+  mask: url("/images/decor/tf2-class-silhouette.svg") center / contain no-repeat;
+}
+
 /* Enlace principal del dossier: una capa que cubre la carpeta entera, sin anidar enlaces.
    La cabecera y el pie de dejar pasar el clic; los apartados quedan por encima con sus propios enlaces */
 .game-dossier__open {

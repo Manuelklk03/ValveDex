@@ -8,7 +8,9 @@ export type DossierLook = {
     | "half-life-2"
     | "half-life-2-episode-one"
     | "half-life-2-episode-two"
-    | "half-life-alyx";
+    | "half-life-alyx"
+    | "team-fortress-classic"
+    | "team-fortress-2";
   label: string;
   stamp: string;
   edge: string;
@@ -62,6 +64,18 @@ const dossierLooks: Record<string, DossierLook> = {
     label: "Informe de campo · Zona de Cuarentena",
     stamp: "Resistencia · City 17",
     edge: "Ciudad 17 · Alianza · Contenedores · Russell",
+  },
+  "team-fortress-classic": {
+    variant: "team-fortress-classic",
+    label: "Hoja de unidad · Equipo de operaciones",
+    stamp: "TF Classic",
+    edge: "2Fort · Dustbowl · Hydro · Well",
+  },
+  "team-fortress-2": {
+    variant: "team-fortress-2",
+    label: "Dossier de mercenari · Mann Co.",
+    stamp: "Saxton Hale",
+    edge: "Badlands · Granary · 2Fort · Gold Rush",
   },
 };
 

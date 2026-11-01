@@ -19,4 +19,20 @@ export const decorImages: { image: MediaAsset; usedIn: string }[] = [
       license: "Uso legítimo (material © Valve)",
     },
   },
+  {
+    usedIn: "Dossier de Team Fortress 2 · emblema de clase",
+    image: {
+      src: "/images/decor/tf2-class-silhouette.svg",
+      alt: "Silueta genérica de clase de Team Fortress 2",
+      width: 100,
+      height: 100,
+      source: {
+        title: "Ilustración original para ValveDex",
+        url: "https://github.com/Manuelklk03/ValveDex",
+        kind: "official",
+      },
+      credit: "Dibujo original simplificado para ValveDex",
+      license: "CC0 (dominio público)",
+    },
+  },
 ];
