@@ -107,8 +107,8 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 
 Manuel estudia DevOps en un bootcamp y quiere practicarlo en ValveDex cuando el contenido y el diseño estén terminados. No se empieza antes sin su indicación.
 
-- [ ] Pipelines de CI/CD (por ejemplo, GitHub Actions): `npm ci`, `npm run check` y `npm run build` en cada PR, y despliegue al fusionar en `main`.
-- [ ] Calidad de código en el pipeline como pasos separados: lint con ESLint (
+- [ ] Pipelines de CI/CD (por ejemplo, GitHub Actions; la integración continua ya está hecha, falta el despliegue): `npm ci`, `npm run check` y `npm run build` en cada PR, y despliegue al fusionar en `main`.
+- [x] Calidad de código en el pipeline como pasos separados: lint con ESLint (
       pm run lint, ya configurado), tipos (
       pm run typecheck), formato con Prettier (
       pm run format:check) y pruebas (
