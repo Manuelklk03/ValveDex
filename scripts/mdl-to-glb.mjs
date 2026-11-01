@@ -11,6 +11,10 @@ const sequenceName = sequenceArg === "-" ? undefined : sequenceArg;
 const bodies = bodiesArg ? bodiesArg.split(",").map(Number) : [];
 // [piel]: familia de texturas (el científico Luther usa la 1, de manos oscuras, en el SDK de Valve)
 const skin = Number(skinArg ?? 0);
+if ([...bodies, skin].some((n) => !Number.isInteger(n) || n < 0))
+  throw new Error(
+    `Cuerpos y piel deben ser enteros desde 0: ${bodiesArg ?? ""} ${skinArg ?? ""}`,
+  );
 if (!input || !output)
   throw new Error("Uso: node scripts/mdl-to-glb.mjs <modelo.mdl> <salida.glb>");
 
@@ -118,6 +122,10 @@ for (let t = 0; t < i32(tex, 180); t++) {
     index: i32(tex, o + 76),
   });
 }
+if (skin >= i32(tex, 196))
+  throw new Error(
+    `${input}: no tiene la piel ${skin} (familias: ${i32(tex, 196)})`,
+  );
 const skinRefs = [];
 for (let s = 0; s < i32(tex, 192); s++)
   skinRefs.push(
