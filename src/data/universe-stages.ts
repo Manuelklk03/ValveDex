@@ -48,4 +48,13 @@ export const universeStages: UniverseStage[] = [
       "Team Fortress 2 (2007), la secuela libre que perfeccionó la fórmula con estilo artístico único, humor y actualizaciones constantes.",
     status: "available",
   },
+  {
+    id: "source-l4d",
+    universeId: "left-4-dead",
+    name: "Source",
+    subtitle: "Left 4 Dead",
+    summary:
+      "Left 4 Dead (2008) y su secuela (2009) definieron el cooperativo de supervivencia con la IA Director y ocho supervivientes memorables.",
+    status: "available",
+  },
 ];

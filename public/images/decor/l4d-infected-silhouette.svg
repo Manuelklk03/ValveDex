@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="#fff">
+  <!-- Silueta Hunter/Smoker L4D para dossier -->
+  <path d="M50 8 L42 22 L30 22 L25 35 L30 40 L42 40 L42 50 L58 50 L58 40 L65 35 L60 22 L48 22 L48 8 Z" />
+  <path d="M35 30 L25 30 L25 40 L35 40 Z" />
+  <path d="M65 30 L75 30 L75 40 L65 40 Z" />
+  <ellipse cx="50" cy="72" rx="12" ry="8" />
+  <path d="M38 72 L42 68 L58 68 L62 72 Z" />
+  <path d="M42 68 L45 62 L55 62 L58 68 Z" />
+</svg>

@@ -35,7 +35,8 @@ export const universes: Universe[] = [
     id: "left-4-dead",
     slug: "left-4-dead",
     name: "Left 4 Dead",
-    description: "Supervivencia cooperativa frente a hordas de infectados.",
-    status: "coming-soon",
+    description:
+      "Supervivencia cooperativa frente a hordas de infectados, con IA dinámica y personajes memorables.",
+    status: "available",
   },
 ];

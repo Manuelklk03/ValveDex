@@ -24,6 +24,10 @@
   --universe-accent: #d14841;
 }
 
+.universe-card--left-4-dead {
+  --universe-accent: #c43d2e;
+}
+
 .universe-card:not(.universe-card--coming-soon):hover {
   border-color: var(--universe-accent);
 }
@@ -62,6 +66,19 @@
   aspect-ratio: 1;
   background: var(--universe-accent);
   mask: url("/images/decor/tf2-class-silhouette.svg") center / contain no-repeat;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.universe-card--left-4-dead::before {
+  content: "";
+  position: absolute;
+  right: clamp(1rem, 4vw, 3rem);
+  bottom: -3rem;
+  width: clamp(12rem, 22vw, 18rem);
+  aspect-ratio: 1;
+  background: var(--universe-accent);
+  mask: url("/images/decor/l4d-universe-icon.svg") center / contain no-repeat;
   opacity: 0.08;
   pointer-events: none;
 }

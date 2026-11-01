@@ -61,3 +61,32 @@
   font-family: var(--font-barlow-condensed), sans-serif;
   font-stretch: normal;
 }
+
+/* Left 4 Dead: CEDA, alerta sanitaria, verde biohazard, amarillo advertencia.
+   Tipografía monoespeciada como informes oficiales. */
+.universe-theme--left-4-dead {
+  --background: #1a1814;
+  --foreground: #f5f0d8;
+  --surface: #24201a;
+  --border: #3d3528;
+  --muted: #a89878;
+  --accent: #c43d2e;
+  --accent-bio: #2d7d2d;
+  --accent-warn: #e8a817;
+  color-scheme: dark;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgb(196 61 46 / 0.02) 0 3rem,
+      transparent 3rem 6rem,
+      rgb(45 125 45 / 0.02) 6rem 9rem,
+      transparent 9rem 12rem
+    ),
+    linear-gradient(180deg, transparent 65%, rgb(232 168 23 / 0.03));
+  font-family: var(--font-barlow), sans-serif;
+}
+
+.universe-theme--left-4-dead :where(h1, h2, h3) {
+  font-family: var(--font-plex-mono), monospace;
+  font-stretch: normal;
+}
