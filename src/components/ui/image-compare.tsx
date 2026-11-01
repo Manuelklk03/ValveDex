@@ -23,10 +23,11 @@ const IMAGE_SIZES = "(max-width: 32rem) 100vw, 32rem";
 
 type ImageCompareProps = {
   before: MediaAsset;
-  after: MediaAsset;
+  // Sin «after» no hay cortina: una sola imagen (y su modelo 3D, si lo tiene)
+  after?: MediaAsset;
   beforeLabel: string;
-  afterLabel: string;
-  models?: { original: string; hd: string };
+  afterLabel?: string;
+  models?: { original: string; hd?: string };
 };
 
 export function ImageCompare({
@@ -56,8 +57,8 @@ export function ImageCompare({
         <ModelCompare
           before={models.original}
           after={models.hd}
-          position={position}
-          label={`Modelo 3D: ${beforeLabel} y ${afterLabel}. Arrastra o usa las flechas para girarlo`}
+          position={after ? position : 100}
+          label={`Modelo 3D: ${after ? `${beforeLabel} y ${afterLabel}` : beforeLabel}. Arrastra o usa las flechas para girarlo`}
         />
       ) : (
         <div className={styles["image-compare__frame"]}>
@@ -71,40 +72,50 @@ export function ImageCompare({
             sizes={IMAGE_SIZES}
             className={styles["image-compare__image"]}
             // Las capturas no tienen fondo: sin este recorte, el original asomaría por las zonas transparentes del HD
-            style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
+            style={
+              after
+                ? { clipPath: `inset(0 ${100 - position}% 0 0)` }
+                : undefined
+            }
           />
-          <Image
-            src={after.src}
-            alt={after.alt}
-            width={after.width}
-            height={after.height}
-            quality={100}
-            sizes={IMAGE_SIZES}
-            className={`${styles["image-compare__image"]} ${styles["image-compare__image--after"]}`}
-            style={{ clipPath: `inset(0 0 0 ${position}%)` }}
-          />
-          <span
-            className={styles["image-compare__divider"]}
-            style={{ left: `${position}%` }}
-            aria-hidden="true"
-          />
+          {after && (
+            <>
+              <Image
+                src={after.src}
+                alt={after.alt}
+                width={after.width}
+                height={after.height}
+                quality={100}
+                sizes={IMAGE_SIZES}
+                className={`${styles["image-compare__image"]} ${styles["image-compare__image--after"]}`}
+                style={{ clipPath: `inset(0 0 0 ${position}%)` }}
+              />
+              <span
+                className={styles["image-compare__divider"]}
+                style={{ left: `${position}%` }}
+                aria-hidden="true"
+              />
+            </>
+          )}
         </div>
       )}
 
       {/* Cada etiqueta va en el extremo hacia el que hay que llevar el control para ver esa versión entera */}
-      <label className={styles["image-compare__control"]}>
-        <span>{afterLabel}</span>
-        <input
-          type="range"
-          min={0}
-          max={100}
-          value={position}
-          onChange={(event) => setPosition(Number(event.target.value))}
-          className={styles["image-compare__range"]}
-          aria-label={`Comparar ${beforeLabel} y ${afterLabel}`}
-        />
-        <span>{beforeLabel}</span>
-      </label>
+      {after && (
+        <label className={styles["image-compare__control"]}>
+          <span>{afterLabel}</span>
+          <input
+            type="range"
+            min={0}
+            max={100}
+            value={position}
+            onChange={(event) => setPosition(Number(event.target.value))}
+            className={styles["image-compare__range"]}
+            aria-label={`Comparar ${beforeLabel} y ${afterLabel}`}
+          />
+          <span>{beforeLabel}</span>
+        </label>
+      )}
     </div>
   );
 }

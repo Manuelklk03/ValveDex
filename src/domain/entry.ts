@@ -9,7 +9,7 @@ export type EntryImages = {
   original?: MediaAsset;
   hd?: MediaAsset;
   // Modelos .glb convertidos desde el juego (scripts/mdl-to-glb.mjs), para girar la pieza en 3D
-  models?: { original: string; hd: string };
+  models?: { original: string; hd?: string };
 };
 
 export type EntryAppearance = {

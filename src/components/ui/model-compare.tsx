@@ -16,7 +16,8 @@ import styles from "./image-compare.module.css";
 
 type ModelCompareProps = {
   before: string;
-  after: string;
+  // Sin versión HD (armas nuevas de las expansiones): un solo modelo, sin cortina
+  after?: string;
   // Porcentaje del ancho que ocupa el modelo «before», el mismo que el deslizador de las capturas
   position: number;
   label: string;
@@ -27,14 +28,21 @@ function Models({ before, after, position }: Omit<ModelCompareProps, "label">) {
   const beforeRef = useRef<Group>(null);
   const afterRef = useRef<Group>(null);
   const { scene: beforeScene } = useGLTF(before);
-  const { scene: afterScene } = useGLTF(after);
+  // useGLTF no puede ir dentro de un if: sin HD vuelve a pedir el original (está en caché) y no se pinta
+  const { scene: afterScene } = useGLTF(after ?? before);
   const invalidate = useThree((state) => state.invalidate);
 
   // El lienzo solo se repinta al girar (OrbitControls) o al mover la cortina
   useEffect(() => invalidate(), [position, invalidate]);
 
   useFrame(({ gl, scene, camera, size }) => {
-    if (!beforeRef.current || !afterRef.current) return;
+    if (!beforeRef.current) return;
+    gl.autoClear = false;
+    if (!afterRef.current) {
+      gl.clear();
+      gl.render(scene, camera);
+      return;
+    }
     const split = Math.round((size.width * position) / 100);
     gl.autoClear = false;
     gl.setScissorTest(false);
@@ -60,11 +68,13 @@ function Models({ before, after, position }: Omit<ModelCompareProps, "label">) {
           <primitive object={beforeScene} />
         </group>
       </Center>
-      <Center>
-        <group ref={afterRef}>
-          <primitive object={afterScene} />
-        </group>
-      </Center>
+      {after && (
+        <Center>
+          <group ref={afterRef}>
+            <primitive object={afterScene} />
+          </group>
+        </Center>
+      )}
     </Bounds>
   );
 }
@@ -137,11 +147,13 @@ export default function ModelCompare({
           <OrbitControls ref={controls} makeDefault enablePan={false} />
         </Canvas>
       </ModelError>
-      <span
-        className={styles["image-compare__divider"]}
-        style={{ left: `${position}%` }}
-        aria-hidden="true"
-      />
+      {after && (
+        <span
+          className={styles["image-compare__divider"]}
+          style={{ left: `${position}%` }}
+          aria-hidden="true"
+        />
+      )}
     </div>
   );
 }
