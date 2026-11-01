@@ -109,10 +109,10 @@ Manuel estudia DevOps en un bootcamp y quiere practicarlo en ValveDex cuando el 
 
 - [ ] Pipelines de CI/CD (por ejemplo, GitHub Actions): `npm ci`, `npm run check` y `npm run build` en cada PR, y despliegue al fusionar en `main`.
 - [ ] Calidad de código en el pipeline como pasos separados: lint con ESLint (
-pm run lint, ya configurado), tipos (
-pm run typecheck), formato con Prettier (
-pm run format:check) y pruebas (
-pm run test), para ver en qué paso falla cada PR.
+      pm run lint, ya configurado), tipos (
+      pm run typecheck), formato con Prettier (
+      pm run format:check) y pruebas (
+      pm run test), para ver en qué paso falla cada PR.
 - [ ] Todo en Docker: `Dockerfile` (y `docker-compose` si hace falta) para desarrollo y producción.
 - [ ] Publicar la imagen en Docker Hub. **El token lo introduce Manuel** como secreto del repositorio cuando el asistente se lo pida; nunca va en el código, en un `.env` versionado ni en el chat.
 - [ ] Análisis del repositorio con SonarQube (o SonarCloud) en el pipeline; su token, igual que el de Docker Hub.
