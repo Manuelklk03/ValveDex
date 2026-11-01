@@ -164,6 +164,12 @@ export default async function EntryPage({
                     afterLabel="HD Pack"
                     models={appearance.images?.models}
                   />
+                ) : single && appearance.images?.models ? (
+                  <ImageCompare
+                    before={single}
+                    beforeLabel={entry.name}
+                    models={appearance.images.models}
+                  />
                 ) : (
                   single && (
                     <Image

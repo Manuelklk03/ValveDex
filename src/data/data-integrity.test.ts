@@ -225,7 +225,7 @@ describe("imágenes", () => {
       entry.appearances.flatMap(({ images }) =>
         images?.models
           ? [images.models.original, images.models.hd].filter(
-              (src) => !existsSync(join("public", src)),
+              (src) => src !== undefined && !existsSync(join("public", src)),
             )
           : [],
       ),

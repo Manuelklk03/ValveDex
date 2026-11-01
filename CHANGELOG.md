@@ -8,10 +8,12 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Imágenes de Opposing Force: 9 armas (también en 3D), 6 criaturas, Otis, el instructor Barnes y las parejas original/HD del asesino y del apoyo de la HECU.
 - Las armas de Half-Life 1 se pueden girar en 3D desde su ficha («Ver en 3D»), comparando el modelo original y el del HD Pack con el mismo deslizador.
 
 ### Cambiado
 
+- Las imágenes de Half-Life 1 se rehacen desde los modelos 3D, con mejor luz; el visor 3D mantiene el arma centrada al girarla.
 - Nuevos dossiers de Half-Life: Decay, Half-Life 2, Episode One y Episode Two en el universo Half-Life, cada uno con su material propio, y la misma paleta en su hub, apartados y fichas.
 
 ### Corregido
@@ -93,6 +95,7 @@ Primera versión: el **esqueleto** completo. Todas las rutas y piezas existen, f
 
 ### Cambiado
 
+- Las imágenes de Half-Life 1 se rehacen desde los modelos 3D, con mejor luz; el visor 3D mantiene el arma centrada al girarla.
 - 2026-10-23: `Game` es una unión discriminada por `status` (`released` con `releaseYear` o `cancelled` con `cancelledYear`); `getGameYearLabel()` muestra «1998» o «Cancelado en 2001» (PR #38).
 - 2026-10-13: `vitest.config.ts` renombrado a `vitest.config.mts` para que Vite lo cargue como ESM y desaparezca su aviso.
 - 2026-10-12: cada ficha guarda sus apariciones por juego (`appearances`) en lugar de `gameIds`, para tener resumen, imagen y, más adelante, estadísticas propias de cada juego (PR #16).

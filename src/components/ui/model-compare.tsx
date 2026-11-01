@@ -1,6 +1,6 @@
 "use client";
 
-import { Bounds, Center, OrbitControls, useGLTF } from "@react-three/drei";
+import { Center, OrbitControls, useGLTF } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   Component,
@@ -11,12 +11,19 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from "react";
-import type { Group } from "three";
+import {
+  Box3,
+  MathUtils,
+  Sphere,
+  type Group,
+  type PerspectiveCamera,
+} from "three";
 import styles from "./image-compare.module.css";
 
 type ModelCompareProps = {
   before: string;
-  after: string;
+  // Sin versión HD (armas nuevas de las expansiones): un solo modelo, sin cortina
+  after?: string;
   // Porcentaje del ancho que ocupa el modelo «before», el mismo que el deslizador de las capturas
   position: number;
   label: string;
@@ -27,14 +34,50 @@ function Models({ before, after, position }: Omit<ModelCompareProps, "label">) {
   const beforeRef = useRef<Group>(null);
   const afterRef = useRef<Group>(null);
   const { scene: beforeScene } = useGLTF(before);
-  const { scene: afterScene } = useGLTF(after);
+  // useGLTF no puede ir dentro de un if: sin HD vuelve a pedir el original (está en caché) y no se pinta
+  const { scene: afterScene } = useGLTF(after ?? before);
   const invalidate = useThree((state) => state.invalidate);
+  const get = useThree((state) => state.get);
+  // OrbitControls se registra después del primer render: el encuadre espera a que exista
+  const hasControls = useThree((state) => state.controls !== null);
+
+  // Encuadre por la esfera que envuelve los modelos, no por su caja: así caben desde cualquier ángulo al girarlos
+  useEffect(() => {
+    const camera = get().camera as PerspectiveCamera;
+    const controls = get().controls as ComponentRef<
+      typeof OrbitControls
+    > | null;
+    if (!beforeRef.current || !controls) return;
+    beforeRef.current.updateWorldMatrix(true, true);
+    const box = new Box3().setFromObject(beforeRef.current);
+    if (afterRef.current) box.union(new Box3().setFromObject(afterRef.current));
+    const { radius } = box.getBoundingSphere(new Sphere());
+    // El ángulo más estrecho (vertical u horizontal) decide: en un visor alto, el ancho limita
+    const halfV = MathUtils.degToRad(camera.fov / 2);
+    const halfH = Math.atan(Math.tan(halfV) * camera.aspect);
+    const distance = (radius / Math.sin(Math.min(halfV, halfH))) * 1.05;
+    camera.position.setLength(distance);
+    camera.near = distance / 100;
+    camera.far = distance * 10;
+    camera.updateProjectionMatrix();
+    controls.target.set(0, 0, 0);
+    controls.minDistance = radius * 1.2;
+    controls.maxDistance = distance * 2.5;
+    controls.update();
+    invalidate();
+  }, [get, hasControls, invalidate, after]);
 
   // El lienzo solo se repinta al girar (OrbitControls) o al mover la cortina
   useEffect(() => invalidate(), [position, invalidate]);
 
   useFrame(({ gl, scene, camera, size }) => {
-    if (!beforeRef.current || !afterRef.current) return;
+    if (!beforeRef.current) return;
+    gl.autoClear = false;
+    if (!afterRef.current) {
+      gl.clear();
+      gl.render(scene, camera);
+      return;
+    }
     const split = Math.round((size.width * position) / 100);
     gl.autoClear = false;
     gl.setScissorTest(false);
@@ -53,19 +96,21 @@ function Models({ before, after, position }: Omit<ModelCompareProps, "label">) {
   }, 1);
 
   return (
-    <Bounds fit clip observe margin={1.15}>
-      {/* El HD Pack cambió el origen de las armas: cada modelo se centra por separado */}
+    <>
+      {/* El HD Pack cambió el origen de las armas: cada modelo se centra por separado y gira sobre su centro */}
       <Center>
         <group ref={beforeRef}>
           <primitive object={beforeScene} />
         </group>
       </Center>
-      <Center>
-        <group ref={afterRef}>
-          <primitive object={afterScene} />
-        </group>
-      </Center>
-    </Bounds>
+      {after && (
+        <Center>
+          <group ref={afterRef}>
+            <primitive object={afterScene} />
+          </group>
+        </Center>
+      )}
+    </>
   );
 }
 
@@ -129,19 +174,25 @@ export default function ModelCompare({
           dpr={[1, 2]}
           frameloop="demand"
         >
-          <hemisphereLight args={["#ffffff", "#3a3328", 2.2]} />
-          <directionalLight position={[3, 5, 4]} intensity={1.6} />
+          {/* Luz de estudio: principal, relleno y contorno; los modelos de 1998 tienen la sombra pintada en la textura */}
+          <ambientLight intensity={0.9} />
+          <hemisphereLight args={["#ffffff", "#4a4236", 1.1]} />
+          <directionalLight position={[4, 6, 5]} intensity={2.4} />
+          <directionalLight position={[-5, 2, -3]} intensity={1} />
+          <directionalLight position={[0, 4, -6]} intensity={1.4} />
           <Suspense fallback={null}>
             <Models before={before} after={after} position={position} />
           </Suspense>
           <OrbitControls ref={controls} makeDefault enablePan={false} />
         </Canvas>
       </ModelError>
-      <span
-        className={styles["image-compare__divider"]}
-        style={{ left: `${position}%` }}
-        aria-hidden="true"
-      />
+      {after && (
+        <span
+          className={styles["image-compare__divider"]}
+          style={{ left: `${position}%` }}
+          aria-hidden="true"
+        />
+      )}
     </div>
   );
 }
