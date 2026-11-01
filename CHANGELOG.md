@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Integración continua con GitHub Actions: lint, tipos, formato, pruebas y build en cada PR.
 - Opposing Force: los marines aliados pasan a personajes en cuatro clases (soldados, ametralladores, médicos e ingenieros) con su modelo y versión HD; Blue Shift: imágenes de Rosenberg, Simmons y Walter Bennet.
 - Imágenes de Opposing Force: 9 armas (también en 3D), 6 criaturas, Otis, el instructor Barnes y las parejas original/HD del asesino y del apoyo de la HECU.
 - Las armas de Half-Life 1 se pueden girar en 3D desde su ficha («Ver en 3D»), comparando el modelo original y el del HD Pack con el mismo deslizador.
