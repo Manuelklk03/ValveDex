@@ -11,6 +11,17 @@ const nextConfig: NextConfig = {
   experimental: {
     agentUpgrade: "security",
   },
+  // Fichas que cambiaron de dirección: la antigua sigue llevando a su contenido
+  async redirects() {
+    return [
+      {
+        // La ficha conjunta se dividió en cuatro clases de marines aliados (cierre de R3)
+        source: "/fichas/ingenieros-y-medicos-hecu",
+        destination: "/fichas/ingenieros-hecu",
+        permanent: true,
+      },
+    ];
+  },
   turbopack: {
     rules: {
       "globals.css": {
