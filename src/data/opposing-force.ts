@@ -1,5 +1,6 @@
 import type { Entry } from "@/domain/entry";
 import type { Source } from "@/domain/source";
+import { opposingForceModelImages } from "./model-captures";
 
 // Contenido propio de Half-Life: Opposing Force (Z4), según Combine OverWiki.
 // Valve no ha publicado el skill.cfg ni el SDK de OF: las cifras salen de un volcado de cvars
@@ -324,7 +325,18 @@ export const opposingForceEntries: Entry[] = [
     notes: [
       "En la campaña, los golpes seguidos hacen la mitad (10). El golpe cargado hace de 45 a 150 según el tiempo de carga.",
     ],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "pipe-wrench",
+          model: "w_pipe_wrench.mdl",
+          subject: "Llave inglesa",
+          width: 736,
+          height: 280,
+        }),
+      },
+    ],
     sources: [overwiki("Pipe_Wrench", "Pipe Wrench"), cvarList],
   },
   {
@@ -338,7 +350,18 @@ export const opposingForceEntries: Entry[] = [
     notes: [
       "Solo en multijugador, una puñalada por la espalda hace 1000 de daño. Tiene una animación de ataque cargado sin usar.",
     ],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "combat-knife",
+          model: "w_knife.mdl",
+          subject: "Cuchillo de combate",
+          width: 281,
+          height: 834,
+        }),
+      },
+    ],
     sources: [overwiki("Combat_Knife", "Combat Knife"), cvarList],
   },
   {
@@ -352,7 +375,18 @@ export const opposingForceEntries: Entry[] = [
     notes: [
       "Lo diseñó Patrick Deupree, inspirado en el gancho de Quake. En multijugador muerde con 50 de daño.",
     ],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "barnacle-grapple",
+          model: "w_bgrap.mdl",
+          subject: "Gancho barnacle",
+          width: 842,
+          height: 504,
+        }),
+      },
+    ],
     sources: [overwiki("Barnacle_Grapple", "Barnacle Grapple"), cvarList],
   },
   {
@@ -369,7 +403,18 @@ export const opposingForceEntries: Entry[] = [
     summary:
       "La pistola reglamentaria de la HECU y la primera arma de fuego de Shephard. Su mira láser cambia cadencia por precisión.",
     notes: ["Cargador de 7 balas. En la campaña sustituye al revólver .357."],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "desert-eagle",
+          model: "w_desert_eagle.mdl",
+          subject: "Desert Eagle",
+          width: 940,
+          height: 347,
+        }),
+      },
+    ],
     sources: [
       overwiki("Desert_Eagle", "Desert Eagle"),
       ofPage,
@@ -393,7 +438,18 @@ export const opposingForceEntries: Entry[] = [
     notes: [
       "Cintas de 50 balas. Con un truco se puede conseguir ya en «We Are Pulling Out».",
     ],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "m249",
+          model: "w_saw.mdl",
+          subject: "Ametralladora M249",
+          width: 721,
+          height: 300,
+        }),
+      },
+    ],
     sources: [
       overwiki("M249_Squad_Automatic_Weapon", "M249 Squad Automatic Weapon"),
       cvarList,
@@ -417,7 +473,18 @@ export const opposingForceEntries: Entry[] = [
       "Cargador de 5 balas. En manos del francotirador de los Black Ops solo hace 15 de daño, para equilibrar el juego.",
       "El anuncio de televisión usaba como provisional el MSG90 del mod Action Half-Life.",
     ],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "m40a1",
+          model: "w_m40a1.mdl",
+          subject: "Rifle de francotirador M-40A1",
+          width: 785,
+          height: 192,
+        }),
+      },
+    ],
     sources: [
       overwiki("M-40A1_Sniper_Rifle", "M-40A1 Sniper Rifle"),
       cvarList,
@@ -442,7 +509,18 @@ export const opposingForceEntries: Entry[] = [
       "El cable dice «BLACK MESA XV11382», quizá un guiño a la película THX 1138.",
       "Las primeras versiones se cargaban como el cañón tau.",
     ],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "displacer-cannon",
+          model: "w_displacer.mdl",
+          subject: "Cañón desplazador",
+          width: 703,
+          height: 492,
+        }),
+      },
+    ],
     sources: [
       overwiki("Displacer_Cannon", "Displacer Cannon"),
       cvarList,
@@ -461,7 +539,18 @@ export const opposingForceEntries: Entry[] = [
       "Carga 5 esporas. En la animación de reposo, Shephard lo acaricia.",
       "Solo aparece una vez, en Vicarious Reality, así que se puede perder.",
     ],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "spore-launcher",
+          model: "w_spore_launcher.mdl",
+          subject: "Lanzaesporas",
+          width: 681,
+          height: 297,
+        }),
+      },
+    ],
     sources: [overwiki("Spore_Launcher", "Spore Launcher"), cvarList, sdkOf],
   },
   {
@@ -480,7 +569,18 @@ export const opposingForceEntries: Entry[] = [
     notes: [
       "Dispararla bajo el agua electrocuta al jugador. En la campaña sustituye a la Hivehand; en multijugador hace 15 de daño.",
     ],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "shock-roach",
+          model: "w_shock_rifle.mdl",
+          subject: "Shock roach",
+          width: 743,
+          height: 353,
+        }),
+      },
+    ],
     sources: [overwiki("Shock_Roach", "Shock Roach"), ofPage, cvarList, sdkOf],
   },
 
@@ -496,7 +596,18 @@ export const opposingForceEntries: Entry[] = [
     notes: [
       "Usa la inteligencia artificial del bullsquid. Lo diseñó Brian Martel y lo animó Stephen Bahl.",
     ],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "pit-drone",
+          model: "pit_drone.mdl",
+          subject: "Pit drone",
+          width: 651,
+          height: 902,
+        }),
+      },
+    ],
     sources: [overwiki("Pit_Drone", "Pit Drone"), cvarList],
   },
   {
@@ -511,7 +622,18 @@ export const opposingForceEntries: Entry[] = [
       "Su salud es 2,5 veces el valor de su variable (50, 50 y 80), según el código.",
       "Usa la inteligencia artificial de los soldados de la HECU, y su idioma tiene 17 sonidos. Como voz provisional se usó la de Greedo.",
     ],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "shock-trooper",
+          model: "strooper.mdl",
+          subject: "Soldado de choque",
+          width: 436,
+          height: 901,
+        }),
+      },
+    ],
     sources: [overwiki("Shock_Trooper", "Shock Trooper"), cvarList, sdkOf],
   },
   {
@@ -525,7 +647,18 @@ export const opposingForceEntries: Entry[] = [
     notes: [
       "Las crías tienen 60, 60 y 120 de salud. Intentan lanzar el rayo, pero solo sueltan una chispa inofensiva.",
     ],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "voltigore",
+          model: "voltigore.mdl",
+          subject: "Voltigore",
+          width: 697,
+          height: 576,
+        }),
+      },
+    ],
     sources: [overwiki("Voltigore", "Voltigore"), cvarList],
   },
   {
@@ -540,7 +673,18 @@ export const opposingForceEntries: Entry[] = [
     summary:
       "La siguiente fase de mutación de un zombi de headcrab. Lanza vísceras venenosas a distancia.",
     notes: ["Tiene animaciones de baile sin usar, «veryhappy» y «sohappy»."],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "gonome",
+          model: "gonome.mdl",
+          subject: "Gonome",
+          width: 742,
+          height: 811,
+        }),
+      },
+    ],
     sources: [overwiki("Gonome", "Gonome"), cvarList],
   },
   {
@@ -557,7 +701,21 @@ export const opposingForceEntries: Entry[] = [
     notes: [
       "Combaten en completo silencio y, de cerca, usan patadas y puñetazos.",
     ],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages(
+          {
+            entryId: "male-assassin",
+            model: "massn.mdl",
+            subject: "Asesino de operaciones encubiertas",
+            width: 415,
+            height: 790,
+          },
+          true,
+        ),
+      },
+    ],
     sources: [overwiki("Black_Ops", "Black Ops"), cvarList, sdkOf],
   },
   {
@@ -572,7 +730,18 @@ export const opposingForceEntries: Entry[] = [
       "Los disparos al ojo solo le hacen retroceder: su salud se restablece, así que hay que vencerlo usando las instalaciones.",
       "Su nombre interno de entidad es «josht», y existe un monster_pitworm sin usar.",
     ],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "pit-worm",
+          model: "pit_worm_up.mdl",
+          subject: "Pit worm",
+          width: 525,
+          height: 832,
+        }),
+      },
+    ],
     sources: [overwiki("Pit_Worm", "Pit Worm"), cvarList, sdkOf],
   },
   {
@@ -587,7 +756,18 @@ export const opposingForceEntries: Entry[] = [
       "Su salud no está clara: las variables del juego dan 70, 90 y 100, mientras que Combine OverWiki da 840, 1080 y 1200.",
       "Reproducido al revés, el sonido dsbossit.wav dice «To win the game you must kill me, Randall Pitchford».",
     ],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "gene-worm",
+          model: "geneworm.mdl",
+          subject: "Gusano gen",
+          width: 672,
+          height: 480,
+        }),
+      },
+    ],
     sources: [overwiki("Gene_Worm", "Gene Worm"), cvarList],
   },
   {
@@ -631,7 +811,18 @@ export const opposingForceEntries: Entry[] = [
     notes: [
       "Los soldados dicen a veces «If only Drill Instructor Barnes could see me now...».",
     ],
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "drill-sergeant-barnes",
+          model: "drill.mdl",
+          subject: "Instructor Barnes",
+          width: 329,
+          height: 881,
+        }),
+      },
+    ],
     sources: [overwiki("Dwight_T._Barnes", "Dwight T. Barnes")],
   },
   {
@@ -662,7 +853,16 @@ export const opposingForceEntries: Entry[] = [
       "Quizá se llama así por Otis Campbell, de The Andy Griffith Show, la misma serie de la que sale el apodo «Barney».",
     ],
     appearances: [
-      { gameId: "half-life-opposing-force" },
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "otis",
+          model: "otis.mdl",
+          subject: "Otis",
+          width: 336,
+          height: 882,
+        }),
+      },
       { gameId: "half-life-blue-shift" },
     ],
     sources: [
@@ -681,7 +881,21 @@ export const opposingForceEntries: Entry[] = [
     },
     summary:
       "Las clases de marines aliados que luchan junto a Shephard en Opposing Force.",
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages(
+          {
+            entryId: "hecu-support",
+            model: "hgrunt_medic.mdl",
+            subject: "Ingenieros y médicos de la HECU",
+            width: 404,
+            height: 827,
+          },
+          true,
+        ),
+      },
+    ],
     sources: [
       overwiki("HECU_Engineer", "HECU Engineer"),
       overwiki("HECU_Medic", "HECU Medic"),

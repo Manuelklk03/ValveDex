@@ -1,10 +1,11 @@
 // Convierte un modelo GoldSrc (.mdl v10) a .glb: pose del fotograma 0 de la primera secuencia,
 // cuerpo por defecto y primera piel. Las texturas salen de <nombre>t.mdl si el modelo no las incluye.
-// Uso: node scripts/mdl-to-glb.mjs <modelo.mdl> <salida.glb>
+// Uso: node scripts/mdl-to-glb.mjs <modelo.mdl> <salida.glb> [secuencia]
+// Con [secuencia] (por ejemplo idle1) la pose sale de esa secuencia en vez de la primera.
 import { readFileSync, existsSync, writeFileSync } from "node:fs";
 import sharp from "sharp";
 
-const [input, output] = process.argv.slice(2);
+const [input, output, sequenceName] = process.argv.slice(2);
 if (!input || !output)
   throw new Error("Uso: node scripts/mdl-to-glb.mjs <modelo.mdl> <salida.glb>");
 
@@ -27,16 +28,32 @@ for (let b = 0; b < i32(mdl, 140); b++) {
   }
   bones.push({ parent: i32(mdl, o + 32), value, scale });
 }
-const seq = i32(mdl, 168);
+const seqLabels = Array.from({ length: i32(mdl, 164) }, (_, s) =>
+  cstr(mdl, i32(mdl, 168) + s * 176, 32),
+);
+const seqIndex = sequenceName ? seqLabels.indexOf(sequenceName) : 0;
+if (seqIndex < 0)
+  throw new Error(
+    `${input}: no tiene la secuencia ${sequenceName} (${seqLabels.join(", ")})`,
+  );
+const seq = i32(mdl, 168) + seqIndex * 176;
+// Las secuencias de los grupos 1, 2… viven en <nombre>01.mdl, <nombre>02.mdl…
+const group = i32(mdl, seq + 156);
+const animFile =
+  group === 0
+    ? mdl
+    : readFileSync(
+        input.replace(/\.mdl$/i, `${String(group).padStart(2, "0")}.mdl`),
+      );
 const animBase = i32(mdl, seq + 124);
 const frame0 = bones.map((bone, b) => {
   const anim = animBase + b * 12;
   return bone.value.map((v, j) => {
-    const offset = mdl.readUInt16LE(anim + j * 2);
+    const offset = animFile.readUInt16LE(anim + j * 2);
     // Primer valor de la secuencia comprimida: tras la cabecera {valid, total}
     return offset === 0
       ? v
-      : v + mdl.readInt16LE(anim + offset + 2) * bone.scale[j];
+      : v + animFile.readInt16LE(anim + offset + 2) * bone.scale[j];
   });
 });
 

@@ -57,7 +57,7 @@
 - Investigación a fondo: Combine OverWiki (`curl -sL -A "Mozilla/5.0" "https://combineoverwiki.net/index.php?title=<Página>&action=raw"`), el SDK de Valve, The Cutting Room Floor y foros; la Valve Developer Community bloquea descargas automáticas.
 - Cada fuente con su tipo (`official`, `wiki` o `community`); lo que solo cuenta la comunidad se marca así.
 - Sin spoilers fuera de `<details>` (`spoiler: true`); cifras (daño, salud, munición) solo con fuente de los archivos del juego; nunca inventar.
-- **Imágenes (fase R):** capturas propias de los modelos con el juego de Manuel y Half-Life Asset Manager portable, que el asistente maneja por script con permiso de Manuel: fondo transparente, misma secuencia y cámara para original y HD, WebP en el mismo lienzo. Scripts en `C:\Users\manue\Desktop\capturas-valvedex\scripts` (en el portátil no existen: pedirlos a Manuel o rehacerlos). Detalle en STATUS.
+- **Imágenes (fase R, desde R3):** cada modelo del juego se convierte a `.glb` con `scripts/mdl-to-glb.mjs` (secuencia opcional) y se fotografía en el navegador con la cámara y la luz del visor 3D, fondo transparente y WebP sin pérdida; las parejas original/HD comparten encuadre. Ya no se usa Half-Life Asset Manager (movía el ratón y el teclado). El banco de capturas es una página temporal que no se versiona. Detalle en STATUS.
 
 ## Herramientas del PC de sobremesa (desde el 2026-10-27)
 
