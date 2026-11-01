@@ -1,6 +1,9 @@
 import type { Entry } from "@/domain/entry";
 import type { Source } from "@/domain/source";
-import { opposingForceModelImages } from "./model-captures";
+import {
+  blueShiftModelImages,
+  opposingForceModelImages,
+} from "./model-captures";
 
 // Contenido propio de Half-Life: Opposing Force (Z4), según Combine OverWiki.
 // Valve no ha publicado el skill.cfg ni el SDK de OF: las cifras salen de un volcado de cvars
@@ -778,7 +781,19 @@ export const opposingForceEntries: Entry[] = [
     details: { origin: "Raza X", health: health(10, 10, 20) },
     summary:
       "Sin un huésped que la lleve, la shock roach ataca por su cuenta y muere poco después.",
-    appearances: opposingForce,
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages({
+          entryId: "shock-roach-creature",
+          model: "w_shock_rifle.mdl",
+          subject: "Shock roach (criatura)",
+          width: 603,
+          height: 318,
+          stillOnly: true,
+        }),
+      },
+    ],
     sources: [overwiki("Shock_Roach", "Shock Roach"), cvarList],
   },
 
@@ -871,35 +886,150 @@ export const opposingForceEntries: Entry[] = [
     ],
   },
   {
-    id: "hecu-support",
-    slug: "ingenieros-y-medicos-hecu",
-    name: "Ingenieros y médicos de la HECU",
+    id: "hecu-ally-grunt",
+    slug: "soldados-hecu-aliados",
+    name: "Soldados de la HECU (aliados)",
     category: "characters",
     details: {
-      affiliation: "HECU",
-      voiceActor: "Jon St. John",
+      affiliation: "HECU (compañeros de Shephard)",
+      designers: ["Stephen Bahl"],
     },
     summary:
-      "Las clases de marines aliados que luchan junto a Shephard en Opposing Force.",
+      "Los marines que acompañan a Shephard en Opposing Force. Llevan un subfusil MP5, a veces con lanzagranadas, o una escopeta, y siguen al jugador si se lo pide.",
+    notes: [
+      "Según el código del SDK reconstruido por TWHL, la cabeza depende del arma: máscara de gas con el MP5, pasamontañas con la escopeta, boina blanca para el líder del escuadrón y la cabeza de policía militar si va desarmado.",
+      "Tienen 50 puntos de salud en las tres dificultades (variable sk_hgrunt_ally_health).",
+      "Stephen Bahl diseñó las clases y variantes nuevas de los marines para Opposing Force.",
+    ],
     appearances: [
       {
         gameId: "half-life-opposing-force",
         images: opposingForceModelImages(
           {
-            entryId: "hecu-support",
-            model: "hgrunt_medic.mdl",
-            subject: "Ingenieros y médicos de la HECU",
-            width: 404,
-            height: 827,
+            entryId: "hecu-ally-grunt",
+            model: "hgrunt_opfor.mdl",
+            subject: "Soldado aliado de la HECU",
+            width: 395,
+            height: 837,
           },
           true,
         ),
       },
     ],
     sources: [
-      overwiki("HECU_Engineer", "HECU Engineer"),
-      overwiki("HECU_Medic", "HECU Medic"),
+      overwiki(
+        "Hazardous_Environment_Combat_Unit",
+        "Hazardous Environment Combat Unit",
+      ),
+      sdkOf,
+      cvarList,
     ],
+  },
+  {
+    id: "hecu-ally-saw",
+    slug: "ametralladores-hecu",
+    name: "Ametralladores de la HECU",
+    category: "characters",
+    details: {
+      affiliation: "HECU (compañeros de Shephard)",
+      designers: ["Stephen Bahl"],
+    },
+    summary:
+      "Los «pesados» del escuadrón de Shephard: cargan la ametralladora M249 y un torso propio con la cinta de munición.",
+    notes: [
+      "Llevan un pañuelo en la cabeza, blanco o negro, elegido al azar (SDK reconstruido por TWHL).",
+      "Al morir sueltan la M249, que el jugador puede recoger.",
+      "Comparten con el resto de soldados aliados los 50 puntos de salud (sk_hgrunt_ally_health).",
+    ],
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages(
+          {
+            entryId: "hecu-ally-saw",
+            model: "hgrunt_opfor.mdl",
+            subject: "Ametrallador de la HECU",
+            width: 357,
+            height: 848,
+          },
+          true,
+        ),
+      },
+    ],
+    sources: [
+      overwiki(
+        "Hazardous_Environment_Combat_Unit",
+        "Hazardous Environment Combat Unit",
+      ),
+      sdkOf,
+      cvarList,
+    ],
+  },
+  {
+    id: "hecu-medic",
+    slug: "medicos-hecu",
+    name: "Médicos de la HECU",
+    category: "characters",
+    details: {
+      affiliation: "HECU (compañeros de Shephard)",
+      voiceActor: "Jon St. John",
+      designers: ["Stephen Bahl"],
+    },
+    summary:
+      "Marines entrenados en primeros auxilios que curan a Shephard y a sus compañeros heridos. Van armados con una pistola.",
+    notes: [
+      "Curan 200, 120 o 75 puntos según la dificultad (variable sk_medic_ally_heal).",
+      "Si no siguen al jugador, acuden a curar a los soldados que los llaman; esa función se añadió después de escribir el manual y se explica en el léame del juego.",
+      "En Half-Life los marines ya pedían un médico al ser heridos, aunque en ese juego nunca llegaba a aparecer.",
+    ],
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages(
+          {
+            entryId: "hecu-medic",
+            model: "hgrunt_medic.mdl",
+            subject: "Médico de la HECU",
+            width: 427,
+            height: 859,
+          },
+          true,
+        ),
+      },
+    ],
+    sources: [overwiki("HECU_Medic", "HECU Medic"), cvarList],
+  },
+  {
+    id: "hecu-engineer",
+    slug: "ingenieros-hecu",
+    name: "Ingenieros de la HECU",
+    category: "characters",
+    details: {
+      affiliation: "HECU (compañeros de Shephard)",
+      voiceActor: "Jon St. John",
+      designers: ["Stephen Bahl"],
+    },
+    summary:
+      "Marines que abren puertas y rejas selladas con su soplete. Para defenderse llevan una Desert Eagle.",
+    notes: [
+      "En Blue Shift aparece una versión mayor del soplete, con las bombonas en un carro, que usan los soldados normales cuando no hay un ingeniero.",
+    ],
+    appearances: [
+      {
+        gameId: "half-life-opposing-force",
+        images: opposingForceModelImages(
+          {
+            entryId: "hecu-engineer",
+            model: "hgrunt_torch.mdl",
+            subject: "Ingeniero de la HECU",
+            width: 432,
+            height: 853,
+          },
+          true,
+        ),
+      },
+    ],
+    sources: [overwiki("HECU_Engineer", "HECU Engineer")],
   },
   {
     id: "walter-bennet",
@@ -918,7 +1048,16 @@ export const opposingForceEntries: Entry[] = [
     ],
     appearances: [
       { gameId: "half-life-opposing-force" },
-      { gameId: "half-life-blue-shift" },
+      {
+        gameId: "half-life-blue-shift",
+        images: blueShiftModelImages({
+          entryId: "walter-bennet",
+          model: "scientist.mdl",
+          subject: "Walter Bennet",
+          width: 277,
+          height: 857,
+        }),
+      },
     ],
     sources: [overwiki("Walter_Bennet", "Walter Bennet")],
   },

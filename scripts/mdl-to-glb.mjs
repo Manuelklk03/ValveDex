@@ -1,11 +1,16 @@
 // Convierte un modelo GoldSrc (.mdl v10) a .glb: pose del fotograma 0 de la primera secuencia,
 // cuerpo por defecto y primera piel. Las texturas salen de <nombre>t.mdl si el modelo no las incluye.
-// Uso: node scripts/mdl-to-glb.mjs <modelo.mdl> <salida.glb> [secuencia]
-// Con [secuencia] (por ejemplo idle1) la pose sale de esa secuencia en vez de la primera.
+// Uso: node scripts/mdl-to-glb.mjs <modelo.mdl> <salida.glb> [secuencia] [cuerpos] [piel]
+// Con [secuencia] (por ejemplo idle1) la pose sale de esa secuencia en vez de la primera ("-" = la primera).
+// Con [cuerpos] (por ejemplo 0,3,1,2) se elige el submodelo de cada parte (cabeza, torso, arma…) en orden.
 import { readFileSync, existsSync, writeFileSync } from "node:fs";
 import sharp from "sharp";
 
-const [input, output, sequenceName] = process.argv.slice(2);
+const [input, output, sequenceArg, bodiesArg, skinArg] = process.argv.slice(2);
+const sequenceName = sequenceArg === "-" ? undefined : sequenceArg;
+const bodies = bodiesArg ? bodiesArg.split(",").map(Number) : [];
+// [piel]: familia de texturas (el científico Luther usa la 1, de manos oscuras, en el SDK de Valve)
+const skin = Number(skinArg ?? 0);
 if (!input || !output)
   throw new Error("Uso: node scripts/mdl-to-glb.mjs <modelo.mdl> <salida.glb>");
 
@@ -115,13 +120,18 @@ for (let t = 0; t < i32(tex, 180); t++) {
 }
 const skinRefs = [];
 for (let s = 0; s < i32(tex, 192); s++)
-  skinRefs.push(tex.readInt16LE(i32(tex, 200) + s * 2));
+  skinRefs.push(
+    tex.readInt16LE(i32(tex, 200) + (skin * i32(tex, 192) + s) * 2),
+  );
 
 // Mallas del cuerpo por defecto, agrupadas por textura
 const groups = new Map();
 for (let p = 0; p < i32(mdl, 204); p++) {
   const part = i32(mdl, 208) + p * 76;
-  const model = i32(mdl, part + 72);
+  const choice = bodies[p] ?? 0;
+  if (choice >= i32(mdl, part + 64))
+    throw new Error(`${input}: la parte ${p} no tiene el submodelo ${choice}`);
+  const model = i32(mdl, part + 72) + choice * 112;
   const verts = [],
     norms = [];
   for (let v = 0; v < i32(mdl, model + 80); v++) {

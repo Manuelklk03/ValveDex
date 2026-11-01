@@ -24,7 +24,6 @@ const opposingForce: string[] = [
   "gargantua",
   "tentacle",
   "leech",
-  "hecu-marine",
   "female-assassin",
   "sentry-gun",
   "apache",
