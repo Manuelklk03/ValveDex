@@ -1,0 +1,8 @@
+# Levanta ValveDex en http://localhost:3000 con: docker compose up --build
+services:
+  web:
+    build: .
+    image: valvedex
+    ports:
+      - "3000:3000"
+    restart: unless-stopped

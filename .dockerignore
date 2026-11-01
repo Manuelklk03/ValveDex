@@ -1,0 +1,19 @@
+# Lo que no debe entrar en la imagen: dependencias y builds locales, historial, ajustes de herramientas y secretos
+node_modules
+.next
+.git
+.github
+.claude
+.omc
+.playwright-mcp
+.playwright-cli
+.impeccable
+graphify-out
+docs
+*.md
+.env*
+*.tsbuildinfo
+npm-debug.log*
+Dockerfile
+docker-compose.yml
+.dockerignore

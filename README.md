@@ -301,6 +301,16 @@ Abre [http://localhost:3000](http://localhost:3000), o la dirección que indique
 | `npm run format:check` | Comprobar el formato sin modificar archivos. |
 | `npm run check` | Ejecutar lint, tipos y formato de una vez. |
 
+### 🐳 Con Docker
+
+Con Docker Desktop en marcha, no hace falta instalar Node.js:
+
+```bash
+docker compose up --build
+```
+
+Abre [http://localhost:3000](http://localhost:3000). Para pararlo: `docker compose down`. También se puede construir la imagen a mano con `docker build -t valvedex .` y ejecutarla con `docker run -p 3000:3000 valvedex`.
+
 ## 📚 Desarrollo y documentación
 
 Cada funcionalidad se desarrolla en su propia rama y entra en `main` mediante una Pull Request. La rama principal está protegida, y cada avance va acompañado de la actualización de sus documentos.

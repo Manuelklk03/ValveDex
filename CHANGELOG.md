@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- ValveDex se puede construir y ejecutar con Docker (`docker compose up --build`); el CI comprueba que la imagen se construye.
 - Integración continua con GitHub Actions: lint, tipos, formato, pruebas y build en cada PR.
 - Opposing Force: los marines aliados pasan a personajes en cuatro clases (soldados, ametralladores, médicos e ingenieros) con su modelo y versión HD; Blue Shift: imágenes de Rosenberg, Simmons y Walter Bennet.
 - Imágenes de Opposing Force: 9 armas (también en 3D), 6 criaturas, Otis, el instructor Barnes y las parejas original/HD del asesino y del apoyo de la HECU.
