@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Opposing Force: los marines aliados pasan a personajes en cuatro clases (soldados, ametralladores, médicos e ingenieros) con su modelo y versión HD; Blue Shift: imágenes de Rosenberg, Simmons y Walter Bennet.
 - Imágenes de Opposing Force: 9 armas (también en 3D), 6 criaturas, Otis, el instructor Barnes y las parejas original/HD del asesino y del apoyo de la HECU.
 - Las armas de Half-Life 1 se pueden girar en 3D desde su ficha («Ver en 3D»), comparando el modelo original y el del HD Pack con el mismo deslizador.
 
@@ -26,6 +27,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Opposing Force: los marines aliados pasan a personajes en cuatro clases (soldados, ametralladores, médicos e ingenieros) con su modelo y versión HD; Blue Shift: imágenes de Rosenberg, Simmons y Walter Bennet.
 - Half-Life: Decay como cuarto juego del universo Half-Life: hub, dossier y tema visual propio (PlayStation 2, 2001) en `/universos/half-life` (PR #74, #75 y #77).
 - Half-Life 2 como primer juego de la etapa Source: dossier con el aviso de la Protección Civil sobre el hormigón de la Ciudad 17, el naranja del HUD y de la Resistencia (`#ff9b21`) como acento y el cian de la Alianza (`#6fb9c9`) como secundario. Lleva barra segmentada, líneas de barrido, sello, cintas alternas, el «17» del distrito estarcido y una única λ de la Resistencia dibujada en SVG. Half-Life 2 estrena además tema propio en su hub; la etapa Source pasa a disponible y los episodios siguen anunciados como próximos.
 - Contenido de Half-Life: Decay: 10 fichas de mapa (las 9 misiones y la extra Xen Attacks), 4 personajes (Gina Cross, Colette Green, Richard Keller y los vortigaunts X-8973 y R-4913), lore en 8 párrafos con los 6 últimos tras el botón de spoilers, 5 easter eggs, 11 curiosidades y las 29 apariciones que comparten las fichas de Half-Life 1 con Decay. Fuentes: Combine OverWiki y SourceRuns (comunidad) para los nombres de mapa de las misiones sin página propia.
@@ -39,6 +41,7 @@ Segunda versión: el **bloque Half-Life 1** completo (Half-Life 1, Opposing Forc
 
 ### Añadido
 
+- Opposing Force: los marines aliados pasan a personajes en cuatro clases (soldados, ametralladores, médicos e ingenieros) con su modelo y versión HD; Blue Shift: imágenes de Rosenberg, Simmons y Walter Bennet.
 - Entrada al universo Half-Life por etapas (U1–U3): GoldSrc (Half-Life 1, Opposing Force y Blue Shift, más el multijugador anunciado), Source (Half-Life 2 y sus episodios) y Source 2 (Half-Life: Alyx), estas dos en preparación. Cada juego tiene un dossier que abre su hub y enlaza a sus apartados con desplegables; Source lleva la λ de la Resistencia y Source 2 el emblema de la Alianza (acreditado en `/creditos`). Entrada de los dossiers con GSAP y scroll suave con Lenis, desactivados con movimiento reducido. Diseño provisional, aprobado como primera versión.
 - Muestra visual D1b en `/muestra` (no indexada): cabecera de Valve con la válvula animada y tres expedientes (Half-Life, Opposing Force y Blue Shift) con sus apartados, ficha técnica, sellos y una ficha desplegable con las primeras fichas de cada apartado. Aprobada por Manuel como primera referencia estética.
 - Paleta y fuentes de Valve en toda la web (D2a): casi negro, blanco cálido y rojo solo en la válvula y la acción principal; Archivo e IBM Plex Mono en lugar de Geist; colores de sector globales (`--sector-*`).
@@ -64,6 +67,7 @@ Primera versión: el **esqueleto** completo. Todas las rutas y piezas existen, f
 
 ### Añadido
 
+- Opposing Force: los marines aliados pasan a personajes en cuatro clases (soldados, ametralladores, médicos e ingenieros) con su modelo y versión HD; Blue Shift: imágenes de Rosenberg, Simmons y Walter Bennet.
 - 2026-10-23: proyectos cancelados como juegos con `status: "cancelled"` y su propio hub (apartados, lore y fichas como cualquier juego); el hub del juego base los lista y el del cancelado enlaza a su juego base. Primer proyecto: Half-Life para Dreamcast (PR #38).
 - 2026-10-22: mods como juegos con `baseGameId` y su propio hub; `/universos` y la página del universo solo muestran juegos oficiales y el hub de cada juego lista sus mods. Primer mod: Sven Co-op (PR #36).
 - 2026-10-22: campos propios por categoría: `Entry` es una unión discriminada por `category` (ranura y munición de las armas, capítulo de los mapas, afiliación de los personajes, origen de los enemigos) y la ficha muestra la sección «Datos» con `getEntryFacts()` (PR #34).

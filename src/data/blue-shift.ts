@@ -1,5 +1,6 @@
 import type { Entry } from "@/domain/entry";
 import type { Source } from "@/domain/source";
+import { blueShiftModelImages } from "./model-captures";
 
 // Contenido propio de Half-Life: Blue Shift (Z4), según Combine OverWiki.
 // No tiene armas ni enemigos nuevos: las apariciones de los de Half-Life 1 se añaden en sus fichas.
@@ -253,7 +254,18 @@ export const blueShiftEntries: Entry[] = [
       "El manual de la versión de PlayStation 2 le da el rango de «científico de nivel 5», y Decay lo presenta como el diseñador del espectrómetro antimasa.",
       "Blue Shift le dio un modelo de personaje propio.",
     ],
-    appearances: blueShift,
+    appearances: [
+      {
+        gameId: "half-life-blue-shift",
+        images: blueShiftModelImages({
+          entryId: "rosenberg",
+          model: "scientist.mdl",
+          subject: "Rosenberg",
+          width: 278,
+          height: 858,
+        }),
+      },
+    ],
     sources: [
       overwiki("Rosenberg", "Rosenberg"),
       overwiki("Half-Life:_Blue_Shift", "Half-Life: Blue Shift"),
@@ -267,7 +279,18 @@ export const blueShiftEntries: Entry[] = [
     details: { affiliation: "Black Mesa (equipo científico)" },
     summary:
       "Científico que ayuda a preparar el teletransportador prototipo. Blue Shift es su única aparición.",
-    appearances: blueShift,
+    appearances: [
+      {
+        gameId: "half-life-blue-shift",
+        images: blueShiftModelImages({
+          entryId: "simmons",
+          model: "scientist.mdl",
+          subject: "Simmons",
+          width: 274,
+          height: 857,
+        }),
+      },
+    ],
     sources: [overwiki("Simmons", "Simmons")],
   },
   {

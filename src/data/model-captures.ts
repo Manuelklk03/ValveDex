@@ -10,6 +10,8 @@ type ModelCapture = {
   subject: string;
   width: number;
   height: number;
+  // Solo la imagen, sin visor 3D (la shock roach criatura comparte modelo con el arma)
+  stillOnly?: boolean;
 };
 
 const games = {
@@ -31,15 +33,25 @@ const games = {
       kind: "official",
     },
   },
+  "blue-shift": {
+    folder: "bshift",
+    original: "original de Blue Shift",
+    source: {
+      title: "Half-Life: Blue Shift en Steam (archivos del juego)",
+      url: "https://store.steampowered.com/app/130/HalfLife_Blue_Shift/",
+      kind: "official",
+    },
+  },
 } as const;
 
 type GameKey = keyof typeof games;
 
 function capture(
   game: GameKey,
-  { entryId, model, subject, width, height }: ModelCapture,
+  capturedModel: ModelCapture,
   variant?: "original" | "hd",
 ): MediaAsset {
+  const { entryId, model, subject, width, height } = capturedModel;
   const { folder, original, source } = games[game];
   const isHd = variant === "hd";
 
@@ -49,14 +61,18 @@ function capture(
     width,
     height,
     source,
-    credit: `Render propio del modelo ${isHd ? `${folder}_hd` : folder}/models/${model}`,
+    credit: `Render propio del modelo ${isHd ? `${folder}_hd` : folder}/models/${model}${hasModel3d(capturedModel) ? " · también como modelo 3D (.glb) convertido del mismo archivo" : ""}`,
     license: "Material del juego © Valve",
   };
 }
 
 // Las armas (modelos w_) también tienen su .glb para girarlas en 3D
+function hasModel3d(model: ModelCapture) {
+  return model.model.startsWith("w_") && !model.stillOnly;
+}
+
 function weaponModels(game: GameKey, model: ModelCapture, hasHd: boolean) {
-  if (!model.model.startsWith("w_")) return undefined;
+  if (!hasModel3d(model)) return undefined;
   const base = `/models/entries/${model.entryId}-${game}`;
   return hasHd
     ? { original: `${base}-original.glb`, hd: `${base}-hd.glb` }
@@ -85,4 +101,12 @@ export function opposingForceModelImages(
         original: capture("opposing-force", model),
         models: weaponModels("opposing-force", model, false),
       };
+}
+
+// Blue Shift: científicos con versión HD (la cabeza sale del cuerpo que fija cada mapa)
+export function blueShiftModelImages(model: ModelCapture): EntryImages {
+  return {
+    original: capture("blue-shift", model, "original"),
+    hd: capture("blue-shift", model, "hd"),
+  };
 }
