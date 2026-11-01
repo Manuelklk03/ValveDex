@@ -1207,6 +1207,141 @@
   mask: url("/images/decor/tf2-class-silhouette.svg") center / contain no-repeat;
 }
 
+/* Left 4 Dead: informe de brote CEDA, papel oficial amarillo/verde, cinta de aislamiento,
+   silueta de infectado (Hunter/Smoker), sello CEDA, colores de alerta sanitaria */
+.game-dossier--left-4-dead {
+  --dossier-paper: #f5f0d8;
+  --dossier-ink: #1a1814;
+  --dossier-muted: #5a5342;
+  --dossier-accent: #c43d2e;
+  --dossier-line: rgb(26 24 20 / 0.14);
+  --l4d-bio: #2d7d2d;
+  --l4d-warn: #e8a817;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgb(196 61 46 / 0.04) 0 1.5rem,
+      transparent 1.5rem 3rem,
+      rgb(45 125 45 / 0.04) 3rem 4.5rem,
+      transparent 4.5rem 6rem
+    ),
+    linear-gradient(180deg, transparent 70%, rgb(232 168 23 / 0.05));
+  border: 2px solid #c49a6c;
+}
+
+/* Cinta de aislamiento CEDA en el canto superior */
+.game-dossier--left-4-dead::before {
+  content: "";
+  position: absolute;
+  top: -0.5rem;
+  left: 2rem;
+  right: 2rem;
+  height: 5px;
+  background: repeating-linear-gradient(
+    90deg,
+    #1a1814 0 0.25rem,
+    #c43d2e 0.25rem 0.75rem,
+    #1a1814 0.75rem 1rem,
+    #e8a817 1rem 1.5rem,
+    #1a1814 1.5rem 1.75rem
+  );
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* Silueta de Hunter/Smoker en el hueco entre texto y ficha técnica (solo ≥64rem) */
+.game-dossier--left-4-dead::after {
+  content: "";
+  position: absolute;
+  top: 2rem;
+  right: calc(var(--dossier-padding) + 18rem);
+  display: none;
+  width: clamp(6rem, 11vw, 9rem);
+  aspect-ratio: 1;
+  background: var(--dossier-accent);
+  mask: url("/images/decor/l4d-infected-silhouette.svg") center / contain
+    no-repeat;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+@media (min-width: 64rem) {
+  .game-dossier--left-4-dead::after {
+    display: block;
+  }
+}
+
+/* Sello CEDA: circular, autorizado, con fecha */
+.game-dossier--left-4-dead .game-dossier__stamp {
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  color: var(--l4d-bio);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  opacity: 0.95;
+  rotate: -2deg;
+}
+
+/* Left 4 Dead 2: expediente militar/CEDA, papel más oscuro, tono sureño,
+   silueta de Spitter/Jockey, sello militar, tonos ocres y sangre seca */
+.game-dossier--left-4-dead-2 {
+  --dossier-paper: #e8dcc8;
+  --dossier-ink: #1d1a16;
+  --dossier-muted: #5d5648;
+  --dossier-accent: #a82c1e;
+  --dossier-line: rgb(29 26 22 / 0.14);
+  --l4d2-bile: #7db83d;
+  --l4d2-ochre: #c49a3a;
+  background-image:
+    radial-gradient(ellipse at 10% 10%, rgb(168 44 30 / 0.06), transparent 40%),
+    radial-gradient(
+      ellipse at 90% 90%,
+      rgb(196 154 58 / 0.06),
+      transparent 40%
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgb(189 129 40 / 0.03) 0 1px,
+      transparent 1px 4rem
+    );
+  border: 1px solid #b8956c;
+}
+
+/* Sello Militar/CEDA: rectangular, autorización de evacuación */
+.game-dossier--left-4-dead-2 .game-dossier__stamp {
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  color: var(--l4d2-bile);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  opacity: 0.95;
+  rotate: 1deg;
+}
+
+/* Emblema de infectado especial antes del rótulo */
+.game-dossier--left-4-dead-2 .game-dossier__label {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.game-dossier--left-4-dead-2 .game-dossier__label::before {
+  content: "";
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: currentColor;
+  mask: url("/images/decor/l4d2-special-silhouette.svg") center / contain
+    no-repeat;
+}
+
 /* Enlace principal del dossier: una capa que cubre la carpeta entera, sin anidar enlaces.
    La cabecera y el pie de dejar pasar el clic; los apartados quedan por encima con sus propios enlaces */
 .game-dossier__open {

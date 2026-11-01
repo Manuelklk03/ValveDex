@@ -230,4 +230,42 @@ export const games: Game[] = [
       },
     ],
   },
+  {
+    id: "left-4-dead",
+    slug: "left-4-dead",
+    universeId: "left-4-dead",
+    stageId: "source-l4d",
+    status: "released",
+    releaseYear: 2008,
+    developer: "Valve",
+    name: "Left 4 Dead",
+    description:
+      "Cuatro supervivientes cruzan Pensilvania mientras la IA Director gestiona hordas, objetos y eventos para una experiencia única cada partida.",
+    sources: [
+      {
+        title: "Left 4 Dead - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Left_4_Dead",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    id: "left-4-dead-2",
+    slug: "left-4-dead-2",
+    universeId: "left-4-dead",
+    stageId: "source-l4d",
+    status: "released",
+    releaseYear: 2009,
+    developer: "Valve",
+    name: "Left 4 Dead 2",
+    description:
+      "Cuatro nuevos supervivientes en el sur de EE. UU., con armas cuerpo a cuerpo, granadas, nuevos infectados especiales y campañas más largas.",
+    sources: [
+      {
+        title: "Left 4 Dead 2 - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Left_4_Dead_2",
+        kind: "wiki",
+      },
+    ],
+  },
 ];

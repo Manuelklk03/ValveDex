@@ -10,7 +10,11 @@
 .game-theme--half-life-2,
 .game-theme--half-life-2-episode-one,
 .game-theme--half-life-2-episode-two,
-.game-theme--half-life-alyx {
+.game-theme--half-life-alyx,
+.game-theme--team-fortress-classic,
+.game-theme--team-fortress-2,
+.game-theme--left-4-dead,
+.game-theme--left-4-dead-2 {
   background-color: var(--background);
 }
 
@@ -165,4 +169,49 @@
   background-image:
     radial-gradient(ellipse at 10% 10%, rgb(209 72 65 / 0.06), transparent 40%),
     radial-gradient(ellipse at 90% 90%, rgb(45 107 210 / 0.06), transparent 40%);
+}
+
+/* Left 4 Dead: CEDA, alerta sanitaria, verde biohazard, amarillo advertencia, papel oficial */
+.game-theme--left-4-dead {
+  --background: #1a1814;
+  --foreground: #f5f0d8;
+  --surface: #24201a;
+  --border: #3d3528;
+  --muted: #a89878;
+  --accent: #c43d2e;
+  --accent-bio: #2d7d2d;
+  --accent-warn: #e8a817;
+  color-scheme: dark;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgb(196 61 46 / 0.02) 0 2rem,
+    transparent 2rem 4rem,
+    rgb(45 125 45 / 0.02) 4rem 6rem,
+    transparent 6rem 8rem
+  );
+}
+
+/* Left 4 Dead 2: militar/CEDA, sureño, bilis verde, ocre sangre seca, papel envejecido */
+.game-theme--left-4-dead-2 {
+  --background: #1d1a16;
+  --foreground: #e8dcc8;
+  --surface: #28241d;
+  --border: #42382a;
+  --muted: #b0a080;
+  --accent: #a82c1e;
+  --accent-bile: #7db83d;
+  --accent-ochre: #c49a3a;
+  color-scheme: dark;
+  background-image:
+    radial-gradient(ellipse at 15% 15%, rgb(168 44 30 / 0.05), transparent 45%),
+    radial-gradient(
+      ellipse at 85% 85%,
+      rgb(196 154 58 / 0.05),
+      transparent 45%
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgb(189 129 40 / 0.02) 0 1px,
+      transparent 1px 5rem
+    );
 }

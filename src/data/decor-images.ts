@@ -35,4 +35,53 @@ export const decorImages: { image: MediaAsset; usedIn: string }[] = [
       license: "CC0 (dominio público)",
     },
   },
+  {
+    usedIn: "Tarjeta de universo Left 4 Dead · icono de infectado",
+    image: {
+      src: "/images/decor/l4d-universe-icon.svg",
+      alt: "Silueta de infectado Hunter para universo Left 4 Dead",
+      width: 100,
+      height: 100,
+      source: {
+        title: "Ilustración original para ValveDex",
+        url: "https://github.com/Manuelklk03/ValveDex",
+        kind: "official",
+      },
+      credit: "Dibujo original simplificado para ValveDex",
+      license: "CC0 (dominio público)",
+    },
+  },
+  {
+    usedIn: "Dossier de Left 4 Dead · silueta de infectado (Hunter/Smoker)",
+    image: {
+      src: "/images/decor/l4d-infected-silhouette.svg",
+      alt: "Silueta de Hunter/Smoker para dossier Left 4 Dead",
+      width: 100,
+      height: 100,
+      source: {
+        title: "Ilustración original para ValveDex",
+        url: "https://github.com/Manuelklk03/ValveDex",
+        kind: "official",
+      },
+      credit: "Dibujo original simplificado para ValveDex",
+      license: "CC0 (dominio público)",
+    },
+  },
+  {
+    usedIn:
+      "Dossier de Left 4 Dead 2 · silueta de infectado especial (Spitter/Jockey)",
+    image: {
+      src: "/images/decor/l4d2-special-silhouette.svg",
+      alt: "Silueta de Spitter/Jockey para dossier Left 4 Dead 2",
+      width: 100,
+      height: 100,
+      source: {
+        title: "Ilustración original para ValveDex",
+        url: "https://github.com/Manuelklk03/ValveDex",
+        kind: "official",
+      },
+      credit: "Dibujo original simplificado para ValveDex",
+      license: "CC0 (dominio público)",
+    },
+  },
 ];

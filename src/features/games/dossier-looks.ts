@@ -10,7 +10,9 @@ export type DossierLook = {
     | "half-life-2-episode-two"
     | "half-life-alyx"
     | "team-fortress-classic"
-    | "team-fortress-2";
+    | "team-fortress-2"
+    | "left-4-dead"
+    | "left-4-dead-2";
   label: string;
   stamp: string;
   edge: string;
@@ -76,6 +78,18 @@ const dossierLooks: Record<string, DossierLook> = {
     label: "Dossier de mercenari · Mann Co.",
     stamp: "Saxton Hale",
     edge: "Badlands · Granary · 2Fort · Gold Rush",
+  },
+  "left-4-dead": {
+    variant: "left-4-dead",
+    label: "Informe de brote · Pensilvania",
+    stamp: "CEDA",
+    edge: "Fairfield · Riverside · Mercy Hospital · Blood Harvest",
+  },
+  "left-4-dead-2": {
+    variant: "left-4-dead-2",
+    label: "Expediente de evacuación · Sur profundo",
+    stamp: "CEDA / Militar",
+    edge: "Savannah · Nueva Orleans · Bayou · The Parish",
   },
 };
 
