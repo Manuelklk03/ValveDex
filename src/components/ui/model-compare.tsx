@@ -52,8 +52,10 @@ function Models({ before, after, position }: Omit<ModelCompareProps, "label">) {
     const box = new Box3().setFromObject(beforeRef.current);
     if (afterRef.current) box.union(new Box3().setFromObject(afterRef.current));
     const { radius } = box.getBoundingSphere(new Sphere());
-    const distance =
-      (radius / Math.sin(MathUtils.degToRad(camera.fov / 2))) * 1.05;
+    // El ángulo más estrecho (vertical u horizontal) decide: en un visor alto, el ancho limita
+    const halfV = MathUtils.degToRad(camera.fov / 2);
+    const halfH = Math.atan(Math.tan(halfV) * camera.aspect);
+    const distance = (radius / Math.sin(Math.min(halfV, halfH))) * 1.05;
     camera.position.setLength(distance);
     camera.near = distance / 100;
     camera.far = distance * 10;
