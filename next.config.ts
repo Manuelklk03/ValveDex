@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  // Para Docker: el build deja en .next/standalone solo lo necesario para ejecutar el servidor
+  output: "standalone",
   cacheComponents: true,
   partialPrefetching: true,
   images: {
