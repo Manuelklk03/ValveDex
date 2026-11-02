@@ -29,6 +29,18 @@ jobs:
           # Historial completo: SonarCloud lo necesita para saber qué código es nuevo
           fetch-depth: 0
 
+      - name: Preparar Node.js 24 con caché de npm
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Generar cobertura de pruebas
+        run: npm run test:coverage
+
       - name: Analizar con SonarCloud
         uses: SonarSource/sonarqube-scan-action@v8.4.0
         env:

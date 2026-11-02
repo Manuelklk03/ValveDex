@@ -1,6 +1,6 @@
 # Estado actual — ValveDex
 
-Última actualización: **2026-10-31**.
+Última actualización: **2026-11-03**.
 Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
@@ -342,6 +342,8 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 **DevOps-3: publicar en Docker Hub (Claude, 2026-11-02; rama `chore/docker-publish`):** `.github/workflows/docker-publish.yml` construye y publica la imagen `<usuario>/valvedex` en Docker Hub en cada push a `main` (etiquetas `latest` y el commit corto) y en cada tag `v*` (la versión, por ejemplo `0.2.0`). Nunca se ejecuta en PR, para no usar secretos con código sin revisar. Usa los secretos de GitHub `DOCKERHUB_USERNAME` y `DOCKERHUB_TOKEN` (creados por Manuel; el token no pasó por el chat ni por el repositorio). Solo amd64. La regla de `main` exige ya los tres checks (Calidad, Build e Imagen de Docker). Siguiente: DevOps-4, SonarQube.
 
 **DevOps-4: SonarCloud (Claude, 2026-11-02; rama `chore/sonarcloud`):** `sonar-project.properties` (organización `manuelklk03`, proyecto `Manuelklk03_ValveDex`, público; analiza `src` y `scripts`, trata los `*.test.ts` como pruebas y no cuenta `src/data` como duplicado) y `.github/workflows/sonarcloud.yml`, que analiza en cada PR hacia `main` y en cada push a `main` con el secreto `SONAR_TOKEN` (creado por Manuel; «Automatic Analysis» desactivado en SonarCloud). Todavía sin cobertura de pruebas ni puerta de calidad bloqueante: se decidirá con el primer informe.
+
+**DevOps-4a: primer informe y cobertura (Codex, 2026-11-03; rama `chore/sonar-coverage`):** el análisis de `main` en SonarCloud para `d9ce60e` terminó correctamente: puerta de calidad en verde, 0 errores, 0 vulnerabilidades, 67 problemas de mantenibilidad y 0 % de cobertura porque no se enviaba ningún informe. Se añade `@vitest/coverage-v8` en la misma versión que Vitest, el comando `npm run test:coverage`, configuración LCOV en `vitest.config.mts` y generación del informe antes del análisis de SonarCloud. El informe incluye archivos sin pruebas de `src` y `scripts`, para que el porcentaje no se infle al contar solo los módulos importados por los tests. En local: 39 pruebas, 17,59 % de líneas cubiertas, `npm run check` y `npm run build` (250 páginas) correctos. Pendiente: confirmar en la PR y en `main` que SonarCloud recibe `coverage/lcov.info`; después decidir qué rutas merecen nuevas pruebas y si se exige la puerta de calidad como check obligatorio.
 
 **Situación el 2026-10-30:** Half-Life: Decay quedó integrado en `main` con la PR #78. Half-Life 2 abre la etapa Source con su primer dossier en la rama `feature/hl2-dossier`: aviso de la Protección Civil sobre el hormigón de la Ciudad 17, naranja del HUD y de la Resistencia (`#ff9b21`), cian de la Alianza (`#6fb9c9`), tema propio en el hub y una única λ dibujada en SVG. Faltan el contenido de Half-Life 2 (apartados y fichas) y **R3**, las parejas HD de Opposing Force y Blue Shift.
 
