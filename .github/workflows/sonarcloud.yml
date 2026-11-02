@@ -1,0 +1,33 @@
+name: SonarCloud
+
+# Análisis de calidad y seguridad del código en cada PR hacia main y en cada push a main.
+# Las PR de forks no reciben el secreto SONAR_TOKEN, así que ese caso no se analiza.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: sonarcloud-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  analisis:
+    name: Análisis con SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+        with:
+          # Historial completo: SonarCloud lo necesita para saber qué código es nuevo
+          fetch-depth: 0
+
+      - name: Analizar con SonarCloud
+        uses: SonarSource/sonarqube-scan-action@v8.4.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

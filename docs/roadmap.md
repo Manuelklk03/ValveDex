@@ -115,7 +115,7 @@ Manuel estudia DevOps en un bootcamp y quiere practicarlo en ValveDex cuando el 
       pm run test), para ver en qué paso falla cada PR.
 - [x] Todo en Docker: `Dockerfile` (y `docker-compose` si hace falta) para desarrollo y producción.
 - [x] Publicar la imagen en Docker Hub. **El token lo introduce Manuel** como secreto del repositorio cuando el asistente se lo pida; nunca va en el código, en un `.env` versionado ni en el chat.
-- [ ] Análisis del repositorio con SonarQube (o SonarCloud) en el pipeline; su token, igual que el de Docker Hub.
+- [x] Análisis del repositorio con SonarQube (o SonarCloud) en el pipeline; su token, igual que el de Docker Hub.
 - [ ] Modo guiado: Manuel lo practica paso a paso y el asistente explica cada archivo (`Dockerfile`, workflows, configuración de SonarQube).
 
 **Se acepta cuando:** cada PR pasa el pipeline, la imagen se construye y se publica en Docker Hub desde CI, SonarQube analiza el repositorio y ningún secreto está en el código.

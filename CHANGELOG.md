@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Análisis de calidad y seguridad con SonarCloud en cada PR y en cada push a `main`.
 - La imagen de Docker se publica en Docker Hub al fusionar en `main` y al crear un tag de versión.
 - ValveDex se puede construir y ejecutar con Docker (`docker compose up --build`); el CI comprueba que la imagen se construye.
 - Integración continua con GitHub Actions: lint, tipos, formato, pruebas y build en cada PR.
