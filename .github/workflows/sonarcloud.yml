@@ -19,6 +19,8 @@ permissions:
 jobs:
   analisis:
     name: Análisis con SonarCloud
+    # Las PR de forks no reciben SONAR_TOKEN y el análisis fallaría: se omiten (el trabajo sale como «saltado», no en rojo)
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - name: Descargar el código
