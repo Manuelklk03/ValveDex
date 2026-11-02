@@ -107,7 +107,8 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 
 Manuel estudia DevOps en un bootcamp y quiere practicarlo en ValveDex cuando el contenido y el diseño estén terminados. No se empieza antes sin su indicación.
 
-- [ ] Pipelines de CI/CD (por ejemplo, GitHub Actions; la integración continua ya está hecha, falta el despliegue): `npm ci`, `npm run check` y `npm run build` en cada PR, y despliegue al fusionar en `main`.
+- [ ] Pipelines de CI/CD (por ejemplo, GitHub Actions; la integración continua ya está hecha, falta el despliegue): `npm ci`, `npm run check` y `npm run build` en cada PR; definir el disparador de cada despliegue al preparar staging y producción.
+- [ ] Antes del despliegue, preparar dos entornos para ValveDex: **staging** para validar la versión candidata y **producción** para la web pública (decisión de Manuel, 2026-11-03). Definir URL, variables y secretos independientes; si se añade una base de datos, separar también sus datos. Acordar cómo se promociona una versión de staging a producción y comprobar ambos entornos después de desplegar.
 - [x] Calidad de código en el pipeline como pasos separados: lint con ESLint (
       pm run lint, ya configurado), tipos (
       pm run typecheck), formato con Prettier (
