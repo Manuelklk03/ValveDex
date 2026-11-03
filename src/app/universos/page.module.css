@@ -34,7 +34,7 @@
   line-height: 1.6;
 }
 
-/* La saga abierta ocupa todo el ancho: es la única puerta que hoy lleva a algún sitio */
+/* Cada saga disponible ocupa una fila completa */
 .universes-page__featured {
   display: grid;
   gap: 1.5rem;

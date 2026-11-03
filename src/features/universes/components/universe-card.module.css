@@ -15,17 +15,81 @@
     transform 160ms ease-out;
 }
 
+/* Acreditación: franja superior con el color de la saga */
+.universe-card__band {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-inline: -1.5rem;
+  padding: 0.625rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--universe-accent) 14%, var(--surface));
+  color: var(--foreground);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+}
+
+.universe-card__band > span {
+  white-space: nowrap;
+}
+
+.universe-card__code {
+  overflow: hidden;
+  color: var(--muted);
+  text-overflow: ellipsis;
+}
+
+.universe-card__title {
+  margin-top: 0.5rem;
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
 /* Color de cada saga, el mismo que su tema (universe-theme.module.css) */
 .universe-card--half-life {
   --universe-accent: #f28c28;
 }
 
+/* Team Fortress: dos equipos. RED a la izquierda y BLU a la derecha, en el fondo, la franja y el emblema */
 .universe-card--team-fortress {
-  --universe-accent: #d14841;
+  --universe-accent: #e0664a;
+  --team-red: #c8483c;
+  --team-blu: #5a8fb0;
+  min-height: 16rem;
+  background: linear-gradient(
+    100deg,
+    color-mix(in srgb, var(--team-red) 14%, var(--surface)),
+    var(--surface) 55%,
+    color-mix(in srgb, var(--team-blu) 16%, var(--surface))
+  );
 }
 
+/* Left 4 Dead: verde apagado de la zona segura y la sangre del infectado */
 .universe-card--left-4-dead {
-  --universe-accent: #c43d2e;
+  --universe-accent: #e8705a;
+  --safe-green: #788846;
+  min-height: 16rem;
+  background:
+    radial-gradient(ellipse at 88% 85%, rgb(168 56 40 / 0.2), transparent 55%),
+    color-mix(in srgb, var(--safe-green) 9%, var(--surface));
+}
+
+/* Franja vertical del borde: RED y BLU; verde y ámbar de L4D */
+.universe-card--team-fortress::after,
+.universe-card--left-4-dead::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: linear-gradient(var(--team-red) 0 50%, var(--team-blu) 50%);
+  pointer-events: none;
+}
+
+.universe-card--left-4-dead::after {
+  background: linear-gradient(var(--safe-green) 0 50%, #c49b4d 50%);
 }
 
 .universe-card:not(.universe-card--coming-soon):hover {
@@ -43,7 +107,8 @@
   outline-offset: 4px;
 }
 
-/* Marca de agua de la saga: λ en Half-Life; icono de clase TF2 en Team Fortress */
+/* Marca de agua de la saga (decorativa, sin texto para lectores de pantalla): λ en Half-Life,
+   el emblema de TF2 en los colores de los dos equipos y el 4 ensangrentado de L4D */
 .universe-card--half-life::before {
   content: "λ" / "";
   position: absolute;
@@ -57,30 +122,27 @@
   pointer-events: none;
 }
 
-.universe-card--team-fortress::before {
-  content: "";
-  position: absolute;
-  right: clamp(1rem, 4vw, 3rem);
-  bottom: -3rem;
-  width: clamp(12rem, 22vw, 18rem);
-  aspect-ratio: 1;
-  background: var(--universe-accent);
-  mask: url("/images/decor/tf2-class-silhouette.svg") center / contain no-repeat;
-  opacity: 0.08;
-  pointer-events: none;
-}
-
+.universe-card--team-fortress::before,
 .universe-card--left-4-dead::before {
   content: "";
   position: absolute;
   right: clamp(1rem, 4vw, 3rem);
-  bottom: -3rem;
-  width: clamp(12rem, 22vw, 18rem);
+  bottom: -2.5rem;
+  width: clamp(11rem, 20vw, 16rem);
   aspect-ratio: 1;
-  background: var(--universe-accent);
-  mask: url("/images/decor/l4d-universe-icon.svg") center / contain no-repeat;
-  opacity: 0.08;
   pointer-events: none;
+}
+
+.universe-card--team-fortress::before {
+  background: linear-gradient(90deg, var(--team-red) 50%, var(--team-blu) 50%);
+  mask: url("/images/decor/tf2-emblem.png") center / contain no-repeat;
+  opacity: 0.3;
+}
+
+.universe-card--left-4-dead::before {
+  background: url("/images/decor/l4d-official-icon.png") center / contain
+    no-repeat;
+  opacity: 0.55;
 }
 
 .universe-card__link {
@@ -96,6 +158,13 @@
   content: "";
   position: absolute;
   inset: 0;
+}
+
+/* Por encima de la marca de agua */
+.universe-card__description,
+.universe-card__footer {
+  position: relative;
+  z-index: 1;
 }
 
 .universe-card__description {
@@ -114,6 +183,12 @@
   border-top: 1px dashed var(--border);
 }
 
+/* La línea del pie cruza el emblema: más tenue para que no ensucie la marca de agua */
+.universe-card--team-fortress .universe-card__footer,
+.universe-card--left-4-dead .universe-card__footer {
+  border-top-color: rgb(255 255 255 / 0.1);
+}
+
 .universe-card__meta {
   color: var(--universe-accent);
   font-family: var(--font-plex-mono), monospace;
@@ -129,6 +204,7 @@
 .universe-card__game {
   padding: 0.125rem 0.5rem;
   border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
   font-size: 0.8125rem;
 }
 
