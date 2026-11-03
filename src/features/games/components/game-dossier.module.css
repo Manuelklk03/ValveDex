@@ -1249,28 +1249,6 @@
   pointer-events: none;
 }
 
-/* Silueta de Hunter/Smoker en el hueco entre texto y ficha técnica (solo ≥64rem) */
-.game-dossier--left-4-dead::after {
-  content: "";
-  position: absolute;
-  top: 2rem;
-  right: calc(var(--dossier-padding) + 18rem);
-  display: none;
-  width: clamp(6rem, 11vw, 9rem);
-  aspect-ratio: 1;
-  background: var(--dossier-accent);
-  mask: url("/images/decor/l4d-infected-silhouette.svg") center / contain
-    no-repeat;
-  opacity: 0.12;
-  pointer-events: none;
-}
-
-@media (min-width: 64rem) {
-  .game-dossier--left-4-dead::after {
-    display: block;
-  }
-}
-
 /* Sello CEDA: circular, autorizado, con fecha */
 .game-dossier--left-4-dead .game-dossier__stamp {
   border: 2px solid currentColor;
@@ -1342,6 +1320,58 @@
     no-repeat;
 }
 
+/* Emblemas oficiales: marca grande en el hueco entre el texto y la ficha técnica (solo desde 64rem),
+   como la λ de Half-Life 1. Se pintan con mask para tomar los colores de cada dossier */
+.game-dossier--team-fortress-classic::after,
+.game-dossier--team-fortress-2::after,
+.game-dossier--left-4-dead::after,
+.game-dossier--left-4-dead-2::after {
+  content: "";
+  position: absolute;
+  top: 1.25rem;
+  right: calc(var(--dossier-padding) + 17.5rem);
+  display: none;
+  width: clamp(8rem, 13vw, 11rem);
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+
+/* Team Fortress: el emblema partido en los colores de los dos equipos */
+.game-dossier--team-fortress-classic::after {
+  background: linear-gradient(90deg, #c83838 50%, #2b58a6 50%);
+  mask: url("/images/decor/tf2-emblem.png") center / contain no-repeat;
+  opacity: 0.22;
+}
+
+.game-dossier--team-fortress-2::after {
+  background: linear-gradient(135deg, #d14841 50%, var(--tf2-blu) 50%);
+  mask: url("/images/decor/tf2-emblem.png") center / contain no-repeat;
+  opacity: 0.2;
+}
+
+/* Left 4 Dead: el 4 ensangrentado; en la segunda parte, el mismo trazo en ocre y girado */
+.game-dossier--left-4-dead::after {
+  background: url("/images/decor/l4d-official-icon.png") center / contain
+    no-repeat;
+  opacity: 0.35;
+}
+
+.game-dossier--left-4-dead-2::after {
+  background: url("/images/decor/l4d-official-icon.png") center / contain
+    no-repeat;
+  filter: sepia(0.9) saturate(0.6);
+  opacity: 0.4;
+  rotate: 8deg;
+}
+
+@media (min-width: 64rem) {
+  .game-dossier--team-fortress-classic::after,
+  .game-dossier--team-fortress-2::after,
+  .game-dossier--left-4-dead::after,
+  .game-dossier--left-4-dead-2::after {
+    display: block;
+  }
+}
 /* Enlace principal del dossier: una capa que cubre la carpeta entera, sin anidar enlaces.
    La cabecera y el pie de dejar pasar el clic; los apartados quedan por encima con sus propios enlaces */
 .game-dossier__open {

@@ -19,7 +19,9 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Cambiado
 
-- Las imágenes de Half-Life 1 se rehacen desde los modelos 3D, con mejor luz; el visor 3D mantiene el arma centrada al girarla.
+-- Las tarjetas y los dossiers de Team Fortress y Left 4 Dead llevan sus emblemas oficiales integrados, y la cabecera de las tarjetas de universo vuelve a tener formato.
+Las imágenes de Half-Life 1 se rehacen desde los modelos 3D, con mejor luz; el visor 3D mantiene el arma centrada al girarla.
+
 - Nuevos dossiers de Half-Life: Decay, Half-Life 2, Episode One y Episode Two en el universo Half-Life, cada uno con su material propio, y la misma paleta en su hub, apartados y fichas.
 
 ### Corregido
