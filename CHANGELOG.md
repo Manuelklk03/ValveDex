@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Movimiento de la portada con GSAP y Lenis: entrada, cifras que cuentan, válvula que gira con el scroll y la historia de Valve fijada mientras avanza su línea de producción (con movimiento reducido y en móvil, sin animación fija).
 - Portada rediseñada: fondo industrial, cifras con el número de juegos, catálogo de juegos por saga, historia de Valve como línea de producción y avance de las épocas de Steam.
 - Historia de Valve ampliada a 11 hitos con fecha y fuente (1996–2023) y datos de las tres épocas de Steam (`src/data/steam-eras.ts`), también en `/creditos`.
 - Informe de cobertura LCOV de Vitest integrado en el análisis de SonarCloud.

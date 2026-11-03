@@ -13,6 +13,7 @@ export function ProductionLine({ milestones }: ProductionLineProps) {
       role="region"
       aria-label="Historia de Valve, desplazable en horizontal"
       tabIndex={0}
+      data-line-scroller
     >
       <ol className={styles["production-line__track"]}>
         {milestones.map((milestone) => (

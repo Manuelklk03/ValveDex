@@ -15,6 +15,7 @@ export function IndustrialBackdrop({ className }: IndustrialBackdropProps) {
         .filter(Boolean)
         .join(" ")}
       aria-hidden="true"
+      data-parallax-backdrop
     >
       <svg
         className={styles["industrial-backdrop__svg"]}
