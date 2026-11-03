@@ -8,6 +8,7 @@ import { gameSections } from "./game-sections";
 import { games } from "./games";
 import { decorImages } from "./decor-images";
 import { gameLore } from "./game-lore";
+import { steamEras } from "./steam-eras";
 import { valveMilestones } from "./valve-milestones";
 import { valvePeople } from "./valve-people";
 import { universes } from "./universes";
@@ -333,6 +334,28 @@ describe("Valve", () => {
         expect(source.url, milestone.id).toMatch(/^https:\/\//);
       }
     }
+  });
+
+  it("las épocas de Steam no se solapan y sus hechos caen dentro de su periodo", () => {
+    const eras = [...steamEras].sort((a, b) => a.yearFrom - b.yearFrom);
+    const events = eras.flatMap((era) => era.events);
+
+    expect(findDuplicates(events.map((event) => event.id))).toEqual([]);
+
+    eras.forEach((era, index) => {
+      const next = eras[index + 1];
+      if (next) expect(era.yearTo, era.id).toBeLessThan(next.yearFrom);
+
+      for (const event of era.events) {
+        expect(event.year, event.id).toBeGreaterThanOrEqual(era.yearFrom);
+        expect(event.year, event.id).toBeLessThanOrEqual(era.yearTo ?? 9999);
+        expect(event.sources.length, event.id).toBeGreaterThan(0);
+
+        for (const source of event.sources) {
+          expect(source.url, event.id).toMatch(/^https:\/\//);
+        }
+      }
+    });
   });
 
   it("las personas tienen id y slug únicos y fuentes https", () => {

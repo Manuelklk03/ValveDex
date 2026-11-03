@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Historia de Valve ampliada a 11 hitos con fecha y fuente (1996–2023) y datos de las tres épocas de Steam (`src/data/steam-eras.ts`), también en `/creditos`.
 - Informe de cobertura LCOV de Vitest integrado en el análisis de SonarCloud.
 - Análisis de calidad y seguridad con SonarCloud en cada PR y en cada push a `main`.
 - La imagen de Docker se publica en Docker Hub al fusionar en `main` y al crear un tag de versión.

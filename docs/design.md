@@ -69,7 +69,7 @@ Los colores son **interpretación de ValveDex** basada en las referencias medida
 
 ### Steam (sección futura, identidad separada de Valve)
 
-- Cada época recupera su paleta y su tipo de interfaz, reinterpretados: **2003–2010**, verde oliva y dorado con Verdana (medido en la web de 2004); **2010–2023**, azul nocturno y azul claro (medido en la tienda actual); **2023 en adelante**, el cliente unificado.
+- Cada época recupera su paleta y su tipo de interfaz, reinterpretados: **2002–2009 «Los orígenes»**, verde oliva y dorado con Verdana (medido en la web de 2004); **2010–2021 «La plataforma»**, azul nocturno y azul claro (medido en la tienda actual); **2022 en adelante «El cliente unificado»** (Steam Deck y cliente de 2023). Los periodos se ajustaron el 2026-11-04 a los hechos de `src/data/steam-eras.ts`.
 - Las épocas se presentan como **capas de interfaz**: al avanzar por la historia, la página cambia de «skin», como lo hacía el cliente. Sin copiar pantallas: biseles, densidad y color de cada época sobre nuestro contenido.
 - **Pendiente:** verificar con capturas los colores del cliente de cada época antes de fijarlos.
 
