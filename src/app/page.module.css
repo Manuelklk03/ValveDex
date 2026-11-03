@@ -135,6 +135,11 @@
   color: var(--valve-red);
 }
 
+.home-page__wheel-svg {
+  display: block;
+  width: 100%;
+}
+
 .home-page__stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -238,6 +243,14 @@
 @media (min-width: 56rem) {
   .home-page__section--wide {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Con ventana alta, la historia ocupa la pantalla entera mientras está fijada */
+  @media (min-height: 42rem) {
+    .home-page__section--wide {
+      align-content: center;
+      min-height: calc(100svh - 3rem);
+    }
   }
 
   .home-page__section-head--static {

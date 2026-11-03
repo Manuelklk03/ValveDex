@@ -11,7 +11,9 @@ import { getValvePeople } from "@/features/valve/get-valve-people";
 import { GamesShowcase } from "@/features/universes/components/games-showcase";
 import { ProductionLine } from "@/features/valve/components/production-line";
 import { SteamErasTeaser } from "@/features/valve/components/steam-eras-teaser";
+import { HomeMotion } from "@/features/valve/components/home-motion";
 import { IndustrialBackdrop } from "@/components/ui/industrial-backdrop";
+import { SmoothScroll } from "@/components/ui/smooth-scroll";
 import { ValveWheel } from "@/components/ui/valve-wheel";
 
 // Datos del texto de la sección «Valve» (fuente: Valve Corporation, Wikipedia, en los hitos)
@@ -37,6 +39,8 @@ export default function HomePage() {
 
   return (
     <main className={styles["home-page"]}>
+      <SmoothScroll />
+      <HomeMotion />
       <section
         className={styles["home-page__hero"]}
         aria-labelledby="home-title"
@@ -44,15 +48,21 @@ export default function HomePage() {
         <IndustrialBackdrop />
         <div className={styles["home-page__hero-inner"]}>
           <div className={styles["home-page__hero-content"]}>
-            <p className={styles["home-page__eyebrow"]}>Enciclopedia de fans</p>
-            <h1 id="home-title" className={styles["home-page__title"]}>
+            <p className={styles["home-page__eyebrow"]} data-hero-item>
+              Enciclopedia de fans
+            </p>
+            <h1
+              id="home-title"
+              className={styles["home-page__title"]}
+              data-hero-item
+            >
               Valve, de Black Mesa a Steam
             </h1>
-            <p className={styles["home-page__intro"]}>
+            <p className={styles["home-page__intro"]} data-hero-item>
               Juegos, personajes, armas, mapas y lore de las sagas de Valve.
               Empezamos por Half-Life.
             </p>
-            <div className={styles["home-page__actions"]}>
+            <div className={styles["home-page__actions"]} data-hero-item>
               <Link href="/universos" className={styles["home-page__button"]}>
                 Ver universos
               </Link>
@@ -61,14 +71,21 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <ValveWheel className={styles["home-page__wheel"]} />
+          <div className={styles["home-page__wheel"]} data-home-wheel>
+            <ValveWheel className={styles["home-page__wheel-svg"]} />
+          </div>
         </div>
 
         <dl className={styles["home-page__stats"]}>
           {stats.map((stat) => (
             <div key={stat.label} className={styles["home-page__stat"]}>
               <dt className={styles["home-page__stat-label"]}>{stat.label}</dt>
-              <dd className={styles["home-page__stat-value"]}>{stat.value}</dd>
+              <dd
+                className={styles["home-page__stat-value"]}
+                data-count={stat.value}
+              >
+                {stat.value}
+              </dd>
             </div>
           ))}
         </dl>
@@ -86,7 +103,7 @@ export default function HomePage() {
             </h2>
           </header>
 
-          <div className={styles["home-page__section-body"]}>
+          <div className={styles["home-page__section-body"]} data-home-reveal>
             <p className={styles["home-page__lead"]}>
               Valve Corporation es una desarrolladora y distribuidora de
               videojuegos fundada en 1996 por Gabe Newell y Mike Harrington, con
@@ -143,7 +160,7 @@ export default function HomePage() {
             </h2>
           </header>
 
-          <div className={styles["home-page__section-body"]}>
+          <div className={styles["home-page__section-body"]} data-home-reveal>
             <GamesShowcase />
             <Link href="/universos" className={styles["home-page__more-link"]}>
               Ver todos los universos
@@ -154,6 +171,7 @@ export default function HomePage() {
         <section
           className={`${styles["home-page__section"]} ${styles["home-page__section--wide"]}`}
           aria-labelledby="history-title"
+          data-home-pin
         >
           <header
             className={`${styles["home-page__section-head"]} ${styles["home-page__section-head--static"]}`}
@@ -189,7 +207,7 @@ export default function HomePage() {
             </h2>
           </header>
 
-          <div className={styles["home-page__section-body"]}>
+          <div className={styles["home-page__section-body"]} data-home-reveal>
             <div className={styles["home-page__steam"]}>
               <p className={styles["home-page__steam-year"]}>
                 <span className={styles["home-page__steam-year-label"]}>

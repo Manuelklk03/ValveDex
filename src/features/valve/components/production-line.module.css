@@ -10,6 +10,12 @@
   padding-bottom: 1.5rem;
 }
 
+/* Con el scroll de la página mandando (HomeMotion), la zona no se desplaza por su cuenta */
+.production-line[data-pinned="true"] {
+  overflow-x: hidden;
+  scroll-snap-type: none;
+}
+
 .production-line:focus-visible {
   outline: 2px solid var(--foreground);
   outline-offset: 2px;
@@ -38,6 +44,20 @@
     var(--surface) 0 18px,
     rgb(242 239 233 / 0.05) 18px 20px
   );
+}
+
+/* El fluido que avanza por la tubería al hacer scroll: HomeMotion actualiza --flow (0 a 1) */
+.production-line__track::after {
+  content: "";
+  position: absolute;
+  top: calc(clamp(3.5rem, 7vw, 5.5rem) + 1.25rem + 5px);
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--foreground);
+  opacity: 0.55;
+  transform: scaleX(var(--flow, 0));
+  transform-origin: left;
 }
 
 .production-line__station {
