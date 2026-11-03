@@ -24,24 +24,29 @@ export function Timeline({ milestones }: TimelineProps) {
           >
             {milestone.year}
           </time>
-          <h3 className={styles["timeline__title"]}>{milestone.title}</h3>
-          <p className={styles["timeline__description"]}>
-            {milestone.description}
-          </p>
-          <p className={styles["timeline__sources"]}>
-            Fuente:{" "}
-            {milestone.sources.map((source, index) => (
-              <span key={source.url}>
-                {index > 0 && ", "}
-                <a
-                  href={source.url}
-                  className={styles["timeline__source-link"]}
-                >
-                  {source.title}
-                </a>
-              </span>
-            ))}
-          </p>
+          <div className={styles["timeline__content"]}>
+            {milestone.date ? (
+              <p className={styles["timeline__date"]}>{milestone.date}</p>
+            ) : null}
+            <h3 className={styles["timeline__title"]}>{milestone.title}</h3>
+            <p className={styles["timeline__description"]}>
+              {milestone.description}
+            </p>
+            <p className={styles["timeline__sources"]}>
+              Fuente:{" "}
+              {milestone.sources.map((source, index) => (
+                <span key={source.url}>
+                  {index > 0 && ", "}
+                  <a
+                    href={source.url}
+                    className={styles["timeline__source-link"]}
+                  >
+                    {source.title}
+                  </a>
+                </span>
+              ))}
+            </p>
+          </div>
         </li>
       ))}
     </ol>

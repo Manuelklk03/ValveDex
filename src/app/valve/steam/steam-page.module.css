@@ -1,0 +1,353 @@
+/* Página de Steam: una introducción con la paleta de Valve y tres franjas a todo el ancho, una por época.
+   Cada franja define sus variables --era-* y --event-*; los elementos solo las consumen. */
+.steam-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Introducción: paleta de Valve, rematada por una banda con los tres colores de las épocas */
+.steam-page__intro {
+  position: relative;
+  display: grid;
+  gap: clamp(2rem, 4vw, 3rem);
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: clamp(2rem, 5vw, 3.5rem) 1rem clamp(3rem, 6vw, 4.5rem);
+}
+
+.steam-page__intro::after {
+  content: "";
+  position: absolute;
+  inset: auto 1rem 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--steam-origins-accent) 0 33.33%,
+    var(--steam-platform-accent) 33.33% 66.66%,
+    var(--steam-unified-accent) 66.66%
+  );
+}
+
+.steam-page__header {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.steam-page__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.steam-page__eyebrow::before {
+  content: "";
+  width: 2.5rem;
+  height: 1px;
+  background: currentColor;
+}
+
+.steam-page__title {
+  font-size: clamp(4rem, 14vw, 10rem);
+  font-weight: 800;
+  font-stretch: 125%;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+}
+
+.steam-page__lead {
+  max-width: 52ch;
+  color: var(--muted);
+  font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.steam-page__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+}
+
+.steam-page__fact {
+  display: grid;
+  gap: 0.375rem;
+  padding: 1rem 1.25rem;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.steam-page__fact-label {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+}
+
+.steam-page__fact-value {
+  font-size: 1.375rem;
+  font-weight: 700;
+  font-stretch: 112%;
+}
+
+/* Índice de épocas: cada enlace lleva el color de su época */
+.steam-page__nav {
+  display: grid;
+  gap: 0.75rem;
+  list-style: none;
+}
+
+@media (min-width: 48rem) {
+  .steam-page__nav {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.steam-page__nav-link {
+  --chip-color: var(--foreground);
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--chip-color);
+  color: var(--foreground);
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 160ms ease-out;
+}
+
+.steam-page__nav-link--origins {
+  --chip-color: var(--steam-origins-accent);
+}
+
+.steam-page__nav-link--platform {
+  --chip-color: var(--steam-platform-accent);
+}
+
+.steam-page__nav-link--unified {
+  --chip-color: var(--steam-unified-accent);
+}
+
+.steam-page__nav-years {
+  color: var(--chip-color);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+@media (hover: hover) {
+  .steam-page__nav-link:hover {
+    background: color-mix(in srgb, var(--chip-color) 10%, transparent);
+  }
+}
+
+/* Época: franja a todo el ancho con las variables de su paleta */
+.steam-page__era {
+  --era-bg: var(--surface);
+  --era-bg-deep: var(--background);
+  --era-text: var(--foreground);
+  --era-muted: var(--muted);
+  --era-accent: var(--foreground);
+  --era-border: var(--border);
+  --era-font: inherit;
+  --event-layout: minmax(0, 1fr);
+  --event-columns: minmax(0, 1fr);
+  --event-radius: 0;
+  --event-border: 1px solid var(--era-border);
+  --event-top: 1px solid var(--era-border);
+  --event-bg: var(--era-bg-deep);
+  --year-bg: transparent;
+  --year-color: var(--era-accent);
+  --year-pad: 0;
+  --year-radius: 0;
+  --year-size: clamp(2.5rem, 5vw, 3.5rem);
+  scroll-margin-top: 1rem;
+  padding: clamp(3rem, 7vw, 5.5rem) 1rem;
+  border-top: 1px solid var(--era-border);
+  background: var(--era-bg);
+  color: var(--era-text);
+  font-family: var(--era-font);
+}
+
+/* 2002–2009: verde oliva y dorado, Verdana y biseles, como el cliente de los orígenes */
+.steam-page__era--origins {
+  --era-bg: var(--steam-origins-bg);
+  --era-bg-deep: var(--steam-origins-bg-deep);
+  --era-text: var(--steam-origins-text);
+  --era-muted: var(--steam-origins-muted);
+  --era-accent: var(--steam-origins-accent);
+  --era-border: var(--steam-origins-border);
+  --era-font: Verdana, Geneva, sans-serif;
+  --event-border: 2px outset var(--steam-origins-border);
+  --event-top: 2px outset var(--steam-origins-border);
+  --year-size: 2rem;
+}
+
+@media (min-width: 40rem) {
+  .steam-page__era--origins {
+    --event-layout: 7.5rem minmax(0, 1fr);
+  }
+}
+
+/* 2010–2021: azul nocturno de la tienda, con tarjetas de cápsula */
+.steam-page__era--platform {
+  --era-bg: var(--steam-platform-bg);
+  --era-bg-deep: var(--steam-platform-bg-deep);
+  --era-text: var(--steam-platform-text);
+  --era-muted: var(--steam-platform-muted);
+  --era-accent: var(--steam-platform-accent);
+  --era-border: var(--steam-platform-border);
+  --event-radius: 3px;
+  --event-top: 3px solid var(--steam-platform-accent);
+  --event-bg: rgb(0 0 0 / 0.22);
+  background: linear-gradient(
+    180deg,
+    var(--steam-platform-bg),
+    var(--steam-platform-bg-deep)
+  );
+}
+
+/* 2022 en adelante: el cliente unificado, plano, redondeado y con el azul vivo del Deck */
+.steam-page__era--unified {
+  --era-bg: var(--steam-unified-bg);
+  --era-bg-deep: var(--steam-unified-bg-deep);
+  --era-text: var(--steam-unified-text);
+  --era-muted: var(--steam-unified-muted);
+  --era-accent: var(--steam-unified-accent);
+  --era-border: var(--steam-unified-border);
+  --event-radius: 14px;
+  --year-bg: var(--steam-unified-accent);
+  --year-color: var(--steam-unified-bg);
+  --year-pad: 0.25rem 0.875rem;
+  --year-radius: 999px;
+  --year-size: 1rem;
+}
+
+@media (min-width: 48rem) {
+  .steam-page__era--platform,
+  .steam-page__era--unified {
+    --event-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.steam-page__era-inner {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3rem);
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+}
+
+.steam-page__era-header {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.steam-page__era-years {
+  color: var(--era-accent);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.875rem;
+}
+
+.steam-page__era-name {
+  font-size: clamp(2.25rem, 6vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.steam-page__era-summary {
+  max-width: 56ch;
+  color: var(--era-muted);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.steam-page__events {
+  display: grid;
+  grid-template-columns: var(--event-columns);
+  gap: 1rem;
+  list-style: none;
+}
+
+.steam-page__event {
+  display: grid;
+  grid-template-columns: var(--event-layout);
+  align-content: start;
+  gap: 0.75rem 1.5rem;
+  padding: 1.25rem;
+  border: var(--event-border);
+  border-top: var(--event-top);
+  border-radius: var(--event-radius);
+  background: var(--event-bg);
+}
+
+.steam-page__event-year {
+  align-self: start;
+  justify-self: start;
+  padding: var(--year-pad);
+  border-radius: var(--year-radius);
+  background: var(--year-bg);
+  color: var(--year-color);
+  font-size: var(--year-size);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.steam-page__event-body {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.steam-page__event-date {
+  color: var(--era-muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+}
+
+.steam-page__event-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.steam-page__event-text {
+  color: var(--era-muted);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.steam-page__event-sources {
+  color: var(--era-muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+}
+
+.steam-page__source-link {
+  color: var(--era-text);
+  text-decoration: underline;
+  text-decoration-color: var(--era-accent);
+  text-underline-offset: 0.25em;
+}
+
+.steam-page__source-link:hover {
+  color: var(--era-accent);
+}
+
+.steam-page__nav-link:focus-visible {
+  outline: 3px solid var(--chip-color);
+  outline-offset: 3px;
+}
+
+.steam-page__source-link:focus-visible {
+  outline: 3px solid var(--era-accent);
+  outline-offset: 3px;
+}

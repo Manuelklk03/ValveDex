@@ -33,11 +33,11 @@
 
 /* 2002–2009: verde oliva y dorado, con Verdana y biseles, como el cliente de los orígenes */
 .steam-eras-teaser__era--origins {
-  --era-bg: #3e4637;
-  --era-text: #e8e2c6;
-  --era-muted: #c5c9b6;
-  --era-accent: #d2c24f;
-  --era-border: #6c7660;
+  --era-bg: var(--steam-origins-bg);
+  --era-text: var(--steam-origins-text);
+  --era-muted: var(--steam-origins-muted);
+  --era-accent: var(--steam-origins-accent);
+  --era-border: var(--steam-origins-border);
   font-family: Verdana, Geneva, sans-serif;
   border-style: outset;
   border-width: 2px;
@@ -45,20 +45,24 @@
 
 /* 2010–2021: azul nocturno de la tienda */
 .steam-eras-teaser__era--platform {
-  --era-bg: linear-gradient(160deg, #1b2838, #16202d);
-  --era-text: #c7d5e0;
-  --era-muted: #9fb2c1;
-  --era-accent: #66c0f4;
-  --era-border: #2a475e;
+  --era-bg: linear-gradient(
+    160deg,
+    var(--steam-platform-bg),
+    var(--steam-platform-bg-deep)
+  );
+  --era-text: var(--steam-platform-text);
+  --era-muted: var(--steam-platform-muted);
+  --era-accent: var(--steam-platform-accent);
+  --era-border: var(--steam-platform-border);
 }
 
 /* 2022 en adelante: el cliente unificado, más plano y con el azul vivo del Deck */
 .steam-eras-teaser__era--unified {
-  --era-bg: #0e141b;
-  --era-text: #dfe3e8;
-  --era-muted: #97a3b0;
-  --era-accent: #1a9fff;
-  --era-border: #26323f;
+  --era-bg: var(--steam-unified-bg);
+  --era-text: var(--steam-unified-text);
+  --era-muted: var(--steam-unified-muted);
+  --era-accent: var(--steam-unified-accent);
+  --era-border: var(--steam-unified-border);
   border-radius: 12px;
 }
 
