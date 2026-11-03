@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { entries } from "./entries";
@@ -203,6 +203,21 @@ describe("imágenes", () => {
     const missing = allImages
       .filter(({ image }) => !existsSync(join("public", image.src)))
       .map(({ label, image }) => `${label}: ${image.src}`);
+
+    expect(missing).toEqual([]);
+  });
+
+  it("las que solo se usan desde el CSS (mask o background) existen en public/", () => {
+    const missing = readdirSync("src", { recursive: true })
+      .map(String)
+      .filter((file) => file.endsWith(".css"))
+      .flatMap((file) => {
+        const css = readFileSync(join("src", file), "utf8");
+        return [...css.matchAll(/url\("(\/images\/[^"]+)"\)/g)]
+          .map((match) => match[1])
+          .filter((src) => !existsSync(join("public", src)))
+          .map((src) => `${file}: ${src}`);
+      });
 
     expect(missing).toEqual([]);
   });

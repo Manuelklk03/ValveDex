@@ -157,6 +157,7 @@
 .universe-card__link::after {
   content: "";
   position: absolute;
+  z-index: 2;
   inset: 0;
 }
 
