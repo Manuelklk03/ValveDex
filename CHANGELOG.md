@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Portada rediseñada: fondo industrial, cifras con el número de juegos, catálogo de juegos por saga, historia de Valve como línea de producción y avance de las épocas de Steam.
 - Historia de Valve ampliada a 11 hitos con fecha y fuente (1996–2023) y datos de las tres épocas de Steam (`src/data/steam-eras.ts`), también en `/creditos`.
 - Informe de cobertura LCOV de Vitest integrado en el análisis de SonarCloud.
 - Análisis de calidad y seguridad con SonarCloud en cada PR y en cada push a `main`.

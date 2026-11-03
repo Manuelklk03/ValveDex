@@ -1,0 +1,132 @@
+/* Zona desplazable: sale por la derecha hasta el borde de la pantalla */
+.production-line {
+  --station-width: min(22rem, 82vw);
+  margin-right: calc(var(--gutter) * -1);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 0;
+  scrollbar-color: var(--border) transparent;
+  padding-bottom: 1.5rem;
+}
+
+.production-line:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+.production-line__track {
+  position: relative;
+  display: flex;
+  gap: 0;
+  width: max-content;
+  padding-right: var(--gutter);
+  list-style: none;
+}
+
+/* La tubería: pasa por detrás de todas las estaciones */
+.production-line__track::before {
+  content: "";
+  position: absolute;
+  top: calc(clamp(3.5rem, 7vw, 5.5rem) + 1.25rem);
+  left: 0;
+  right: 0;
+  height: 14px;
+  border-block: 2px solid var(--border);
+  background: repeating-linear-gradient(
+    90deg,
+    var(--surface) 0 18px,
+    rgb(242 239 233 / 0.05) 18px 20px
+  );
+}
+
+.production-line__station {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  width: var(--station-width);
+  padding-right: 2rem;
+  scroll-snap-align: start;
+}
+
+/* El año como cifra grande; sin relleno, solo contorno, para que la tubería lo cruce con limpieza */
+.production-line__year {
+  font-size: clamp(3.5rem, 7vw, 5.5rem);
+  font-weight: 800;
+  font-stretch: 125%;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Válvula de cada estación, sobre la tubería */
+.production-line__valve {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-block: 0.25rem 0.5rem;
+  border: 2px solid var(--muted);
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.production-line__valve::before,
+.production-line__valve::after {
+  content: "";
+  position: absolute;
+  inset: 50% 4px auto;
+  height: 2px;
+  background: var(--muted);
+  transform: rotate(0deg);
+}
+
+.production-line__valve::after {
+  transform: rotate(90deg);
+}
+
+.production-line__station:last-child .production-line__valve {
+  border-color: var(--valve-red);
+}
+
+.production-line__station:last-child .production-line__valve::before,
+.production-line__station:last-child .production-line__valve::after {
+  background: var(--valve-red);
+}
+
+.production-line__date {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+}
+
+.production-line__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.production-line__description {
+  color: var(--muted);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.production-line__sources {
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.production-line__source-link {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  text-decoration-color: var(--muted);
+}
+
+.production-line__source-link:hover {
+  text-decoration-color: currentColor;
+}

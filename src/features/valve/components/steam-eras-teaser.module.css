@@ -1,0 +1,119 @@
+/* Tres épocas, cada una con la paleta y el tipo de interfaz del cliente de entonces (interpretación de ValveDex) */
+.steam-eras-teaser {
+  display: grid;
+  gap: 1rem;
+  list-style: none;
+}
+
+@media (min-width: 48rem) {
+  .steam-eras-teaser {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.steam-eras-teaser__era {
+  --era-bg: var(--surface);
+  --era-text: var(--foreground);
+  --era-muted: var(--muted);
+  --era-accent: var(--foreground);
+  --era-border: var(--border);
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  min-height: 15rem;
+  padding: 1.5rem;
+  border: 1px solid var(--era-border);
+  background: var(--era-bg);
+  color: var(--era-text);
+  transition:
+    border-color 160ms ease-out,
+    transform 160ms ease-out;
+}
+
+/* 2002–2009: verde oliva y dorado, con Verdana y biseles, como el cliente de los orígenes */
+.steam-eras-teaser__era--origins {
+  --era-bg: #3e4637;
+  --era-text: #e8e2c6;
+  --era-muted: #c5c9b6;
+  --era-accent: #d2c24f;
+  --era-border: #6c7660;
+  font-family: Verdana, Geneva, sans-serif;
+  border-style: outset;
+  border-width: 2px;
+}
+
+/* 2010–2021: azul nocturno de la tienda */
+.steam-eras-teaser__era--platform {
+  --era-bg: linear-gradient(160deg, #1b2838, #16202d);
+  --era-text: #c7d5e0;
+  --era-muted: #9fb2c1;
+  --era-accent: #66c0f4;
+  --era-border: #2a475e;
+}
+
+/* 2022 en adelante: el cliente unificado, más plano y con el azul vivo del Deck */
+.steam-eras-teaser__era--unified {
+  --era-bg: #0e141b;
+  --era-text: #dfe3e8;
+  --era-muted: #97a3b0;
+  --era-accent: #1a9fff;
+  --era-border: #26323f;
+  border-radius: 12px;
+}
+
+.steam-eras-teaser__years {
+  color: var(--era-accent);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+}
+
+.steam-eras-teaser__name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.steam-eras-teaser__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.steam-eras-teaser__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.steam-eras-teaser__link:focus-visible {
+  outline: none;
+}
+
+.steam-eras-teaser__era:has(.steam-eras-teaser__link:focus-visible) {
+  outline: 3px solid var(--era-accent);
+  outline-offset: 3px;
+}
+
+.steam-eras-teaser__summary {
+  color: var(--era-muted);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.steam-eras-teaser__count {
+  align-self: end;
+  color: var(--era-accent);
+  font-weight: 700;
+}
+
+@media (hover: hover) {
+  .steam-eras-teaser__era:hover {
+    border-color: var(--era-accent);
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .steam-eras-teaser__era:hover {
+    transform: translateY(-3px);
+  }
+}

@@ -2,10 +2,16 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import { getEntries } from "@/features/catalog/get-entries";
 import { getGameSections } from "@/features/games/get-game-sections";
-import { getUniverses } from "@/features/universes/get-universes";
-import { getLatestValveMilestones } from "@/features/valve/get-valve-milestones";
+import {
+  getOfficialGamesByUniverse,
+  getUniverses,
+} from "@/features/universes/get-universes";
+import { getValveMilestones } from "@/features/valve/get-valve-milestones";
 import { getValvePeople } from "@/features/valve/get-valve-people";
-import { Timeline } from "@/components/ui/timeline";
+import { GamesShowcase } from "@/features/universes/components/games-showcase";
+import { ProductionLine } from "@/features/valve/components/production-line";
+import { SteamErasTeaser } from "@/features/valve/components/steam-eras-teaser";
+import { IndustrialBackdrop } from "@/components/ui/industrial-backdrop";
 import { ValveWheel } from "@/components/ui/valve-wheel";
 
 // Datos del texto de la sección «Valve» (fuente: Valve Corporation, Wikipedia, en los hitos)
@@ -16,10 +22,15 @@ const valveFacts = [
 ];
 
 export default function HomePage() {
-  const milestones = getLatestValveMilestones(3);
+  const milestones = getValveMilestones();
   const people = getValvePeople();
+  const universes = getUniverses();
   const stats = [
-    { label: "Sagas", value: getUniverses().length },
+    { label: "Sagas", value: universes.length },
+    {
+      label: "Juegos",
+      value: universes.flatMap((u) => getOfficialGamesByUniverse(u.id)).length,
+    },
     { label: "Fichas", value: getEntries().length },
     { label: "Apartados por juego", value: getGameSections().length },
   ];
@@ -30,6 +41,7 @@ export default function HomePage() {
         className={styles["home-page__hero"]}
         aria-labelledby="home-title"
       >
+        <IndustrialBackdrop />
         <div className={styles["home-page__hero-inner"]}>
           <div className={styles["home-page__hero-content"]}>
             <p className={styles["home-page__eyebrow"]}>Enciclopedia de fans</p>
@@ -122,10 +134,31 @@ export default function HomePage() {
 
         <section
           className={styles["home-page__section"]}
-          aria-labelledby="history-title"
+          aria-labelledby="games-title"
         >
           <header className={styles["home-page__section-head"]}>
             <p className={styles["home-page__section-index"]}>02</p>
+            <h2 id="games-title" className={styles["home-page__section-title"]}>
+              Juegos
+            </h2>
+          </header>
+
+          <div className={styles["home-page__section-body"]}>
+            <GamesShowcase />
+            <Link href="/universos" className={styles["home-page__more-link"]}>
+              Ver todos los universos
+            </Link>
+          </div>
+        </section>
+
+        <section
+          className={`${styles["home-page__section"]} ${styles["home-page__section--wide"]}`}
+          aria-labelledby="history-title"
+        >
+          <header
+            className={`${styles["home-page__section-head"]} ${styles["home-page__section-head--static"]}`}
+          >
+            <p className={styles["home-page__section-index"]}>03</p>
             <h2
               id="history-title"
               className={styles["home-page__section-title"]}
@@ -135,7 +168,7 @@ export default function HomePage() {
           </header>
 
           <div className={styles["home-page__section-body"]}>
-            <Timeline milestones={milestones} />
+            <ProductionLine milestones={milestones} />
             <Link
               href="/valve/historia"
               className={styles["home-page__more-link"]}
@@ -150,7 +183,7 @@ export default function HomePage() {
           aria-labelledby="steam-title"
         >
           <header className={styles["home-page__section-head"]}>
-            <p className={styles["home-page__section-index"]}>03</p>
+            <p className={styles["home-page__section-index"]}>04</p>
             <h2 id="steam-title" className={styles["home-page__section-title"]}>
               Steam
             </h2>
@@ -177,6 +210,7 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
+            <SteamErasTeaser />
           </div>
         </section>
       </div>
