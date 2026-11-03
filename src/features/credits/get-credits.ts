@@ -2,6 +2,7 @@ import { decorImages } from "@/data/decor-images";
 import { entries } from "@/data/entries";
 import { gameLore } from "@/data/game-lore";
 import { games } from "@/data/games";
+import { steamEras } from "@/data/steam-eras";
 import { valveMilestones } from "@/data/valve-milestones";
 import { valvePeople } from "@/data/valve-people";
 import type { MediaAsset } from "@/domain/media-asset";
@@ -42,6 +43,14 @@ function collectSourceUses(): { source: Source; usedIn: string }[] {
         source,
         usedIn: `Historia de Valve (${milestone.year})`,
       })),
+    ),
+    ...steamEras.flatMap((era) =>
+      era.events.flatMap((event) =>
+        event.sources.map((source) => ({
+          source,
+          usedIn: `Historia de Steam (${event.year})`,
+        })),
+      ),
     ),
     ...valvePeople.flatMap((person) =>
       person.sources.map((source) => ({ source, usedIn: person.name })),
