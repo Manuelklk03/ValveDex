@@ -18,6 +18,25 @@
   --sector-enemies: #fb8c00;
   --sector-trivia: #8e24aa;
   --sector-easter-eggs: #fdd835;
+  /* Épocas de Steam (interpretación de ValveDex, docs/design.md): cada una con su paleta, compartida por la portada y /valve/steam */
+  --steam-origins-bg: #3e4637;
+  --steam-origins-bg-deep: #2f3629;
+  --steam-origins-text: #e8e2c6;
+  --steam-origins-muted: #c5c9b6;
+  --steam-origins-accent: #d2c24f;
+  --steam-origins-border: #6c7660;
+  --steam-platform-bg: #1b2838;
+  --steam-platform-bg-deep: #131c27;
+  --steam-platform-text: #c7d5e0;
+  --steam-platform-muted: #9fb2c1;
+  --steam-platform-accent: #66c0f4;
+  --steam-platform-border: #2a475e;
+  --steam-unified-bg: #0e141b;
+  --steam-unified-bg-deep: #0a0f15;
+  --steam-unified-text: #dfe3e8;
+  --steam-unified-muted: #97a3b0;
+  --steam-unified-accent: #1a9fff;
+  --steam-unified-border: #26323f;
   color-scheme: dark;
 }
 
