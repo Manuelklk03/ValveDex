@@ -1,0 +1,144 @@
+.games-showcase {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3rem);
+}
+
+/* Cada saga lleva su color, el mismo que su tema (universe-theme.module.css) */
+.games-showcase__saga {
+  --saga-accent: var(--foreground);
+  display: grid;
+  gap: 1rem;
+}
+
+.games-showcase__saga--half-life {
+  --saga-accent: #f28c28;
+}
+
+.games-showcase__saga--team-fortress {
+  --saga-accent: #e0664a;
+}
+
+.games-showcase__saga--left-4-dead {
+  --saga-accent: #e8705a;
+}
+
+.games-showcase__saga-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--saga-accent);
+}
+
+.games-showcase__saga-name {
+  font-size: 1.125rem;
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.games-showcase__saga-link {
+  color: var(--saga-accent);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+
+.games-showcase__plates {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+  list-style: none;
+}
+
+/* Placa: el año enorme de fondo, el nombre del juego encima, y toda la placa es el enlace */
+.games-showcase__plate {
+  position: relative;
+  display: grid;
+  align-content: end;
+  gap: 0.375rem;
+  min-height: 10rem;
+  padding: 1.25rem;
+  overflow: hidden;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  transition: background-color 160ms ease-out;
+}
+
+.games-showcase__plate::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--saga-accent);
+  transform: scaleY(0.35);
+  transform-origin: bottom;
+  transition: transform 200ms ease-out;
+}
+
+.games-showcase__year {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  color: var(--saga-accent);
+  font-size: clamp(3.5rem, 7vw, 4.75rem);
+  font-weight: 800;
+  font-stretch: 125%;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.13;
+  pointer-events: none;
+}
+
+.games-showcase__game-link {
+  color: var(--foreground);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.15;
+  text-decoration: none;
+  text-wrap: balance;
+}
+
+.games-showcase__game-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.games-showcase__game-link:focus-visible {
+  outline: none;
+}
+
+.games-showcase__plate:has(.games-showcase__game-link:focus-visible) {
+  outline: 2px solid var(--foreground);
+  outline-offset: -2px;
+}
+
+.games-showcase__developer {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+}
+
+@media (hover: hover) {
+  .games-showcase__plate:hover {
+    background: color-mix(in srgb, var(--saga-accent) 9%, var(--surface));
+  }
+
+  .games-showcase__plate:hover::before {
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .games-showcase__plate::before {
+    transition: none;
+  }
+}
