@@ -47,7 +47,7 @@ export const steamEras: SteamEra[] = [
         year: 2005,
         title: "Los primeros juegos de terceros",
         description:
-          "Valve contrata a desarrolladores externos para publicar juegos como Rag Doll Kung Fu y Darwinia.",
+          "Valve llega a acuerdos con desarrolladores externos para publicar juegos como Rag Doll Kung Fu y Darwinia.",
         sources: [steamWikipedia],
       },
       {
@@ -56,7 +56,7 @@ export const steamEras: SteamEra[] = [
         date: "Mayo de 2008",
         title: "Steamworks",
         description:
-          "El SDK Steamworks permite a cualquiera integrar Steam en sus juegos sin la intervención directa de Valve.",
+          "El SDK Steamworks permite a los desarrolladores integrar funciones de Steam en sus juegos sin la intervención directa de Valve.",
         sources: [steamWikipedia],
       },
       {
@@ -64,7 +64,8 @@ export const steamEras: SteamEra[] = [
         year: 2008,
         date: "Septiembre de 2008",
         title: "Steam Cloud",
-        description: "Las partidas guardadas se almacenan automáticamente.",
+        description:
+          "Permite almacenar y sincronizar automáticamente las partidas guardadas en la nube.",
         sources: [steamWikipedia],
       },
     ],
@@ -100,7 +101,7 @@ export const steamEras: SteamEra[] = [
         date: "Diciembre de 2012",
         title: "Big Picture",
         description:
-          "El modo pensado para el salón y el mando se lanza en todo el mundo, tras una beta pública en septiembre.",
+          "Se lanza la interfaz diseñada para televisores y mandos tras una fase de pruebas en septiembre.",
         sources: [steamWikipedia],
       },
       {
@@ -133,7 +134,7 @@ export const steamEras: SteamEra[] = [
         date: "Octubre de 2019",
         title: "Nueva biblioteca",
         description:
-          "Un rediseño visual de la biblioteca llega junto con los eventos de Steam.",
+          "Rediseño visual de la biblioteca junto con un nuevo sistema de eventos y noticias.",
         sources: [steamWikipedia],
       },
     ],
@@ -150,7 +151,7 @@ export const steamEras: SteamEra[] = [
         year: 2022,
         date: "Febrero de 2022",
         title: "Llega Steam Deck",
-        description: "Los primeros Steam Deck empiezan a enviarse.",
+        description: "Comienzan los envíos del primer lote de Steam Deck.",
         sources: [steamWikipedia],
       },
       {
@@ -159,7 +160,7 @@ export const steamEras: SteamEra[] = [
         date: "Octubre de 2022",
         title: "Big Picture con la interfaz del Deck",
         description:
-          "Valve prueba en beta un Big Picture basado en la interfaz del Steam Deck; saldría completo en febrero de 2023.",
+          "Valve publica en beta la nueva interfaz de Big Picture adaptada del Steam Deck, con lanzamiento definitivo en febrero de 2023.",
         sources: [steamWikipedia],
       },
       {

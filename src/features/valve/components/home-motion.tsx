@@ -119,11 +119,18 @@ export function HomeMotion() {
           },
         });
 
-        // Con teclado, enfocar una fuente de otra estación lleva el scroll de la página hasta ella
+        // Con teclado, enfocar la línea o una fuente de otra estación lleva el scroll de la página hasta ella
         const handleFocusIn = (event: FocusEvent) => {
-          const station = (event.target as HTMLElement).closest("li");
           const trigger = tween.scrollTrigger;
-          if (!station || !trigger) return;
+          if (!trigger) return;
+
+          if (event.target === scroller) {
+            window.scrollTo({ top: trigger.start });
+            return;
+          }
+
+          const station = (event.target as HTMLElement).closest("li");
+          if (!station) return;
 
           const progress = Math.min(1, station.offsetLeft / maxScroll());
           window.scrollTo({
