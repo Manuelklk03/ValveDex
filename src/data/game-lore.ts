@@ -150,4 +150,222 @@ export const gameLore: GameLore[] = [
       },
     ],
   },
+  {
+    gameId: "half-life-2",
+    paragraphs: [
+      {
+        text: "Aproximadamente dos décadas después del incidente de Black Mesa, el G-Man saca a Gordon Freeman de su estado de estasis y lo introduce en un tren de pasajeros que llega a la estación de la Ciudad 17.",
+      },
+      {
+        text: "La Tierra ha sido subyugada por el Imperio Combine (la Alianza) tras la Guerra de las Siete Horas. La humanidad vive hacinada en distritos urbanos bajo estricta vigilancia de la Protección Civil, esterilizada mediante un campo de supresión y gobernada por el doctor Wallace Breen como administrador títere.",
+      },
+      {
+        spoiler: true,
+        text: "Reclutado por Barney Calhoun y Alyx Vance, Gordon llega al laboratorio secreto del doctor Isaac Kleiner. Un fallo en el teletransportador alerta a Breen y a la Alianza de su presencia, obligando a Gordon a huir a pie y en hidrodeslizador a través de los canales de la ciudad hasta Black Mesa Este, la base de la resistencia dirigida por el doctor Eli Vance.",
+      },
+      {
+        spoiler: true,
+        text: "Un bombardeo Combine destruye Black Mesa Este y captura a Eli Vance. Gordon se ve forzado a cruzar el pueblo minero abandonado de Ravenholm, infestado de zombis y headcrabs, donde sobrevive gracias a la ayuda del enigmático padre Grigori y al arma gravitatoria.",
+      },
+      {
+        spoiler: true,
+        text: "Tras recorrer la Autopista 17 en un buggy y controlar las feromonas de las hormigas león en la costa, Freeman asalta Nova Prospekt, una antigua prisión convertida en centro de procesamiento y modificación cibernética de humanos. Allí rescata a Eli Vance, pero la doctora Judith Mossman los traiciona y huye con él a la Ciudadela utilizando el teletransportador Combine.",
+      },
+      {
+        spoiler: true,
+        text: "La destrucción de Nova Prospekt desencadena un levantamiento armado masivo en la Ciudad 17. Gordon encabeza a los rebeldes en una feroz guerra urbana contra los Striders y las tropas Combine, abriéndose paso hasta el interior de la Ciudadela con la ayuda de Alyx y Barney.",
+      },
+      {
+        spoiler: true,
+        text: "Dentro de la Ciudadela, el arma gravitatoria se sobrecarga de energía oscura, permitiendo a Gordon destruir las defensas de la torre. En la cima, confronta a Breen mientras este intenta escapar a través de un portal interdimensional. Gordon destruye el reactor de fusión oscura; justo en el instante de la deflagración mortal, el G-Man congela el tiempo, elogia el desempeño de Freeman y lo devuelve al estado de hibernación.",
+      },
+    ],
+    sources: [
+      {
+        title: "Half-Life 2 storyline - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life_2_storyline",
+        kind: "wiki",
+      },
+      {
+        title: "Half-Life 2 - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life_2",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    gameId: "half-life-2-episode-one",
+    paragraphs: [
+      {
+        text: "Instantes después de la explosión del reactor de la Ciudadela, un grupo de vortigaunts interviene espiritualmente, rescata a Alyx Vance y arranca a Gordon Freeman del control del G-Man, depositándolo a los pies de la torre derruida.",
+      },
+      {
+        text: "Con el núcleo de la Ciudadela al borde de una fusión crítica que arrasará toda la Ciudad 17, Gordon y Alyx deben infiltrarse nuevamente en la estructura para retrasar la detonación el tiempo suficiente para evacuar a la población civil.",
+      },
+      {
+        spoiler: true,
+        text: "En las profundidades de la Ciudadela, Gordon estabiliza manualmente las cámaras de contención del núcleo. Durante la misión, descubren que las fuerzas Combine están apresurando deliberadamente la sobrecarga para enviar un mensaje de socorro de emergencia a su mundo natal.",
+      },
+      {
+        spoiler: true,
+        text: "Alyx descarga una copia del paquete de datos que la Alianza intentaba transmitir, el cual incluye información vital sobre el liderazgo Combine y las coordenadas de la doctora Mossman en el Ártico. Junto con Barney Calhoun, organizan convoyes de refugiados hacia la estación de ferrocarril.",
+      },
+      {
+        spoiler: true,
+        text: "Tras derrotar a un Strider en las vías del tren, Gordon y Alyx abordan el último vagón de evacuación. Mientras el tren se aleja, la Ciudadela colapsa en una cataclísmica explosión de energía oscura que destruye la Ciudad 17 y descarrila el convoy en las montañas circundantes.",
+      },
+    ],
+    sources: [
+      {
+        title: "Half-Life 2: Episode One storyline - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life_2:_Episode_One_storyline",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    gameId: "half-life-2-episode-two",
+    paragraphs: [
+      {
+        text: "Tras el descarrilamiento del tren en las afueras rurales de la destruida Ciudad 17, Gordon Freeman y Alyx Vance contemplan la formación de un superportal en el cielo, que amenaza con traer refuerzos masivos del Imperio Combine.",
+      },
+      {
+        text: "Su objetivo es llegar a White Forest, una base de misiles soviética reconvertida en centro de mando de la resistencia por Eli Vance y el doctor Arne Magnusson, portando el paquete de datos recuperado de la Ciudadela.",
+      },
+      {
+        spoiler: true,
+        text: "Al inicio del viaje, un Hunter de la Alianza hiere gravemente a Alyx. Gordon, asistido por un vortigaunt, desciende a un nido subterráneo de hormigas león para recolectar extracto larval curativo mientras defiende la posición frente a enjambres enemigos.",
+      },
+      {
+        spoiler: true,
+        text: "Tras curar a Alyx, el G-Man se manifiesta brevemente para reactivar su inversión en ella y encargarle un mensaje para su padre: «Prepárate para consecuencias imprevistas». Viajando en un viejo Dodge Charger, la pareja supera emboscadas y se reúne con la resistencia en White Forest.",
+      },
+      {
+        spoiler: true,
+        text: "El análisis del paquete de datos revela la existencia del Borealis, un rompehielos de investigación de Aperture Science desaparecido misteriosamente. La base es atacada por decenas de Striders y Hunters, repelidos por Gordon mediante los dispositivos adhesivos Magnusson. El cohete de la resistencia es lanzado con éxito, cerrando definitivamente el superportal.",
+      },
+      {
+        spoiler: true,
+        text: "Cuando Gordon, Alyx y Eli se disponen a despegar en helicóptero hacia el Ártico, dos Combine Advisors irrumpen en el hangar. Inmovilizan a los presentes y uno de ellos asesina a Eli Vance extrayendo su memoria cerebral, antes de ser ahuyentado por D0g, dejando a Alyx llorando sobre el cuerpo de su padre.",
+      },
+    ],
+    sources: [
+      {
+        title: "Half-Life 2: Episode Two storyline - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life_2:_Episode_Two_storyline",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    gameId: "half-life-alyx",
+    paragraphs: [
+      {
+        text: "Cinco años antes de la llegada de Gordon Freeman a la Ciudad 17, Alyx Vance, de diecinueve años, opera en la resistencia clandestina junto a su padre Eli y el excéntrico inventor Russell.",
+      },
+      {
+        text: "Cuando Eli es arrestado por la Protección Civil y enviado en un tren prisión hacia Nova Prospekt, Alyx se adentra en la peligrosa Zona de Cuarentena, un sector urbano sellado y colonizado por infestaciones biológicas de Xen.",
+      },
+      {
+        spoiler: true,
+        text: "Equipada con los «guantes Rusell» (gravitatorios) y armas modificadas, Alyx intercepta y descarrila el tren, rescatando a su padre con la intervención de un vortigaunt aliado. Durante la operación descubren la existencia de la «Bóveda» (The Vault), una colosal prisión flotante suspendida sobre la ciudad.",
+      },
+      {
+        spoiler: true,
+        text: "Interceptando comunicaciones de la Alianza, Alyx y Russell descubren que la Bóveda fue construida para contener a una entidad de inmenso poder que sobrevivió al incidente de Black Mesa, la cual asumen que es Gordon Freeman.",
+      },
+      {
+        spoiler: true,
+        text: "Alyx desactiva las estaciones de energía de la ciudad, hace descender la Bóveda y penetra en su interior, un entorno donde la física y el espacio están distorsionados por la gravedad cuántica. Al alcanzar el centro de la prisión, no encuentra a Freeman, sino al G-Man.",
+      },
+      {
+        spoiler: true,
+        text: "Agradecido por su liberación, el G-Man ofrece a Alyx una recompensa. Rechazando la expulsión de la Alianza de la Tierra por exceder sus órdenes, el G-Man le concede cambiar el futuro: la transporta al hangar de White Forest cinco años después, permitiéndole abatir al Advisor antes de que mate a Eli. Satisfecho con su valía y descontento con la falta de sumisión de Freeman, el G-Man recluta a Alyx forzosamente y la pone en estasis, dejando a Eli vivo y furioso buscando la palanca de Gordon.",
+      },
+    ],
+    sources: [
+      {
+        title: "Half-Life: Alyx storyline - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Half-Life:_Alyx_storyline",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    gameId: "team-fortress-classic",
+    paragraphs: [
+      {
+        text: "Team Fortress Classic adapta al motor GoldSrc la fórmula pionera del mod original de Quake, enfrentando a dos compañías tapadera rivales en una guerra encubierta de mercenarios.",
+      },
+      {
+        text: "Los equipos Builders League United (BLU) y Reliable Excavation Demolition (RED) combaten por el control de instalaciones industriales, documentos confidenciales y puntos estratégicos mediante nueve clases especializadas con armas y habilidades exclusivas.",
+      },
+    ],
+    sources: [
+      {
+        title: "Team Fortress Classic - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Team_Fortress_Classic",
+        kind: "wiki",
+      },
+      {
+        title: "Team Fortress Classic - Official TF2 Wiki",
+        url: "https://wiki.teamfortress.com/wiki/Team_Fortress_Classic",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    gameId: "team-fortress-2",
+    paragraphs: [
+      {
+        text: "En 1968, las Guerras de las Tierras Sombrías entre los hermanos gemelos Redmond y Blutarch Mann alcanzan su apogeo. Ambos contratan a equipos idénticos de nueve mercenarios excéntricos para arrebatarse mutuas parcelas de tierra estéril en Nuevo México.",
+      },
+      {
+        text: "El conflicto es supervisado en secreto por la enigmática Administradora y financiado a través del conglomerado industrial Mann Co., presidido por Saxton Hale, que abastece de armamento absurdo y munición a ambos bandos para prolongar indefinidamente la guerra.",
+      },
+    ],
+    sources: [
+      {
+        title: "Storyline - Official TF2 Wiki",
+        url: "https://wiki.teamfortress.com/wiki/Storyline",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    gameId: "left-4-dead",
+    paragraphs: [
+      {
+        text: "Aproximadamente tres semanas después del brote inicial de la «Gripe Verde» en Pensilvania, la civilización ha colapsado. El patógeno, un virus similar a la rabia con mutaciones fulminantes, transforma a los humanos infectados en criaturas violentas e hiperactivas.",
+      },
+      {
+        text: "Cuatro supervivientes inmunes al contagio —Bill, un veterano de Vietnam; Zoey, una estudiante universitaria; Louis, un oficinista júnior; y Francis, un motero rebelde— deben cooperar a través de ciudades devastadas y zonas rurales para alcanzar las zonas de evacuación militar de CEDA.",
+      },
+    ],
+    sources: [
+      {
+        title: "Left 4 Dead storyline - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Left_4_Dead",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    gameId: "left-4-dead-2",
+    paragraphs: [
+      {
+        text: "Una semana después de los acontecimientos del primer juego, el contagio de la Gripe Verde ha barrido el sureste de los Estados Unidos. La Agencia de Emergencias y Defensa Civil (CEDA) se ve superada y el ejército estadounidense bombardea infraestructuras para contener el avance de la plaga.",
+      },
+      {
+        text: "Cuatro nuevos supervivientes inmunes —Coach, un entrenador de instituto; Ellis, un joven mecánico; Nick, un ludópata cínico; y Rochelle, una productora de televisión— se unen en Savannah (Georgia) y atraviesan Luisiana hasta Nueva Orleans en busca de una última oportunidad de rescate militar.",
+      },
+    ],
+    sources: [
+      {
+        title: "Left 4 Dead 2 storyline - Combine OverWiki",
+        url: "https://combineoverwiki.net/wiki/Left_4_Dead_2",
+        kind: "wiki",
+      },
+    ],
+  },
 ];

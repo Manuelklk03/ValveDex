@@ -13,8 +13,6 @@ function overwiki(page: string, title: string): Source {
   };
 }
 
-const halfLife = [{ gameId: "half-life" }];
-
 export const halfLifeCharacters: Entry[] = [
   {
     id: "gordon-freeman",
@@ -43,6 +41,11 @@ export const halfLifeCharacters: Entry[] = [
         gameId: "half-life-blue-shift",
         summary:
           "Barney Calhoun se lo cruza varias veces, entre ellas esperando el tranvía.",
+      },
+      {
+        gameId: "half-life-2",
+        summary:
+          "Despierta dos décadas después en la Ciudad 17 para liderar la insurrección armada de la resistencia contra la Alianza.",
       },
     ],
     sources: [overwiki("Gordon_Freeman", "Gordon Freeman")],
@@ -75,6 +78,11 @@ export const halfLifeCharacters: Entry[] = [
           width: 275,
           height: 853,
         }),
+      },
+      {
+        gameId: "half-life-2",
+        summary:
+          "Saca a Gordon de la estasis en la Ciudad 17 para desencadenar la caída del régimen de Wallace Breen.",
       },
     ],
     sources: [overwiki("The_G-Man", "The G-Man")],
@@ -131,7 +139,14 @@ export const halfLifeCharacters: Entry[] = [
       "Marc Laidlaw tomó el apellido de F. W. Colqhoun, un personaje de la película Ravenous (1999).",
       "Al principio de Half-Life ya lleva chaleco y casco, aunque en Blue Shift no los coge de su taquilla hasta después de cruzar esa puerta.",
     ],
-    appearances: halfLife,
+    appearances: [
+      { gameId: "half-life" },
+      {
+        gameId: "half-life-2",
+        summary:
+          "Infiltrado como oficial de la Protección Civil en la Ciudad 17 y líder clave de la resistencia armada.",
+      },
+    ],
     sources: [overwiki("Barney_Calhoun", "Barney Calhoun")],
   },
   {
@@ -172,16 +187,24 @@ export const halfLifeCharacters: Entry[] = [
     name: "Eli Vance",
     category: "characters",
     details: {
-      affiliation: "Black Mesa (Materiales Anómalos)",
+      affiliation: "Resistencia humana / Ex-Black Mesa",
       designers: ["Dhabih Eng"],
     },
     summary:
-      "Científico del sector de Materiales Anómalos de Black Mesa. En Half-Life es uno de los científicos genéricos y nunca se dice su nombre.",
+      "Científico del sector de Materiales Anómalos de Black Mesa que se convirtió en el líder carismático de la resistencia en la Ciudad 17 y director de Black Mesa Este.",
     notes: [
       "Es, en esencia, el modelo de científico afroamericano de Half-Life («scientist03», o «Luther») convertido en personaje.",
       "En Half-Life se le ve dos veces en el Sector C, sin nombre; Half-Life 2 lo identificó después.",
+      "Perdió la pierna izquierda por el ataque de un Bullsquid mientras ayudaba a Kleiner a escapar de Black Mesa.",
     ],
-    appearances: halfLife,
+    appearances: [
+      { gameId: "half-life" },
+      {
+        gameId: "half-life-2",
+        summary:
+          "Líder de la resistencia humana y director de Black Mesa Este en la Ciudad 17.",
+      },
+    ],
     sources: [overwiki("Eli_Vance", "Eli Vance")],
   },
   {
@@ -190,18 +213,25 @@ export const halfLifeCharacters: Entry[] = [
     name: "Isaac Kleiner",
     category: "characters",
     details: {
-      affiliation: "Black Mesa (equipo científico)",
+      affiliation: "Resistencia humana / Ex-Black Mesa",
       voiceActor: "Harry S. Robins",
       designers: ["Marc Laidlaw"],
     },
     summary:
-      "Científico de Black Mesa y antiguo mentor de Gordon Freeman. En Half-Life solo existe en el trasfondo del personaje y en los manuales.",
+      "Científico de Black Mesa y antiguo mentor de Gordon Freeman en el MIT. Dirige un laboratorio secreto de teletransportación en la Ciudad 17.",
     notes: [
       "Apareció en el trasfondo de Gordon Freeman escrito para Half-Life con el nombre de «Alex», y después lo citan los manuales de Half-Life (PC y PlayStation 2) y de Blue Shift.",
       "Es, en esencia, el modelo de científico con gafas de Half-Life («scientist01», o «Walter») convertido en personaje.",
       "Harry S. Robins, su voz, puso también la de casi todos los científicos de Half-Life y sus expansiones.",
     ],
-    appearances: halfLife,
+    appearances: [
+      { gameId: "half-life" },
+      {
+        gameId: "half-life-2",
+        summary:
+          "Dirige un laboratorio clandestino camuflado en el corazón de la Ciudad 17.",
+      },
+    ],
     sources: [overwiki("Isaac_Kleiner", "Isaac Kleiner")],
   },
 ];
