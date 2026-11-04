@@ -29,7 +29,7 @@ export const valveMilestones: Milestone[] = [
     date: "Noviembre de 1998",
     title: "Lanzamiento de Half-Life",
     description:
-      "Valve publica su primer juego, un shooter en primera persona que triunfa entre la crítica y el público.",
+      "Valve publica su primer juego, un first person shooter aclamado por la crítica y el público.",
     sources: [valveWikipedia],
   },
   {
@@ -38,7 +38,7 @@ export const valveMilestones: Milestone[] = [
     date: "12 de septiembre de 2003",
     title: "Lanzamiento de Steam",
     description:
-      "Steam sale de la beta, que había empezado el 22 de marzo de 2002. Nació para repartir parches de los juegos en línea de Valve.",
+      "Steam sale de la beta iniciada el 22 de marzo de 2002. Nació para distribuir actualizaciones de los juegos en línea de Valve.",
     sources: [steamWikipedia],
   },
   {
@@ -73,7 +73,7 @@ export const valveMilestones: Milestone[] = [
     date: "Noviembre de 2015",
     title: "Steam Machines y Steam Controller",
     description:
-      "Valve lanza las Steam Machines, que se venden poco, y el primer Steam Controller.",
+      "Valve lanza las Steam Machines, que obtienen un recorrido comercial modesto, y el primer Steam Controller.",
     sources: [valveWikipedia],
   },
   {
@@ -91,7 +91,7 @@ export const valveMilestones: Milestone[] = [
     date: "Marzo de 2020",
     title: "Half-Life: Alyx",
     description:
-      "Llega el juego de realidad virtual de Half-Life, acogido como la primera «killer app» de la VR.",
+      "Llega el juego de realidad virtual de Half-Life, aclamado como el gran referente técnico de la realidad virtual.",
     sources: [valveWikipedia],
   },
   {
@@ -100,7 +100,7 @@ export const valveMilestones: Milestone[] = [
     date: "Febrero de 2022",
     title: "Steam Deck",
     description:
-      "Valve anunció su PC portátil en julio de 2021 y empezó a enviarlo en febrero de 2022.",
+      "Valve empieza a distribuir su PC portátil en formato consola tras anunciarlo en julio de 2021.",
     sources: [valveWikipedia],
   },
   {
