@@ -11,6 +11,26 @@ import {
   halfLifeDecayCharacters,
   halfLifeDecayExtras,
 } from "./half-life-decay";
+import {
+  halfLife2Chapters,
+  halfLife2Weapons,
+  halfLife2Characters,
+  halfLife2Enemies,
+  halfLife2Extras,
+} from "./half-life-2";
+import {
+  teamFortressCharacters,
+  teamFortressWeapons,
+  teamFortressMaps,
+  teamFortressExtras,
+} from "./team-fortress";
+import {
+  left4DeadCharacters,
+  left4DeadEnemies,
+  left4DeadWeapons,
+  left4DeadMaps,
+  left4DeadExtras,
+} from "./left-4-dead";
 import { expansionAppearances } from "./expansion-appearances";
 
 const baseEntries: Entry[] = [
@@ -24,6 +44,20 @@ const baseEntries: Entry[] = [
   ...halfLifeDecayChapters,
   ...halfLifeDecayCharacters,
   ...halfLifeDecayExtras,
+  ...halfLife2Chapters,
+  ...halfLife2Weapons,
+  ...halfLife2Characters,
+  ...halfLife2Enemies,
+  ...halfLife2Extras,
+  ...teamFortressCharacters,
+  ...teamFortressWeapons,
+  ...teamFortressMaps,
+  ...teamFortressExtras,
+  ...left4DeadCharacters,
+  ...left4DeadEnemies,
+  ...left4DeadWeapons,
+  ...left4DeadMaps,
+  ...left4DeadExtras,
   {
     id: "goldsrc-engine",
     slug: "motor-goldsrc",
