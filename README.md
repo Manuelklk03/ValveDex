@@ -1,6 +1,15 @@
 <h1 align="center">λ ValveDex</h1>
 
 <p align="center">
+  <a href="https://github.com/Manuelklk03/ValveDex/actions/workflows/ci.yml">
+    <img src="https://github.com/Manuelklk03/ValveDex/actions/workflows/ci.yml/badge.svg?branch=main" alt="Estado de CI" />
+  </a>
+  <a href="https://sonarcloud.io/dashboard?id=Manuelklk03_ValveDex">
+    <img src="https://sonarcloud.io/api/project_badges/measure?project=Manuelklk03_ValveDex&amp;metric=alert_status" alt="Estado del Quality Gate de SonarCloud" />
+  </a>
+</p>
+
+<p align="center">
   <strong>Todos los juegos de Valve. Un universo por explorar.</strong>
 </p>
 
