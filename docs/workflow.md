@@ -23,6 +23,7 @@
 ## Git (GitHub Flow)
 
 - Nunca en `main`. Una rama por funcionalidad (`feature/`, `fix/`, `docs/`…); **una rama = una funcionalidad completa**.
+- **Estructura de las PRs (decisión de Manuel, 2026-11-05):** las PRs deben ser completas y agrupar al menos **3 commits** lógicos y atómicos (por ejemplo: (1) datos/lógica o tipos, (2) interfaz/estilos, (3) pruebas y documentación). Se evitan las PRs diminutas de un único commit para tareas globales.
 - **Pasos intermedios:** solo commit y push. **PR y merge, al terminar la funcionalidad** entera.
 - **Primer push de una rama nueva:** `git push -u origin <rama>`. Los siguientes, `git push`. Manuel insiste en no confundirlos.
 - **Mensaje de commit:** lo redacta el asistente y, salvo que Manuel pida lo contrario, lo escribe Manuel en Vim (`i` una vez, pegar, `Esc`, `:wq`). Formato: título Conventional Commits en español, línea en blanco y lista con `- ` (las continuaciones, sangradas con dos espacios).

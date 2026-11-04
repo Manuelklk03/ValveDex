@@ -25,7 +25,7 @@ export const left4DeadCharacters: Entry[] = [
     summary:
       "Veterano condecorado de la guerra de Vietnam y líder natural del grupo original de supervivientes. Rudo, pragmático y siempre dispuesto a sacrificarse por sus compañeros.",
     notes: [
-      "En el contenido descargable oficial «The Passing» / «The Sacrifice», Bill da su vida reactivando el generador del puente para salvar al resto del grupo.",
+      "Su papel en la campaña oficial «The Sacrifice» conecta directamente la historia del grupo de Pensilvania con los supervivientes de Left 4 Dead 2.",
     ],
     appearances: l4dBoth,
     sources: [l4dWiki("William_%22Bill%22_Overbeck", "William Bill Overbeck")],

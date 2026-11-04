@@ -187,6 +187,31 @@ describe("fichas", () => {
       }
     }
   });
+
+  it("los capítulos tienen archivo de mapa y número secuencial", () => {
+    const chapterEntries = entries.filter((e) => e.category === "maps");
+    expect(chapterEntries.length).toBeGreaterThan(0);
+
+    for (const chapter of chapterEntries) {
+      expect(chapter.details.chapter, chapter.id).toBeGreaterThanOrEqual(0);
+      expect(chapter.details.mapFiles.length, chapter.id).toBeGreaterThan(0);
+      for (const mapFile of chapter.details.mapFiles) {
+        expect(mapFile.trim().length, chapter.id).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("las armas tienen slot válido y munición no negativa", () => {
+    const weaponEntries = entries.filter((e) => e.category === "weapons");
+    expect(weaponEntries.length).toBeGreaterThan(0);
+
+    for (const weapon of weaponEntries) {
+      expect(weapon.details.slot, weapon.id).toBeGreaterThanOrEqual(1);
+      if (weapon.details.maxAmmo !== undefined) {
+        expect(weapon.details.maxAmmo, weapon.id).toBeGreaterThanOrEqual(0);
+      }
+    }
+  });
 });
 
 describe("apariciones en las expansiones", () => {
@@ -287,6 +312,22 @@ describe("lore", () => {
 
       for (const source of lore.sources) {
         expect(source.url, lore.gameId).toMatch(/^https:\/\//);
+      }
+    }
+  });
+
+  it("los párrafos tienen texto no vacío y respetan el formato", () => {
+    for (const lore of gameLore) {
+      for (const [index, paragraph] of lore.paragraphs.entries()) {
+        expect(
+          paragraph.text.trim().length,
+          `${lore.gameId} p#${index}`,
+        ).toBeGreaterThan(10);
+        if (paragraph.spoiler !== undefined) {
+          expect(typeof paragraph.spoiler, `${lore.gameId} p#${index}`).toBe(
+            "boolean",
+          );
+        }
       }
     }
   });

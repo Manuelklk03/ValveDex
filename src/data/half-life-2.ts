@@ -197,7 +197,7 @@ export const halfLife2Chapters: Entry[] = [
       mapFiles: ["d2_prison_06", "d2_prison_07", "d2_prison_08"],
     },
     summary:
-      "Gordon y Alyx localizan a Eli Vance y descubren la traición de Judith Mossman. Utilizan el teletransportador Combine para huir en el último instante mientras la estación se destruye.",
+      "Gordon y Alyx se adentran en el bloque central de Nova Prospekt para localizar la celda de detención de Eli Vance y asegurar una ruta de evacuación a través del teletransportador de la prisión.",
     appearances: hl2Appearances,
     sources: [overwiki("Entanglement", "Entanglement")],
   },
@@ -274,7 +274,7 @@ export const halfLife2Chapters: Entry[] = [
       mapFiles: ["d3_breen_01"],
     },
     summary:
-      "Confrontación decisiva en el despacho del doctor Wallace Breen y destrucción del reactor de fusión oscura en la cúspide de la torre, deteniendo el portal hacia el universo Combine.",
+      "Gordon asciende hasta la cúspide de la Ciudadela para alcanzar el despacho del Administrador Breen e impedir la apertura del portal hacia el universo de la Alianza.",
     appearances: hl2Appearances,
     sources: [overwiki("Dark_Energy_(chapter)", "Dark Energy")],
   },
@@ -418,7 +418,7 @@ export const halfLife2Characters: Entry[] = [
     summary:
       "Figura destacada de la resistencia contra la Alianza e hija del doctor Eli Vance. Experta en pirateo informático, combate y compañera inseparable de Gordon Freeman.",
     notes: [
-      "Fue salvada de la destrucción de Black Mesa cuando era una niña por el G-Man, quien la vigiló como una valiosa inversión de futuro.",
+      "Su robot guardián D0g fue construido por su padre Eli para protegerla y hacerle compañía desde pequeña.",
     ],
     appearances: hl2Appearances,
     sources: [overwiki("Alyx_Vance", "Alyx Vance")],
@@ -443,11 +443,11 @@ export const halfLife2Characters: Entry[] = [
     name: "Dra. Judith Mossman",
     category: "characters",
     details: {
-      affiliation: "Resistencia humana / Colaboradora encubierta",
+      affiliation: "Resistencia humana / Black Mesa Este",
       voiceActor: "Michelle Forbes",
     },
     summary:
-      "Física colaboradora en Black Mesa Este. Mantiene una relación tensa con Alyx y actúa como agente doble entregando a Eli Vance al doctor Breen en Nova Prospekt, antes de arrepentirse y liberar a los cautivos.",
+      "Física e investigadora en Black Mesa Este. Colabora estrechamente con el doctor Eli Vance en el desarrollo de la tecnología de teletransportación de la resistencia, aunque mantiene una relación distante con Alyx.",
     appearances: hl2Appearances,
     sources: [overwiki("Judith_Mossman", "Judith Mossman")],
   },
