@@ -16,7 +16,6 @@ type GameDossierProps = {
 };
 
 // Dossier de un juego: todo él abre el hub y cada apartado lleva a su categoría
-// Dossier de un juego: todo él abre el hub y cada apartado lleva a su categoría
 export function GameDossier({
   game,
   universeName,

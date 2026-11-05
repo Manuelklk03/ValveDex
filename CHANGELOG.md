@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Suite ampliada a 100 pruebas unitarias con Vitest cubriendo al 100% la lógica de selectores de catálogo, universos, juegos, dominio y Valve.
 - Sección de hardware de Valve en `/valve/hardware` con 7 dispositivos históricos documentados con especificaciones técnicas y fuentes oficiales (Steam Controller, Steam Link, Steam Machines, HTC Vive, Valve Index, Steam Deck y Steam Deck OLED).
 - Ampliación de figuras clave de Valve en `/valve/personas` con Marc Laidlaw, Robin Walker, Kim Swift, Erik Johnson y Chet Faliszek con fuentes verificadas.
 - Contenido verificado de Half-Life 2 con fuentes de Combine OverWiki: 14 capítulos con sus archivos de mapa, 9 armas icónicas con ranura y munición, personajes, enemigos y curiosidades.
@@ -35,6 +36,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Corregido
 
+- Limpieza de avisos de calidad en React: sustituidas claves de índice por identificadores estables en `Breadcrumb` y en el lector de lore; eliminado comentario duplicado en `GameDossier`.
+- Exclusiones de cobertura alineadas en SonarCloud (`sonar.coverage.exclusions`) y Vitest para centrar el informe en la lógica de negocio y utilidades del proyecto.
 - Navegación por teclado en la portada: enfocar la línea de producción o cualquiera de sus estaciones con Tab alinea el scroll vertical con el pin de animación.
 - Textos nuevos de Valve y Steam pulidos con criterios enciclopédicos (antislop): precisión factual en acuerdos con terceros, eliminación de coloquialismos y fechas estandarizadas.
 

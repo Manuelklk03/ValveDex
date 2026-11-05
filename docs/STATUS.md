@@ -374,13 +374,20 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 - _Pruebas de integridad:_ nuevas comprobaciones automáticas en `src/data/data-integrity.test.ts` para verificar mapas de capítulos (archivos `.bsp` existentes y números válidos), estadísticas de armas (slots y municiones consistentes), y ausencia de párrafos vacíos en el lore.
 - _Comprobado:_ 44 pruebas de Vitest, ESLint, TypeScript estricto, Prettier y los 4 checks de GitHub Actions (Calidad, SonarCloud, Build y Docker) en verde.
 
-**Ampliación de la sección de Valve: personas y hardware (Antigravity, 2026-11-05, rama `feature/valve-expansion`):**
+**Ampliación de la sección de Valve: personas y hardware (Antigravity, 2026-11-05, PR #119, merge `5e656ff`):**
 
 - _Personas clave de Valve (`src/data/valve-people.ts`):_ ampliadas de 2 a 7 figuras con fuentes verificadas (Marc Laidlaw, Robin Walker, Kim Swift, Erik Johnson y Chet Faliszek).
 - _Catálogo de Hardware (`src/domain/valve-hardware.ts` y `src/data/valve-hardware.ts`):_ 7 dispositivos documentados con ficha técnica, año, categoría y fuentes oficiales (Steam Controller, Steam Link, Steam Machines, HTC Vive, Valve Index, Steam Deck y Steam Deck OLED).
 - _Página `/valve/hardware`:_ nueva ruta estática con el componente `HardwareCard` en CSS Modules con BEM, migas de pan y enlaces cruzados hacia la historia y Steam.
 - _Portada `/`:_ la sección 01 muestra «Figuras clave» y enlace al catálogo de hardware.
 - _Créditos y pruebas:_ hardware integrado en `get-credits.ts` y pruebas de integridad de hardware en `data-integrity.test.ts`.
+
+**Limpieza de SonarCloud y ampliación de cobertura (Antigravity, 2026-11-05, rama `chore/sonarcloud-cleanup-and-coverage`):**
+
+- _Calidad de código:_ eliminadas claves de array index en `Breadcrumb` y en el lector de lore; suprimido comentario duplicado en `GameDossier`.
+- _Configuración de cobertura:_ exclusiones alineadas en `sonar-project.properties` y `vitest.config.mts` para centrar el informe en la lógica de negocio y utilidades reales del proyecto.
+- _Suite de pruebas:_ suite ampliada a 100 tests con Vitest cubriendo al 100% las funciones y líneas de `features/catalog`, `features/credits`, `features/games`, `features/valve`, `domain` y `data`.
+- _Comprobado:_ `npm run check` (100 pruebas en verde, tipos y formateo superados).
 
 **Situación el 2026-10-30:** Half-Life: Decay quedó integrado en `main` con la PR #78. Half-Life 2 abre la etapa Source con su primer dossier en la rama `feature/hl2-dossier`: aviso de la Protección Civil sobre el hormigón de la Ciudad 17, naranja del HUD y de la Resistencia (`#ff9b21`), cian de la Alianza (`#6fb9c9`), tema propio en el hub y una única λ dibujada en SVG. Faltan el contenido de Half-Life 2 (apartados y fichas) y **R3**, las parejas HD de Opposing Force y Blue Shift.
 
