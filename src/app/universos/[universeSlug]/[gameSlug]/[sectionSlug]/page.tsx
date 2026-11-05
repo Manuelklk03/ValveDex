@@ -131,7 +131,10 @@ export default async function SectionPage({
           {data.lore.paragraphs
             .filter((paragraph) => !paragraph.spoiler)
             .map((paragraph, index) => (
-              <p key={index} className={styles["section-page__lore-text"]}>
+              <p
+                key={`lore-premise-${index}`}
+                className={styles["section-page__lore-text"]}
+              >
                 {paragraph.text}
               </p>
             ))}
@@ -143,7 +146,10 @@ export default async function SectionPage({
               {data.lore.paragraphs
                 .filter((paragraph) => paragraph.spoiler)
                 .map((paragraph, index) => (
-                  <p key={index} className={styles["section-page__lore-text"]}>
+                  <p
+                    key={`lore-spoiler-${index}`}
+                    className={styles["section-page__lore-text"]}
+                  >
                     {paragraph.text}
                   </p>
                 ))}

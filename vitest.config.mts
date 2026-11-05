@@ -11,9 +11,13 @@ export default defineConfig({
     environment: "node",
     coverage: {
       provider: "v8",
-      reporter: ["text-summary", "lcov"],
-      include: ["src/**/*.{ts,tsx}", "scripts/**/*.mjs"],
-      exclude: ["**/*.test.{ts,tsx}"],
+      reporter: ["text", "text-summary", "lcov"],
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: [
+        "**/*.test.{ts,tsx}",
+        "src/app/**",
+        "src/components/ui/model-compare.tsx",
+      ],
     },
   },
 });

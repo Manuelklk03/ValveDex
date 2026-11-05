@@ -18,7 +18,10 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
         {items.map((item, index) => {
           const isCurrent = index === items.length - 1;
           return (
-            <li key={index} className={styles["breadcrumb__item"]}>
+            <li
+              key={item.href ?? item.label}
+              className={styles["breadcrumb__item"]}
+            >
               {item.href && !isCurrent ? (
                 <Link href={item.href} className={styles["breadcrumb__link"]}>
                   {item.label}
