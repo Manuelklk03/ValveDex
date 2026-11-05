@@ -124,7 +124,7 @@ export default function HomePage() {
               ))}
             </dl>
 
-            <h3 className={styles["home-page__subtitle"]}>Fundadores</h3>
+            <h3 className={styles["home-page__subtitle"]}>Figuras clave</h3>
             <ul className={styles["home-page__people"]}>
               {people.map((person) => (
                 <li key={person.id} className={styles["home-page__person"]}>
@@ -146,6 +146,13 @@ export default function HomePage() {
                 </li>
               ))}
             </ul>
+
+            <Link
+              href="/valve/hardware"
+              className={styles["home-page__more-link"]}
+            >
+              Ver dispositivos y hardware de Valve
+            </Link>
           </div>
         </section>
 

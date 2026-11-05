@@ -1,0 +1,118 @@
+.hardware-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.hardware-card:hover {
+  border-color: var(--accent);
+}
+
+.hardware-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hardware-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hardware-card__year {
+  color: var(--accent);
+  font-family: var(--font-mono, monospace);
+}
+
+.hardware-card__category {
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.125rem 0.5rem;
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hardware-card__title {
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 700;
+  color: var(--foreground);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.hardware-card__tagline {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  font-style: italic;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.hardware-card__summary {
+  color: var(--foreground);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.hardware-card__specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border);
+}
+
+.hardware-card__spec {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.hardware-card__spec-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.hardware-card__spec-value {
+  font-size: 0.875rem;
+  color: var(--foreground);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.hardware-card__sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.8125rem;
+}
+
+.hardware-card__source-link {
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+
+.hardware-card__source-link:hover {
+  color: var(--accent);
+}
