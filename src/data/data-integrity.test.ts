@@ -11,6 +11,7 @@ import { gameLore } from "./game-lore";
 import { steamEras } from "./steam-eras";
 import { valveMilestones } from "./valve-milestones";
 import { valvePeople } from "./valve-people";
+import { valveHardware } from "./valve-hardware";
 import { universes } from "./universes";
 import { universeStages } from "./universe-stages";
 
@@ -410,6 +411,36 @@ describe("Valve", () => {
 
       for (const source of person.sources) {
         expect(source.url, person.id).toMatch(/^https:\/\//);
+      }
+    }
+  });
+
+  it("el hardware tiene id y slug únicos, especificaciones y fuentes https", () => {
+    expect(findDuplicates(valveHardware.map((item) => item.id))).toEqual([]);
+    expect(findDuplicates(valveHardware.map((item) => item.slug))).toEqual([]);
+    expect(valveHardware.length).toBeGreaterThan(0);
+
+    for (const item of valveHardware) {
+      expect(item.year, item.id).toBeGreaterThanOrEqual(1996);
+      expect(item.name.trim().length, item.id).toBeGreaterThan(0);
+      expect(item.tagline.trim().length, item.id).toBeGreaterThan(0);
+      expect(item.summary.trim().length, item.id).toBeGreaterThan(0);
+      expect(item.specs.length, item.id).toBeGreaterThan(0);
+
+      for (const spec of item.specs) {
+        expect(
+          spec.label.trim().length,
+          `${item.id} spec label`,
+        ).toBeGreaterThan(0);
+        expect(
+          spec.value.trim().length,
+          `${item.id} spec value`,
+        ).toBeGreaterThan(0);
+      }
+
+      expect(item.sources.length, item.id).toBeGreaterThan(0);
+      for (const source of item.sources) {
+        expect(source.url, item.id).toMatch(/^https:\/\//);
       }
     }
   });
