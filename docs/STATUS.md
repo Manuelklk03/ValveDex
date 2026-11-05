@@ -4,9 +4,9 @@
 Fuente: Antigravity con acceso al repositorio local.
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
-## Versión actual: `v0.2.0` (bloque Half-Life 1)
+## Versión actual: `v0.3.0` (bloque Valve, Steam y apertura de la etapa Source)
 
-El 2026-10-26 se publica `v0.2.0`: el contenido completo de Half-Life 1, Opposing Force y Blue Shift con fuentes (Z3 y Z4), el primer diseño de la web (D1b y D2) y la entrada al universo Half-Life por etapas (U1–U3). Publicada el mismo día: PR #63, merge `cc1fbd9`, tag anotado `v0.2.0` y GitHub Release «v0.2.0 — bloque Half-Life 1» (los hizo Claude a petición de Manuel). Anterior: `v0.1.0` (2026-10-23, esqueleto). Después llegaron la fase de recursos visuales (R1 y R2) y Half-Life: Decay, ya integrado en `main` con la PR #78. Del 2026-10-28 al 2026-10-30 Manuel trabajó con Kilo Code (sin cuota de Claude): dossiers y temas de Half-Life 2, Episode One y Episode Two, y fichas y lore de Half-Life 2 y Episode Two (PR #79–#88). El 2026-10-31 Claude revisó ese trabajo: el contenido tenía datos inventados y spoilers a la vista, así que se retiró (ver «Limpieza de la etapa Source»). **Lo siguiente es el rediseño de los dossiers de Decay, Half-Life 2, Episode One y Episode Two, y después R3.**
+El 2026-11-05 se publica `v0.3.0`: bloque de Valve (sección de hardware `/valve/hardware` con 7 dispositivos históricos y 5 nuevas figuras clave en `/valve/personas`), rediseño histórico de Steam con tres épocas, contenido verificado de Half-Life 2, Team Fortress y Left 4 Dead, suite completa de 100 pruebas unitarias con Vitest (100% de cobertura en dominio y selectores), e integración continua con SonarCloud y Docker Hub. Anteriores: `v0.2.0` (2026-10-26, bloque Half-Life 1) y `v0.1.0` (2026-10-23, esqueleto).
 
 ## Modo de trabajo
 
@@ -492,7 +492,7 @@ Decisión de Manuel (2026-10-16): versionado semántico con tags de Git y GitHub
 | `v1.0.0` | **Todo el universo Half-Life**: todos sus juegos, expansiones y episodios, con proyectos cancelados y mods, revisado y desplegado |
 | `v1.x.0` | Cada universo nuevo (Portal, Team Fortress…) o funcionalidad grande posterior                                                     |
 
-Publicadas: **`v0.1.0`** (2026-10-23, esqueleto) y **`v0.2.0`** (2026-10-26, bloque Half-Life 1).
+Publicadas: **`v0.1.0`** (2026-10-23, esqueleto), **`v0.2.0`** (2026-10-26, bloque Half-Life 1) y **`v0.3.0`** (2026-11-05, bloque Valve, Steam y apertura de la etapa Source).
 
 Cómo se crea una versión, cuando Manuel lo indique (siempre sobre `main` actualizado y con `npm run check` y `npm run build` superados):
 

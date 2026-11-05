@@ -6,6 +6,10 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+## [0.3.0] — 2026-11-05
+
+Tercera versión: el **bloque Valve, Steam y apertura de la etapa Source**. Incluye la sección de hardware de Valve, figuras clave de la compañía, rediseño histórico de Steam, contenido verificado de Half-Life 2, Team Fortress y Left 4 Dead, suite de 100 pruebas unitarias con cobertura del 100% en selectores y dominio, e integración continua de calidad con SonarCloud y Docker Hub.
+
 ### Añadido
 
 - Suite ampliada a 100 pruebas unitarias con Vitest cubriendo al 100% la lógica de selectores de catálogo, universos, juegos, dominio y Valve.
@@ -18,20 +22,22 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 - Movimiento de la portada con GSAP y Lenis: entrada, cifras que cuentan, válvula que gira con el scroll y la historia de Valve fijada mientras avanza su línea de producción (con movimiento reducido y en móvil, sin animación fija).
 - Portada rediseñada: fondo industrial, cifras con el número de juegos, catálogo de juegos por saga, historia de Valve como línea de producción y avance de las épocas de Steam.
 - Historia de Valve ampliada a 11 hitos con fecha y fuente (1996–2023) y datos de las tres épocas de Steam (`src/data/steam-eras.ts`), también en `/creditos`.
+- Half-Life: Decay como cuarto juego del universo Half-Life: hub, dossier y tema visual propio (PlayStation 2, 2001) en `/universos/half-life`.
+- Contenido de Half-Life: Decay: 10 fichas de mapa, 4 personajes, lore en 8 párrafos con los 6 últimos tras el botón de spoilers, 5 easter eggs, 11 curiosidades y 29 apariciones compartidas.
 - Informe de cobertura LCOV de Vitest integrado en el análisis de SonarCloud.
 - Análisis de calidad y seguridad con SonarCloud en cada PR y en cada push a `main`.
 - La imagen de Docker se publica en Docker Hub al fusionar en `main` y al crear un tag de versión.
 - ValveDex se puede construir y ejecutar con Docker (`docker compose up --build`); el CI comprueba que la imagen se construye.
 - Integración continua con GitHub Actions: lint, tipos, formato, pruebas y build en cada PR.
-- Opposing Force: los marines aliados pasan a personajes en cuatro clases (soldados, ametralladores, médicos e ingenieros) con su modelo y versión HD; Blue Shift: imágenes de Rosenberg, Simmons y Walter Bennet.
+- Opposing Force: los marines aliados pasan a personajes en cuatro clases con su modelo y versión HD; Blue Shift: imágenes de Rosenberg, Simmons y Walter Bennet.
 - Imágenes de Opposing Force: 9 armas (también en 3D), 6 criaturas, Otis, el instructor Barnes y las parejas original/HD del asesino y del apoyo de la HECU.
 - Las armas de Half-Life 1 se pueden girar en 3D desde su ficha («Ver en 3D»), comparando el modelo original y el del HD Pack con el mismo deslizador.
+- Primeras imágenes propias (fase R): modelos capturados del juego con fondo transparente y visor comparador original/HD.
 
 ### Cambiado
 
 - Las tarjetas y los dossiers de Team Fortress y Left 4 Dead llevan sus emblemas oficiales integrados, y la cabecera de las tarjetas de universo vuelve a tener formato.
 - Las imágenes de Half-Life 1 se rehacen desde los modelos 3D, con mejor luz; el visor 3D mantiene el arma centrada al girarla.
-
 - Nuevos dossiers de Half-Life: Decay, Half-Life 2, Episode One y Episode Two en el universo Half-Life, cada uno con su material propio, y la misma paleta en su hub, apartados y fichas.
 
 ### Corregido
@@ -40,22 +46,11 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 - Exclusiones de cobertura alineadas en SonarCloud (`sonar.coverage.exclusions`) y Vitest para centrar el informe en la lógica de negocio y utilidades del proyecto.
 - Navegación por teclado en la portada: enfocar la línea de producción o cualquiera de sus estaciones con Tab alinea el scroll vertical con el pin de animación.
 - Textos nuevos de Valve y Steam pulidos con criterios enciclopédicos (antislop): precisión factual en acuerdos con terceros, eliminación de coloquialismos y fechas estandarizadas.
-
 - Las páginas de juego y de apartado de Decay, Half-Life 2, Episode One y Episode Two ya no muestran la columna con un color y los laterales con otro: el tema de cada juego se define en un solo sitio.
 - Retiradas las fichas y el lore de Half-Life 2 y Episode Two (y el lore de Episode One), que tenían datos sin fuente y spoilers visibles; se rehará con fuentes.
 - Las imágenes del comparador se ven más nítidas: capturas más grandes, sin pérdida y servidas sin recomprimir. Al marine de la HECU original ya no le tapa la cara el arma.
 - El comparador original/HD dejaba ver el original a través de las zonas transparentes de la imagen HD; ahora cada versión solo se pinta en su lado.
 - En el comparador, llevar el control hacia una etiqueta muestra ahora esa versión (antes mostraba la contraria).
-
-### Añadido
-
-- Opposing Force: los marines aliados pasan a personajes en cuatro clases (soldados, ametralladores, médicos e ingenieros) con su modelo y versión HD; Blue Shift: imágenes de Rosenberg, Simmons y Walter Bennet.
-- Half-Life: Decay como cuarto juego del universo Half-Life: hub, dossier y tema visual propio (PlayStation 2, 2001) en `/universos/half-life` (PR #74, #75 y #77).
-- Half-Life 2 como primer juego de la etapa Source: dossier con el aviso de la Protección Civil sobre el hormigón de la Ciudad 17, el naranja del HUD y de la Resistencia (`#ff9b21`) como acento y el cian de la Alianza (`#6fb9c9`) como secundario. Lleva barra segmentada, líneas de barrido, sello, cintas alternas, el «17» del distrito estarcido y una única λ de la Resistencia dibujada en SVG. Half-Life 2 estrena además tema propio en su hub; la etapa Source pasa a disponible y los episodios siguen anunciados como próximos.
-- Contenido de Half-Life: Decay: 10 fichas de mapa (las 9 misiones y la extra Xen Attacks), 4 personajes (Gina Cross, Colette Green, Richard Keller y los vortigaunts X-8973 y R-4913), lore en 8 párrafos con los 6 últimos tras el botón de spoilers, 5 easter eggs, 11 curiosidades y las 29 apariciones que comparten las fichas de Half-Life 1 con Decay. Fuentes: Combine OverWiki y SourceRuns (comunidad) para los nombres de mapa de las misiones sin página propia.
-- Lore de Half-Life 2: 8 párrafos con botón de spoilers (introducción a la Ciudad 17, la Resistencia, Wallace Breen, portal a Xen, Ciudad 17 bajo control de la Alianza, ataque de la Resistencia, Zona de Cuarentena y Xen, victoria parcial de la Resistencia). Fuentes: Combine OverWiki.
-- Imágenes de 15 fichas más de Half-Life 1 (fase R2): zombi, houndeye, bullsquid, vortigaunt, G-Man y diez armas, con su modelo original y el del High Definition Pack. La escopeta cambia la imagen de la wiki por su pareja propia.
-- Primeras imágenes propias (fase R, piloto): científicos, guardias de seguridad, marine de la HECU, palanca y pistola de 9 mm con su modelo original y el del High Definition Pack, capturados del juego con fondo transparente y la misma cámara. El comparador original/HD se ve por primera vez en una ficha real, con un fondo de vitrina propio.
 
 ## [0.2.0] — 2026-10-26
 
