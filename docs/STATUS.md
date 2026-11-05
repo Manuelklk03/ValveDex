@@ -1,7 +1,7 @@
 # Estado actual — ValveDex
 
-Última actualización: **2026-11-03**.
-Fuente: Claude Code con acceso al repositorio local. Lo marcado «según Manuel» no lo ha comprobado el agente.
+Última actualización: **2026-11-05**.
+Fuente: Antigravity con acceso al repositorio local.
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
 ## Versión actual: `v0.2.0` (bloque Half-Life 1)
@@ -366,6 +366,21 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 - _Team Fortress (`src/data/team-fortress.ts`):_ las 9 clases de mercenarios como personajes con actores de voz y trasfondo (Heavy, Scout, Soldier, Spy, Medic, Engineer, Pyro, Demoman y Sniper), armas reglamentarias (Minigun, lanzacohetes, llave inglesa y reloj de invisibilidad), mapas clásicos (2Fort, Dustbowl) y trivia de los cortos «Meet the Team».
 - _Left 4 Dead (`src/data/left-4-dead.ts`):_ los 8 supervivientes de L4D1 y L4D2 (Bill, Zoey, Louis, Francis, Coach, Ellis, Nick, Rochelle), 6 infectados especiales (Hunter, Smoker, Boomer, Tank, Witch, Charger), armas (escopeta automática, bomba de tubo, sartén), campaña Alta médica (No Mercy) y curiosidad del Director de IA.
 - _Comprobado:_ `npm run check` (41 pruebas en verde, ESLint, TypeScript estricto y Prettier sin errores).
+
+**Auditoría de spoilers, regla de 3 commits y pruebas de integridad (Antigravity, 2026-11-05, PR #118, merge `b320ea6`):**
+
+- _Flujo de trabajo formalizado:_ regla en `AGENTS.md`, `docs/workflow.md` y `docs/STATUS.md` exigiendo que cada PR agrupe trabajo sustancial estructurado en al menos 3 commits atómicos y lógicos.
+- _Auditoría de spoilers:_ eliminada la revelación del giro de Judith Mossman en el capítulo Entrelazamiento y en su ficha de personaje; suprimido el desenlace del reactor en Energía oscura; suavizadas notas de trasfondo en Alyx Vance y Bill Overbeck.
+- _Pruebas de integridad:_ nuevas comprobaciones automáticas en `src/data/data-integrity.test.ts` para verificar mapas de capítulos (archivos `.bsp` existentes y números válidos), estadísticas de armas (slots y municiones consistentes), y ausencia de párrafos vacíos en el lore.
+- _Comprobado:_ 44 pruebas de Vitest, ESLint, TypeScript estricto, Prettier y los 4 checks de GitHub Actions (Calidad, SonarCloud, Build y Docker) en verde.
+
+**Ampliación de la sección de Valve: personas y hardware (Antigravity, 2026-11-05, rama `feature/valve-expansion`):**
+
+- _Personas clave de Valve (`src/data/valve-people.ts`):_ ampliadas de 2 a 7 figuras con fuentes verificadas (Marc Laidlaw, Robin Walker, Kim Swift, Erik Johnson y Chet Faliszek).
+- _Catálogo de Hardware (`src/domain/valve-hardware.ts` y `src/data/valve-hardware.ts`):_ 7 dispositivos documentados con ficha técnica, año, categoría y fuentes oficiales (Steam Controller, Steam Link, Steam Machines, HTC Vive, Valve Index, Steam Deck y Steam Deck OLED).
+- _Página `/valve/hardware`:_ nueva ruta estática con el componente `HardwareCard` en CSS Modules con BEM, migas de pan y enlaces cruzados hacia la historia y Steam.
+- _Portada `/`:_ la sección 01 muestra «Figuras clave» y enlace al catálogo de hardware.
+- _Créditos y pruebas:_ hardware integrado en `get-credits.ts` y pruebas de integridad de hardware en `data-integrity.test.ts`.
 
 **Situación el 2026-10-30:** Half-Life: Decay quedó integrado en `main` con la PR #78. Half-Life 2 abre la etapa Source con su primer dossier en la rama `feature/hl2-dossier`: aviso de la Protección Civil sobre el hormigón de la Ciudad 17, naranja del HUD y de la Resistencia (`#ff9b21`), cian de la Alianza (`#6fb9c9`), tema propio en el hub y una única λ dibujada en SVG. Faltan el contenido de Half-Life 2 (apartados y fichas) y **R3**, las parejas HD de Opposing Force y Blue Shift.
 

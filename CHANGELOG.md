@@ -8,6 +8,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Sección de hardware de Valve en `/valve/hardware` con 7 dispositivos históricos documentados con especificaciones técnicas y fuentes oficiales (Steam Controller, Steam Link, Steam Machines, HTC Vive, Valve Index, Steam Deck y Steam Deck OLED).
+- Ampliación de figuras clave de Valve en `/valve/personas` con Marc Laidlaw, Robin Walker, Kim Swift, Erik Johnson y Chet Faliszek con fuentes verificadas.
 - Contenido verificado de Half-Life 2 con fuentes de Combine OverWiki: 14 capítulos con sus archivos de mapa, 9 armas icónicas con ranura y munición, personajes, enemigos y curiosidades.
 - Lore con control de spoilers completado para todos los juegos del catálogo (Half-Life 2 y episodios, Alyx, Team Fortress Classic y 2, Left 4 Dead 1 y 2).
 - Fichas iniciales de Team Fortress (las 9 clases de mercenarios, armas reglamentarias y mapas clásicos) y Left 4 Dead (los 8 supervivientes, infectados especiales y campaña No Mercy).

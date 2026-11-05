@@ -5,6 +5,7 @@ import { games } from "@/data/games";
 import { steamEras } from "@/data/steam-eras";
 import { valveMilestones } from "@/data/valve-milestones";
 import { valvePeople } from "@/data/valve-people";
+import { valveHardware } from "@/data/valve-hardware";
 import type { MediaAsset } from "@/domain/media-asset";
 import type { Source } from "@/domain/source";
 
@@ -54,6 +55,9 @@ function collectSourceUses(): { source: Source; usedIn: string }[] {
     ),
     ...valvePeople.flatMap((person) =>
       person.sources.map((source) => ({ source, usedIn: person.name })),
+    ),
+    ...valveHardware.flatMap((hardware) =>
+      hardware.sources.map((source) => ({ source, usedIn: hardware.name })),
     ),
   ];
 }
