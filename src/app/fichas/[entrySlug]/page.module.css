@@ -81,6 +81,71 @@
   font-size: 0.875rem;
 }
 
+/* Niveles de un capítulo: una fila por archivo de mapa; la fila entera es el enlace */
+.entry-page__levels {
+  display: grid;
+  border-top: 1px solid var(--border);
+  list-style: none;
+}
+
+.entry-page__level {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.entry-page__level-number {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+}
+
+.entry-page__level-body {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.entry-page__level-link {
+  color: var(--foreground);
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.entry-page__level-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.entry-page__level-link:hover {
+  color: var(--accent);
+}
+
+.entry-page__level-link:focus-visible {
+  outline: none;
+}
+
+.entry-page__level:has(.entry-page__level-link:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.entry-page__level-file {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+}
+
+.entry-page__level-summary {
+  max-width: 70ch;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 /* Notas del archivo: una por línea, con una marca en monoespaciada */
 .entry-page__notes {
   display: grid;

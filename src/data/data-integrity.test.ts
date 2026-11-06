@@ -8,6 +8,7 @@ import { gameSections } from "./game-sections";
 import { games } from "./games";
 import { decorImages } from "./decor-images";
 import { gameLore } from "./game-lore";
+import { levelDetails } from "./level-details";
 import { steamEras } from "./steam-eras";
 import { valveMilestones } from "./valve-milestones";
 import { valvePeople } from "./valve-people";
@@ -291,6 +292,81 @@ describe("imágenes", () => {
     );
 
     expect(mismatched).toEqual([]);
+  });
+});
+
+describe("niveles", () => {
+  const chapters = entries.filter((entry) => entry.category === "maps");
+
+  it("cada capítulo tiene archivos de mapa sin repetir", () => {
+    for (const chapter of chapters) {
+      if (chapter.category !== "maps") continue;
+      expect(chapter.details.mapFiles.length, chapter.id).toBeGreaterThan(0);
+      expect(findDuplicates(chapter.details.mapFiles), chapter.id).toEqual([]);
+    }
+  });
+
+  it("las fichas de nivel apuntan a un capítulo y a un mapa que existen, sin repetirse", () => {
+    const keys = levelDetails.map((d) => `${d.chapterId}/${d.mapFile}`);
+    const unknown = levelDetails
+      .filter((detail) => {
+        const chapter = chapters.find((entry) => entry.id === detail.chapterId);
+        return (
+          chapter?.category !== "maps" ||
+          !chapter.details.mapFiles.includes(detail.mapFile)
+        );
+      })
+      .map((detail) => `${detail.chapterId}/${detail.mapFile}`);
+
+    expect(unknown).toEqual([]);
+    expect(findDuplicates(keys)).toEqual([]);
+  });
+
+  it("los personajes, armas y enemigos de un nivel existen, son de su categoría y salen en su juego", () => {
+    const wrong = levelDetails.flatMap((detail) => {
+      const chapter = chapters.find((entry) => entry.id === detail.chapterId);
+      const gameIds = chapter?.appearances.map((a) => a.gameId) ?? [];
+      const links: [string, string[] | undefined][] = [
+        ["characters", detail.characterIds],
+        ["weapons", detail.weaponIds],
+        ["enemies", detail.enemyIds],
+      ];
+
+      return links.flatMap(([category, ids]) =>
+        (ids ?? []).flatMap((id) => {
+          const entry = entries.find((candidate) => candidate.id === id);
+          const sameGame = entry?.appearances.some((a) =>
+            gameIds.includes(a.gameId),
+          );
+
+          return entry?.category === category && sameGame
+            ? []
+            : [`${detail.mapFile} → ${id}`];
+        }),
+      );
+    });
+
+    expect(wrong).toEqual([]);
+  });
+
+  it("tienen resumen, fuentes https y fotos con tamaño, texto alternativo y fuente", () => {
+    for (const detail of levelDetails) {
+      const label = `${detail.chapterId}/${detail.mapFile}`;
+      expect(detail.summary.trim(), label).not.toBe("");
+      expect(detail.sources.length, label).toBeGreaterThan(0);
+
+      for (const source of detail.sources) {
+        expect(source.url, label).toMatch(/^https:\/\//);
+      }
+
+      for (const image of detail.images ?? []) {
+        expect(existsSync(join("public", image.src)), image.src).toBe(true);
+        expect(image.width, label).toBeGreaterThan(0);
+        expect(image.height, label).toBeGreaterThan(0);
+        expect(image.alt.trim(), label).not.toBe("");
+        expect(image.source.url, label).toMatch(/^https:\/\//);
+      }
+    }
   });
 });
 
