@@ -105,15 +105,13 @@ Objetivo global: cubrir Valve y todos sus juegos de forma progresiva, con la nav
 
 ## Fase DevOps (al final, con el proyecto avanzado; decisión de Manuel, 2026-11-01)
 
-Manuel estudia DevOps en un bootcamp y quiere practicarlo en ValveDex cuando el contenido y el diseño estén terminados. No se empieza antes sin su indicación.
+Manuel estudia DevOps en un bootcamp y quiere practicarlo en ValveDex. Se adelantó (2026-11-01) a petición suya: integración continua, Docker, Docker Hub y SonarCloud ya están hechos; lo que falta es el despliegue.
 
 - [ ] Pipelines de CI/CD (por ejemplo, GitHub Actions; la integración continua ya está hecha, falta el despliegue): `npm ci`, `npm run check` y `npm run build` en cada PR; definir el disparador de cada despliegue al preparar staging y producción.
 - [ ] Antes del despliegue, preparar dos entornos para ValveDex: **staging** para validar la versión candidata y **producción** para la web pública (decisión de Manuel, 2026-11-03). Definir URL, variables y secretos independientes; si se añade una base de datos, separar también sus datos. Acordar cómo se promociona una versión de staging a producción y comprobar ambos entornos después de desplegar.
-- [x] Calidad de código en el pipeline como pasos separados: lint con ESLint (
-      pm run lint, ya configurado), tipos (
-      pm run typecheck), formato con Prettier (
-      pm run format:check) y pruebas (
-      pm run test), para ver en qué paso falla cada PR.
+- [ ] Elegir el alojamiento antes de desplegar (decisión de Manuel, pendiente): comparar un servicio que ejecute la imagen de Docker Hub (por ejemplo, Render, Fly.io o Railway), un VPS propio con `docker compose` y una plataforma de Next.js (Vercel). Criterios: coste, dominio y HTTPS, cómo se promociona staging a producción y qué secretos hacen falta.
+- [ ] Verificar con las fuentes el contenido de Half-Life 2, Team Fortress y Left 4 Dead antes de presentarlo como verificado (ver `STATUS.md`, «Siguiente paso»).
+- [x] Calidad de código en el pipeline como pasos separados: lint con ESLint (`npm run lint`), tipos (`npm run typecheck`), formato con Prettier (`npm run format:check`) y pruebas (`npm run test`), para ver en qué paso falla cada PR.
 - [x] Todo en Docker: `Dockerfile` (y `docker-compose` si hace falta) para desarrollo y producción.
 - [x] Publicar la imagen en Docker Hub. **El token lo introduce Manuel** como secreto del repositorio cuando el asistente se lo pida; nunca va en el código, en un `.env` versionado ni en el chat.
 - [x] Análisis del repositorio con SonarQube (o SonarCloud) en el pipeline; su token, igual que el de Docker Hub.
