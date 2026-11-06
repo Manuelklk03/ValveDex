@@ -136,7 +136,6 @@ export const halfLife2Chapters: Entry[] = [
       chapter: 7,
       mapFiles: [
         "d2_coast_01",
-        "d2_coast_02",
         "d2_coast_03",
         "d2_coast_04",
         "d2_coast_05",

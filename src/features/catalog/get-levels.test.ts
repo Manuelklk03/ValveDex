@@ -26,6 +26,37 @@ describe("getChapterLevels", () => {
   });
 });
 
+describe("niveles con datos de los mapas del juego", () => {
+  it("enlaza los enemigos, personajes y armas que el mapa coloca", () => {
+    const chapter = getEntryBySlug("punto-de-insercion");
+    const level = getChapterLevels(chapter!).find(
+      (l) => l.mapFile === "d1_trainstation_02",
+    );
+
+    expect(level?.fromGameFiles).toBe(true);
+    expect(level?.links.enemyIds).toContain("hl2-civil-protection");
+    expect(level?.links.enemyIds).toContain("hl2-city-scanner");
+  });
+
+  it("solo enlaza fichas que aparecen en el juego del capítulo", () => {
+    const chapter = getEntryBySlug("punto-de-insercion");
+    const levels = getChapterLevels(chapter!);
+    const ids = levels.flatMap((l) => [
+      ...l.links.characterIds,
+      ...l.links.weaponIds,
+      ...l.links.enemyIds,
+    ]);
+
+    for (const id of ids) {
+      const entry = getEntries().find((e) => e.id === id);
+      expect(
+        entry?.appearances.some((a) => a.gameId === "half-life-2"),
+        id,
+      ).toBe(true);
+    }
+  });
+});
+
 describe("getLevelPage", () => {
   it("enlaza el nivel anterior y el siguiente dentro del capítulo", () => {
     const page = getLevelPage("punto-de-insercion", "d1_trainstation_02");

@@ -9,6 +9,8 @@ import { games } from "./games";
 import { decorImages } from "./decor-images";
 import { gameLore } from "./game-lore";
 import { levelDetails } from "./level-details";
+import { entityEntries } from "./levels/entity-entries";
+import { mapEntities } from "./levels/map-entities";
 import { steamEras } from "./steam-eras";
 import { valveMilestones } from "./valve-milestones";
 import { valvePeople } from "./valve-people";
@@ -347,6 +349,33 @@ describe("niveles", () => {
     });
 
     expect(wrong).toEqual([]);
+  });
+
+  it("las clases de entidad enlazadas apuntan a fichas que existen y son de su categoría", () => {
+    const wrong = Object.entries(entityEntries)
+      .filter(([, link]) => {
+        const entry = entries.find((e) => e.id === link.entryId);
+        return entry?.category !== link.category;
+      })
+      .map(([className, link]) => `${className} → ${link.entryId}`);
+
+    expect(wrong).toEqual([]);
+  });
+
+  it("los mapas con datos de entidades pertenecen a algún capítulo", () => {
+    const known = new Set(
+      chapters.flatMap((chapter) =>
+        chapter.category === "maps" ? chapter.details.mapFiles : [],
+      ),
+    );
+
+    // Hay más mapas leídos que capítulos con mapa (por ejemplo, los de otros juegos): solo se comprueba
+    // que todos los mapas de capítulos de Source con ficha tienen sus datos
+    const missing = [...known].filter(
+      (mapFile) => /^(d\d_|ep\d_)/.test(mapFile) && !(mapFile in mapEntities),
+    );
+
+    expect(missing).toEqual([]);
   });
 
   it("tienen resumen, fuentes https y fotos con tamaño, texto alternativo y fuente", () => {

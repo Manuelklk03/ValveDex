@@ -45,7 +45,7 @@ export default async function LevelPage({
 
   const { chapter, level, previous, next } = page;
   const detail = level.detail;
-  const { characters, weapons, enemies } = getLevelEntries(detail);
+  const { characters, weapons, enemies } = getLevelEntries(level);
   const groups = [
     { id: "characters", title: "Personajes que aparecen", entries: characters },
     { id: "weapons", title: "Armas que se encuentran", entries: weapons },
@@ -188,6 +188,15 @@ export default async function LevelPage({
           </ul>
         </section>
       ))}
+
+      {level.fromGameFiles && (
+        <p className={styles["level-page__note"]}>
+          Los personajes, enemigos y armas de este nivel se han leído de la
+          lista de entidades del archivo del mapa ({level.mapFile}.bsp) del
+          juego. Pueden faltar los que se crean por script o los que todavía no
+          tienen ficha.
+        </p>
+      )}
 
       {detail && (
         <section

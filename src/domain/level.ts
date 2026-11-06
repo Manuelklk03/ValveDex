@@ -3,7 +3,8 @@ import type { MediaAsset } from "./media-asset";
 import type { Source } from "./source";
 
 // Ficha de un nivel (un archivo de mapa dentro de un capítulo). Es opcional: un nivel sin ficha
-// se muestra igualmente en la lista del capítulo, con su número y su archivo de mapa.
+// se muestra igualmente en la lista del capítulo, con su número, su archivo de mapa y los
+// personajes, enemigos y armas que el propio mapa coloca (leídos de los archivos del juego).
 export type LevelDetail = {
   // Id de la ficha de capítulo (categoría «maps») y archivo de mapa, uno de `details.mapFiles`
   chapterId: string;
@@ -21,6 +22,12 @@ export type LevelDetail = {
   sources: Source[];
 };
 
+export type LevelLinks = {
+  characterIds: string[];
+  weaponIds: string[];
+  enemyIds: string[];
+};
+
 export type Level = {
   mapFile: string;
   // Posición dentro del capítulo, desde 1
@@ -28,4 +35,8 @@ export type Level = {
   total: number;
   title: string;
   detail?: LevelDetail;
+  // Las fichas del nivel: las de su ficha manual más las que salen de las entidades del mapa
+  links: LevelLinks;
+  // true si alguna se ha leído del archivo del mapa (para decirlo en la página)
+  fromGameFiles: boolean;
 };

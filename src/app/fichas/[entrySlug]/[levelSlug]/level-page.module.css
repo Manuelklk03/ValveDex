@@ -83,6 +83,13 @@
   list-style: none;
 }
 
+.level-page__note {
+  max-width: 70ch;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
 .level-page__sources {
   display: grid;
   gap: 0.5rem;
