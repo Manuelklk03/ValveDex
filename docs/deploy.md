@@ -53,7 +53,7 @@ Producción solo despliega tags con el formato `vX.Y.Z` (por ejemplo `v0.4.0`).
 
 ## Cómo se comprueba que la versión nueva está publicada
 
-La web publica en `/version` el commit con el que se construyó su imagen (`COMMIT_SHA`, un argumento de Docker que pasa el workflow). Tras pedir el despliegue, el pipeline consulta `<URL>/version` cada 15 segundos (hasta 10 minutos) y solo da el trabajo por bueno cuando devuelve el commit que acaba de publicarse: un `200` en `/` también lo daría la versión anterior. Si se pidió el despliegue y falta `STAGING_URL` o `PRODUCTION_URL`, el trabajo falla, porque no puede comprobar nada.
+La web publica en `/version` el commit con el que se construyó su imagen (`COMMIT_SHA`, un argumento de Docker que pasa el workflow). Tras pedir el despliegue, el pipeline consulta `<URL>/version` cada 15 segundos (hasta un plazo total de 10 minutos medido con el reloj, que incluye el tiempo de cada petición) y solo da el trabajo por bueno cuando devuelve el commit que acaba de publicarse: un `200` en `/` también lo daría la versión anterior. Si se pidió el despliegue y falta `STAGING_URL` o `PRODUCTION_URL`, el trabajo falla, porque no puede comprobar nada.
 
 ## Límites conocidos
 
