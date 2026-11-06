@@ -42,11 +42,6 @@ export const halfLifeCharacters: Entry[] = [
         summary:
           "Barney Calhoun se lo cruza varias veces, entre ellas esperando el tranvía.",
       },
-      {
-        gameId: "half-life-2",
-        summary:
-          "Despierta dos décadas después en la Ciudad 17 para liderar la insurrección armada de la resistencia contra la Alianza.",
-      },
     ],
     sources: [overwiki("Gordon_Freeman", "Gordon Freeman")],
   },
@@ -78,11 +73,6 @@ export const halfLifeCharacters: Entry[] = [
           width: 275,
           height: 853,
         }),
-      },
-      {
-        gameId: "half-life-2",
-        summary:
-          "Saca a Gordon de la estasis en la Ciudad 17 para desencadenar la caída del régimen de Wallace Breen.",
       },
     ],
     sources: [overwiki("The_G-Man", "The G-Man")],
@@ -139,14 +129,7 @@ export const halfLifeCharacters: Entry[] = [
       "Marc Laidlaw tomó el apellido de F. W. Colqhoun, un personaje de la película Ravenous (1999).",
       "Al principio de Half-Life ya lleva chaleco y casco, aunque en Blue Shift no los coge de su taquilla hasta después de cruzar esa puerta.",
     ],
-    appearances: [
-      { gameId: "half-life" },
-      {
-        gameId: "half-life-2",
-        summary:
-          "Infiltrado como oficial de la Protección Civil en la Ciudad 17 y líder clave de la resistencia armada.",
-      },
-    ],
+    appearances: [{ gameId: "half-life" }],
     sources: [overwiki("Barney_Calhoun", "Barney Calhoun")],
   },
   {
@@ -197,14 +180,7 @@ export const halfLifeCharacters: Entry[] = [
       "En Half-Life se le ve dos veces en el Sector C, sin nombre; Half-Life 2 lo identificó después.",
       "Perdió la pierna izquierda por el ataque de un Bullsquid mientras ayudaba a Kleiner a escapar de Black Mesa.",
     ],
-    appearances: [
-      { gameId: "half-life" },
-      {
-        gameId: "half-life-2",
-        summary:
-          "Líder de la resistencia humana y director de Black Mesa Este en la Ciudad 17.",
-      },
-    ],
+    appearances: [{ gameId: "half-life" }],
     sources: [overwiki("Eli_Vance", "Eli Vance")],
   },
   {
@@ -224,14 +200,7 @@ export const halfLifeCharacters: Entry[] = [
       "Es, en esencia, el modelo de científico con gafas de Half-Life («scientist01», o «Walter») convertido en personaje.",
       "Harry S. Robins, su voz, puso también la de casi todos los científicos de Half-Life y sus expansiones.",
     ],
-    appearances: [
-      { gameId: "half-life" },
-      {
-        gameId: "half-life-2",
-        summary:
-          "Dirige un laboratorio clandestino camuflado en el corazón de la Ciudad 17.",
-      },
-    ],
+    appearances: [{ gameId: "half-life" }],
     sources: [overwiki("Isaac_Kleiner", "Isaac Kleiner")],
   },
 ];
