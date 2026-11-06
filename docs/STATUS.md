@@ -1,7 +1,7 @@
 # Estado actual — ValveDex
 
-Última actualización: **2026-11-05**.
-Fuente: Antigravity con acceso al repositorio local.
+Última actualización: **2026-11-06**.
+Fuente: Claude Code y Antigravity con acceso al repositorio local; la comprobación del estado de `main` y de las PR es de Claude Code (2026-11-06).
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
 ## Versión actual: `v0.3.0` (bloque Valve, Steam y apertura de la etapa Source)
@@ -153,7 +153,7 @@ Comprobado por Claude Code el 2026-10-23 en `main` (`a0267e4`, PR #38 fusionada)
 ## Git
 
 - Remoto: `https://github.com/Manuelklk03/ValveDex`.
-- `main` en `6b4804e`, con los tags `v0.1.0` y `v0.2.0`. PRs #40–#77 en GitHub (diseño D1–D2, contenido Z3–Z4, entrada al universo U1–U3, `v0.2.0`, recursos visuales R1–R2 —#64–#71— y el dossier de Half-Life: Decay —#74, #75 y #77—). PRs fusionadas hasta `v0.1.0`:
+- `main` en `ec80932` (2026-11-05, `v0.3.0`), con los tags `v0.1.0`, `v0.2.0` y `v0.3.0`; sin PR abiertas ni ramas remotas pendientes (comprobado el 2026-11-06). PRs #40–#121 en GitHub (diseño D1–D2, contenido Z3–Z4, entrada al universo U1–U3, recursos visuales R1–R3, Half-Life: Decay, rediseño de la etapa Source, DevOps #102–#108, Valve y Steam #111–#119, SonarCloud #120 y `v0.3.0` #121). PRs fusionadas hasta `v0.1.0`:
   - #1–#6: historial reconstruido.
   - #7 `fix/errores-css`.
   - #8 `feature/valve-timeline`.
@@ -200,7 +200,6 @@ Comprobado por Claude Code el 2026-10-23 en `main` (`a0267e4`, PR #38 fusionada)
 - **Mensajes de commit:** los redacta la IA y los escribe Manuel (2026-10-16). Al final de cada paso, el asistente entrega el mensaje completo: título Conventional Commits en español (`feat(valve): …`), línea en blanco y descripción en lista con `- ` (las líneas que continúan un punto van sangradas con dos espacios). El asistente no hace el commit salvo petición expresa.
 - **Trabajo entre dos PCs:** para continuar una rama sin terminar en el otro equipo, `git push` en el primero y, en el segundo, `git fetch`, `git switch <rama>` y `git pull --ff-only`. La PR se crea cuando la rama está completa. Antes de cambiar de equipo, `git status` debe indicar el árbol limpio y la rama al día con el remoto.
 - Es `gh pr`, no `git pr`. En Git Bash, si falta `gh`: `export PATH="$PATH:/c/Program Files/GitHub CLI"`.
-- `main` en `eeb322f` (2026-10-31), tras las PR de Kilo Code hasta la #88. Rama abierta: `fix/source-cleanup` (limpieza de la etapa Source), creada por Claude desde `eeb322f`.
 - **Vim:** el commit `b031b14` terminó con una línea `i` suelta en la descripción. Pulsa `i` solo una vez al abrir el editor y, antes de `:wq`, `Esc`; si la `i` se cuela en el texto, bórrala antes de guardar.
 - **`git pull` en `main`:** la configuración global `merge.ff=false` hace que un `git pull` normal cree un commit de merge local. Usar `git pull --ff-only` o configurar una vez `git config --global pull.ff only`.
 - Criterio: una rama = una funcionalidad completa.
@@ -256,15 +255,15 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 - Alertas de `npm audit` en desarrollo.
 - Registrar la versión de Node.js (`engines` o `.nvmrc`).
 - `Frase para IA.txt` versionado en la raíz: decidir si se mueve a `docs/` o se elimina.
-- CI pendiente.
+- Despliegue pendiente: hay integración continua, imagen de Docker publicada en Docker Hub y SonarCloud, pero no hay staging ni producción (ver [roadmap.md](roadmap.md#fase-devops-al-final-con-el-proyecto-avanzado-decisión-de-manuel-2026-11-01)).
+- El contenido de Half-Life 2, Team Fortress y Left 4 Dead (PR `652266d`, 2026-11-04) lo trajo otra herramienta con la etiqueta «verificado»: Claude Code no lo ha contrastado con las fuentes. El contenido anterior de esa etapa (Kilo Code) tenía datos inventados.
 - Comprobar con las fuentes los datos de `src/data/games.ts` y los textos de `src/data/entries.ts`, y si las armas aparecen también en las expansiones. Los enlaces de las fichas ya se han verificado (2026-10-12).
 - Las pruebas no comprueban que los textos coincidan con las fuentes: eso sigue siendo revisión manual.
 - El comparador original/HD ya se ve en 20 fichas de Half-Life 1 (R1 y R2); faltan las parejas de Opposing Force y Blue Shift (R3) y una imagen única para lo que no cambió con el High Definition Pack. Ver [design.md](design.md#recursos-en-tandas-decisión-de-manuel-2026-10-24).
 - Las tablas del README sobre el universo Half-Life completo, los proyectos cancelados y los mods se escribieron sin contrastar con fuentes; llevan la nota «Lista en revisión».
-- Los textos de las personas de Valve y de `/valve/steam` no los ha contrastado el agente con sus fuentes.
-- La fuente de `/valve/steam` está escrita en la página: no sale en `/creditos` hasta que ese texto pase a `src/data`.
+- Los textos de las personas de Valve no los ha contrastado el agente con sus fuentes. Los hitos de Valve y las épocas de Steam (`valve-milestones.ts` y `steam-eras.ts`) salen de Wikipedia en inglés y los revisó Codex; los colores de las épocas son interpretación de ValveDex, sin contrastar con capturas históricas del cliente.
 - Contrastar con las fuentes las ranuras y la munición de las armas (paso 21).
-- Ninguna página se ha revisado en un navegador (móvil, teclado, contraste): se hará sobre el diseño definitivo.
+- Revisión en navegador: la portada, `/valve/steam` y `/valve/historia` se revisaron en escritorio y móvil (Claude Code, 2026-11-04); el resto de páginas no. Los colores de TF, L4D y las épocas de Steam pasaron contraste AA; el recorrido completo con teclado de las demás páginas está pendiente.
 
 ## Pasos de la interfaz (guiados)
 
