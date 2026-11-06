@@ -17,6 +17,10 @@ import {
 } from "@/features/universes/get-universes";
 import styles from "./page.module.css";
 
+// Next 16.4 avisa en desarrollo de que `params` se lee fuera de Suspense; la página se genera entera
+// en el build, así que se excluye de la validación de navegación instantánea
+export const instant = false;
+
 export function generateStaticParams() {
   return getEntries().map((entry) => ({
     entrySlug: entry.slug,
