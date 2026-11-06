@@ -1,4 +1,4 @@
-name: Publicar imagen en Docker Hub
+﻿name: Publicar imagen en Docker Hub
 
 # Solo cuando algo llega a main (una PR ya revisada por el CI) o se crea un tag de versión.
 # Nunca en las PR: así los secretos no se usan con código sin revisar.
@@ -67,43 +67,43 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+  # Los despliegues solo se activan cuando Manuel crea la variable DEPLOY_ENABLED=true en el repositorio
+  # (después de configurar Render y los entornos, ver docs/deploy.md). Mientras no exista, estos trabajos
+  # se omiten y aparecen como «skipped», no como un despliegue correcto que no ocurrió.
+
   # Staging: cada cambio que llega a main se despliega aquí para validarlo antes de una versión.
   # Requiere el entorno «staging» de GitHub con el secreto RENDER_DEPLOY_HOOK y la variable STAGING_URL.
   staging:
     name: Desplegar en staging (Render)
     needs: publicar
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
     environment:
       name: staging
       url: ${{ vars.STAGING_URL }}
     steps:
       - name: Pedir el despliegue a Render
-        id: desplegar
         env:
           DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
         run: |
           if [ -z "$DEPLOY_HOOK" ]; then
-            echo "::warning::Falta el secreto RENDER_DEPLOY_HOOK del entorno staging; no se despliega ni se comprueba."
-            echo "pedido=false" >> "$GITHUB_OUTPUT"
-            exit 0
+            echo "::error::Falta el secreto RENDER_DEPLOY_HOOK del entorno staging."
+            exit 1
           fi
-          curl --fail --silent --show-error --request POST "$DEPLOY_HOOK"
-          echo "pedido=true" >> "$GITHUB_OUTPUT"
+          curl --fail --silent --show-error --connect-timeout 10 --max-time 60 --request POST "$DEPLOY_HOOK"
 
       # Render tarda un rato en bajar la imagen y arrancarla. Un 200 no basta (la versión anterior
       # también lo daría): se espera a que /version devuelva el commit que acaba de publicarse.
       - name: Comprobar que staging ejecuta esta versión
-        if: steps.desplegar.outputs.pedido == 'true'
         env:
           URL: ${{ vars.STAGING_URL }}
         run: |
           if [ -z "$URL" ]; then
-            echo "::error::Se pidió el despliegue pero falta la variable STAGING_URL: no se puede comprobar."
+            echo "::error::Falta la variable STAGING_URL del entorno staging: no se puede comprobar."
             exit 1
           fi
           for intento in $(seq 1 40); do
-            commit=$(curl --fail --silent "$URL/version" | sed -n 's/.*"commit":"\([^"]*\)".*/\1/p' || true)
+            commit=$(curl --fail --silent --connect-timeout 5 --max-time 10 "$URL/version" | sed -n 's/.*"commit":"\([^"]*\)".*/\1/p' || true)
             if [ "$commit" = "$GITHUB_SHA" ]; then
               echo "Staging ejecuta el commit $GITHUB_SHA en $URL"
               exit 0
@@ -119,40 +119,42 @@ jobs:
   produccion:
     name: Desplegar en producción (Render)
     needs: publicar
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v') && vars.DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
     environment:
       name: production
       url: ${{ vars.PRODUCTION_URL }}
     steps:
       - name: Pedir a Render la imagen de esta versión
-        id: desplegar
         env:
           DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
           if [ -z "$DEPLOY_HOOK" ]; then
-            echo "::warning::Falta el secreto RENDER_DEPLOY_HOOK del entorno production; no se despliega ni se comprueba."
-            echo "pedido=false" >> "$GITHUB_OUTPUT"
-            exit 0
+            echo "::error::Falta el secreto RENDER_DEPLOY_HOOK del entorno production."
+            exit 1
+          fi
+          # Solo versiones del tipo vX.Y.Z: otro nombre de tag no corresponde a una imagen publicada
+          # y un «&» alteraría los parámetros de la URL de Render
+          if ! printf '%s' "$GITHUB_REF_NAME" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::El tag «$GITHUB_REF_NAME» no tiene el formato vX.Y.Z; no se despliega."
+            exit 1
           fi
           version="${GITHUB_REF_NAME#v}"
           imagen="docker.io%2F${DOCKERHUB_USERNAME}%2Fvalvedex%3A${version}"
-          curl --fail --silent --show-error --request POST "${DEPLOY_HOOK}&imgURL=${imagen}"
-          echo "pedido=true" >> "$GITHUB_OUTPUT"
+          curl --fail --silent --show-error --connect-timeout 10 --max-time 60 --request POST "${DEPLOY_HOOK}&imgURL=${imagen}"
 
       # Se espera a que /version devuelva el commit del tag: un 200 también lo daría la versión anterior
       - name: Comprobar que producción ejecuta esta versión
-        if: steps.desplegar.outputs.pedido == 'true'
         env:
           URL: ${{ vars.PRODUCTION_URL }}
         run: |
           if [ -z "$URL" ]; then
-            echo "::error::Se pidió el despliegue pero falta la variable PRODUCTION_URL: no se puede comprobar."
+            echo "::error::Falta la variable PRODUCTION_URL del entorno production: no se puede comprobar."
             exit 1
           fi
           for intento in $(seq 1 40); do
-            commit=$(curl --fail --silent "$URL/version" | sed -n 's/.*"commit":"\([^"]*\)".*/\1/p' || true)
+            commit=$(curl --fail --silent --connect-timeout 5 --max-time 10 "$URL/version" | sed -n 's/.*"commit":"\([^"]*\)".*/\1/p' || true)
             if [ "$commit" = "$GITHUB_SHA" ]; then
               echo "Producción ejecuta el commit $GITHUB_SHA en $URL"
               exit 0

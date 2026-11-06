@@ -11,13 +11,14 @@ RUN npm ci
 # Las fuentes de next/font/google se descargan aquí, así que este paso necesita internet
 FROM node:24-alpine AS build
 WORKDIR /app
-# Commit con el que se construye la imagen: /version lo publica para que el pipeline compruebe qué versión corre
-ARG COMMIT_SHA=desconocido
 ENV NEXT_TELEMETRY_DISABLED=1 \
-    NEXT_OUTPUT=standalone \
-    COMMIT_SHA=$COMMIT_SHA
+    NEXT_OUTPUT=standalone
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# Commit con el que se construye la imagen: /version lo publica para que el pipeline compruebe qué versión corre.
+# Va justo antes de compilar para que cambiarlo no invalide las capas anteriores.
+ARG COMMIT_SHA=desconocido
+ENV COMMIT_SHA=$COMMIT_SHA
 RUN npm run build
 
 # --- Etapa 3: ejecutar ---
