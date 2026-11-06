@@ -245,7 +245,6 @@ export const alyxWeapons: Entry[] = [
     details: { slot: 3 },
     summary:
       "Escopeta Combine semiautomática de cargador, que se consigue en el tercer capítulo. Admite mejoras: láser, doble disparo, recarga automática y lanzagranadas.",
-    notes: ["Su cargador es de 6+1 cartuchos."],
     appearances: hlaAppearances,
     sources: [
       wiki("Combine_Shotgun", "Combine Shotgun"),
@@ -397,8 +396,7 @@ export const alyxEnemies: Entry[] = [
     name: "Hormiga león",
     category: "enemies",
     details: { origin: "Xen" },
-    summary:
-      "Criatura de Half-Life 2 que reaparece en Alyx. Valve la ralentizó porque su velocidad abrumaba en realidad virtual y añadió la posibilidad de dispararle a las patas.",
+    summary: "Criatura de Half-Life 2 que reaparece en Half-Life: Alyx.",
     appearances: hlaAppearances,
     sources: [wikipediaSource],
   },

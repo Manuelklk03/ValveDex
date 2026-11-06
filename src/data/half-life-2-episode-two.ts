@@ -134,7 +134,7 @@ export const episodeTwoEnemies: Entry[] = [
     summary:
       "Sintético tripodal rápido y ágil que los Combine emplean como explorador, para asaltos a corta distancia y como escolta. Se deja ver en Episode One y es un enemigo habitual en Episode Two.",
     notes: [
-      "Ataca principalmente con ráfagas de dardos explosivos (fléchettes): cuatro impactos directos bastan para vaporizar a un soldado humano. Si el dardo no alcanza a nadie, se clava en una superficie y explota unos segundos después.",
+      "Ataca principalmente con ráfagas de dardos explosivos (fléchettes). Si el dardo no alcanza a nadie, se clava en una superficie y explota unos segundos después.",
       "Actúa en manada, cambia de posición y busca flanquear. Con un objeto lanzado con el arma gravitatoria, un explosivo o el disparo de energía del rifle de pulso se le derriba antes que con armas de fuego convencionales.",
       "Si un objeto lanzado con el arma gravitatoria lleva un dardo sin explotar clavado, este detona al chocar con el hunter y aumenta el daño.",
     ],

@@ -136,10 +136,10 @@ export const episodeLevels: LevelDetail[] = [
       "La estación técnica de trenes, con un strider que bloquea las vías, en el último nivel del episodio.",
     paragraphs: [
       {
-        text: "Tras acompañar a los refugiados, Gordon y Alyx van a por el último tren. Un strider y soldados Combine los atacan y los separan un momento. Gordon derrota al strider con el lanzacohetes, se reúne con Alyx y los dos salen por fin de la Ciudad 17.",
+        text: "Tras acompañar a los refugiados, Gordon y Alyx van a por el último tren. Un strider y soldados Combine atacan la estación.",
       },
       {
-        text: "Mientras se alejan, la Ciudadela entra en estado crítico y de ella salen cápsulas de Consejeros.",
+        text: "Gordon derrota al strider con el lanzacohetes, se reúne con Alyx y los dos salen por fin de la Ciudad 17. Mientras se alejan, la Ciudadela entra en estado crítico y de ella salen cápsulas de Consejeros.",
         spoiler: true,
       },
     ],

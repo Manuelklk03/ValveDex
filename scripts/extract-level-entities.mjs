@@ -22,15 +22,25 @@ const interesting = /^(npc_|monster_|weapon_|item_ammo_crate$)/;
 
 // Source (VBSP): ident «VBSP», versión y 64 lumps de 16 bytes; GoldSrc: versión 30 y 15 lumps de 8 bytes
 function readEntityLump(buffer) {
-  if (buffer.toString("latin1", 0, 4) === "VBSP") {
-    const offset = buffer.readInt32LE(8);
-    const length = buffer.readInt32LE(12);
-    const fourCC = buffer.readInt32LE(20);
-    if (fourCC !== 0) throw new Error("lump de entidades comprimido");
-    return buffer.toString("latin1", offset, offset + length);
+  const isSource =
+    buffer.length >= 4 && buffer.toString("latin1", 0, 4) === "VBSP";
+  // Tamaño mínimo de la cabecera hasta el primer lump: ident y versión (8 bytes) + lump 0 (16) o versión (4) + lump 0 (8)
+  const headerSize = isSource ? 24 : 12;
+
+  if (buffer.length < headerSize) throw new Error("archivo demasiado pequeño");
+  if (!isSource && buffer.readInt32LE(0) !== 30) {
+    throw new Error("no es un BSP de GoldSrc (versión 30) ni de Source");
   }
-  const offset = buffer.readInt32LE(4);
-  const length = buffer.readInt32LE(8);
+
+  const offset = buffer.readInt32LE(isSource ? 8 : 4);
+  const length = buffer.readInt32LE(isSource ? 12 : 8);
+  if (isSource && buffer.readInt32LE(20) !== 0) {
+    throw new Error("lump de entidades comprimido");
+  }
+  if (offset < headerSize || length <= 0 || offset + length > buffer.length) {
+    throw new Error("el lump de entidades está fuera del archivo");
+  }
+
   return buffer.toString("latin1", offset, offset + length);
 }
 
@@ -70,6 +80,7 @@ function countEntities(text) {
 }
 
 const result = {};
+const failures = [];
 
 for (let i = 0; i < pairs.length; i += 2) {
   const dir = pairs[i];
@@ -81,15 +92,28 @@ for (let i = 0; i < pairs.length; i += 2) {
     if (/background|_demo$/i.test(file.replace(".bsp", ""))) continue;
 
     const mapFile = file.replace(/\.bsp$/, "");
+    const buffer = readFileSync(join(dir, file));
+
+    // Algún juego trae mapas de 0 bytes (d2_coast_02 en Half-Life 2): se avisa y se omiten
+    if (buffer.length === 0) {
+      console.warn(`Se omite ${file}: el archivo está vacío`);
+      continue;
+    }
 
     try {
-      result[mapFile] = countEntities(
-        readEntityLump(readFileSync(join(dir, file))),
-      );
+      result[mapFile] = countEntities(readEntityLump(buffer));
     } catch (error) {
-      console.warn(`Se omite ${file}: ${error.message}`);
+      failures.push(`${file}: ${error.message}`);
     }
   }
+}
+
+// Si un mapa no se puede leer no se genera el archivo: unos datos a medias parecerían completos
+if (failures.length > 0) {
+  console.error(
+    `No se pudieron leer ${failures.length} mapas:\n${failures.join("\n")}`,
+  );
+  process.exit(1);
 }
 
 const names = Object.keys(result).sort();

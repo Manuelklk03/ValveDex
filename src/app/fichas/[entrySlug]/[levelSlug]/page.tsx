@@ -191,9 +191,9 @@ export default async function LevelPage({
 
       {level.fromGameFiles && (
         <p className={styles["level-page__note"]}>
-          Los personajes, enemigos y armas de este nivel se han leído de la
-          lista de entidades del archivo del mapa ({level.mapFile}.bsp) del
-          juego. Pueden faltar los que se crean por script o los que todavía no
+          Algunas de estas fichas se han leído de la lista de entidades del
+          archivo del mapa ({level.mapFile}.bsp) del juego. Pueden faltar los
+          personajes, enemigos y armas que se crean por script o que todavía no
           tienen ficha.
         </p>
       )}

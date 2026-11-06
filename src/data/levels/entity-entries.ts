@@ -157,6 +157,12 @@ const opposingForce: EntityTable = {
   weapon_sporelauncher: weapon("spore-launcher"),
 };
 
+// En Episode Two la hormiga león común y la obrera comparten la clase npc_antlion y el mapa no guarda
+// cuál es cuál: no se atribuye ninguna para no enlazar la variante equivocada.
+const episodeTwo: EntityTable = Object.fromEntries(
+  Object.entries(source).filter(([className]) => className !== "npc_antlion"),
+);
+
 // Tabla de cada juego por su id
 export const entityEntries: Record<string, EntityTable> = {
   "half-life": goldSrc,
@@ -164,5 +170,5 @@ export const entityEntries: Record<string, EntityTable> = {
   "half-life-blue-shift": goldSrc,
   "half-life-2": source,
   "half-life-2-episode-one": source,
-  "half-life-2-episode-two": source,
+  "half-life-2-episode-two": episodeTwo,
 };

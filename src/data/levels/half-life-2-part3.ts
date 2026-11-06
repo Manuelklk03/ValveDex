@@ -16,10 +16,10 @@ export const halfLife2LevelsPart3: LevelDetail[] = [
       "Último nivel del juego: Gordon llega al despacho del doctor Breen, en lo alto de la Ciudadela.",
     paragraphs: [
       {
-        text: "Es el capítulo final y su único mapa. Gordon es transportado hasta el despacho de Wallace Breen, donde se reencuentra con Eli Vance y Alyx Vance, y después tiene que abrirse paso entre soldados de la Alianza con el arma gravitatoria potenciada.",
+        text: "Es el capítulo final y su único mapa. Gordon llega hasta el despacho de Wallace Breen, en lo alto de la Ciudadela, y tiene que abrirse paso entre soldados de la Alianza.",
       },
       {
-        text: "Breen intenta una vez más ganarse la lealtad de Eli y, al ser rechazado, se prepara para enviar a Gordon, Alyx y Eli por un portal al Mundo Superior de la Alianza. Judith Mossman se niega a aceptarlo y los libera; Breen huye hacia el reactor de energía oscura, en lo más alto de la Ciudadela, y Gordon lo persigue.",
+        text: "En el despacho, Gordon se reencuentra con Eli Vance y Alyx Vance, y lo hace con el arma gravitatoria potenciada. Breen intenta una vez más ganarse la lealtad de Eli y, al ser rechazado, se prepara para enviar a Gordon, Alyx y Eli por un portal al Mundo Superior de la Alianza. Judith Mossman se niega a aceptarlo y los libera; Breen huye hacia el reactor de energía oscura, en lo más alto de la Ciudadela, y Gordon lo persigue.",
         spoiler: true,
       },
       {
@@ -27,12 +27,7 @@ export const halfLife2LevelsPart3: LevelDetail[] = [
         spoiler: true,
       },
     ],
-    characterIds: [
-      "wallace-breen",
-      "hl2-eli-vance",
-      "alyx-vance",
-      "judith-mossman",
-    ],
+    characterIds: ["wallace-breen"],
     weaponIds: ["hl2-gravity-gun"],
     enemyIds: ["hl2-overwatch-soldier"],
     sources: [storyline],
