@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -28,6 +28,10 @@ function hasSectionContent(gameId: string, section: GameSection): boolean {
     ? getEntriesByGameAndCategory(gameId, section.id).length > 0
     : getGameLore(gameId) !== undefined;
 }
+
+// Next 16.4 avisa en desarrollo de que `params` se lee fuera de Suspense; la página se genera entera
+// en el build, así que se excluye de la validación de navegación instantánea
+export const instant = false;
 
 export function generateStaticParams() {
   return getUniverses()
