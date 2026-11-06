@@ -65,3 +65,87 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  # Staging: cada cambio que llega a main se despliega aquí para validarlo antes de una versión.
+  # Requiere el entorno «staging» de GitHub con el secreto RENDER_DEPLOY_HOOK y la variable STAGING_URL.
+  staging:
+    name: Desplegar en staging (Render)
+    needs: publicar
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: ${{ vars.STAGING_URL }}
+    steps:
+      - name: Pedir el despliegue a Render
+        env:
+          DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$DEPLOY_HOOK" ]; then
+            echo "::warning::Falta el secreto RENDER_DEPLOY_HOOK del entorno staging; no se despliega."
+            exit 0
+          fi
+          curl --fail --silent --show-error --request POST "$DEPLOY_HOOK"
+
+      # Render tarda un rato en bajar la imagen y arrancarla: se reintenta hasta 10 minutos
+      - name: Comprobar que staging responde
+        env:
+          URL: ${{ vars.STAGING_URL }}
+        run: |
+          if [ -z "$URL" ]; then
+            echo "::warning::Falta la variable STAGING_URL; no se comprueba el entorno."
+            exit 0
+          fi
+          for intento in $(seq 1 40); do
+            if curl --fail --silent --output /dev/null "$URL/"; then
+              echo "Staging responde en $URL"
+              exit 0
+            fi
+            echo "Intento $intento sin respuesta; se reintenta en 15 s"
+            sleep 15
+          done
+          echo "::error::Staging no respondió en $URL"
+          exit 1
+
+  # Producción: solo al crear un tag de versión. El entorno «production» de GitHub exige la
+  # aprobación manual de Manuel antes de que este trabajo empiece. Despliega la imagen de ESA versión.
+  produccion:
+    name: Desplegar en producción (Render)
+    needs: publicar
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ vars.PRODUCTION_URL }}
+    steps:
+      - name: Pedir a Render la imagen de esta versión
+        env:
+          DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        run: |
+          if [ -z "$DEPLOY_HOOK" ]; then
+            echo "::warning::Falta el secreto RENDER_DEPLOY_HOOK del entorno production; no se despliega."
+            exit 0
+          fi
+          version="${GITHUB_REF_NAME#v}"
+          imagen="docker.io%2F${DOCKERHUB_USERNAME}%2Fvalvedex%3A${version}"
+          curl --fail --silent --show-error --request POST "${DEPLOY_HOOK}&imgURL=${imagen}"
+
+      - name: Comprobar que producción responde
+        env:
+          URL: ${{ vars.PRODUCTION_URL }}
+        run: |
+          if [ -z "$URL" ]; then
+            echo "::warning::Falta la variable PRODUCTION_URL; no se comprueba el entorno."
+            exit 0
+          fi
+          for intento in $(seq 1 40); do
+            if curl --fail --silent --output /dev/null "$URL/"; then
+              echo "Producción responde en $URL"
+              exit 0
+            fi
+            echo "Intento $intento sin respuesta; se reintenta en 15 s"
+            sleep 15
+          done
+          echo "::error::Producción no respondió en $URL"
+          exit 1
