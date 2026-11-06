@@ -11,7 +11,7 @@ tag vX.Y.Z (sobre main) → imagen «X.Y.Z» en Docker Hub → aprobación manua
 
 - **Staging** se actualiza solo con cada cambio que llega a `main`: sirve para validar la versión candidata antes de publicarla.
 - **Producción** solo cambia cuando se crea un **tag de versión** y Manuel **aprueba** el despliegue en GitHub. Despliega la imagen de esa versión concreta, no la última de `main`.
-- Los trabajos están en `.github/workflows/docker-publish.yml` (`staging` y `produccion`, que dependen de `publicar`). Si faltan los secretos, avisan con una advertencia y no fallan.
+- Los trabajos están en `.github/workflows/docker-publish.yml` (`staging` y `produccion`, que dependen de `publicar`). Están apagados hasta que actives la variable `DEPLOY_ENABLED` (ver el paso 3b).
 
 ## 1. Render (dos servicios)
 
@@ -44,6 +44,12 @@ Las URLs exactas las muestra Render al crear cada servicio. `DOCKERHUB_USERNAME`
 1. **Staging:** fusiona cualquier PR en `main`. En la pestaña Actions, el trabajo «Desplegar en staging (Render)» debe pasar y abrir la URL de staging.
 2. **Producción:** cuando haya una versión (ver [STATUS.md](STATUS.md#versiones-del-proyecto)), crea el tag. El trabajo «Desplegar en producción» queda esperando tu aprobación; apruébalo en GitHub y comprueba que la URL responde.
 3. **Vuelta atrás:** vuelve a desplegar una versión anterior en Render con «Manual Deploy → Deploy a specific image» (por ejemplo, `…/valvedex:0.2.0`).
+
+## 3b. Activar los despliegues
+
+Los trabajos de despliegue están apagados hasta que crees una **variable del repositorio** (Settings → Secrets and variables → Actions → Variables) llamada `DEPLOY_ENABLED` con el valor `true`. Hazlo cuando Render y los dos entornos estén configurados. Mientras no exista, los trabajos aparecen como «skipped» (no como un despliegue correcto que no ocurrió); una vez activada, si falta el secreto o la URL de un entorno, el trabajo falla.
+
+Producción solo despliega tags con el formato `vX.Y.Z` (por ejemplo `v0.4.0`).
 
 ## Cómo se comprueba que la versión nueva está publicada
 
