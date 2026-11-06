@@ -6,6 +6,21 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+### Añadido
+
+- Niveles: cada capítulo muestra la lista de sus mapas y cada nivel tiene su página (`/fichas/<capítulo>/<mapa>`) con descripción, hueco para fotos, personajes, enemigos y armas, navegación entre niveles y fuentes. Los personajes, enemigos y armas de cada nivel se leen de la lista de entidades de los `.bsp` del juego instalado (`scripts/extract-level-entities.mjs`) para Half-Life 1, Opposing Force, Blue Shift, Half-Life 2 y sus episodios.
+- Contenido con fuentes de Half-Life 2: Episode One, Episode Two y Half-Life: Alyx, y 34 fichas nuevas de Half-Life 2 (armas, 15 enemigos, personajes, curiosidades y easter eggs) con seis imágenes con licencia indicada.
+- Despliegue en Render: staging al llegar a `main` y producción al crear un tag, con aprobación manual y comprobación posterior (`docs/deploy.md`).
+
+### Cambiado
+
+- Gordon Freeman, el G-Man, Barney Calhoun, Eli Vance e Isaac Kleiner tienen una ficha propia en Half-Life 2 (otros modelos) enlazada con la de Half-Life 1 mediante «Otra versión del personaje».
+
+### Corregido
+
+- Mapas de los capítulos de Half-Life 2, Opposing Force y las expansiones contrastados con los archivos del juego (mapas inexistentes quitados, los que faltaban añadidos).
+- Spoilers en resúmenes de Half-Life 2; personajes y armas de Team Fortress 2 ya no se atribuyen a Team Fortress Classic; No Mercy de Left 4 Dead y de Left 4 Dead 2 separados; fuentes de Left 4 Dead sobre su propia wiki.
+
 ## [0.3.0] — 2026-11-05
 
 Tercera versión: el **bloque Valve, Steam y apertura de la etapa Source**. Incluye la sección de hardware de Valve, figuras clave de la compañía, rediseño histórico de Steam, contenido verificado de Half-Life 2, Team Fortress y Left 4 Dead, suite de 100 pruebas unitarias con cobertura del 100% en selectores y dominio, e integración continua de calidad con SonarCloud y Docker Hub.

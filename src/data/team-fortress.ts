@@ -1,4 +1,4 @@
-import type { Entry } from "@/domain/entry";
+﻿import type { Entry } from "@/domain/entry";
 import type { Source } from "@/domain/source";
 
 function tfWiki(page: string, title: string): Source {
@@ -30,7 +30,7 @@ export const teamFortressCharacters: Entry[] = [
     notes: [
       "Su verdadero nombre es Mikhail. Protege con devoción a su madre y hermanas en las montañas de Siberia.",
     ],
-    appearances: tfBoth,
+    appearances: tf2Only,
     sources: [tfWiki("Heavy", "Heavy")],
   },
   {
@@ -44,7 +44,7 @@ export const teamFortressCharacters: Entry[] = [
     },
     summary:
       "El miembro más veloz del equipo, natural de Boston (Massachusetts). Capaz de realizar dobles saltos en el aire y capturar objetivos el doble de rápido que cualquier otra clase.",
-    appearances: tfBoth,
+    appearances: tf2Only,
     sources: [tfWiki("Scout", "Scout")],
   },
   {
@@ -58,7 +58,7 @@ export const teamFortressCharacters: Entry[] = [
     },
     summary:
       "Patriota militar estadounidense fanático y desquiciado. Domina el combate explosivo a media distancia y la técnica del «rocket jump» para impulsarse a grandes alturas.",
-    appearances: tfBoth,
+    appearances: tf2Only,
     sources: [tfWiki("Soldier", "Soldier")],
   },
   {
@@ -72,7 +72,7 @@ export const teamFortressCharacters: Entry[] = [
     },
     summary:
       "Espía francés refinado y letal. Se camufla como miembros del equipo rival, sabotea construcciones enemigas con sus zapadores y elimina instantáneamente por la espalda con su puñal.",
-    appearances: tfBoth,
+    appearances: tf2Only,
     sources: [tfWiki("Spy", "Spy")],
   },
   {
@@ -86,7 +86,7 @@ export const teamFortressCharacters: Entry[] = [
     },
     summary:
       "Médico alemán de dudosa ética profesional pero indiscutible genialidad quirúrgica. Su pistola médica sana a sus compañeros y genera una «Supercarga» (ÜberCharge) de invulnerabilidad temporal.",
-    appearances: tfBoth,
+    appearances: tf2Only,
     sources: [tfWiki("Medic", "Medic")],
   },
   {
@@ -100,7 +100,7 @@ export const teamFortressCharacters: Entry[] = [
     },
     summary:
       "Ingeniero tejano con once doctorados. Construye y mantiene centinelas automáticas defensivas, dispensadores de salud y munición, y teletransportadores para su escuadrón.",
-    appearances: tfBoth,
+    appearances: tf2Only,
     sources: [tfWiki("Engineer", "Engineer")],
   },
   {
@@ -114,7 +114,7 @@ export const teamFortressCharacters: Entry[] = [
     },
     summary:
       "Pirómano de identidad, origen y género desconocidos oculto tras un traje ignífugo hermético. Vive en una fantasía infantil idílica mientras calcina el campo de batalla con su lanzallamas.",
-    appearances: tfBoth,
+    appearances: tf2Only,
     sources: [tfWiki("Pyro", "Pyro")],
   },
   {
@@ -128,7 +128,7 @@ export const teamFortressCharacters: Entry[] = [
     },
     summary:
       "Experto en demoliciones tuerto de Escocia. Emplea lanzagranadas y bombas lapa adhesivas para tender trampas explosivas y negar el paso por puntos de estrangulamiento.",
-    appearances: tfBoth,
+    appearances: tf2Only,
     sources: [tfWiki("Demoman", "Demoman")],
   },
   {
@@ -142,7 +142,7 @@ export const teamFortressCharacters: Entry[] = [
     },
     summary:
       "Tirador de precisión nacido en el continente sumergido de Nueva Zelanda y criado en el interior de Australia. Elimina objetivos cruciales a larga distancia con su fusil con mira telescópica.",
-    appearances: tfBoth,
+    appearances: tf2Only,
     sources: [tfWiki("Sniper", "Sniper")],
   },
 ];
@@ -159,7 +159,7 @@ export const teamFortressWeapons: Entry[] = [
     notes: [
       "Según el cortometraje «Meet the Heavy», pesa ciento cincuenta kilogramos y cuesta cuatrocientos mil dólares dispararla durante doce segundos.",
     ],
-    appearances: tfBoth,
+    appearances: tf2Only,
     sources: [tfWiki("Minigun", "Minigun")],
   },
   {
@@ -170,7 +170,7 @@ export const teamFortressWeapons: Entry[] = [
     details: { slot: 1, ammo: "Cohetes", maxAmmo: 20 },
     summary:
       "Arma primaria del Soldier con cargador para cuatro proyectiles explosivos. Permite realizar el «rocket jump» detonando el proyectil a los pies del personaje.",
-    appearances: tfBoth,
+    appearances: tf2Only,
     sources: [tfWiki("Rocket_Launcher", "Rocket Launcher")],
   },
   {
@@ -181,7 +181,7 @@ export const teamFortressWeapons: Entry[] = [
     details: { slot: 3 },
     summary:
       "Herramienta multiusos del Engineer para reparar, recargar de munición y acelerar la velocidad de montaje y mejora de las construcciones defensivas.",
-    appearances: tfBoth,
+    appearances: tf2Only,
     sources: [tfWiki("Wrench", "Wrench")],
   },
   {
@@ -191,7 +191,7 @@ export const teamFortressWeapons: Entry[] = [
     category: "weapons",
     details: { slot: 4 },
     summary:
-      "Dispositivo tecnológico avanzado del Spy que proyecta un campo de camuflaje cuántico, volviéndolo completamente invisible a los ojos de los enemigos durante un tiempo limitado.",
+      "Dispositivo tecnológico avanzado del Spy que lo vuelve invisible a los ojos de los enemigos durante un tiempo limitado.",
     appearances: tf2Only,
     sources: [tfWiki("Invis_Watch", "Invis Watch")],
   },

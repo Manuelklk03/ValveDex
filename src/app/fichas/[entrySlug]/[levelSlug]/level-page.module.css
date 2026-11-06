@@ -1,0 +1,154 @@
+/* Página de nivel: mismo lenguaje que la ficha (entry-page), con el tema del juego heredado del layout */
+.level-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: 3rem 1rem;
+}
+
+.level-page__section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.level-page__section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.level-page__text {
+  display: grid;
+  gap: 1rem;
+  max-width: 70ch;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+.level-page__spoiler {
+  max-width: 70ch;
+  padding: 1rem 1.25rem;
+  border: 1px dashed var(--border);
+}
+
+.level-page__spoiler-summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.level-page__spoiler-summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.level-page__spoiler[open] .level-page__spoiler-summary {
+  margin-bottom: 1rem;
+}
+
+.level-page__empty {
+  color: var(--muted);
+}
+
+.level-page__images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.level-page__figure {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.level-page__image {
+  width: 100%;
+  height: auto;
+}
+
+.level-page__credit {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.level-page__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 1rem;
+  list-style: none;
+}
+
+.level-page__note {
+  max-width: 70ch;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.level-page__sources {
+  display: grid;
+  gap: 0.5rem;
+  list-style: none;
+}
+
+.level-page__source-link {
+  color: var(--muted);
+  text-decoration: underline;
+}
+
+.level-page__source-link:hover {
+  color: var(--accent);
+}
+
+.level-page__source-kind {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+}
+
+/* Anterior, capítulo y siguiente */
+.level-page__pager {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.level-page__pager-link {
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  font-weight: 700;
+  text-decoration: none;
+  transition: border-color 160ms ease-out;
+}
+
+.level-page__pager-link:hover {
+  border-color: var(--accent);
+}
+
+.level-page__pager-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.level-page__pager-label {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+@media (max-width: 40rem) {
+  .level-page__pager {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

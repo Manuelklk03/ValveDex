@@ -8,6 +8,9 @@ import { gameSections } from "./game-sections";
 import { games } from "./games";
 import { decorImages } from "./decor-images";
 import { gameLore } from "./game-lore";
+import { levelDetails } from "./level-details";
+import { entityEntries } from "./levels/entity-entries";
+import { mapEntities } from "./levels/map-entities";
 import { steamEras } from "./steam-eras";
 import { valveMilestones } from "./valve-milestones";
 import { valvePeople } from "./valve-people";
@@ -291,6 +294,126 @@ describe("imágenes", () => {
     );
 
     expect(mismatched).toEqual([]);
+  });
+});
+
+describe("niveles", () => {
+  const chapters = entries.filter((entry) => entry.category === "maps");
+
+  it("cada capítulo tiene archivos de mapa sin repetir", () => {
+    for (const chapter of chapters) {
+      if (chapter.category !== "maps") continue;
+      expect(chapter.details.mapFiles.length, chapter.id).toBeGreaterThan(0);
+      expect(findDuplicates(chapter.details.mapFiles), chapter.id).toEqual([]);
+    }
+  });
+
+  it("las fichas de nivel apuntan a un capítulo y a un mapa que existen, sin repetirse", () => {
+    const keys = levelDetails.map((d) => `${d.chapterId}/${d.mapFile}`);
+    const unknown = levelDetails
+      .filter((detail) => {
+        const chapter = chapters.find((entry) => entry.id === detail.chapterId);
+        return (
+          chapter?.category !== "maps" ||
+          !chapter.details.mapFiles.includes(detail.mapFile)
+        );
+      })
+      .map((detail) => `${detail.chapterId}/${detail.mapFile}`);
+
+    expect(unknown).toEqual([]);
+    expect(findDuplicates(keys)).toEqual([]);
+  });
+
+  it("los personajes, armas y enemigos de un nivel existen, son de su categoría y salen en su juego", () => {
+    const wrong = levelDetails.flatMap((detail) => {
+      const chapter = chapters.find((entry) => entry.id === detail.chapterId);
+      const gameIds = chapter?.appearances.map((a) => a.gameId) ?? [];
+      const links: [string, string[] | undefined][] = [
+        ["characters", detail.characterIds],
+        ["weapons", detail.weaponIds],
+        ["enemies", detail.enemyIds],
+      ];
+
+      return links.flatMap(([category, ids]) =>
+        (ids ?? []).flatMap((id) => {
+          const entry = entries.find((candidate) => candidate.id === id);
+          const sameGame = entry?.appearances.some((a) =>
+            gameIds.includes(a.gameId),
+          );
+
+          return entry?.category === category && sameGame
+            ? []
+            : [`${detail.mapFile} → ${id}`];
+        }),
+      );
+    });
+
+    expect(wrong).toEqual([]);
+  });
+
+  it("las clases de entidad enlazadas apuntan a fichas que existen y son de su categoría", () => {
+    const wrong = Object.entries(entityEntries).flatMap(([gameId, table]) =>
+      Object.entries(table)
+        .filter(([, link]) => {
+          const entry = entries.find((e) => e.id === link.entryId);
+          return entry?.category !== link.category;
+        })
+        .map(
+          ([className, link]) => `${gameId}: ${className} → ${link.entryId}`,
+        ),
+    );
+
+    expect(wrong).toEqual([]);
+  });
+
+  it("los mapas con datos de entidades pertenecen a algún capítulo", () => {
+    const known = new Set(
+      chapters.flatMap((chapter) =>
+        chapter.category === "maps" ? chapter.details.mapFiles : [],
+      ),
+    );
+
+    // Los juegos que no tenemos instalados (Decay, TF, L4D y Alyx) quedan fuera; para el resto, un
+    // archivo de mapa de un capítulo que no existe en el juego es un error de datos
+    const installedGames = new Set([
+      "half-life",
+      "half-life-opposing-force",
+      "half-life-blue-shift",
+      "half-life-2",
+      "half-life-2-episode-one",
+      "half-life-2-episode-two",
+    ]);
+    const missing = chapters.flatMap((chapter) =>
+      chapter.category === "maps" &&
+      installedGames.has(chapter.appearances[0]?.gameId ?? "")
+        ? chapter.details.mapFiles
+            .filter((mapFile) => !(mapFile in mapEntities))
+            .map((mapFile) => `${chapter.id}: ${mapFile}`)
+        : [],
+    );
+
+    expect(known.size).toBeGreaterThan(0);
+    expect(missing).toEqual([]);
+  });
+
+  it("tienen resumen, fuentes https y fotos con tamaño, texto alternativo y fuente", () => {
+    for (const detail of levelDetails) {
+      const label = `${detail.chapterId}/${detail.mapFile}`;
+      expect(detail.summary.trim(), label).not.toBe("");
+      expect(detail.sources.length, label).toBeGreaterThan(0);
+
+      for (const source of detail.sources) {
+        expect(source.url, label).toMatch(/^https:\/\//);
+      }
+
+      for (const image of detail.images ?? []) {
+        expect(existsSync(join("public", image.src)), image.src).toBe(true);
+        expect(image.width, label).toBeGreaterThan(0);
+        expect(image.height, label).toBeGreaterThan(0);
+        expect(image.alt.trim(), label).not.toBe("");
+        expect(image.source.url, label).toMatch(/^https:\/\//);
+      }
+    }
   });
 });
 

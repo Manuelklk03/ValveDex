@@ -19,6 +19,34 @@ import {
   halfLife2Extras,
 } from "./half-life-2";
 import {
+  halfLife2EpisodeAppearances,
+  halfLife2MoreCharacters,
+  halfLife2MoreEnemies,
+  halfLife2MoreExtras,
+  halfLife2MoreWeapons,
+} from "./half-life-2-more";
+import {
+  episodeOneChapters,
+  episodeOneCharacters,
+  episodeOneEnemies,
+  episodeOneExtras,
+  episodeOneWeapons,
+} from "./half-life-2-episode-one";
+import {
+  episodeTwoChapters,
+  episodeTwoCharacters,
+  episodeTwoEnemies,
+  episodeTwoExtras,
+  episodeTwoWeapons,
+} from "./half-life-2-episode-two";
+import {
+  alyxChapters,
+  alyxCharacters,
+  alyxEnemies,
+  alyxExtras,
+  alyxWeapons,
+} from "./half-life-alyx";
+import {
   teamFortressCharacters,
   teamFortressWeapons,
   teamFortressMaps,
@@ -49,6 +77,25 @@ const baseEntries: Entry[] = [
   ...halfLife2Characters,
   ...halfLife2Enemies,
   ...halfLife2Extras,
+  ...halfLife2MoreWeapons,
+  ...halfLife2MoreEnemies,
+  ...halfLife2MoreCharacters,
+  ...halfLife2MoreExtras,
+  ...episodeOneChapters,
+  ...episodeOneCharacters,
+  ...episodeOneEnemies,
+  ...episodeOneExtras,
+  ...episodeOneWeapons,
+  ...episodeTwoChapters,
+  ...episodeTwoCharacters,
+  ...episodeTwoEnemies,
+  ...episodeTwoExtras,
+  ...episodeTwoWeapons,
+  ...alyxChapters,
+  ...alyxCharacters,
+  ...alyxEnemies,
+  ...alyxExtras,
+  ...alyxWeapons,
   ...teamFortressCharacters,
   ...teamFortressWeapons,
   ...teamFortressMaps,
@@ -109,9 +156,14 @@ const baseEntries: Entry[] = [
   },
 ];
 
-// Añade a cada ficha de Half-Life 1 sus apariciones en las expansiones
+// Apariciones añadidas por id: Half-Life 1 en sus expansiones y Half-Life 2 en sus episodios
+const extraAppearances = {
+  ...expansionAppearances,
+  ...halfLife2EpisodeAppearances,
+};
+
 export const entries: Entry[] = baseEntries.map((entry) => {
-  const extra = expansionAppearances[entry.id];
+  const extra = extraAppearances[entry.id];
 
   return extra
     ? { ...entry, appearances: [...entry.appearances, ...extra] }

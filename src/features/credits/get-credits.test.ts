@@ -16,10 +16,10 @@ describe("getSourceCredits", () => {
         credit.source.url === "https://combineoverwiki.net/wiki/Gordon_Freeman",
     );
 
-    expect(gordon?.usedIn).toEqual([
-      "Gordon Freeman",
-      "Gordon, empleado del mes",
-    ]);
+    // La misma fuente sirve a varias fichas; no depende de cuántas versiones del personaje haya
+    expect(gordon?.usedIn).toEqual(
+      expect.arrayContaining(["Gordon Freeman", "Gordon, empleado del mes"]),
+    );
   });
 });
 

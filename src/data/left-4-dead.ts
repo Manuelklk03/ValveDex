@@ -1,10 +1,10 @@
-import type { Entry } from "@/domain/entry";
+﻿import type { Entry } from "@/domain/entry";
 import type { Source } from "@/domain/source";
 
 function l4dWiki(page: string, title: string): Source {
   return {
-    title: `${title} - Combine OverWiki`,
-    url: `https://combineoverwiki.net/wiki/${page}`,
+    title: `${title} - Left 4 Dead Wiki`,
+    url: `https://left4dead.fandom.com/wiki/${page}`,
     kind: "wiki",
   };
 }
@@ -28,7 +28,7 @@ export const left4DeadCharacters: Entry[] = [
       "Su papel en la campaña oficial «The Sacrifice» conecta directamente la historia del grupo de Pensilvania con los supervivientes de Left 4 Dead 2.",
     ],
     appearances: l4dBoth,
-    sources: [l4dWiki("William_%22Bill%22_Overbeck", "William Bill Overbeck")],
+    sources: [l4dWiki("Bill", "William Bill Overbeck")],
   },
   {
     id: "l4d-zoey",
@@ -40,7 +40,7 @@ export const left4DeadCharacters: Entry[] = [
       voiceActor: "Jen Taylor",
     },
     summary:
-      "Joven estudiante universitaria aficionada al cine de terror que vio a sus padres morir en el inicio del brote de la Gripe Verde. Destaca como tiradora precisa del equipo.",
+      "Joven estudiante universitaria aficionada al cine de terror. Destaca como tiradora precisa del equipo.",
     appearances: l4dBoth,
     sources: [l4dWiki("Zoey", "Zoey")],
   },
@@ -205,7 +205,7 @@ export const left4DeadWeapons: Entry[] = [
     slug: "escopeta-automatica",
     name: "Escopeta automática de asalto",
     category: "weapons",
-    details: { slot: 1, ammo: "Cartuchos de escopeta", maxAmmo: 128 },
+    details: { slot: 1, ammo: "Cartuchos de escopeta" },
     summary:
       "Escopeta semiautomática de calibre 12 con cargador de 10 cartuchos (basada en la Benelli M4). Es el arma defensiva más potente para dispersar hordas de zombis a corta distancia.",
     appearances: l4dBoth,
@@ -244,6 +244,27 @@ export const left4DeadMaps: Entry[] = [
     details: {
       chapter: 1,
       mapFiles: [
+        "l4d_hospital01_apartment",
+        "l4d_hospital02_subway",
+        "l4d_hospital03_sewers",
+        "l4d_hospital04_interior",
+        "l4d_hospital05_rooftop",
+      ],
+    },
+    summary:
+      "La primera campaña de Left 4 Dead. Los cuatro supervivientes recorren los callejones, el metro y las alcantarillas de Fairfield hasta alcanzar la azotea del hospital Mercy para un rescate en helicóptero.",
+    appearances: [{ gameId: "left-4-dead" }],
+    sources: [l4dWiki("No_Mercy", "No Mercy")],
+  },
+  // La versión de Left 4 Dead 2 tiene otros archivos de mapa (c8m*): es otra ficha
+  {
+    id: "l4d2-no-mercy",
+    slug: "campana-alta-medica-l4d2",
+    name: "Alta médica (No Mercy) en Left 4 Dead 2",
+    category: "maps",
+    details: {
+      chapter: 1,
+      mapFiles: [
         "c8m1_apartment",
         "c8m2_subway",
         "c8m3_sewers",
@@ -252,8 +273,8 @@ export const left4DeadMaps: Entry[] = [
       ],
     },
     summary:
-      "La primera y más célebre campaña de Left 4 Dead. Los cuatro supervivientes recorren los callejones, el metro y las alcantarillas de Fairfield hasta alcanzar la azotea del hospital Mercy para un rescate en helicóptero.",
-    appearances: l4dBoth,
+      "Versión de la campaña No Mercy incluida en Left 4 Dead 2, con el mismo recorrido desde los callejones de Fairfield hasta la azotea del hospital Mercy.",
+    appearances: [{ gameId: "left-4-dead-2" }],
     sources: [l4dWiki("No_Mercy", "No Mercy")],
   },
 ];

@@ -295,13 +295,18 @@ export const gameLore: GameLore[] = [
     gameId: "team-fortress-classic",
     paragraphs: [
       {
-        text: "Team Fortress Classic adapta al motor GoldSrc la fórmula pionera del mod original de Quake, enfrentando a dos compañías tapadera rivales en una guerra encubierta de mercenarios.",
+        text: "Team Fortress Classic adapta al motor GoldSrc el mod Team Fortress de Quake: una partida por equipos en la que cada jugador elige una de las nueve clases, con armas y habilidades propias.",
       },
       {
-        text: "Los equipos Builders League United (BLU) y Reliable Excavation Demolition (RED) combaten por el control de instalaciones industriales, documentos confidenciales y puntos estratégicos mediante nueve clases especializadas con armas y habilidades exclusivas.",
+        text: "Los equipos compiten por objetivos como capturar la bandera del rival o defender un punto. El trasfondo de las compañías RED y BLU y de la guerra de los hermanos Mann pertenece a Team Fortress 2.",
       },
     ],
     sources: [
+      {
+        title: "Team Fortress Classic - Wikipedia (inglés)",
+        url: "https://en.wikipedia.org/wiki/Team_Fortress_Classic",
+        kind: "wiki",
+      },
       {
         title: "Team Fortress Classic - Combine OverWiki",
         url: "https://combineoverwiki.net/wiki/Team_Fortress_Classic",
@@ -344,8 +349,8 @@ export const gameLore: GameLore[] = [
     ],
     sources: [
       {
-        title: "Left 4 Dead storyline - Combine OverWiki",
-        url: "https://combineoverwiki.net/wiki/Left_4_Dead",
+        title: "Left 4 Dead - Left 4 Dead Wiki",
+        url: "https://left4dead.fandom.com/wiki/Left_4_Dead",
         kind: "wiki",
       },
     ],
@@ -362,8 +367,8 @@ export const gameLore: GameLore[] = [
     ],
     sources: [
       {
-        title: "Left 4 Dead 2 storyline - Combine OverWiki",
-        url: "https://combineoverwiki.net/wiki/Left_4_Dead_2",
+        title: "Left 4 Dead 2 - Left 4 Dead Wiki",
+        url: "https://left4dead.fandom.com/wiki/Left_4_Dead_2",
         kind: "wiki",
       },
     ],

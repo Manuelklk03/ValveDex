@@ -6,6 +6,7 @@ import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { DossierHeader } from "@/components/ui/dossier-header";
 import { ImageCompare } from "@/components/ui/image-compare";
 import { getEntries, getEntryBySlug } from "@/features/catalog/get-entries";
+import { getChapterLevels } from "@/features/catalog/get-levels";
 import { getRelatedEntries } from "@/features/catalog/get-related-entries";
 import { getGameYearLabel } from "@/features/games/get-game-year-label";
 import { getEntryFacts } from "@/features/catalog/get-entry-facts";
@@ -49,6 +50,7 @@ export default async function EntryPage({
 
   const section = getGameSectionById(entry.category);
   const relatedEntries = getRelatedEntries(entry.id);
+  const levels = getChapterLevels(entry);
   const gameAppearances = entry.appearances.flatMap((appearance) => {
     const game = getGameById(appearance.gameId);
     const universe = game ? getUniverseById(game.universeId) : undefined;
@@ -98,6 +100,45 @@ export default async function EntryPage({
           ...facts,
         ]}
       />
+
+      {levels.length > 0 && (
+        <section
+          className={styles["entry-page__section"]}
+          aria-labelledby="levels-title"
+        >
+          <h2 id="levels-title" className={styles["entry-page__section-title"]}>
+            Niveles del capítulo
+          </h2>
+          <ol className={styles["entry-page__levels"]}>
+            {levels.map((level) => (
+              <li key={level.mapFile} className={styles["entry-page__level"]}>
+                <span
+                  className={styles["entry-page__level-number"]}
+                  aria-hidden="true"
+                >
+                  {String(level.order).padStart(2, "0")}
+                </span>
+                <div className={styles["entry-page__level-body"]}>
+                  <Link
+                    href={`/fichas/${entry.slug}/${level.mapFile}`}
+                    className={styles["entry-page__level-link"]}
+                  >
+                    {level.title}
+                  </Link>
+                  <span className={styles["entry-page__level-file"]}>
+                    {level.mapFile}
+                  </span>
+                  {level.detail && (
+                    <p className={styles["entry-page__level-summary"]}>
+                      {level.detail.summary}
+                    </p>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
 
       {entry.notes && entry.notes.length > 0 && (
         <section

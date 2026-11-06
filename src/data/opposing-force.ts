@@ -159,7 +159,7 @@ export const opposingForceEntries: Entry[] = [
     slug: "friendly-fire",
     name: "Friendly Fire",
     category: "maps",
-    details: { chapter: 5, mapFiles: ["of2a4", "of2a5", "of2a5b"] },
+    details: { chapter: 5, mapFiles: ["of2a4", "of2a5", "of2a6"] },
     summary:
       "Shephard y otros supervivientes de la HECU atraviesan unas oficinas llenas de criaturas hacia un viejo sistema de transporte, donde aparece una nueva facción humana hostil.",
     notes: [
@@ -182,7 +182,7 @@ export const opposingForceEntries: Entry[] = [
     category: "maps",
     details: {
       chapter: 6,
-      mapFiles: ["of3a1", "of3a1b", "of3a2", "of3a3"],
+      mapFiles: ["of3a1", "of3a1b", "of3a2"],
     },
     summary:
       "Un interludio breve en el complejo Lambda, lleno de recuerdos del Half-Life original, que obliga a Shephard a pasar por Xen para seguir adelante.",
