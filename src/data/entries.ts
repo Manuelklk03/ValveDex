@@ -26,6 +26,13 @@ import {
   episodeOneWeapons,
 } from "./half-life-2-episode-one";
 import {
+  episodeTwoChapters,
+  episodeTwoCharacters,
+  episodeTwoEnemies,
+  episodeTwoExtras,
+  episodeTwoWeapons,
+} from "./half-life-2-episode-two";
+import {
   alyxChapters,
   alyxCharacters,
   alyxEnemies,
@@ -68,6 +75,11 @@ const baseEntries: Entry[] = [
   ...episodeOneEnemies,
   ...episodeOneExtras,
   ...episodeOneWeapons,
+  ...episodeTwoChapters,
+  ...episodeTwoCharacters,
+  ...episodeTwoEnemies,
+  ...episodeTwoExtras,
+  ...episodeTwoWeapons,
   ...alyxChapters,
   ...alyxCharacters,
   ...alyxEnemies,
