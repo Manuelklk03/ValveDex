@@ -352,12 +352,16 @@ describe("niveles", () => {
   });
 
   it("las clases de entidad enlazadas apuntan a fichas que existen y son de su categoría", () => {
-    const wrong = Object.entries(entityEntries)
-      .filter(([, link]) => {
-        const entry = entries.find((e) => e.id === link.entryId);
-        return entry?.category !== link.category;
-      })
-      .map(([className, link]) => `${className} → ${link.entryId}`);
+    const wrong = Object.entries(entityEntries).flatMap(([gameId, table]) =>
+      Object.entries(table)
+        .filter(([, link]) => {
+          const entry = entries.find((e) => e.id === link.entryId);
+          return entry?.category !== link.category;
+        })
+        .map(
+          ([className, link]) => `${gameId}: ${className} → ${link.entryId}`,
+        ),
+    );
 
     expect(wrong).toEqual([]);
   });
@@ -369,12 +373,26 @@ describe("niveles", () => {
       ),
     );
 
-    // Hay más mapas leídos que capítulos con mapa (por ejemplo, los de otros juegos): solo se comprueba
-    // que todos los mapas de capítulos de Source con ficha tienen sus datos
-    const missing = [...known].filter(
-      (mapFile) => /^(d\d_|ep\d_)/.test(mapFile) && !(mapFile in mapEntities),
+    // Los juegos que no tenemos instalados (Decay, TF, L4D y Alyx) quedan fuera; para el resto, un
+    // archivo de mapa de un capítulo que no existe en el juego es un error de datos
+    const installedGames = new Set([
+      "half-life",
+      "half-life-opposing-force",
+      "half-life-blue-shift",
+      "half-life-2",
+      "half-life-2-episode-one",
+      "half-life-2-episode-two",
+    ]);
+    const missing = chapters.flatMap((chapter) =>
+      chapter.category === "maps" &&
+      installedGames.has(chapter.appearances[0]?.gameId ?? "")
+        ? chapter.details.mapFiles
+            .filter((mapFile) => !(mapFile in mapEntities))
+            .map((mapFile) => `${chapter.id}: ${mapFile}`)
+        : [],
     );
 
+    expect(known.size).toBeGreaterThan(0);
     expect(missing).toEqual([]);
   });
 

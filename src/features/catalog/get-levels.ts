@@ -20,10 +20,11 @@ function unique(ids: string[]): string[] {
 // y que aparecen en el juego del capítulo (los episodios no tienen todas las de Half-Life 2).
 function getGeneratedLinks(chapter: Entry, mapFile: string): LevelLinks {
   const gameId = chapter.appearances[0]?.gameId;
+  const table = entityEntries[gameId ?? ""] ?? {};
   const links: LevelLinks = { characterIds: [], weaponIds: [], enemyIds: [] };
 
   for (const className of Object.keys(mapEntities[mapFile] ?? {})) {
-    const link = entityEntries[className];
+    const link = table[className];
     const entry = link ? getEntryById(link.entryId) : undefined;
 
     if (

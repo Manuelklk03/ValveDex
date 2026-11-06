@@ -2,16 +2,17 @@
 // los personajes, enemigos y armas que cada nivel coloca. Genera src/data/levels/map-entities.ts,
 // que ValveDex usa para enlazar cada nivel con sus fichas. Los datos salen de los archivos del juego.
 //
-// Uso: node scripts/extract-level-entities.mjs "<carpeta del juego>" <carpeta mapas relativa> <prefijo> [...]
-// Ejemplo: node scripts/extract-level-entities.mjs "H:/SteamLibrary/steamapps/common/Half-Life 2" hl2/maps d episodic/maps ep1_ ep2/maps ep2_
+// Uso: node scripts/extract-level-entities.mjs "<carpeta de mapas>" <prefijo> [...más pares]
+// Ejemplo (Half-Life 2 y episodios, y Half-Life 1 con sus expansiones; prefijo * = todos los mapas):
+//   node scripts/extract-level-entities.mjs "<HL2>/hl2/maps" d "<HL2>/episodic/maps" ep1_ "<HL2>/ep2/maps" ep2_ "<HL>/valve/maps" "*" "<HL>/gearbox/maps" "*" "<HL>/bshift/maps" "*"
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-const [gameDir, ...pairs] = process.argv.slice(2);
+const pairs = process.argv.slice(2);
 
-if (!gameDir || pairs.length < 2 || pairs.length % 2 !== 0) {
+if (pairs.length < 2 || pairs.length % 2 !== 0) {
   console.error(
-    "Uso: node scripts/extract-level-entities.mjs <juego> <mapas> <prefijo> [<mapas> <prefijo>...]",
+    "Uso: node scripts/extract-level-entities.mjs <carpeta de mapas> <prefijo> [<carpeta de mapas> <prefijo>...]",
   );
   process.exit(1);
 }
@@ -71,11 +72,12 @@ function countEntities(text) {
 const result = {};
 
 for (let i = 0; i < pairs.length; i += 2) {
-  const dir = join(gameDir, pairs[i]);
+  const dir = pairs[i];
   const prefix = pairs[i + 1];
 
   for (const file of readdirSync(dir)) {
-    if (!file.endsWith(".bsp") || !file.startsWith(prefix)) continue;
+    if (!file.endsWith(".bsp")) continue;
+    if (prefix !== "*" && !file.startsWith(prefix)) continue;
     if (/background|_demo$/i.test(file.replace(".bsp", ""))) continue;
 
     const mapFile = file.replace(/\.bsp$/, "");
