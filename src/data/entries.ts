@@ -19,6 +19,20 @@ import {
   halfLife2Extras,
 } from "./half-life-2";
 import {
+  episodeOneChapters,
+  episodeOneCharacters,
+  episodeOneEnemies,
+  episodeOneExtras,
+  episodeOneWeapons,
+} from "./half-life-2-episode-one";
+import {
+  alyxChapters,
+  alyxCharacters,
+  alyxEnemies,
+  alyxExtras,
+  alyxWeapons,
+} from "./half-life-alyx";
+import {
   teamFortressCharacters,
   teamFortressWeapons,
   teamFortressMaps,
@@ -49,6 +63,16 @@ const baseEntries: Entry[] = [
   ...halfLife2Characters,
   ...halfLife2Enemies,
   ...halfLife2Extras,
+  ...episodeOneChapters,
+  ...episodeOneCharacters,
+  ...episodeOneEnemies,
+  ...episodeOneExtras,
+  ...episodeOneWeapons,
+  ...alyxChapters,
+  ...alyxCharacters,
+  ...alyxEnemies,
+  ...alyxExtras,
+  ...alyxWeapons,
   ...teamFortressCharacters,
   ...teamFortressWeapons,
   ...teamFortressMaps,
