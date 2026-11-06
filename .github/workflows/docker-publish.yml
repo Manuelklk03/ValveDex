@@ -102,7 +102,10 @@ jobs:
             echo "::error::Falta la variable STAGING_URL del entorno staging: no se puede comprobar."
             exit 1
           fi
-          for intento in $(seq 1 40); do
+          intento=0
+          limite=$((SECONDS + 600))
+          while [ "$SECONDS" -lt "$limite" ]; do
+            intento=$((intento + 1))
             commit=$(curl --fail --silent --connect-timeout 5 --max-time 10 "$URL/version" | sed -n 's/.*"commit":"\([^"]*\)".*/\1/p' || true)
             if [ "$commit" = "$GITHUB_SHA" ]; then
               echo "Staging ejecuta el commit $GITHUB_SHA en $URL"
@@ -153,7 +156,10 @@ jobs:
             echo "::error::Falta la variable PRODUCTION_URL del entorno production: no se puede comprobar."
             exit 1
           fi
-          for intento in $(seq 1 40); do
+          intento=0
+          limite=$((SECONDS + 600))
+          while [ "$SECONDS" -lt "$limite" ]; do
+            intento=$((intento + 1))
             commit=$(curl --fail --silent --connect-timeout 5 --max-time 10 "$URL/version" | sed -n 's/.*"commit":"\([^"]*\)".*/\1/p' || true)
             if [ "$commit" = "$GITHUB_SHA" ]; then
               echo "Producción ejecuta el commit $GITHUB_SHA en $URL"
