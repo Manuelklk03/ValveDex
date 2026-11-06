@@ -55,9 +55,9 @@ export const halfLife2Chapters: Entry[] = [
       chapter: 3,
       mapFiles: [
         "d1_canals_01",
+        "d1_canals_01a",
         "d1_canals_02",
         "d1_canals_03",
-        "d1_canals_04",
         "d1_canals_05",
       ],
     },
@@ -99,7 +99,7 @@ export const halfLife2Chapters: Entry[] = [
       mapFiles: ["d1_eli_01", "d1_eli_02"],
     },
     summary:
-      "Llegada a la base de la resistencia construida en una central hidroeléctrica. Gordon recibe el manipulador de energía punto cero y practica con D0g antes de que la base sea asaltada por las fuerzas Combine.",
+      "Llegada a la base de la resistencia construida en una central hidroeléctrica. Gordon recibe el manipulador de energía punto cero y practica con D0g.",
     appearances: hl2Appearances,
     sources: [overwiki("Black_Mesa_East_(chapter)", "Black Mesa East")],
   },
@@ -112,7 +112,9 @@ export const halfLife2Chapters: Entry[] = [
       chapter: 6,
       mapFiles: [
         "d1_town_01",
+        "d1_town_01a",
         "d1_town_02",
+        "d1_town_02a",
         "d1_town_03",
         "d1_town_04",
         "d1_town_05",
@@ -138,7 +140,6 @@ export const halfLife2Chapters: Entry[] = [
         "d2_coast_03",
         "d2_coast_04",
         "d2_coast_05",
-        "d2_coast_06",
         "d2_coast_07",
         "d2_coast_08",
       ],
@@ -194,10 +195,10 @@ export const halfLife2Chapters: Entry[] = [
     category: "maps",
     details: {
       chapter: 10,
-      mapFiles: ["d2_prison_06", "d2_prison_07", "d2_prison_08"],
+      mapFiles: ["d2_prison_06", "d2_prison_07", "d2_prison_08", "d3_c17_01"],
     },
     summary:
-      "Gordon y Alyx se adentran en el bloque central de Nova Prospekt para localizar la celda de detención de Eli Vance y asegurar una ruta de evacuación a través del teletransportador de la prisión.",
+      "Gordon y Alyx avanzan por el bloque central de Nova Prospekt en busca de una ruta de evacuación.",
     appearances: hl2Appearances,
     sources: [overwiki("Entanglement", "Entanglement")],
   },
@@ -209,18 +210,19 @@ export const halfLife2Chapters: Entry[] = [
     details: {
       chapter: 11,
       mapFiles: [
-        "d3_c17_01",
         "d3_c17_02",
+        "d3_c17_02_camera",
         "d3_c17_03",
         "d3_c17_04",
         "d3_c17_05",
-        "d3_c17_06",
+        "d3_c17_06a",
+        "d3_c17_06b",
         "d3_c17_07",
         "d3_c17_08",
       ],
     },
     summary:
-      "La destrucción del teletransportador de Nova Prospekt genera un desfase temporal de una semana. Al emerger en el laboratorio de Kleiner, la Ciudad 17 está inmersa en una insurrección armada total contra la Alianza.",
+      "Gordon vuelve al laboratorio de Kleiner y encuentra la Ciudad 17 en plena insurrección contra la Alianza.",
     appearances: hl2Appearances,
     sources: [overwiki("Anticitizen_One", "Anticitizen One")],
   },
@@ -233,9 +235,11 @@ export const halfLife2Chapters: Entry[] = [
       chapter: 12,
       mapFiles: [
         "d3_c17_09",
-        "d3_c17_10",
+        "d3_c17_10a",
+        "d3_c17_10b",
         "d3_c17_11",
         "d3_c17_12",
+        "d3_c17_12b",
         "d3_c17_13",
       ],
     },
@@ -260,7 +264,7 @@ export const halfLife2Chapters: Entry[] = [
       ],
     },
     summary:
-      "Infiltración en el interior de la Ciudadela a bordo de una vaina de transporte. El campo de confiscación desintegra todas las armas convencionales de Gordon, pero sobrecarga el arma gravitatoria con energía azul de materia oscura.",
+      "Gordon entra en la Ciudadela a bordo de una vaina de transporte y avanza por su interior.",
     appearances: hl2Appearances,
     sources: [overwiki("Our_Benefactors", "Our Benefactors")],
   },
@@ -274,7 +278,7 @@ export const halfLife2Chapters: Entry[] = [
       mapFiles: ["d3_breen_01"],
     },
     summary:
-      "Gordon asciende hasta la cúspide de la Ciudadela para alcanzar el despacho del Administrador Breen e impedir la apertura del portal hacia el universo de la Alianza.",
+      "Último capítulo del juego: Gordon asciende hasta lo alto de la Ciudadela.",
     appearances: hl2Appearances,
     sources: [overwiki("Dark_Energy_(chapter)", "Dark Energy")],
   },
@@ -292,7 +296,6 @@ export const halfLife2Weapons: Entry[] = [
       "Conocida comúnmente como el arma gravitatoria, permite atraer, sostener y arrojar objetos físicos pesados del entorno con gran fuerza cinética. Diseñada por Eli Vance para manipular materiales peligrosos.",
     notes: [
       "No consume munición convencional y es fundamental para la resolución de rompecabezas físicos en Half-Life 2.",
-      "En el capítulo «Nuestros benefactores», el campo de confiscación de la Ciudadela sobrecarga el dispositivo con energía oscura (adquiriendo un resplandor azul), lo que le permite manipular y desintegrar a soldados orgánicos.",
     ],
     appearances: hl2Appearances,
     sources: [
@@ -360,7 +363,7 @@ export const halfLife2Weapons: Entry[] = [
     category: "weapons",
     details: { slot: 3, ammo: "Cartuchos de escopeta", maxAmmo: 30 },
     summary:
-      "Escopeta táctica SPAS-12 capaz de disparar un cartucho simple o ambos cañones simultáneamente con su gatillo secundario para un devastador impacto a quemarropa.",
+      "Escopeta táctica SPAS-12 cuyo disparo secundario gasta dos cartuchos de una vez para un impacto devastador a quemarropa.",
     appearances: hl2Appearances,
     sources: [overwiki("Shotgun_(Half-Life_2)", "Shotgun (Half-Life 2)")],
   },
