@@ -45,6 +45,10 @@ Las URLs exactas las muestra Render al crear cada servicio. `DOCKERHUB_USERNAME`
 2. **Producción:** cuando haya una versión (ver [STATUS.md](STATUS.md#versiones-del-proyecto)), crea el tag. El trabajo «Desplegar en producción» queda esperando tu aprobación; apruébalo en GitHub y comprueba que la URL responde.
 3. **Vuelta atrás:** vuelve a desplegar una versión anterior en Render con «Manual Deploy → Deploy a specific image» (por ejemplo, `…/valvedex:0.2.0`).
 
+## Cómo se comprueba que la versión nueva está publicada
+
+La web publica en `/version` el commit con el que se construyó su imagen (`COMMIT_SHA`, un argumento de Docker que pasa el workflow). Tras pedir el despliegue, el pipeline consulta `<URL>/version` cada 15 segundos (hasta 10 minutos) y solo da el trabajo por bueno cuando devuelve el commit que acaba de publicarse: un `200` en `/` también lo daría la versión anterior. Si se pidió el despliegue y falta `STAGING_URL` o `PRODUCTION_URL`, el trabajo falla, porque no puede comprobar nada.
+
 ## Límites conocidos
 
 - El plan gratuito de Render duerme el servicio sin tráfico: la comprobación del pipeline espera hasta 10 minutos a que arranque.
