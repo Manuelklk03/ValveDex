@@ -56,22 +56,23 @@ El CSS propio de un componente estará junto a su archivo TSX: por ejemplo, `ent
 
 ## 3. Rutas iniciales
 
-| URL prevista                                     | Función                                                      |
-| ------------------------------------------------ | ------------------------------------------------------------ |
-| `/`                                              | Portada sobre Valve: empresa, Steam e historia               |
-| `/universos`                                     | Todos los universos de Valve                                 |
-| `/universos/[universeSlug]`                      | Universo con su paleta y la lista de sus videojuegos         |
-| `/universos/[universeSlug]/[gameSlug]`           | Hub del juego: acceso a lore, mapas, armas, personajes…      |
-| `/universos/[universeSlug]/[gameSlug]/[section]` | Apartado del hub (por ejemplo `armas` o `easter-eggs`)       |
-| `/fichas/[slug]`                                 | Ficha canónica y apariciones en los juegos                   |
-| `/explorar`                                      | Hub principal: buscador global y carruseles por categoría    |
-| `/explorar/[categorySlug]`                       | Listado completo de una categoría («Ver todo»)               |
-| `/valve/historia`                                | Cronología completa de Valve (la portada muestra un resumen) |
-| `/valve/personas/[personSlug]`                   | Ficha de una persona de Valve (por ejemplo, Gabe Newell)     |
-| `/valve/steam`                                   | Historia y funciones de Steam                                |
-| `/creditos`                                      | Todas las fuentes e imágenes, generadas desde los datos      |
-| `/favoritos`                                     | Fichas guardadas en este navegador                           |
-| `/comparador`                                    | Comparación de armas compatibles                             |
+| URL prevista                                     | Función                                                        |
+| ------------------------------------------------ | -------------------------------------------------------------- |
+| `/`                                              | Portada sobre Valve: empresa, Steam e historia                 |
+| `/universos`                                     | Todos los universos de Valve                                   |
+| `/universos/[universeSlug]`                      | Universo con su paleta y la lista de sus videojuegos           |
+| `/universos/[universeSlug]/[gameSlug]`           | Hub del juego: acceso a lore, mapas, armas, personajes…        |
+| `/universos/[universeSlug]/[gameSlug]/[section]` | Apartado del hub (por ejemplo `armas` o `easter-eggs`)         |
+| `/fichas/[slug]`                                 | Ficha canónica y apariciones en los juegos                     |
+| `/fichas/[slug]/[mapa]`                          | Nivel de un capítulo: descripción, fotos y fichas que aparecen |
+| `/explorar`                                      | Hub principal: buscador global y carruseles por categoría      |
+| `/explorar/[categorySlug]`                       | Listado completo de una categoría («Ver todo»)                 |
+| `/valve/historia`                                | Cronología completa de Valve (la portada muestra un resumen)   |
+| `/valve/personas/[personSlug]`                   | Ficha de una persona de Valve (por ejemplo, Gabe Newell)       |
+| `/valve/steam`                                   | Historia y funciones de Steam                                  |
+| `/creditos`                                      | Todas las fuentes e imágenes, generadas desde los datos        |
+| `/favoritos`                                     | Fichas guardadas en este navegador                             |
+| `/comparador`                                    | Comparación de armas compatibles                               |
 
 Los segmentos visibles de la URL van en español (`universos`, `armas`); los nombres de parámetros en código, en inglés (`universeSlug`, `gameSlug`). Los apartados del hub serán una lista cerrada y validada; un apartado sin contenido no se enlazará o mostrará un estado vacío.
 
@@ -116,6 +117,8 @@ La relación universo–juego vive solo en `Game.universeId`: `Universe` no guar
 Los apartados del hub son una lista cerrada: `GameSectionId` (`src/domain/game-section.ts`) con `id` en inglés y `slug` en español para la URL (`armas`, `easter-eggs`), definidos una sola vez en `src/data/game-sections.ts` y comunes a todos los juegos. `getGameBySlug(universeId, gameSlug)` comprueba ambos campos, porque el slug de un juego solo es único dentro de su universo. La página del hub genera sus rutas con `generateStaticParams` anidado (`flatMap` sobre los universos disponibles y sus juegos). Un apartado sin contenido se muestra como «Próximamente» y no se enlaza.
 
 Las fichas (`src/domain/entry.ts`) usan `EntryCategory = Exclude<GameSectionId, "lore">`: el lore no tiene fichas. El type guard `isEntryCategory()` permite pasar el `id` de un apartado a las funciones del catálogo. Una ficha es **una sola** aunque aparezca en varios juegos (decisión de Manuel del 2026-10-12, «opción B»). Guarda lo común (`summary`, fuentes) y una `EntryAppearance` por juego con lo propio de esa versión: resumen, imagen y, más adelante, estadísticas. Por ejemplo, la escopeta de Half-Life y la de Half-Life 2 son la misma ficha con dos apariciones. Dos elementos realmente distintos serán fichas separadas, enlazadas con una relación. `getEntrySummaryForGame()` usa el resumen del juego y, si no lo hay, el común. `src/features/catalog/get-entries.ts` lee las fichas; el hub solo enlaza los apartados que tienen fichas. La ficha canónica vive en `/fichas/[entrySlug]` para que una ficha compartida tenga una sola URL; su layout anida `UniverseTheme` y `GameTheme` del juego de la primera aparición. Desde la PR #34, `Entry` es una unión discriminada por `category`: comparte `EntryBase` y añade `details` en armas (`slot`, `ammo?`), mapas (`chapter`), personajes (`affiliation`) y enemigos (`origin`); curiosidades y easter eggs no llevan `details`. TypeScript exige los campos de cada categoría al escribir los datos. `getEntryFacts()` (`src/features/catalog`) los convierte en pares etiqueta–valor con un `switch` sobre `category`, y la ficha los muestra en una lista `<dl>`.
+
+**Niveles:** un capítulo (ficha de categoría `maps`) lista en `details.mapFiles` sus archivos de mapa, y cada archivo es un nivel con página propia en `/fichas/[entrySlug]/[levelSlug]` (el slug es el nombre del mapa). `getChapterLevels()` (`src/features/catalog/get-levels.ts`) los genera siempre, sin ficha. Una `LevelDetail` (`src/domain/level.ts`, datos en `src/data/levels`) añade nombre, resumen y descripción con fuente. Los personajes, enemigos y armas de cada nivel salen de dos orígenes: los ids escritos a mano en su `LevelDetail` y las entidades que el propio mapa coloca, extraídas de los `.bsp` del juego instalado con `scripts/extract-level-entities.mjs` (`levels/map-entities.ts`, generado) y enlazadas a fichas mediante `levels/entity-entries.ts`, una tabla por motor. Solo se enlazan fichas que existen y que aparecen en el juego del capítulo; una prueba de integridad exige que todos los archivos de mapa de los juegos instalados existan en el juego. Las fotos de cada nivel (`LevelDetail.images`) están previstas y vacías por decisión de Manuel (2026-11-06).
 
 **Mods y proyectos cancelados** son juegos (`Game`) con su propio hub, apartados y fichas, en la misma ruta `/universos/[universeSlug]/[gameSlug]`. `Game` es una unión discriminada por `status`: `released` (con `releaseYear`) o `cancelled` (con `cancelledYear`). `baseGameId` liga un mod o un cancelado al juego oficial del que depende. Un mod es un juego publicado con `baseGameId`; un cancelado tiene `status: "cancelled"`. `getOfficialGamesByUniverse()` (publicados sin `baseGameId`) alimenta `/universos` y la página del universo; el hub del juego base lista `getModsByGame()` y `getCancelledGamesByGame()`. `getGameYear()` (`src/domain/game.ts`) ordena por año y `getGameYearLabel()` (`src/features/games`) muestra «1998» o «Cancelado en 2001». Una prueba de integridad exige que mods y cancelados dependan de un juego oficial del mismo universo; cuando haya un cancelado sin juego base se relajará esa regla y se listará en la página del universo.
 
