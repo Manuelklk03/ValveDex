@@ -13,54 +13,61 @@ import {
 
 type ModelSpinnerProps = {
   src: string;
-  // Solo gira (y gasta GPU) mientras está activo: la tarjeta lo activa al pasar el ratón
+  // Solo se mueve (y gasta GPU) mientras está activo: la tarjeta lo activa con el ratón o el teclado
   active: boolean;
+  // Inclinación del eje, en radianes: una pieza alargada (palanca, arma) gira mejor en diagonal que plana
+  tilt?: number;
   // Vueltas por segundo
   speed?: number;
 };
 
-function Spinning({ src, active, speed = 0.12 }: ModelSpinnerProps) {
-  const group = useRef<Group>(null);
+function Spinning({ src, active, tilt = 0, speed = 0.14 }: ModelSpinnerProps) {
+  const spin = useRef<Group>(null);
   const { scene } = useGLTF(src);
   const get = useThree((state) => state.get);
   const invalidate = useThree((state) => state.invalidate);
 
   // Encuadre por la esfera que envuelve el modelo, para que quepa desde cualquier ángulo
   useEffect(() => {
-    if (!group.current) return;
+    if (!spin.current) return;
     const camera = get().camera as PerspectiveCamera;
-    group.current.updateWorldMatrix(true, true);
+    spin.current.updateWorldMatrix(true, true);
     const { radius } = new Box3()
-      .setFromObject(group.current)
+      .setFromObject(spin.current)
       .getBoundingSphere(new Sphere());
     const distance =
-      (radius / Math.sin(MathUtils.degToRad(camera.fov / 2))) * 1.1;
-    camera.position.set(0.6, 0.35, 1).setLength(distance);
+      (radius / Math.sin(MathUtils.degToRad(camera.fov / 2))) * 1.05;
+    camera.position.set(0, 0.25, 1).setLength(distance);
     camera.near = distance / 100;
     camera.far = distance * 10;
     camera.lookAt(0, 0, 0);
     camera.updateProjectionMatrix();
     invalidate();
-  }, [get, invalidate, scene]);
+  }, [get, invalidate, scene, tilt]);
 
-  useFrame((_, delta) => {
-    if (active && group.current)
-      group.current.rotation.y += delta * speed * Math.PI * 2;
+  useFrame((state, delta) => {
+    if (!active || !spin.current) return;
+    spin.current.rotation.y += delta * speed * Math.PI * 2;
+    // Respira un poco arriba y abajo, para que no parezca un plato giratorio
+    spin.current.position.y = Math.sin(state.clock.elapsedTime * 1.6) * 0.03;
   });
 
+  // El grupo exterior gira sobre el eje vertical; el interior inclina la pieza y la centra
   return (
-    <Center>
-      <group ref={group}>
-        <primitive object={scene} />
+    <group ref={spin}>
+      <group rotation={[0, 0, tilt]}>
+        <Center>
+          <primitive object={scene} />
+        </Center>
       </group>
-    </Center>
+    </group>
   );
 }
 
 export default function ModelSpinner(props: ModelSpinnerProps) {
   return (
     <Canvas
-      camera={{ fov: 30, position: [2, 1.2, 3] }}
+      camera={{ fov: 30, position: [0, 0.4, 3] }}
       dpr={[1, 1.5]}
       frameloop={props.active ? "always" : "demand"}
     >
