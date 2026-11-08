@@ -1,13 +1,13 @@
 // Convierte un modelo del motor Source (.mdl v44-49 + .vvd + .vtx) a .glb, leyéndolo de los VPK del juego.
-// Pose: la de referencia (los vértices del .vvd ya vienen en ella). Cuerpo por defecto y primera piel.
-// Uso: node scripts/source-mdl-to-glb.mjs <carpeta del juego> <mod> <modelo> <salida.glb> [cuerpos] [piel]
+// Pose: la de referencia (brazos abiertos) o, con [brazos] en grados (24 queda natural), con los brazos bajados.
+// Uso: node scripts/source-mdl-to-glb.mjs <carpeta del juego> <mod> <modelo> <salida.glb> [cuerpos] [piel] [brazos]
 //   node scripts/source-mdl-to-glb.mjs "H:/SteamLibrary/steamapps/common/Half-Life 2" hl2 models/weapons/w_crowbar.mdl w_crowbar.glb
 // <mod>: hl2, episodic o ep2 (ep2 lee antes de episodic y de hl2). [cuerpos]: submodelo de cada parte, como 0,1,0.
 import { openMount } from "./lib/vpk.mjs";
 import { decodeVtf } from "./lib/vtf.mjs";
 import { writeGlb } from "./lib/glb.mjs";
 
-const [root, mod, modelPath, output, bodiesArg, skinArg] =
+const [root, mod, modelPath, output, bodiesArg, skinArg, armsArg] =
   process.argv.slice(2);
 if (!root || !mod || !modelPath || !output)
   throw new Error(
@@ -64,13 +64,97 @@ if (i32(vvd, 48) === 0) {
       vertexIndexes.push(i32(vvd, fixup + 4) + v);
   }
 }
+// Pose con los brazos bajados (solo esqueletos ValveBiped). Los vértices del .vvd vienen en la pose de
+// referencia (brazos abiertos): se gira cada brazo y se deforman los vértices con sus pesos de hueso.
+// Matrices 3x4 como en el SDK: poseToBone lleva de modelo a hueso, así que su inversa es el hueso en el modelo.
+const mul34 = (a, b) =>
+  a.map((row) =>
+    [0, 1, 2, 3].map(
+      (c) =>
+        row[0] * b[0][c] +
+        row[1] * b[1][c] +
+        row[2] * b[2][c] +
+        (c === 3 ? row[3] : 0),
+    ),
+  );
+const inv34 = (m) => {
+  const t = [0, 1, 2].map((c) => [0, 1, 2].map((r) => m[r][c]));
+  return t.map((row) => [
+    ...row,
+    -(row[0] * m[0][3] + row[1] * m[1][3] + row[2] * m[2][3]),
+  ]);
+};
+function armPoseMatrices(degrees) {
+  const count = i32(mdl, 156);
+  const bones = [];
+  for (let b = 0; b < count; b++) {
+    const o = i32(mdl, 160) + b * 216;
+    const poseToBone = [0, 1, 2].map((r) =>
+      [0, 1, 2, 3].map((c) => mdl.readFloatLE(o + 96 + (r * 4 + c) * 4)),
+    );
+    bones.push({
+      name: cstr(mdl, o + i32(mdl, o)),
+      parent: i32(mdl, o + 4),
+      poseToBone,
+      world: inv34(poseToBone),
+    });
+  }
+  const arms = bones.filter((b) => /_(L|R)_UpperArm$/.test(b.name));
+  if (arms.length !== 2)
+    throw new Error(
+      `${modelPath}: no tiene un esqueleto ValveBiped con brazos`,
+    );
+  const posed = [];
+  bones.forEach((bone, b) => {
+    // Hueso local = inversa(mundo del padre) * mundo propio; los brazos giran sobre su propio eje
+    const local =
+      bone.parent < 0
+        ? bone.world
+        : mul34(inv34(bones[bone.parent].world), bone.world);
+    let turned = local;
+    if (arms.includes(bone)) {
+      const sign = bone.name.includes("_L_") ? 1 : -1;
+      const angle = (degrees * Math.PI * sign) / 180;
+      const [c, s] = [Math.cos(angle), Math.sin(angle)];
+      // Los brazos de ValveBiped bajan girando sobre el eje Y del hueso (probado: X y Z los abren o los giran)
+      const rot = [
+        [c, 0, s, 0],
+        [0, 1, 0, 0],
+        [-s, 0, c, 0],
+      ];
+      turned = mul34(local, rot);
+    }
+    posed[b] = bone.parent < 0 ? turned : mul34(posed[bone.parent], turned);
+  });
+  // Matriz de cada hueso para un vértice: pose nueva * pose a hueso
+  return bones.map((bone, b) => mul34(posed[b], bone.poseToBone));
+}
+const armDegrees = Number(armsArg ?? 0);
+const skinMatrices = armDegrees ? armPoseMatrices(armDegrees) : null;
+const apply = (m, v, isNormal) =>
+  m.map(
+    (row) =>
+      row[0] * v[0] + row[1] * v[1] + row[2] * v[2] + (isNormal ? 0 : row[3]),
+  );
+
 const vertexAt = (i) => {
   const o = vertexStart + vertexIndexes[i] * 48;
-  return {
-    pos: [0, 1, 2].map((k) => vvd.readFloatLE(o + 16 + k * 4)),
-    nrm: [0, 1, 2].map((k) => vvd.readFloatLE(o + 28 + k * 4)),
-    uv: [vvd.readFloatLE(o + 40), vvd.readFloatLE(o + 44)],
-  };
+  let pos = [0, 1, 2].map((k) => vvd.readFloatLE(o + 16 + k * 4));
+  let nrm = [0, 1, 2].map((k) => vvd.readFloatLE(o + 28 + k * 4));
+  if (skinMatrices) {
+    const [sp, sn] = [
+      [0, 0, 0],
+      [0, 0, 0],
+    ];
+    for (let k = 0; k < vvd[o + 15]; k++) {
+      const weight = vvd.readFloatLE(o + k * 4);
+      const m = skinMatrices[vvd[o + 12 + k]];
+      apply(m, pos, false).forEach((x, a) => (sp[a] += x * weight));
+      apply(m, nrm, true).forEach((x, a) => (sn[a] += x * weight));
+    }
+    [pos, nrm] = [sp, sn];
+  }
+  return { pos, nrm, uv: [vvd.readFloatLE(o + 40), vvd.readFloatLE(o + 44)] };
 };
 
 // Pieles: cada malla apunta a una textura mediante la tabla de la familia elegida
@@ -183,8 +267,11 @@ const cdTextures = Array.from({ length: i32(mdl, 212) }, (_, c) =>
 function parseVmt(text, depth = 0) {
   const clean = text.replace(/\/\/.*$/gm, "");
   const values = {};
-  for (const [, key, value] of clean.matchAll(/"([^"]+)"\s+"([^"]*)"/g))
-    values[key.toLowerCase()] = value;
+  // El valor puede ir entre comillas o sin ellas ("$additive" 1)
+  for (const [, key, quoted, bare] of clean.matchAll(
+    /"([^"]+)"\s+(?:"([^"]*)"|([^\s"{}]+))/g,
+  ))
+    values[key.toLowerCase()] = quoted ?? bare;
   // Los «patch» incluyen otro material y solo cambian unas claves
   if (values.include && depth < 4) {
     const parent = vpk.read(values.include);
@@ -209,6 +296,8 @@ for (const [texIndex, g] of groups) {
   if (/blur/i.test(name)) continue;
   const out = { pos: g.pos, nrm: g.nrm, uv: g.uv, idx: g.idx };
   const material = findMaterial(name);
+  // Un material aditivo (el cristal de las gafas de Kleiner) solo suma luz en el juego: glTF no lo puede imitar
+  if (material?.["$additive"] === "1") continue;
   const vtf =
     material?.["$basetexture"] &&
     vpk.read(`materials/${material["$basetexture"]}.vtf`);
