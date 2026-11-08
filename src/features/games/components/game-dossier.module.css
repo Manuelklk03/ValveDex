@@ -8,6 +8,7 @@
   --dossier-radius: 2px;
   --dossier-padding: clamp(1.25rem, 4vw, 3rem);
   position: relative;
+  isolation: isolate;
   display: grid;
   gap: 2rem;
   padding: clamp(1.75rem, 4vw, 3rem) var(--dossier-padding);
@@ -586,13 +587,8 @@
   border-bottom: 0;
   /* La banda redondea sus esquinas; el dossier no recorta (dejaría sin foco visible ni desplegables) */
   border-radius: var(--dossier-radius) var(--dossier-radius) 0 0;
-  background:
-    repeating-linear-gradient(
-      -60deg,
-      rgb(255 255 255 / 0.035) 0 1px,
-      transparent 1px 10px
-    ),
-    #1f4fa8;
+  position: relative;
+  z-index: auto;
   color: var(--dossier-ink);
 }
 
@@ -789,23 +785,6 @@
   pointer-events: none;
 }
 
-/* λ de la Resistencia pintada con espray: bordes difuminados y algo torcida */
-.game-dossier--half-life-2::after {
-  content: "";
-  position: absolute;
-  top: 1.5rem;
-  right: calc(var(--dossier-padding) + 19rem);
-  display: none;
-  width: clamp(8rem, 13vw, 11rem);
-  aspect-ratio: 1;
-  background: var(--dossier-accent);
-  filter: blur(1px) drop-shadow(0 0 6px var(--dossier-accent));
-  mask: url("/images/decor/resistance-lambda.svg") center / contain no-repeat;
-  opacity: 0.16;
-  pointer-events: none;
-  rotate: -8deg;
-}
-
 .game-dossier--half-life-2 .game-dossier__title {
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -868,29 +847,6 @@
     transparent 2.5rem 3rem
   );
   pointer-events: none;
-}
-
-/* La Ciudadela al fondo, detrás de la ficha técnica */
-.game-dossier--half-life-2-episode-one::after {
-  content: "";
-  position: absolute;
-  top: 1.5rem;
-  right: calc(var(--dossier-padding) + 20rem);
-  display: none;
-  width: 5rem;
-  height: 15rem;
-  background: var(--dossier-accent);
-  mask: url("/images/decor/citadel-silhouette.svg") center / contain no-repeat;
-  opacity: 0.12;
-  pointer-events: none;
-}
-
-/* La λ y la Ciudadela solo caben en el hueco entre el texto y la ficha técnica de pantallas anchas */
-@media (min-width: 64rem) {
-  .game-dossier--half-life-2::after,
-  .game-dossier--half-life-2-episode-one::after {
-    display: block;
-  }
 }
 
 /* Emblema de la Alianza delante del rótulo, impreso como un membrete */
@@ -964,25 +920,9 @@
   pointer-events: none;
 }
 
-/* Hunter de la Alianza, la amenaza del camino */
-.game-dossier--half-life-2-episode-two::after {
-  content: "";
-  position: absolute;
-  right: clamp(1rem, 4vw, 3rem);
-  bottom: 4rem;
-  width: clamp(7rem, 13vw, 10rem);
-  aspect-ratio: 120 / 110;
-  background: var(--dossier-ink);
-  mask: url("/images/decor/hunter-silhouette.svg") center / contain no-repeat;
-  opacity: 0.1;
-  pointer-events: none;
-}
-
 /* En pantallas estrechas el pie se parte en varias líneas y estas marcas taparían el texto */
 @media (max-width: 63.99rem) {
-  .game-dossier--decay::after,
-  .game-dossier--half-life-2-episode-two::after,
-  .game-dossier--half-life-alyx::after {
+  .game-dossier--decay::after {
     display: none;
   }
 }
@@ -1030,28 +970,6 @@
     var(--dossier-paper) 3.5rem 4rem
   );
   pointer-events: none;
-}
-
-/* Pistola de Alyx en el hueco entre texto y ficha técnica (solo ≥64rem) */
-.game-dossier--half-life-alyx::after {
-  content: "";
-  position: absolute;
-  top: 2rem;
-  right: calc(var(--dossier-padding) + 18rem);
-  display: none;
-  width: clamp(5rem, 10vw, 8rem);
-  aspect-ratio: 180 / 110;
-  background: var(--dossier-accent);
-  mask: url("/images/decor/alyx-pistol-silhouette.svg") center / contain
-    no-repeat;
-  opacity: 0.14;
-  pointer-events: none;
-}
-
-@media (min-width: 64rem) {
-  .game-dossier--half-life-alyx::after {
-    display: block;
-  }
 }
 
 /* Emblema de la Alianza delante del rótulo */
@@ -1442,4 +1360,19 @@
   .game-dossier:has(.game-dossier__open:hover) .game-dossier__cue-arrow {
     translate: 4px 0;
   }
+}
+
+/* La banda azul de Blue Shift va por debajo del arte del dossier (z-index -2) para que el icono de Barney se vea sobre ella */
+.game-dossier--blue-shift .game-dossier__header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    repeating-linear-gradient(
+      -60deg,
+      rgb(255 255 255 / 0.035) 0 1px,
+      transparent 1px 10px
+    ),
+    #1f4fa8;
 }

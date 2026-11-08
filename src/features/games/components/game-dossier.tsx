@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { dossierArt } from "@/data/dossier-art";
 import type { Game } from "@/domain/game";
 import type { DossierLook } from "../dossier-looks";
 import { getGameYearLabel } from "../get-game-year-label";
 import { getSectionStatuses } from "../get-section-statuses";
+import { DossierArt } from "./dossier-art";
 import styles from "./game-dossier.module.css";
 
 // Nombres que se ven al desplegar un apartado; el resto se resume en «y N más»
@@ -26,6 +28,7 @@ export function GameDossier({
   const availableCount = statuses.filter((status) => status.isAvailable).length;
   const hubHref = `/universos/${universeSlug}/${game.slug}`;
   const titleId = `${game.id}-title`;
+  const art = dossierArt[game.id];
   const className = look
     ? `${styles["game-dossier"]} ${styles[`game-dossier--${look.variant}`]}`
     : styles["game-dossier"];
@@ -36,6 +39,8 @@ export function GameDossier({
       <Link href={hubHref} className={styles["game-dossier__open"]}>
         <span className="sr-only">Abrir el dossier de {game.name}</span>
       </Link>
+
+      {art && <DossierArt art={art} />}
 
       <span className={styles["game-dossier__tab"]} aria-hidden="true">
         {universeName}
