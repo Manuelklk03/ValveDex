@@ -61,6 +61,7 @@ import {
 } from "./left-4-dead";
 import { expansionAppearances } from "./expansion-appearances";
 import { withSourceCaptures } from "./source-captures";
+import { withWikiScreenshots } from "./wiki-screenshots";
 
 const baseEntries: Entry[] = [
   ...halfLifeChapters,
@@ -166,7 +167,11 @@ const extraAppearances = {
 export const entries: Entry[] = baseEntries.map((entry) => {
   const extra = extraAppearances[entry.id];
 
-  return withSourceCaptures(
-    extra ? { ...entry, appearances: [...entry.appearances, ...extra] } : entry,
+  return withWikiScreenshots(
+    withSourceCaptures(
+      extra
+        ? { ...entry, appearances: [...entry.appearances, ...extra] }
+        : entry,
+    ),
   );
 });
