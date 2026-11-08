@@ -36,6 +36,7 @@ export function UniverseGate({
   const root = useRef<HTMLElement>(null);
   const [hovered, setHovered] = useState(false);
   const [wantsModel, setWantsModel] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(false);
   const isAvailable = universe.status === "available";
 
   useGSAP(
@@ -87,6 +88,15 @@ export function UniverseGate({
     el.style.setProperty("--shine-y", `${((y + 0.5) * 100).toFixed(0)}%`);
   }
 
+  // El estado activo lo dispara el ratón y también el foco de teclado
+  function activate() {
+    setHovered(true);
+    setReduceMotion(
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    );
+    if (art.model) setWantsModel(true);
+  }
+
   function handleLeave() {
     const el = root.current;
     setHovered(false);
@@ -116,9 +126,14 @@ export function UniverseGate({
       className={className}
       style={{ "--gate-accent": art.accent } as CSSProperties}
       onPointerEnter={(event) => {
-        if (event.pointerType !== "mouse") return;
-        setHovered(true);
-        if (art.model) setWantsModel(true);
+        if (event.pointerType === "mouse") activate();
+      }}
+      onFocus={(event) => {
+        if (event.target.matches(":focus-visible")) activate();
+      }}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget))
+          setHovered(false);
       }}
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}
@@ -145,7 +160,7 @@ export function UniverseGate({
 
         {wantsModel && art.model && (
           <div className={styles["universe-gate__model"]} aria-hidden="true">
-            <ModelSpinner src={art.model} active={hovered} />
+            <ModelSpinner src={art.model} active={hovered && !reduceMotion} />
           </div>
         )}
 

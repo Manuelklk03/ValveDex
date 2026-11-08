@@ -167,3 +167,27 @@
     opacity: 0.7;
   }
 }
+
+/* Todo el dossier es clicable: el enlace del título cubre la tarjeta */
+.dossier-sample__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dossier-sample__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.dossier-sample:has(:focus-visible) {
+  outline: 3px solid var(--dossier-accent);
+  outline-offset: 4px;
+}
+
+.dossier-sample:hover .dossier-sample__cta,
+.dossier-sample:has(:focus-visible) .dossier-sample__cta {
+  background: var(--dossier-accent);
+  color: #0b0b0b;
+}

@@ -111,6 +111,7 @@ export default function UniversesSamplePage() {
               <li key={dossier.gameId}>
                 <DossierSample
                   name={game.name}
+                  href={`/universos/half-life/${game.slug}`}
                   kicker={dossier.kicker}
                   stamp={dossier.stamp}
                   accent={dossier.accent}

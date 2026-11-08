@@ -4,6 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import Link from "next/link";
 import { useRef, type CSSProperties } from "react";
 import type { LineIcon } from "@/data/universe-art";
 import styles from "./dossier-sample.module.css";
@@ -12,6 +13,7 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 type DossierSampleProps = {
   name: string;
+  href: string;
   kicker: string;
   stamp: string;
   accent: string;
@@ -23,6 +25,7 @@ type DossierSampleProps = {
 // Muestra del dossier animado de la etapa Source: captura con parallax, iconos de línea que se dibujan y datos
 export function DossierSample({
   name,
+  href,
   kicker,
   stamp,
   accent,
@@ -129,7 +132,9 @@ export function DossierSample({
           {kicker}
         </p>
         <h3 className={styles["dossier-sample__title"]} data-dossier-reveal>
-          {name}
+          <Link href={href} className={styles["dossier-sample__link"]}>
+            {name}
+          </Link>
         </h3>
         <dl className={styles["dossier-sample__facts"]} data-dossier-reveal>
           {facts.map((fact) => (
