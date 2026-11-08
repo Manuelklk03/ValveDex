@@ -191,3 +191,70 @@
   background: var(--dossier-accent);
   color: #0b0b0b;
 }
+
+/* Modelo 3D: aparece sobre los iconos al activar el dossier */
+.dossier-sample__model {
+  position: absolute;
+  top: 6%;
+  right: 3%;
+  z-index: -1;
+  width: 46%;
+  height: 64%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dossier-sample--active .dossier-sample__model {
+  opacity: 1;
+}
+
+.dossier-sample--active .dossier-sample__icons {
+  opacity: 0.3;
+}
+
+.dossier-sample--active .dossier-sample__cta {
+  background: var(--dossier-accent);
+  color: #0b0b0b;
+}
+
+/* Profundidad con el puntero y movimiento en reposo */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .dossier-sample__icons {
+    translate: calc(var(--px, 0) * 14px) calc(var(--py, 0) * 9px);
+    transition:
+      opacity 300ms ease-out,
+      translate 300ms ease-out;
+  }
+
+  .dossier-sample__model {
+    translate: calc(var(--px, 0) * 26px) calc(var(--py, 0) * 16px);
+    transition:
+      opacity 350ms ease-out 80ms,
+      translate 200ms ease-out;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dossier-sample__icon {
+    animation: dossier-breathe 7s ease-in-out infinite;
+  }
+
+  .dossier-sample__icon:nth-child(2) {
+    animation-delay: -3s;
+  }
+}
+
+@keyframes dossier-breathe {
+  50% {
+    scale: 1.03;
+  }
+}
+
+.dossier-sample__link:focus-visible {
+  outline: none;
+}
+
+.dossier-sample__model {
+  right: 2%;
+  width: 40%;
+}

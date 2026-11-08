@@ -3,15 +3,22 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, type CSSProperties } from "react";
+import { useRef, type CSSProperties, type PointerEvent } from "react";
+import { useHoverFocus } from "@/components/ui/use-hover-focus";
 import type { LineIcon } from "@/data/universe-art";
 import styles from "./dossier-sample.module.css";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
+const ModelSpinner = dynamic(() => import("@/components/ui/model-spinner"), {
+  ssr: false,
+});
+
 type DossierSampleProps = {
+  sagaId: string;
   name: string;
   href: string;
   kicker: string;
@@ -19,11 +26,15 @@ type DossierSampleProps = {
   accent: string;
   backdrop: string;
   icons: LineIcon[];
+  // Modelo 3D opcional que aparece al activar el dossier
+  model?: string;
+  modelTilt?: number;
   facts: { label: string; value: string }[];
 };
 
 // Muestra del dossier animado de la etapa Source: captura con parallax, iconos de línea que se dibujan y datos
 export function DossierSample({
+  sagaId,
   name,
   href,
   kicker,
@@ -31,9 +42,33 @@ export function DossierSample({
   accent,
   backdrop,
   icons,
+  model,
+  modelTilt,
   facts,
 }: DossierSampleProps) {
   const root = useRef<HTMLElement>(null);
+  const { active, everActive, reduceMotion, handlers } = useHoverFocus();
+
+  // Profundidad: iconos y modelo se desplazan más que la captura según el puntero
+  function handleMove(event: PointerEvent<HTMLElement>) {
+    const el = root.current;
+    if (!el || event.pointerType !== "mouse") return;
+    const box = el.getBoundingClientRect();
+    el.style.setProperty(
+      "--px",
+      (((event.clientX - box.left) / box.width - 0.5) * 2).toFixed(3),
+    );
+    el.style.setProperty(
+      "--py",
+      (((event.clientY - box.top) / box.height - 0.5) * 2).toFixed(3),
+    );
+  }
+
+  function handleLeave() {
+    handlers.onPointerLeave();
+    root.current?.style.setProperty("--px", "0");
+    root.current?.style.setProperty("--py", "0");
+  }
 
   useGSAP(
     () => {
@@ -95,8 +130,18 @@ export function DossierSample({
   return (
     <article
       ref={root}
-      className={styles["dossier-sample"]}
+      className={
+        active
+          ? `${styles["dossier-sample"]} ${styles["dossier-sample--active"]}`
+          : styles["dossier-sample"]
+      }
       style={{ "--dossier-accent": accent } as CSSProperties}
+      data-saga={sagaId}
+      onPointerEnter={handlers.onPointerEnter}
+      onPointerMove={handleMove}
+      onPointerLeave={handleLeave}
+      onFocus={handlers.onFocus}
+      onBlur={handlers.onBlur}
     >
       <div className={styles["dossier-sample__backdrop"]} data-dossier-backdrop>
         <Image
@@ -122,6 +167,16 @@ export function DossierSample({
           />
         ))}
       </div>
+
+      {everActive && model && (
+        <div className={styles["dossier-sample__model"]} aria-hidden="true">
+          <ModelSpinner
+            src={model}
+            tilt={modelTilt}
+            active={active && !reduceMotion}
+          />
+        </div>
+      )}
 
       <p className={styles["dossier-sample__stamp"]} data-dossier-stamp>
         {stamp}

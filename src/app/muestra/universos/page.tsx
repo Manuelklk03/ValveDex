@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { lineIcons, universeArt } from "@/data/universe-art";
 import { getEntries } from "@/features/catalog/get-entries";
 import { getGameYearLabel } from "@/features/games/get-game-year-label";
+import { SagaBackdrop } from "@/features/universes/components/saga-backdrop";
 import { UniverseGate } from "@/features/universes/components/universe-gate";
 import {
   getGameById,
@@ -25,6 +26,8 @@ const dossiers = [
     accent: "#ff9b21",
     backdrop: "/images/entries/hl2-highway-17-half-life-2.webp",
     icons: [lineIcons["c17-skull"], lineIcons.antlion],
+    model: "/models/universes/hl2-gravity-gun.glb",
+    modelTilt: 0.5,
   },
   {
     gameId: "half-life-2-episode-one",
@@ -34,6 +37,8 @@ const dossiers = [
     backdrop:
       "/images/entries/ep1-direct-intervention-half-life-2-episode-one.webp",
     icons: [lineIcons.citadel],
+    model: "/models/universes/ep1-zombine.glb",
+    modelTilt: 0,
   },
   {
     gameId: "half-life-2-episode-two",
@@ -42,6 +47,8 @@ const dossiers = [
     accent: "#9ad04f",
     backdrop: "/images/entries/ep2-riding-shotgun-half-life-2-episode-two.webp",
     icons: [lineIcons.hunter, lineIcons.antlion],
+    model: "/models/universes/ep2-hunter.glb",
+    modelTilt: 0,
   },
   {
     gameId: "half-life-alyx",
@@ -56,9 +63,22 @@ const dossiers = [
 export default function UniversesSamplePage() {
   const universes = getUniverses();
   const entries = getEntries();
+  const layers = [
+    ...universes.map((universe) => ({
+      id: universe.id,
+      accent: universeArt[universe.id].accent,
+      image: universeArt[universe.id].backdrop,
+    })),
+    ...dossiers.map((dossier) => ({
+      id: dossier.gameId,
+      accent: dossier.accent,
+      image: dossier.backdrop,
+    })),
+  ];
 
   return (
     <main className={styles["sample"]}>
+      <SagaBackdrop layers={layers} />
       <header className={styles["sample__header"]}>
         <p className={styles["sample__eyebrow"]}>
           Muestra de rediseño · no indexada
@@ -110,6 +130,9 @@ export default function UniversesSamplePage() {
             return (
               <li key={dossier.gameId}>
                 <DossierSample
+                  sagaId={dossier.gameId}
+                  model={dossier.model}
+                  modelTilt={dossier.modelTilt}
                   name={game.name}
                   href={`/universos/half-life/${game.slug}`}
                   kicker={dossier.kicker}
