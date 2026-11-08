@@ -4,7 +4,7 @@
 
 export type LineIcon = { src: string; width: number; height: number };
 
-// Los 17 iconos de línea, recortados al trazo (lado largo de 1000 px)
+// Los 18 iconos de línea, recortados al trazo (lado largo de 1000 px)
 export const lineIcons = {
   hunter: { src: "/images/icons/hunter.webp", width: 938, height: 1016 },
   "alyx-pistol": {
@@ -34,6 +34,11 @@ export const lineIcons = {
     height: 542,
   },
   antlion: { src: "/images/icons/antlion.webp", width: 869, height: 1016 },
+  "gordon-hl2": {
+    src: "/images/icons/gordon-hl2.webp",
+    width: 758,
+    height: 1016,
+  },
   "gordon-hev": {
     src: "/images/icons/gordon-hev.webp",
     width: 471,
