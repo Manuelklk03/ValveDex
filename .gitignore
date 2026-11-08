@@ -58,3 +58,5 @@ graphify-out/
 
 .playwright-mcp/
 .playwright-cli/
+
+debug.log
