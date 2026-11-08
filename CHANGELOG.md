@@ -8,6 +8,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Rediseño de `/universos`: tarjetas de acceso con la captura del juego, iconos de línea, inclinación y profundidad con el ratón, modelo 3D que gira al activarlas y un fondo de página que cambia con cada saga.
+- Dossieres de Half-Life con arte propio: captura de fondo con parallax, iconos de línea que se dibujan y modelo 3D en los de Half-Life 2, Episode One y Episode Two.
 - Niveles: cada capítulo muestra la lista de sus mapas y cada nivel tiene su página (`/fichas/<capítulo>/<mapa>`) con descripción, hueco para fotos, personajes, enemigos y armas, navegación entre niveles y fuentes. Los personajes, enemigos y armas de cada nivel se leen de la lista de entidades de los `.bsp` del juego instalado (`scripts/extract-level-entities.mjs`) para Half-Life 1, Opposing Force, Blue Shift, Half-Life 2 y sus episodios.
 - Contenido con fuentes de Half-Life 2: Episode One, Episode Two y Half-Life: Alyx, y 34 fichas nuevas de Half-Life 2 (armas, 15 enemigos, personajes, curiosidades y easter eggs) con seis imágenes con licencia indicada.
 - Renders propios de Half-Life 2 y sus episodios: 47 fichas (12 armas con visor 3D, enemigos, vehículos y personajes) con imágenes WebP y modelos `.glb`, generados con el nuevo conversor `scripts/source-mdl-to-glb.mjs`, que lee los modelos Source de los VPK del juego instalado (con los brazos bajados en los personajes humanos y los zombis con su headcrab). Sustituyen a cinco capturas de wiki.
