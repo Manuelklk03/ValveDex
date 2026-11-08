@@ -10,6 +10,9 @@
   --accent: #ffffff;
   --valve-red: #f74843;
   --content-width: 72rem;
+  /* Curvas de movimiento de la web (strong ease-out para entradas, ease-in-out para movimiento en pantalla) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   /* Señalética por sectores de Black Mesa: un color por apartado, en toda la web */
   --sector-lore: #8a8378;
   --sector-maps: #43a047;
