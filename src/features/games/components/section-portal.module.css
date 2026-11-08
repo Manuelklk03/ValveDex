@@ -1,0 +1,202 @@
+/* Apartado de un juego: miniatura real arriba, texto debajo; el color del sector marca la tarjeta */
+.section-portal {
+  --sector-color: var(--accent);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 16rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--sector-color);
+  border-radius: 8px;
+  background: var(--surface);
+  list-style: none;
+}
+
+.section-portal--lore {
+  --sector-color: var(--sector-lore);
+  grid-column: span 2;
+}
+
+.section-portal--maps {
+  --sector-color: var(--sector-maps);
+  grid-column: span 2;
+}
+
+.section-portal--weapons {
+  --sector-color: var(--sector-weapons);
+  grid-column: span 2;
+}
+
+.section-portal--characters {
+  --sector-color: var(--sector-characters);
+  grid-column: span 2;
+}
+
+.section-portal--enemies {
+  --sector-color: var(--sector-enemies);
+  grid-column: span 2;
+}
+
+.section-portal--trivia {
+  --sector-color: var(--sector-trivia);
+}
+
+.section-portal--easter-eggs {
+  --sector-color: var(--sector-easter-eggs);
+}
+
+.section-portal__media {
+  position: relative;
+  flex: 1 1 8.5rem;
+  min-height: 8.5rem;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      80% 90% at 70% 40%,
+      color-mix(in srgb, var(--sector-color) 22%, transparent),
+      transparent 75%
+    ),
+    color-mix(in srgb, var(--sector-color) 8%, var(--surface));
+}
+
+/* Los renders llevan fondo transparente: se ajustan enteros. Las capturas llenan la tarjeta */
+.section-portal__image {
+  padding: 0.75rem 1rem;
+  object-fit: contain;
+  object-position: 70% 50%;
+}
+
+.section-portal__image--capture {
+  padding: 0;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(0.85) brightness(0.8);
+}
+
+/* Sin miniatura propia: el icono de línea del juego, tintado con el color del sector */
+.section-portal__icon {
+  position: absolute;
+  inset: 0.75rem 1rem 0.75rem auto;
+  width: 45%;
+  background: var(--sector-color);
+  opacity: 0.35;
+  mask-repeat: no-repeat;
+  mask-position: right center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: right center;
+  -webkit-mask-size: contain;
+}
+
+.section-portal__index {
+  position: absolute;
+  top: 0.625rem;
+  left: 0.875rem;
+  color: color-mix(in srgb, var(--sector-color) 80%, var(--foreground));
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+}
+
+.section-portal__body {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.875rem 1rem 1rem;
+}
+
+.section-portal__title {
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.section-portal__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Toda la tarjeta es clicable */
+.section-portal__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.section-portal__label {
+  color: var(--sector-color);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.section-portal__names {
+  max-width: 32ch;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.section-portal__arrow {
+  position: absolute;
+  top: 0.875rem;
+  right: 1rem;
+  color: var(--sector-color);
+  font-size: 1.25rem;
+}
+
+.section-portal:has(:focus-visible) {
+  outline: 3px solid var(--sector-color);
+  outline-offset: 3px;
+}
+
+.section-portal__link:focus-visible {
+  outline: none;
+}
+
+.section-portal--empty {
+  --sector-color: var(--muted);
+  border-style: dashed;
+  background: transparent;
+}
+
+.section-portal--empty .section-portal__title {
+  color: var(--muted);
+}
+
+/* Movimiento: la miniatura se acerca y la flecha avanza. Solo con puntero fino y sin «reducir movimiento» */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .section-portal:not(.section-portal--empty) {
+    transition:
+      border-color 180ms var(--ease-out),
+      translate 180ms var(--ease-out);
+  }
+
+  .section-portal__image {
+    transition: transform 260ms var(--ease-out);
+  }
+
+  .section-portal__arrow {
+    transition: translate 180ms var(--ease-out);
+  }
+
+  .section-portal:not(.section-portal--empty):hover {
+    border-color: var(--sector-color);
+    translate: 0 -3px;
+  }
+
+  .section-portal:hover .section-portal__image {
+    transform: scale(1.06);
+  }
+
+  .section-portal:hover .section-portal__arrow {
+    translate: 4px 0;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .section-portal:not(.section-portal--empty):hover {
+    border-color: var(--sector-color);
+  }
+}
