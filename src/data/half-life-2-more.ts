@@ -75,13 +75,6 @@ export const halfLife2MoreWeapons: Entry[] = [
     appearances: [
       {
         gameId: hl2,
-        images: screenshot(
-          "MK3A2_Grenade.jpg",
-          "hl2-frag-grenade-half-life-2.jpg",
-          "Modelo de la granada de fragmentación de Half-Life 2",
-          330,
-          411,
-        ),
       },
     ],
     sources: [
@@ -194,13 +187,6 @@ export const halfLife2MoreEnemies: Entry[] = [
     appearances: [
       {
         gameId: hl2,
-        images: screenshot(
-          "Antlion_guard.jpg",
-          "hl2-antlion-guard-half-life-2.jpg",
-          "Modelo del guardia de hormigas león de Half-Life 2",
-          512,
-          592,
-        ),
       },
     ],
     sources: [overwiki("Antlion_Guard", "Antlion Guard")],
@@ -282,13 +268,6 @@ export const halfLife2MoreEnemies: Entry[] = [
     appearances: [
       {
         gameId: hl2,
-        images: screenshot(
-          "Rollermine_model.jpg",
-          "hl2-rollermine-half-life-2.jpg",
-          "Modelo de la rollermine de Half-Life 2 en reposo",
-          596,
-          590,
-        ),
       },
     ],
     sources: [overwiki("Rollermine", "Rollermine")],
@@ -357,13 +336,6 @@ export const halfLife2MoreEnemies: Entry[] = [
     appearances: [
       {
         gameId: hl2,
-        images: screenshot(
-          "Hunter-Chopper.jpg",
-          "hl2-hunter-chopper-half-life-2.jpg",
-          "Modelo del helicóptero cazador de la Alianza",
-          2910,
-          1258,
-        ),
       },
     ],
     sources: [
@@ -387,13 +359,6 @@ export const halfLife2MoreEnemies: Entry[] = [
     appearances: [
       {
         gameId: hl2,
-        images: screenshot(
-          "Combine_Dropship.jpg",
-          "hl2-combine-dropship-half-life-2.jpg",
-          "Nave de transporte de la Alianza sin su contenedor",
-          1086,
-          817,
-        ),
       },
     ],
     sources: [

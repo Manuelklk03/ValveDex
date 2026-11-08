@@ -60,6 +60,7 @@ import {
   left4DeadExtras,
 } from "./left-4-dead";
 import { expansionAppearances } from "./expansion-appearances";
+import { withSourceCaptures } from "./source-captures";
 
 const baseEntries: Entry[] = [
   ...halfLifeChapters,
@@ -165,7 +166,7 @@ const extraAppearances = {
 export const entries: Entry[] = baseEntries.map((entry) => {
   const extra = extraAppearances[entry.id];
 
-  return extra
-    ? { ...entry, appearances: [...entry.appearances, ...extra] }
-    : entry;
+  return withSourceCaptures(
+    extra ? { ...entry, appearances: [...entry.appearances, ...extra] } : entry,
+  );
 });
