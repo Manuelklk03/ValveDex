@@ -1,6 +1,6 @@
 import type { Entry } from "@/domain/entry";
 import type { MediaAsset } from "@/domain/media-asset";
-import type { Source } from "@/domain/source";
+import { steamSources } from "./steam-sources";
 
 // Imágenes propias de los modelos de la etapa Source: cada modelo se lee de los VPK del juego, se convierte a
 // .glb con scripts/source-mdl-to-glb.mjs y se fotografía con la misma cámara y luz que el visor 3D, sobre fondo
@@ -14,24 +14,6 @@ type SourceCapture = {
   model: string;
   width: number;
   height: number;
-};
-
-const steam: Record<string, Source> = {
-  "half-life-2": {
-    title: "Half-Life 2 en Steam (archivos del juego)",
-    url: "https://store.steampowered.com/app/220/HalfLife_2/",
-    kind: "official",
-  },
-  "half-life-2-episode-one": {
-    title: "Half-Life 2: Episode One en Steam (archivos del juego)",
-    url: "https://store.steampowered.com/app/380/HalfLife_2_Episode_One/",
-    kind: "official",
-  },
-  "half-life-2-episode-two": {
-    title: "Half-Life 2: Episode Two en Steam (archivos del juego)",
-    url: "https://store.steampowered.com/app/420/HalfLife_2_Episode_Two/",
-    kind: "official",
-  },
 };
 
 const captures: SourceCapture[] = [
@@ -423,7 +405,7 @@ function toImages(capture: SourceCapture, name: string) {
     alt: `${name}, modelo del juego`,
     width,
     height,
-    source: steam[gameId],
+    source: steamSources[gameId],
     credit: `Render propio del modelo ${folder}/models/${model}.mdl${hasModel3d ? " · también como modelo 3D (.glb) convertido del mismo archivo" : ""}`,
     license: "Material del juego © Valve",
   };
