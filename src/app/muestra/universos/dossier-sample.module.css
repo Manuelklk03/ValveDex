@@ -1,0 +1,169 @@
+.dossier-sample {
+  --dossier-accent: var(--foreground);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 30rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--dossier-accent) 40%, var(--border));
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--dossier-accent) 10%, #070707);
+  isolation: isolate;
+}
+
+/* La captura es más alta que el marco para poder desplazarse con el parallax */
+.dossier-sample__backdrop {
+  position: absolute;
+  inset: -8% 0;
+  z-index: -3;
+}
+
+.dossier-sample__image {
+  object-fit: cover;
+  filter: saturate(0.6) brightness(0.62);
+}
+
+.dossier-sample__veil {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(
+      to top,
+      color-mix(in srgb, var(--dossier-accent) 16%, #040404) 6%,
+      color-mix(in srgb, #040404 72%, transparent) 46%,
+      color-mix(in srgb, var(--dossier-accent) 14%, transparent) 100%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 3px,
+      color-mix(in srgb, #000 22%, transparent) 3px 4px
+    );
+}
+
+.dossier-sample__icons {
+  position: absolute;
+  top: 7%;
+  right: 4%;
+  z-index: -1;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: 44%;
+  height: 62%;
+}
+
+.dossier-sample__icon {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  background: var(--dossier-accent);
+  opacity: 0.85;
+  mask-repeat: no-repeat;
+  mask-position: right top;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: right top;
+  -webkit-mask-size: contain;
+}
+
+/* Si hay dos iconos, el segundo es más pequeño: motivo secundario */
+.dossier-sample__icon:nth-child(2) {
+  height: 72%;
+  margin-top: 1.5rem;
+  opacity: 0.5;
+}
+
+.dossier-sample__stamp {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.5rem;
+  padding: 0.375rem 0.75rem;
+  border: 2px solid var(--dossier-accent);
+  border-radius: 4px;
+  color: var(--dossier-accent);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  rotate: -6deg;
+}
+
+.dossier-sample__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: min(100%, 34rem);
+  padding: 1.75rem;
+}
+
+.dossier-sample__kicker {
+  color: color-mix(in srgb, var(--dossier-accent) 75%, var(--foreground));
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dossier-sample__title {
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  font-weight: 800;
+  font-stretch: 108%;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+.dossier-sample__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+}
+
+.dossier-sample__fact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid
+    color-mix(in srgb, var(--dossier-accent) 40%, transparent);
+}
+
+.dossier-sample__fact dt {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dossier-sample__fact dd {
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.9375rem;
+}
+
+.dossier-sample__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: fit-content;
+  padding: 0.625rem 1rem;
+  border: 1px solid var(--dossier-accent);
+  border-radius: 6px;
+  color: var(--dossier-accent);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 40rem) {
+  .dossier-sample {
+    min-height: 34rem;
+  }
+
+  .dossier-sample__icons {
+    height: 38%;
+    opacity: 0.7;
+  }
+}
