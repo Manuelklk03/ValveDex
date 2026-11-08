@@ -303,3 +303,61 @@
     display: none;
   }
 }
+
+/* Profundidad: el puntero fija --px y --py (de -2 a 2) y cada capa se desplaza en distinta medida */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .universe-gate__backdrop {
+    translate: calc(var(--px, 0) * -9px) calc(var(--py, 0) * -6px);
+    transition:
+      transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      filter 400ms ease-out,
+      translate 300ms ease-out;
+  }
+
+  .universe-gate__icon {
+    translate: calc(var(--px, 0) * 12px) calc(var(--py, 0) * 8px);
+  }
+
+  .universe-gate--active .universe-gate__icon {
+    translate: calc(var(--px, 0) * 16px) calc(var(--py, 0) * 10px - 2%);
+  }
+
+  .universe-gate__model {
+    translate: calc(var(--px, 0) * 24px) calc(var(--py, 0) * 15px);
+    transition:
+      opacity 350ms ease-out 80ms,
+      translate 200ms ease-out;
+  }
+}
+
+/* En reposo: la captura se acerca muy despacio y el icono respira */
+@media (prefers-reduced-motion: no-preference) {
+  .universe-gate__backdrop {
+    animation: gate-drift 24s ease-in-out infinite alternate;
+  }
+
+  .universe-gate__icon {
+    animation: gate-breathe 6s ease-in-out infinite;
+  }
+}
+
+@keyframes gate-drift {
+  from {
+    scale: 1.02;
+  }
+
+  to {
+    scale: 1.1;
+  }
+}
+
+@keyframes gate-breathe {
+  50% {
+    scale: 1.03;
+  }
+}
+
+/* El anillo de foco lo dibuja la tarjeta entera: el enlace del título no repite el suyo */
+.universe-gate__link:focus-visible {
+  outline: none;
+}

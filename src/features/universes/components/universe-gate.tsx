@@ -6,14 +6,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState, type CSSProperties, type PointerEvent } from "react";
+import { useRef, type CSSProperties, type PointerEvent } from "react";
+import { useHoverFocus } from "@/components/ui/use-hover-focus";
 import type { Universe } from "@/domain/universe";
 import type { UniverseArt } from "@/data/universe-art";
 import styles from "./universe-gate.module.css";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-// El modelo 3D (Three.js) solo se descarga la primera vez que el ratón se acerca a la tarjeta
+// El modelo 3D (Three.js) solo se descarga la primera vez que la tarjeta se activa
 const ModelSpinner = dynamic(() => import("@/components/ui/model-spinner"), {
   ssr: false,
 });
@@ -26,7 +27,7 @@ type UniverseGateProps = {
   featured?: boolean;
 };
 
-// Cada saga es una puerta de acceso: captura del juego, icono de línea, inclinación y modelo 3D al acercarse
+// Cada saga es una puerta de acceso: captura del juego, icono de línea, profundidad con el ratón y modelo 3D
 export function UniverseGate({
   universe,
   art,
@@ -34,15 +35,18 @@ export function UniverseGate({
   featured = false,
 }: UniverseGateProps) {
   const root = useRef<HTMLElement>(null);
-  const [hovered, setHovered] = useState(false);
-  const [wantsModel, setWantsModel] = useState(false);
-  const [reduceMotion, setReduceMotion] = useState(false);
+  const { active, everActive, reduceMotion, handlers } = useHoverFocus();
   const isAvailable = universe.status === "available";
 
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const scrollTrigger = {
+          trigger: root.current,
+          start: "top 82%",
+          once: true,
+        };
         const reveal = root.current?.querySelectorAll("[data-gate-reveal]");
         gsap.from(reveal ?? [], {
           opacity: 0,
@@ -50,11 +54,7 @@ export function UniverseGate({
           duration: 0.8,
           stagger: 0.09,
           ease: "power3.out",
-          scrollTrigger: {
-            trigger: root.current,
-            start: "top 82%",
-            once: true,
-          },
+          scrollTrigger,
         });
         // El icono se «dibuja» de izquierda a derecha, como un trazo
         gsap.fromTo(
@@ -64,11 +64,7 @@ export function UniverseGate({
             clipPath: "inset(0 0% 0 0)",
             duration: 1.4,
             ease: "power2.inOut",
-            scrollTrigger: {
-              trigger: root.current,
-              start: "top 82%",
-              once: true,
-            },
+            scrollTrigger,
           },
         );
       });
@@ -76,33 +72,28 @@ export function UniverseGate({
     { scope: root },
   );
 
+  // Profundidad: la captura, el icono y el modelo se desplazan distinto según dónde esté el ratón
   function handleMove(event: PointerEvent<HTMLElement>) {
     const el = root.current;
     if (!el || event.pointerType !== "mouse") return;
     const box = el.getBoundingClientRect();
     const x = (event.clientX - box.left) / box.width - 0.5;
     const y = (event.clientY - box.top) / box.height - 0.5;
-    el.style.setProperty("--tilt-x", `${(-y * 7).toFixed(2)}deg`);
-    el.style.setProperty("--tilt-y", `${(x * 9).toFixed(2)}deg`);
+    el.style.setProperty("--tilt-x", `${(-y * 8).toFixed(2)}deg`);
+    el.style.setProperty("--tilt-y", `${(x * 10).toFixed(2)}deg`);
+    el.style.setProperty("--px", (x * 2).toFixed(3));
+    el.style.setProperty("--py", (y * 2).toFixed(3));
     el.style.setProperty("--shine-x", `${((x + 0.5) * 100).toFixed(0)}%`);
     el.style.setProperty("--shine-y", `${((y + 0.5) * 100).toFixed(0)}%`);
   }
 
-  // El estado activo lo dispara el ratón y también el foco de teclado
-  function activate() {
-    setHovered(true);
-    setReduceMotion(
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    );
-    if (art.model) setWantsModel(true);
-  }
-
   function handleLeave() {
+    handlers.onPointerLeave();
     const el = root.current;
-    setHovered(false);
     if (!el) return;
-    el.style.setProperty("--tilt-x", "0deg");
-    el.style.setProperty("--tilt-y", "0deg");
+    for (const name of ["--tilt-x", "--tilt-y"])
+      el.style.setProperty(name, "0deg");
+    for (const name of ["--px", "--py"]) el.style.setProperty(name, "0");
   }
 
   const className = [
@@ -110,7 +101,7 @@ export function UniverseGate({
     featured && styles["universe-gate--featured"],
     !isAvailable && styles["universe-gate--pending"],
     art.icon.width > art.icon.height && styles["universe-gate--wide-icon"],
-    hovered && styles["universe-gate--active"],
+    active && styles["universe-gate--active"],
   ]
     .filter(Boolean)
     .join(" ");
@@ -125,18 +116,12 @@ export function UniverseGate({
       ref={root}
       className={className}
       style={{ "--gate-accent": art.accent } as CSSProperties}
-      onPointerEnter={(event) => {
-        if (event.pointerType === "mouse") activate();
-      }}
-      onFocus={(event) => {
-        if (event.target.matches(":focus-visible")) activate();
-      }}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget))
-          setHovered(false);
-      }}
+      data-saga={universe.id}
+      onPointerEnter={handlers.onPointerEnter}
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}
+      onFocus={handlers.onFocus}
+      onBlur={handlers.onBlur}
     >
       <div className={styles["universe-gate__frame"]}>
         {art.backdrop && (
@@ -158,9 +143,13 @@ export function UniverseGate({
           aria-hidden="true"
         />
 
-        {wantsModel && art.model && (
+        {everActive && art.model && (
           <div className={styles["universe-gate__model"]} aria-hidden="true">
-            <ModelSpinner src={art.model} active={hovered && !reduceMotion} />
+            <ModelSpinner
+              src={art.model}
+              tilt={art.modelTilt}
+              active={active && !reduceMotion}
+            />
           </div>
         )}
 

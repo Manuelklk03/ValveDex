@@ -1,0 +1,53 @@
+/* Fondo fijo detrás de la página: una capa por saga, con la activa a plena opacidad */
+.saga-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.saga-backdrop__layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.saga-backdrop__layer--active {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .saga-backdrop__layer {
+    transition: opacity 1000ms ease-out;
+  }
+}
+
+/* La captura de la saga, muy desenfocada y oscura: da ambiente sin competir con el contenido */
+.saga-backdrop__image {
+  object-fit: cover;
+  filter: blur(36px) saturate(0.75) brightness(0.3);
+  scale: 1.15;
+}
+
+.saga-backdrop__glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      55% 45% at 86% 10%,
+      color-mix(in srgb, var(--layer-accent) 28%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      45% 40% at 6% 94%,
+      color-mix(in srgb, var(--layer-accent) 18%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--layer-accent) 7%, #070707),
+      #070707
+    );
+  mix-blend-mode: normal;
+}

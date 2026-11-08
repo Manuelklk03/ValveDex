@@ -74,6 +74,7 @@ export type UniverseArt = {
   backdrop?: string;
   icon: LineIcon;
   model?: string;
+  modelTilt?: number;
 };
 
 export const universeArt: Record<string, UniverseArt> = {
@@ -82,6 +83,8 @@ export const universeArt: Record<string, UniverseArt> = {
     backdrop: "/images/entries/anomalous-materials-half-life.webp",
     icon: lineIcons["gordon-hev"],
     model: "/models/entries/crowbar-half-life-hd.glb",
+    // La palanca es alargada: inclinada 55 grados gira como una pieza de museo, no como una hélice
+    modelTilt: 0.95,
   },
   "team-fortress": {
     accent: "#e0664a",
