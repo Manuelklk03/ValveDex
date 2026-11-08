@@ -1,17 +1,24 @@
 import type { Entry } from "@/domain/entry";
 import type { MediaAsset } from "@/domain/media-asset";
+import type { Source } from "@/domain/source";
 
-// Capturas del juego publicadas en Combine OverWiki, para los juegos que no están instalados y no se pueden
-// fotografiar. Solo entran archivos cuya página declara la licencia «Gamescreenshot» (material del juego © Valve).
+// Capturas de los juegos que no están instalados y no se pueden fotografiar: de Combine OverWiki (solo archivos cuya
+// página declara la licencia «Gamescreenshot») o de la página del juego en la tienda de Steam (`store`).
 // Cada una se reduce a 1400 px como máximo y se guarda como WebP.
 
 type WikiScreenshot = {
   entryId: string;
   gameId: string;
-  // Nombre del archivo en la wiki, sin el prefijo «File:»
-  file: string;
+  // Nombre del archivo en la wiki, sin el prefijo «File:»; sin él, la captura es de la tienda de Steam
+  file?: string;
   width: number;
   height: number;
+};
+
+const alyxStore: Source = {
+  title: "Half-Life: Alyx en Steam (capturas de la tienda)",
+  url: "https://store.steampowered.com/app/546560/HalfLife_Alyx/",
+  kind: "official",
 };
 
 const screenshots: WikiScreenshot[] = [
@@ -36,6 +43,30 @@ const screenshots: WikiScreenshot[] = [
     width: 739,
     height: 713,
   },
+  {
+    entryId: "alyx-pistol",
+    gameId: "half-life-alyx",
+    width: 1400,
+    height: 788,
+  },
+  {
+    entryId: "alyx-gravity-gloves",
+    gameId: "half-life-alyx",
+    width: 1400,
+    height: 788,
+  },
+  {
+    entryId: "alyx-combine-grunt",
+    gameId: "half-life-alyx",
+    width: 1400,
+    height: 788,
+  },
+  {
+    entryId: "alyx-russell",
+    gameId: "half-life-alyx",
+    width: 1400,
+    height: 788,
+  },
 ];
 
 function toImage(shot: WikiScreenshot, name: string): MediaAsset {
@@ -44,13 +75,19 @@ function toImage(shot: WikiScreenshot, name: string): MediaAsset {
     alt: `${name}, captura del juego`,
     width: shot.width,
     height: shot.height,
-    source: {
-      title: `File:${shot.file} - Combine OverWiki`,
-      url: `https://combineoverwiki.net/wiki/File:${shot.file}`,
-      kind: "wiki",
-    },
-    credit: "Captura del juego, publicada en Combine OverWiki",
-    license: "Gamescreenshot (material del juego © Valve)",
+    source: shot.file
+      ? {
+          title: `File:${shot.file} - Combine OverWiki`,
+          url: `https://combineoverwiki.net/wiki/File:${shot.file}`,
+          kind: "wiki",
+        }
+      : alyxStore,
+    credit: shot.file
+      ? "Captura del juego, publicada en Combine OverWiki"
+      : "Captura promocional de la página del juego en Steam",
+    license: shot.file
+      ? "Gamescreenshot (material del juego © Valve)"
+      : "Material del juego © Valve",
   };
 }
 
