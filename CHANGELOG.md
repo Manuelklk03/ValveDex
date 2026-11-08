@@ -10,6 +10,10 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 - Niveles: cada capítulo muestra la lista de sus mapas y cada nivel tiene su página (`/fichas/<capítulo>/<mapa>`) con descripción, hueco para fotos, personajes, enemigos y armas, navegación entre niveles y fuentes. Los personajes, enemigos y armas de cada nivel se leen de la lista de entidades de los `.bsp` del juego instalado (`scripts/extract-level-entities.mjs`) para Half-Life 1, Opposing Force, Blue Shift, Half-Life 2 y sus episodios.
 - Contenido con fuentes de Half-Life 2: Episode One, Episode Two y Half-Life: Alyx, y 34 fichas nuevas de Half-Life 2 (armas, 15 enemigos, personajes, curiosidades y easter eggs) con seis imágenes con licencia indicada.
+- Renders propios de Half-Life 2 y sus episodios: 47 fichas (12 armas con visor 3D, enemigos, vehículos y personajes) con imágenes WebP y modelos `.glb`, generados con el nuevo conversor `scripts/source-mdl-to-glb.mjs`, que lee los modelos Source de los VPK del juego instalado (con los brazos bajados en los personajes humanos y los zombis con su headcrab). Sustituyen a cinco capturas de wiki.
+- Capturas de Combine OverWiki (licencia Gamescreenshot) de los tres personajes de Half-Life: Decay.
+- Cuatro capturas promocionales de Half-Life: Alyx (guantes de gravedad, soldado Combine, Russell y pistola), de su página en Steam.
+- Capturas propias de 61 capítulos de Half-Life 1, Opposing Force, Blue Shift, Half-Life 2 y sus episodios, hechas con el juego instalado desde el punto de aparición del jugador.
 - Despliegue en Render: staging al llegar a `main` y producción al crear un tag, con aprobación manual y comprobación posterior (`docs/deploy.md`).
 
 ### Cambiado
