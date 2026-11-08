@@ -1,0 +1,120 @@
+/* Capa de arte detrás del contenido del dossier: z-index -1 dentro del stacking context del dossier */
+.dossier-art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Captura de fondo: tenue y con un fundido a la izquierda para no pelear con el texto */
+.dossier-art__backdrop {
+  position: absolute;
+  inset: -8% 0;
+  opacity: 0.22;
+  mask-image: linear-gradient(to right, transparent 15%, #000 85%);
+  -webkit-mask-image: linear-gradient(to right, transparent 15%, #000 85%);
+}
+
+.dossier-art__image {
+  object-fit: cover;
+  filter: grayscale(0.55) contrast(1.05);
+}
+
+/* Iconos: en el hueco entre el texto y la ficha técnica; detrás del texto en pantallas estrechas */
+.dossier-art__icons {
+  position: absolute;
+  top: 1rem;
+  right: var(--dossier-padding);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: clamp(9rem, 45vw, 16rem);
+  height: 40%;
+}
+
+.dossier-art__icon {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  background: var(--art-tint, var(--dossier-accent));
+  opacity: 0.2;
+  mask-repeat: no-repeat;
+  mask-position: right top;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: right top;
+  -webkit-mask-size: contain;
+}
+
+.dossier-art__icon:nth-child(2) {
+  height: 72%;
+  margin-top: 1rem;
+  opacity: 0.12;
+}
+
+.dossier-art__model {
+  position: absolute;
+  top: 0.5rem;
+  right: var(--dossier-padding);
+  width: clamp(9rem, 45vw, 16rem);
+  height: 44%;
+  opacity: 0;
+}
+
+.dossier-art--active .dossier-art__model {
+  opacity: 1;
+}
+
+.dossier-art--active .dossier-art__icon {
+  opacity: 0.07;
+}
+
+@media (min-width: 56rem) {
+  .dossier-art__icons,
+  .dossier-art__model {
+    right: calc(var(--dossier-padding) + 17rem + 2.5rem);
+    width: clamp(10rem, 24vw, 21rem);
+    height: min(19rem, 62%);
+  }
+
+  .dossier-art__icon {
+    opacity: 0.26;
+  }
+}
+
+/* Profundidad con el puntero y movimiento en reposo */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .dossier-art__icons {
+    translate: calc(var(--px, 0) * 14px) calc(var(--py, 0) * 9px);
+    transition: translate 300ms ease-out;
+  }
+
+  .dossier-art__model {
+    translate: calc(var(--px, 0) * 24px) calc(var(--py, 0) * 15px);
+    transition:
+      opacity 350ms ease-out 80ms,
+      translate 200ms ease-out;
+  }
+
+  .dossier-art__icon {
+    transition: opacity 300ms ease-out;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dossier-art__icon {
+    animation: dossier-art-breathe 7s ease-in-out infinite;
+  }
+
+  .dossier-art__icon:nth-child(2) {
+    animation-delay: -3s;
+  }
+}
+
+@keyframes dossier-art-breathe {
+  50% {
+    scale: 1.03;
+  }
+}
