@@ -34,18 +34,24 @@
   line-height: 1.6;
 }
 
-/* Cada saga disponible ocupa una fila completa */
-.universes-page__featured {
+/* Puertas de acceso: la primera ocupa toda la fila y el resto van de dos en dos */
+.universes-page__gates {
   display: grid;
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  list-style: none;
 }
 
-.universes-page__pending {
-  display: grid;
-  gap: 1.25rem;
+.universes-page__item {
+  min-width: 0;
+}
+
+.universes-page__item--wide {
+  grid-column: 1 / -1;
 }
 
 .universes-page__subtitle {
+  margin-bottom: 1.25rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--border);
   color: var(--muted);
@@ -54,8 +60,8 @@
   font-weight: 400;
 }
 
-.universes-page__list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-  gap: 1rem;
+@media (max-width: 52rem) {
+  .universes-page__gates {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
