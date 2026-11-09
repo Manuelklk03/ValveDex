@@ -8,6 +8,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Páginas de apartado con cabecera compacta y fichas con imagen grande, datos y modelo 3D al pasar el ratón; la ficha de cada entrada tiene cabecera a sangre con su visor 3D o su imagen y un fondo teñido por ella.
+- Icono de la pistola de Portal disparando un portal en la tarjeta de su universo.
 - Hub de cada juego rehecho: cabecera cinematográfica con captura, iconos de línea y modelo 3D bajo demanda, cifras reales, apartados con miniatura de sus propias fichas y una tira con las capturas de los capítulos.
 - Página de cada universo con la misma cabecera y tarjetas de etapa con sus años y número de juegos.
 - Rediseño de `/universos`: tarjetas de acceso con la captura del juego, iconos de línea, inclinación y profundidad con el ratón, modelo 3D que gira al activarlas y un fondo de página que cambia con cada saga.
