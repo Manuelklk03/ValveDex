@@ -214,3 +214,16 @@
     max-width: none;
   }
 }
+
+/* Cabecera baja de las páginas interiores */
+.game-hero--compact {
+  min-height: 19rem;
+}
+
+.game-hero--compact .game-hero__title {
+  font-size: clamp(2.5rem, 7vw, 4.75rem);
+}
+
+.game-hero--compact .game-hero__inner {
+  padding-bottom: 2.25rem;
+}
