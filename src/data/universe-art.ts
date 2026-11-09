@@ -65,6 +65,11 @@ export const lineIcons = {
     width: 1016,
     height: 450,
   },
+  "portal-gun-fire": {
+    src: "/images/icons/portal-gun-fire.webp",
+    width: 1016,
+    height: 553,
+  },
   wheatley: { src: "/images/icons/wheatley.webp", width: 982, height: 1016 },
   glados: { src: "/images/icons/glados.webp", width: 637, height: 1016 },
   "companion-cube": {
