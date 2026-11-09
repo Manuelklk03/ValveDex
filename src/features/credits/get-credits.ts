@@ -92,5 +92,9 @@ export function getImageCredits(): ImageCredit[] {
     ),
   );
 
-  return [...entryImages, ...decorImages];
+  const personImages = valvePeople.flatMap((person) =>
+    person.image ? [{ image: person.image, usedIn: person.name }] : [],
+  );
+
+  return [...entryImages, ...personImages, ...decorImages];
 }

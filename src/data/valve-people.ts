@@ -8,6 +8,20 @@ export const valvePeople: ValvePerson[] = [
     role: "Cofundador y presidente",
     summary:
       "Trabajó trece años en Microsoft antes de fundar Valve en 1996 junto a Mike Harrington.",
+    image: {
+      src: "/images/people/gabe-newell.webp",
+      alt: "Gabe Newell de perfil, con gafas y barba, en The International 2018",
+      width: 601,
+      height: 802,
+      source: {
+        title:
+          "File:The International 2018 (43263984845) (cropped 2).jpg - Wikimedia Commons",
+        url: "https://commons.wikimedia.org/wiki/File:The_International_2018_(43263984845)_(cropped_2).jpg",
+        kind: "wiki",
+      },
+      credit: "Dota 2 The International (Flickr)",
+      license: "CC BY 2.0",
+    },
     sources: [
       {
         title: "Gabe Newell - Wikipedia",
@@ -38,6 +52,19 @@ export const valvePeople: ValvePerson[] = [
     role: "Guionista principal",
     summary:
       "Novelista de ciencia ficción que definió la narrativa ambiental de Black Mesa y la Resistencia como guionista principal de Half-Life, Half-Life 2 y sus episodios.",
+    image: {
+      src: "/images/people/marc-laidlaw.webp",
+      alt: "Marc Laidlaw en la Game Developers Conference de 2011",
+      width: 211,
+      height: 274,
+      source: {
+        title: "File:Marc Laidlaw 2011.jpg - Wikimedia Commons",
+        url: "https://commons.wikimedia.org/wiki/File:Marc_Laidlaw_2011.jpg",
+        kind: "wiki",
+      },
+      credit: "Official GDC",
+      license: "CC BY 2.0",
+    },
     sources: [
       {
         title: "Marc Laidlaw - Combine OverWiki",
@@ -58,6 +85,19 @@ export const valvePeople: ValvePerson[] = [
     role: "Diseñador de juego y director",
     summary:
       "Cocreador del mod Team Fortress para Quake; contratado por Valve en 1998, lideró Team Fortress Classic, Team Fortress 2 y dirigió Half-Life: Alyx.",
+    image: {
+      src: "/images/people/robin-walker.webp",
+      alt: "Robin Walker hablando con un micrófono en la mano",
+      width: 640,
+      height: 920,
+      source: {
+        title: "File:Robin Walker 2.png - Wikimedia Commons",
+        url: "https://commons.wikimedia.org/wiki/File:Robin_Walker_2.png",
+        kind: "wiki",
+      },
+      credit: "Washington Interactive Network",
+      license: "CC BY 3.0",
+    },
     sources: [
       {
         title: "Robin Walker - Combine OverWiki",
@@ -78,6 +118,20 @@ export const valvePeople: ValvePerson[] = [
     role: "Diseñadora de niveles y líder de proyecto",
     summary:
       "Líder del equipo del DigiPen creador de Narbacular Drop; contratada por Valve, lideró el diseño y la dirección del desarrollo del primer Portal.",
+    image: {
+      src: "/images/people/kim-swift.webp",
+      alt: "Kim Swift en un panel de la Game Developers Conference de 2010",
+      width: 640,
+      height: 877,
+      source: {
+        title:
+          "File:Kim Swift - Game Developers Conference 2010 - Panel Day 4 (1).jpg - Wikimedia Commons",
+        url: "https://commons.wikimedia.org/wiki/File:Kim_Swift_-_Game_Developers_Conference_2010_-_Panel_Day_4_(1).jpg",
+        kind: "wiki",
+      },
+      credit: "Official GDC",
+      license: "CC BY 2.0",
+    },
     sources: [
       {
         title: "Kim Swift - Combine OverWiki",
@@ -113,6 +167,20 @@ export const valvePeople: ValvePerson[] = [
     role: "Guionista y evangelista de realidad virtual",
     summary:
       "Coguionista de Half-Life 2: Episode One, Episode Two, Portal, Left 4 Dead y Left 4 Dead 2 junto a Erik Wolpaw, además de portavoz de los primeros pasos de Valve en realidad virtual.",
+    image: {
+      src: "/images/people/chet-faliszek.webp",
+      alt: "Chet Faliszek en los Game Developers Conference Awards de 2012",
+      width: 640,
+      height: 796,
+      source: {
+        title:
+          "File:Gdc 2012 wolpaw faliszek pinkerton cropped (cropped 1).jpg - Wikimedia Commons",
+        url: "https://commons.wikimedia.org/wiki/File:Gdc_2012_wolpaw_faliszek_pinkerton_cropped_(cropped_1).jpg",
+        kind: "wiki",
+      },
+      credit: "Official GDC",
+      license: "CC BY 2.0",
+    },
     sources: [
       {
         title: "Chet Faliszek - Combine OverWiki",
