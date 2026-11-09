@@ -1,11 +1,17 @@
+/* La cabecera va a sangre; el resto vive en su contenedor */
 .entry-page {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
   width: 100%;
-  max-width: var(--content-width);
+}
+
+.entry-page__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: min(100% - 2rem, var(--content-width));
   margin-inline: auto;
-  padding: 3rem 1rem;
+  padding: 2.5rem 0 4rem;
 }
 
 .entry-page__section {
@@ -68,17 +74,6 @@
 
 .entry-page__source-link:hover {
   color: var(--accent);
-}
-
-.entry-page__image {
-  width: 100%;
-  max-width: 32rem;
-  height: auto;
-}
-
-.entry-page__credit {
-  color: var(--muted);
-  font-size: 0.875rem;
 }
 
 /* Niveles de un capítulo: una fila por archivo de mapa; la fila entera es el enlace */
