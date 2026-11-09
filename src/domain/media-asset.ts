@@ -8,4 +8,6 @@ export type MediaAsset = {
   source: Source;
   credit?: string;
   license?: string;
+  // Texto de la licencia, para las que exigen enlazarla (Creative Commons)
+  licenseUrl?: string;
 };

@@ -70,7 +70,21 @@ export default async function ValvePersonPage({
                 >
                   {person.image.credit}
                 </a>
-                {person.image.license && ` · ${person.image.license}`}
+                {person.image.license && (
+                  <>
+                    {" · "}
+                    {person.image.licenseUrl ? (
+                      <a
+                        href={person.image.licenseUrl}
+                        className={styles["valve-page__source-link"]}
+                      >
+                        {person.image.license}
+                      </a>
+                    ) : (
+                      person.image.license
+                    )}
+                  </>
+                )}
               </figcaption>
             </figure>
           )
