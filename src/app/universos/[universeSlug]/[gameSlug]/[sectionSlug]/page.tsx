@@ -1,14 +1,18 @@
 ﻿import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
+import type { CSSProperties } from "react";
 import { notFound } from "next/navigation";
 import { isEntryCategory } from "@/domain/entry";
 import type { GameSection } from "@/domain/game-section";
+import { dossierArt } from "@/data/dossier-art";
+import { EntryTile } from "@/features/catalog/components/entry-tile";
 import {
   getEntriesByGameAndCategory,
+  getEntryAppearance,
   getEntryThumbnail,
   getEntrySummaryForGame,
 } from "@/features/catalog/get-entries";
+import { getEntryFacts } from "@/features/catalog/get-entry-facts";
+import { GameHero } from "@/features/games/components/game-hero";
 import { getGameLore } from "@/features/games/get-game-lore";
 import {
   getGameSectionBySlug,
@@ -20,7 +24,6 @@ import {
   getUniverses,
 } from "@/features/universes/get-universes";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { DossierHeader } from "@/components/ui/dossier-header";
 import styles from "./page.module.css";
 
 function hasSectionContent(gameId: string, section: GameSection): boolean {
@@ -103,116 +106,116 @@ export default async function SectionPage({
 
   return (
     <main className={styles["section-page"]}>
-      <Breadcrumb
-        items={[
-          { label: "Universos", href: "/universos" },
-          { label: universe.name, href: `/universos/${universe.slug}` },
-          {
-            label: game.name,
-            href: `/universos/${universe.slug}/${game.slug}`,
-          },
-          { label: section.name },
-        ]}
-      />
+      {/* El acento de la cabecera es el color del sector del apartado */}
+      <div
+        style={{ "--accent": `var(--sector-${section.id})` } as CSSProperties}
+      >
+        <GameHero
+          compact
+          name={section.name}
+          summary={section.description}
+          art={
+            dossierArt[game.id]?.backdrop
+              ? { backdrop: dossierArt[game.id].backdrop, icons: [] }
+              : undefined
+          }
+          specs={[
+            { label: "Juego", value: game.name },
+            {
+              label: "Contenido",
+              value:
+                data.kind === "lore"
+                  ? `${data.lore.paragraphs.length} ${data.lore.paragraphs.length === 1 ? "párrafo" : "párrafos"}`
+                  : `${data.entries.length} ${data.entries.length === 1 ? "ficha" : "fichas"}`,
+            },
+          ]}
+          breadcrumb={
+            <Breadcrumb
+              items={[
+                { label: "Universos", href: "/universos" },
+                { label: universe.name, href: `/universos/${universe.slug}` },
+                {
+                  label: game.name,
+                  href: `/universos/${universe.slug}/${game.slug}`,
+                },
+                { label: section.name },
+              ]}
+            />
+          }
+        />
+      </div>
 
-      <DossierHeader
-        title={section.name}
-        summary={section.description}
-        specs={[
-          { label: "Juego", value: game.name },
-          {
-            label: "Contenido",
-            value:
-              data.kind === "lore"
-                ? `${data.lore.paragraphs.length} ${data.lore.paragraphs.length === 1 ? "párrafo" : "párrafos"}`
-                : `${data.entries.length} ${data.entries.length === 1 ? "ficha" : "fichas"}`,
-          },
-        ]}
-      />
-
-      {data.kind === "lore" && (
-        <article className={styles["section-page__lore"]}>
-          {data.lore.paragraphs
-            .filter((paragraph) => !paragraph.spoiler)
-            .map((paragraph, index) => (
-              <p
-                key={`lore-premise-${index}`}
-                className={styles["section-page__lore-text"]}
-              >
-                {paragraph.text}
-              </p>
-            ))}
-          {data.lore.paragraphs.some((paragraph) => paragraph.spoiler) && (
-            <details className={styles["section-page__spoilers"]}>
-              <summary className={styles["section-page__spoilers-toggle"]}>
-                Contiene spoilers: mostrar el resto de la historia
-              </summary>
-              {data.lore.paragraphs
-                .filter((paragraph) => paragraph.spoiler)
-                .map((paragraph, index) => (
-                  <p
-                    key={`lore-spoiler-${index}`}
-                    className={styles["section-page__lore-text"]}
-                  >
-                    {paragraph.text}
-                  </p>
-                ))}
-            </details>
-          )}
-          <p className={styles["section-page__sources"]}>
-            Fuente:{" "}
-            {data.lore.sources.map((source, index) => (
-              <span key={source.url}>
-                {index > 0 && ", "}
-                <a
-                  href={source.url}
-                  className={styles["section-page__source-link"]}
+      <div className={styles["section-page__content"]}>
+        {data.kind === "lore" && (
+          <article className={styles["section-page__lore"]}>
+            {data.lore.paragraphs
+              .filter((paragraph) => !paragraph.spoiler)
+              .map((paragraph, index) => (
+                <p
+                  key={`lore-premise-${index}`}
+                  className={styles["section-page__lore-text"]}
                 >
-                  {source.title}
-                </a>
-              </span>
-            ))}
-          </p>
-        </article>
-      )}
-
-      {data.kind === "entries" &&
-        (data.entries.length === 0 ? (
-          <p className={styles["section-page__empty"]}>
-            Todavía no hay fichas en este apartado.
-          </p>
-        ) : (
-          <ul className={styles["section-page__entries"]}>
-            {data.entries.map((entry) => {
-              const image = getEntryThumbnail(entry, game.id);
-
-              return (
-                <li key={entry.id} className={styles["section-page__entry"]}>
-                  {image && (
-                    <Image
-                      src={image.src}
-                      alt=""
-                      width={image.width}
-                      height={image.height}
-                      className={styles["section-page__entry-image"]}
-                    />
-                  )}
-                  <h2 className={styles["section-page__entry-title"]}>
-                    <Link
-                      href={`/fichas/${entry.slug}`}
-                      className={styles["section-page__entry-link"]}
+                  {paragraph.text}
+                </p>
+              ))}
+            {data.lore.paragraphs.some((paragraph) => paragraph.spoiler) && (
+              <details className={styles["section-page__spoilers"]}>
+                <summary className={styles["section-page__spoilers-toggle"]}>
+                  Contiene spoilers: mostrar el resto de la historia
+                </summary>
+                {data.lore.paragraphs
+                  .filter((paragraph) => paragraph.spoiler)
+                  .map((paragraph, index) => (
+                    <p
+                      key={`lore-spoiler-${index}`}
+                      className={styles["section-page__lore-text"]}
                     >
-                      {entry.name}
-                    </Link>
-                  </h2>
-                  <p className={styles["section-page__entry-summary"]}>
-                    {getEntrySummaryForGame(entry, game.id)}
-                  </p>
-                </li>
-              );
-            })}
-          </ul>
-        ))}
+                      {paragraph.text}
+                    </p>
+                  ))}
+              </details>
+            )}
+            <p className={styles["section-page__sources"]}>
+              Fuente:{" "}
+              {data.lore.sources.map((source, index) => (
+                <span key={source.url}>
+                  {index > 0 && ", "}
+                  <a
+                    href={source.url}
+                    className={styles["section-page__source-link"]}
+                  >
+                    {source.title}
+                  </a>
+                </span>
+              ))}
+            </p>
+          </article>
+        )}
+
+        {data.kind === "entries" &&
+          (data.entries.length === 0 ? (
+            <p className={styles["section-page__empty"]}>
+              Todavía no hay fichas en este apartado.
+            </p>
+          ) : (
+            <ul className={styles["section-page__entries"]}>
+              {data.entries.map((entry) => (
+                <EntryTile
+                  key={entry.id}
+                  href={`/fichas/${entry.slug}`}
+                  name={entry.name}
+                  summary={getEntrySummaryForGame(entry, game.id)}
+                  image={getEntryThumbnail(entry, game.id)}
+                  isCapture={section.id === "maps"}
+                  model={
+                    getEntryAppearance(entry, game.id)?.images?.models?.original
+                  }
+                  facts={getEntryFacts(entry).slice(0, 2)}
+                />
+              ))}
+            </ul>
+          ))}
+      </div>
     </main>
   );
 }

@@ -68,7 +68,7 @@ export const lineIcons = {
   "portal-gun-fire": {
     src: "/images/icons/portal-gun-fire.webp",
     width: 1016,
-    height: 553,
+    height: 383,
   },
   wheatley: { src: "/images/icons/wheatley.webp", width: 982, height: 1016 },
   glados: { src: "/images/icons/glados.webp", width: 637, height: 1016 },
@@ -106,7 +106,7 @@ export const universeArt: Record<string, UniverseArt> = {
   },
   portal: {
     accent: "#4fb4ff",
-    // La pistola disparando un portal: el anillo va delante, así el trazo dibuja primero el portal y luego el arma
+    // La pistola mira a la izquierda y dispara una bola de energía al portal; el trazo se dibuja de izquierda a derecha, primero el portal y luego el arma
     icon: lineIcons["portal-gun-fire"],
   },
   "counter-strike": {

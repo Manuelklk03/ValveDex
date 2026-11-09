@@ -1,0 +1,28 @@
+.entry-media {
+  display: grid;
+  gap: 0.625rem;
+  margin: 0;
+}
+
+.entry-media__image {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+
+.entry-media__credit {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.entry-media__link {
+  color: var(--muted);
+  text-decoration: underline;
+}
+
+.entry-media__link:hover {
+  color: var(--accent);
+}

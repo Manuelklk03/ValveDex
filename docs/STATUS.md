@@ -310,6 +310,14 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 3. **Completar la etapa Source:** contenido con fuentes de Episode One, Episode Two y Alyx (hoy solo tienen lore).
 4. Opcionales: intro de Valve con grabación propia, recorrido con teclado del resto de páginas y `v0.4.0` cuando haya un bloque nuevo estable.
 
+**Rediseño realista, bloque 2b: apartados y fichas (Claude, 2026-11-09, rama `feature/section-entry-redesign`):**
+
+- _Página de apartado:_ `GameHero` con `compact` y `EntryTile` (cliente: imagen grande, datos en chips, resumen, insignia «3D» y un solo `ModelSpinner` mientras la ficha está activa por ratón o teclado).
+- _Ficha (`/fichas/[slug]`):_ `EntryHero` (cabecera a sangre con fondo desenfocado de su propia imagen, hoja técnica y visor a la derecha) y `EntryMedia` (comparador, 3D o imagen con crédito, también en «Aparece en»). La primera aparición no se repite.
+- _Portal:_ icono `portal-gun-fire` (anillo del portal redibujado por Claude, no es el archivo original de Manuel).
+- _Comprobado:_ `npm run check` (114 pruebas) y, en navegador a 1440 y 390 px, `/fichas/palanca-half-life-2`, `gordon-freeman` y `anomalous-materials` sin desbordes ni errores. Sin comprobar: contraste AA sobre el fondo teñido, teclado en las fichas nuevas y revisión de Codex.
+- _Pendiente:_ bloque 3 (Valve y Steam: fotos de personas, reloj animado y vapor).
+
 **Rediseño realista, bloque 2: hub de juego y página del universo (Claude, 2026-11-09, rama `feature/hub-redesign`; brief del director de diseño y skills `emil-design-eng:animate`, `impeccable` y `frontend-design`):**
 
 - _Correcciones de Manuel tras el bloque 1:_ hormiga león fuera de Half-Life 2 (queda en Episode Two con el Hunter), nuevo icono del Gordon de Half-Life 2 (`gordon-hl2.webp`, con la palanca y la granada) junto al emblema C17, y las piernas de Barney ya no se cortan (`iconsHeight` por juego en `dossier-art.ts`).

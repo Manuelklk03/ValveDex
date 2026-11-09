@@ -25,6 +25,8 @@ type GameHeroProps = {
   breadcrumb: ReactNode;
   // Datos extra bajo el resumen: juego base, fuentes…
   children?: ReactNode;
+  // Versión baja para páginas interiores (apartados): sin modelo 3D y con el título más pequeño
+  compact?: boolean;
 };
 
 // Cabecera cinematográfica del hub de un juego: captura a sangre con parallax, iconos de línea que se dibujan
@@ -36,6 +38,7 @@ export function GameHero({
   art,
   breadcrumb,
   children,
+  compact = false,
 }: GameHeroProps) {
   const root = useRef<HTMLElement>(null);
   const [showModel, setShowModel] = useState(false);
@@ -90,9 +93,13 @@ export function GameHero({
     setShowModel((current) => !current);
   }
 
-  const className = showModel
-    ? `${styles["game-hero"]} ${styles["game-hero--model"]}`
-    : styles["game-hero"];
+  const className = [
+    styles["game-hero"],
+    showModel && styles["game-hero--model"],
+    compact && styles["game-hero--compact"],
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <header ref={root} className={className}>
@@ -156,7 +163,7 @@ export function GameHero({
         </dl>
 
         <div className={styles["game-hero__extra"]} data-hero-reveal>
-          {art?.model && (
+          {art?.model && !compact && (
             <button
               type="button"
               className={styles["game-hero__model-button"]}
