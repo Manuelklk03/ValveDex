@@ -43,10 +43,11 @@
   position: absolute;
   top: 0.625rem;
   right: 0.625rem;
+  background: color-mix(in srgb, var(--background) 82%, transparent);
   padding: 0.125rem 0.5rem;
   border: 1px solid var(--accent);
   border-radius: 3px;
-  color: var(--accent);
+  color: color-mix(in srgb, var(--accent) 45%, var(--foreground));
   font-family: var(--font-plex-mono), monospace;
   font-size: 0.6875rem;
   letter-spacing: 0.08em;

@@ -66,7 +66,8 @@
 }
 
 .entry-hero__kicker {
-  color: var(--sector-color);
+  /* Aclarado hacia el texto para llegar a AA sobre cualquier fondo teñido */
+  color: color-mix(in srgb, var(--sector-color) 45%, var(--foreground));
   font-family: var(--font-plex-mono), monospace;
   font-size: 0.8125rem;
   letter-spacing: 0.08em;
