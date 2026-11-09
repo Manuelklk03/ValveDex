@@ -2,7 +2,7 @@
 // Pose: la de referencia (brazos abiertos) o, con [brazos] en grados (24 queda natural), con los brazos bajados.
 // Uso: node scripts/source-mdl-to-glb.mjs <carpeta del juego> <mod> <modelo> <salida.glb> [cuerpos] [piel] [brazos]
 //   node scripts/source-mdl-to-glb.mjs "H:/SteamLibrary/steamapps/common/Half-Life 2" hl2 models/weapons/w_crowbar.mdl w_crowbar.glb
-// <mod>: hl2, episodic o ep2 (ep2 lee antes de episodic y de hl2). [cuerpos]: submodelo de cada parte, como 0,1,0.
+// <mod>: hl2, episodic o ep2 (ep2 lee antes de episodic y de hl2); l4d o l4d2 con la carpeta de Left 4 Dead o Left 4 Dead 2. [cuerpos]: submodelo de cada parte, como 0,1,0.
 import { openMount } from "./lib/vpk.mjs";
 import { decodeVtf } from "./lib/vtf.mjs";
 import { writeGlb } from "./lib/glb.mjs";
@@ -22,6 +22,8 @@ const MOUNTS = {
   hl2: ["hl2"],
   episodic: ["episodic", "hl2"],
   ep2: ["ep2", "episodic", "hl2"],
+  l4d: ["left4dead"],
+  l4d2: ["left4dead2"],
 };
 if (!MOUNTS[mod])
   throw new Error(`Mod desconocido: ${mod} (${Object.keys(MOUNTS)})`);
@@ -267,11 +269,11 @@ const cdTextures = Array.from({ length: i32(mdl, 212) }, (_, c) =>
 function parseVmt(text, depth = 0) {
   const clean = text.replace(/\/\/.*$/gm, "");
   const values = {};
-  // El valor puede ir entre comillas o sin ellas ("$additive" 1)
-  for (const [, key, quoted, bare] of clean.matchAll(
-    /"([^"]+)"\s+(?:"([^"]*)"|([^\s"{}]+))/g,
+  // La clave y el valor pueden ir entre comillas o sin ellas: "$additive" 1 en Half-Life 2, $baseTexture "…" en Left 4 Dead
+  for (const [, quotedKey, bareKey, quoted, bare] of clean.matchAll(
+    /(?:"([^"]+)"|(\$?[A-Za-z_][\w$]*))\s+(?:"([^"]*)"|([^\s"{}]+))/g,
   ))
-    values[key.toLowerCase()] = quoted ?? bare;
+    values[(quotedKey ?? bareKey).toLowerCase()] = quoted ?? bare;
   // Los «patch» incluyen otro material y solo cambian unas claves
   if (values.include && depth < 4) {
     const parent = vpk.read(values.include);

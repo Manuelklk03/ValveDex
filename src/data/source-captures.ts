@@ -10,10 +10,12 @@ type SourceCapture = {
   entryId: string;
   gameId: string;
   // Carpeta del juego de la que sale el modelo
-  folder: "hl2" | "episodic" | "ep2";
+  folder: "hl2" | "episodic" | "ep2" | "left4dead" | "left4dead2";
   model: string;
   width: number;
   height: number;
+  // Fuerza o deniega el .glb para girarlo en 3D; por defecto, las armas w_ de Half-Life 2
+  model3d?: boolean;
 };
 
 const captures: SourceCapture[] = [
@@ -393,13 +395,152 @@ const captures: SourceCapture[] = [
     width: 568,
     height: 542,
   },
+  {
+    entryId: "l4d-bill",
+    gameId: "left-4-dead",
+    folder: "left4dead",
+    model: "survivors/survivor_namvet",
+    width: 282,
+    height: 909,
+  },
+  {
+    entryId: "l4d-zoey",
+    gameId: "left-4-dead",
+    folder: "left4dead",
+    model: "survivors/survivor_teenangst",
+    width: 228,
+    height: 906,
+  },
+  {
+    entryId: "l4d-louis",
+    gameId: "left-4-dead",
+    folder: "left4dead",
+    model: "survivors/survivor_manager",
+    width: 274,
+    height: 915,
+  },
+  {
+    entryId: "l4d-francis",
+    gameId: "left-4-dead",
+    folder: "left4dead",
+    model: "survivors/survivor_biker",
+    width: 482,
+    height: 770,
+  },
+  {
+    entryId: "l4d2-coach",
+    gameId: "left-4-dead-2",
+    folder: "left4dead2",
+    model: "survivors/survivor_coach",
+    width: 282,
+    height: 897,
+  },
+  {
+    entryId: "l4d2-ellis",
+    gameId: "left-4-dead-2",
+    folder: "left4dead2",
+    model: "survivors/survivor_mechanic",
+    width: 332,
+    height: 872,
+  },
+  {
+    entryId: "l4d2-nick",
+    gameId: "left-4-dead-2",
+    folder: "left4dead2",
+    model: "survivors/survivor_gambler",
+    width: 277,
+    height: 902,
+  },
+  {
+    entryId: "l4d2-rochelle",
+    gameId: "left-4-dead-2",
+    folder: "left4dead2",
+    model: "survivors/survivor_producer",
+    width: 244,
+    height: 910,
+  },
+  {
+    entryId: "l4d-hunter",
+    gameId: "left-4-dead",
+    folder: "left4dead",
+    model: "infected/hunter",
+    width: 480,
+    height: 773,
+  },
+  {
+    entryId: "l4d-smoker",
+    gameId: "left-4-dead",
+    folder: "left4dead",
+    model: "infected/smoker",
+    width: 368,
+    height: 831,
+  },
+  {
+    entryId: "l4d-boomer",
+    gameId: "left-4-dead",
+    folder: "left4dead",
+    model: "infected/boomer",
+    width: 484,
+    height: 731,
+  },
+  {
+    entryId: "l4d-tank",
+    gameId: "left-4-dead",
+    folder: "left4dead",
+    model: "infected/hulk",
+    width: 472,
+    height: 744,
+  },
+  {
+    entryId: "l4d-witch",
+    gameId: "left-4-dead",
+    folder: "left4dead",
+    model: "infected/witch",
+    width: 305,
+    height: 878,
+  },
+  {
+    entryId: "l4d-charger",
+    gameId: "left-4-dead-2",
+    folder: "left4dead2",
+    model: "infected/charger",
+    width: 486,
+    height: 735,
+  },
+  {
+    entryId: "l4d-auto-shotgun",
+    gameId: "left-4-dead",
+    folder: "left4dead",
+    model: "w_models/weapons/w_autoshot_m4super",
+    width: 564,
+    height: 267,
+    model3d: true,
+  },
+  {
+    entryId: "l4d-pipe-bomb",
+    gameId: "left-4-dead",
+    folder: "left4dead",
+    model: "w_models/weapons/w_eq_pipebomb",
+    width: 271,
+    height: 858,
+    model3d: true,
+  },
+  {
+    entryId: "l4d-frying-pan",
+    gameId: "left-4-dead-2",
+    folder: "left4dead2",
+    model: "weapons/melee/w_frying_pan",
+    width: 357,
+    height: 743,
+    model3d: true,
+  },
 ];
 
 function toImages(capture: SourceCapture, name: string) {
-  const { entryId, gameId, folder, model, width, height } = capture;
+  const { entryId, gameId, folder, model, width, height, model3d } = capture;
   const base = `${entryId}-${gameId}`;
   // Las armas (modelos w_) también tienen su .glb para girarlas en 3D
-  const hasModel3d = model.startsWith("weapons/w_");
+  const hasModel3d = model3d ?? model.startsWith("weapons/w_");
   const original: MediaAsset = {
     src: `/images/entries/${base}.webp`,
     alt: `${name}, modelo del juego`,
