@@ -10,6 +10,8 @@ export type DossierArt = {
   modelTilt?: number;
   // Color del icono si no debe ser el del dossier (valor de `background`, admite degradados)
   tint?: string;
+  // Alto de la caja de iconos en pantallas anchas, si debe ser menor que el de serie (valor CSS)
+  iconsHeight?: string;
 };
 
 export const dossierArt: Record<string, DossierArt> = {
@@ -25,15 +27,16 @@ export const dossierArt: Record<string, DossierArt> = {
     backdrop:
       "/images/entries/bs-living-quarters-outbound-half-life-blue-shift.webp",
     icons: [lineIcons.barney],
-    // Blanco sobre la banda azul de la cabecera y azul sobre la parte clara, donde el blanco no se vería
-    tint: "linear-gradient(to bottom, #ffffff 0 10rem, #1f4fa8 10rem)",
+    // Blanco y a menos altura que el resto: Barney cabe entero dentro de la banda azul de la cabecera
+    tint: "#ffffff",
+    iconsHeight: "14.5rem",
   },
   "half-life-decay": {
     icons: [lineIcons["gina-colette"]],
   },
   "half-life-2": {
     backdrop: "/images/entries/hl2-highway-17-half-life-2.webp",
-    icons: [lineIcons["c17-skull"], lineIcons.antlion],
+    icons: [lineIcons["gordon-hl2"], lineIcons["c17-skull"]],
     model: "/models/universes/hl2-gravity-gun.glb",
     modelTilt: 0.5,
   },

@@ -1,11 +1,17 @@
+/* La cabecera va a sangre; el resto del contenido vive en su contenedor */
 .game-page {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
   width: 100%;
-  max-width: var(--content-width);
+}
+
+.game-page__content {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  width: min(100% - 2rem, var(--content-width));
   margin-inline: auto;
-  padding: 3rem 1rem;
+  padding: 2.5rem 0 4rem;
 }
 
 .game-page__meta {
@@ -42,11 +48,28 @@
   font-weight: 700;
 }
 
+/* Cuatro columnas: los apartados grandes ocupan dos y los pequeños una */
 .game-page__sections {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-  align-items: start;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
+  list-style: none;
+}
+
+@media (max-width: 64rem) {
+  .game-page__sections {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 40rem) {
+  .game-page__sections {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .game-page__sections > li {
+    grid-column: auto !important;
+  }
 }
 
 .game-page__mods,

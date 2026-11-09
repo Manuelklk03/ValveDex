@@ -4,7 +4,7 @@
 
 export type LineIcon = { src: string; width: number; height: number };
 
-// Los 17 iconos de línea, recortados al trazo (lado largo de 1000 px)
+// Los 19 iconos de línea, recortados al trazo (lado largo de 1000 px)
 export const lineIcons = {
   hunter: { src: "/images/icons/hunter.webp", width: 938, height: 1016 },
   "alyx-pistol": {
@@ -34,6 +34,11 @@ export const lineIcons = {
     height: 542,
   },
   antlion: { src: "/images/icons/antlion.webp", width: 869, height: 1016 },
+  "gordon-hl2": {
+    src: "/images/icons/gordon-hl2.webp",
+    width: 758,
+    height: 1016,
+  },
   "gordon-hev": {
     src: "/images/icons/gordon-hev.webp",
     width: 471,
@@ -59,6 +64,11 @@ export const lineIcons = {
     src: "/images/icons/portal-gun.webp",
     width: 1016,
     height: 450,
+  },
+  "portal-gun-fire": {
+    src: "/images/icons/portal-gun-fire.webp",
+    width: 1016,
+    height: 553,
   },
   wheatley: { src: "/images/icons/wheatley.webp", width: 982, height: 1016 },
   glados: { src: "/images/icons/glados.webp", width: 637, height: 1016 },
@@ -96,7 +106,8 @@ export const universeArt: Record<string, UniverseArt> = {
   },
   portal: {
     accent: "#4fb4ff",
-    icon: lineIcons["portal-gun"],
+    // La pistola disparando un portal: el anillo va delante, así el trazo dibuja primero el portal y luego el arma
+    icon: lineIcons["portal-gun-fire"],
   },
   "counter-strike": {
     accent: "#d2a64a",

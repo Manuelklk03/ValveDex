@@ -125,7 +125,10 @@ export function DossierArt({ art }: { art: DossierArtData }) {
       ref={root}
       className={className}
       style={
-        art.tint ? ({ "--art-tint": art.tint } as CSSProperties) : undefined
+        {
+          "--art-tint": art.tint,
+          "--art-icons-height": art.iconsHeight,
+        } as CSSProperties
       }
       aria-hidden="true"
     >

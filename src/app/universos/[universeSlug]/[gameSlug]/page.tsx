@@ -1,10 +1,19 @@
 ﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { SectorSign } from "@/features/games/components/sector-sign";
-import { getSectionStatuses } from "@/features/games/get-section-statuses";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { dossierArt } from "@/data/dossier-art";
+import { ChapterStrip } from "@/features/games/components/chapter-strip";
+import { GameHero } from "@/features/games/components/game-hero";
+import { SectionPortal } from "@/features/games/components/section-portal";
+import { StatStrip } from "@/features/games/components/stat-strip";
+import {
+  getChapterShots,
+  getGameStats,
+  getSectionPreviews,
+} from "@/features/games/get-game-overview";
 import { getGameYearLabel } from "@/features/games/get-game-year-label";
+import { getSectionStatuses } from "@/features/games/get-section-statuses";
 import {
   getGameById,
   getGamesByUniverse,
@@ -15,7 +24,6 @@ import {
 } from "@/features/universes/get-universes";
 
 import styles from "./page.module.css";
-import { DossierHeader } from "@/components/ui/dossier-header";
 
 // Next 16.4 avisa en desarrollo de que `params` se lee fuera de Suspense; la página se genera entera
 // en el build, así que se excluye de la validación de navegación instantánea
@@ -58,6 +66,9 @@ export default async function GamePage({
 
   const { universe, game } = result;
   const statuses = getSectionStatuses(game.id);
+  const previews = getSectionPreviews(game.id, statuses);
+  const stats = getGameStats(game.id, statuses);
+  const chapterShots = getChapterShots(game.id);
 
   const baseGame = game.baseGameId ? getGameById(game.baseGameId) : undefined;
   const mods = getModsByGame(game.id);
@@ -66,16 +77,10 @@ export default async function GamePage({
 
   return (
     <main className={styles["game-page"]}>
-      <Breadcrumb
-        items={[
-          { label: "Universos", href: "/universos" },
-          { label: universe.name, href: `/universos/${universe.slug}` },
-          { label: game.name },
-        ]}
-      />
-      <DossierHeader
-        title={game.name}
+      <GameHero
+        name={game.name}
         summary={game.description}
+        art={dossierArt[game.id]}
         specs={[
           { label: "Año", value: getGameYearLabel(game) },
           { label: "Estudio", value: game.developer },
@@ -84,6 +89,15 @@ export default async function GamePage({
             value: `${availableCount} de ${statuses.length}`,
           },
         ]}
+        breadcrumb={
+          <Breadcrumb
+            items={[
+              { label: "Universos", href: "/universos" },
+              { label: universe.name, href: `/universos/${universe.slug}` },
+              { label: game.name },
+            ]}
+          />
+        }
       >
         {baseGame && (
           <p className={styles["game-page__meta"]}>
@@ -109,81 +123,92 @@ export default async function GamePage({
             </span>
           ))}
         </p>
-      </DossierHeader>
+      </GameHero>
 
-      <section
-        className={styles["game-page__section"]}
-        aria-labelledby="sections-title"
-      >
-        <h2 id="sections-title" className={styles["game-page__section-title"]}>
-          Apartados
-        </h2>
-        <ul className={styles["game-page__sections"]}>
-          {statuses.map((status, index) => (
-            <SectorSign
-              key={status.section.id}
-              index={index + 1}
-              status={status}
-              href={`/universos/${universe.slug}/${game.slug}/${status.section.slug}`}
-            />
-          ))}
-        </ul>
-      </section>
+      <div className={styles["game-page__content"]}>
+        <StatStrip stats={stats} />
 
-      {mods.length > 0 && (
         <section
           className={styles["game-page__section"]}
-          aria-labelledby="mods-title"
-        >
-          <h2 id="mods-title" className={styles["game-page__section-title"]}>
-            Mods
-          </h2>
-          <ul className={styles["game-page__mods"]}>
-            {mods.map((mod) => (
-              <li key={mod.id}>
-                <Link
-                  href={`/universos/${universe.slug}/${mod.slug}`}
-                  className={styles["game-page__mod-link"]}
-                >
-                  {mod.name}
-                </Link>{" "}
-                <span className={styles["game-page__meta-muted"]}>
-                  ({getGameYearLabel(mod)} · {mod.developer})
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {cancelledGames.length > 0 && (
-        <section
-          className={styles["game-page__section"]}
-          aria-labelledby="cancelled-title"
+          aria-labelledby="sections-title"
         >
           <h2
-            id="cancelled-title"
+            id="sections-title"
             className={styles["game-page__section-title"]}
           >
-            Proyectos cancelados
+            Apartados
           </h2>
-          <ul className={styles["game-page__cancelled"]}>
-            {cancelledGames.map((cancelled) => (
-              <li key={cancelled.id}>
-                <Link
-                  href={`/universos/${universe.slug}/${cancelled.slug}`}
-                  className={styles["game-page__cancelled-link"]}
-                >
-                  {cancelled.name}
-                </Link>{" "}
-                <span className={styles["game-page__meta-muted"]}>
-                  ({getGameYearLabel(cancelled)} · {cancelled.developer})
-                </span>
-              </li>
+          <ul className={styles["game-page__sections"]}>
+            {statuses.map((status, index) => (
+              <SectionPortal
+                key={status.section.id}
+                index={index + 1}
+                status={status}
+                preview={previews[status.section.id]}
+                gameIcon={dossierArt[game.id]?.icons[0]}
+                href={`/universos/${universe.slug}/${game.slug}/${status.section.slug}`}
+              />
             ))}
           </ul>
         </section>
-      )}
+
+        <ChapterStrip shots={chapterShots} />
+
+        {mods.length > 0 && (
+          <section
+            className={styles["game-page__section"]}
+            aria-labelledby="mods-title"
+          >
+            <h2 id="mods-title" className={styles["game-page__section-title"]}>
+              Mods
+            </h2>
+            <ul className={styles["game-page__mods"]}>
+              {mods.map((mod) => (
+                <li key={mod.id}>
+                  <Link
+                    href={`/universos/${universe.slug}/${mod.slug}`}
+                    className={styles["game-page__mod-link"]}
+                  >
+                    {mod.name}
+                  </Link>{" "}
+                  <span className={styles["game-page__meta-muted"]}>
+                    ({getGameYearLabel(mod)} · {mod.developer})
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {cancelledGames.length > 0 && (
+          <section
+            className={styles["game-page__section"]}
+            aria-labelledby="cancelled-title"
+          >
+            <h2
+              id="cancelled-title"
+              className={styles["game-page__section-title"]}
+            >
+              Proyectos cancelados
+            </h2>
+            <ul className={styles["game-page__cancelled"]}>
+              {cancelledGames.map((cancelled) => (
+                <li key={cancelled.id}>
+                  <Link
+                    href={`/universos/${universe.slug}/${cancelled.slug}`}
+                    className={styles["game-page__cancelled-link"]}
+                  >
+                    {cancelled.name}
+                  </Link>{" "}
+                  <span className={styles["game-page__meta-muted"]}>
+                    ({getGameYearLabel(cancelled)} · {cancelled.developer})
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </div>
     </main>
   );
 }

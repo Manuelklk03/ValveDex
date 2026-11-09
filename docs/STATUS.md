@@ -310,6 +310,15 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 3. **Completar la etapa Source:** contenido con fuentes de Episode One, Episode Two y Alyx (hoy solo tienen lore).
 4. Opcionales: intro de Valve con grabación propia, recorrido con teclado del resto de páginas y `v0.4.0` cuando haya un bloque nuevo estable.
 
+**Rediseño realista, bloque 2: hub de juego y página del universo (Claude, 2026-11-09, rama `feature/hub-redesign`; brief del director de diseño y skills `emil-design-eng:animate`, `impeccable` y `frontend-design`):**
+
+- _Correcciones de Manuel tras el bloque 1:_ hormiga león fuera de Half-Life 2 (queda en Episode Two con el Hunter), nuevo icono del Gordon de Half-Life 2 (`gordon-hl2.webp`, con la palanca y la granada) junto al emblema C17, y las piernas de Barney ya no se cortan (`iconsHeight` por juego en `dossier-art.ts`).
+- _Hub de juego (`/universos/[universo]/[juego]`):_ `GameHero` (captura a sangre con parallax, iconos de línea que se dibujan, ficha técnica y botón «Ver un modelo 3D» con un solo lienzo por página), `StatStrip` (cifras reales que cuentan al entrar), `SectionPortal` (apartados con la miniatura real de sus fichas; sin imagen propia, el icono de línea del juego), `ChapterStrip` (carrusel con imán de las capturas de capítulo). `SectorSign` borrado. Datos en `get-game-overview.ts`.
+- _Página del universo:_ reutiliza `GameHero` con el arte de `universe-art.ts` y sustituye los chips de etapa por tarjetas con años y número de juegos. Se borra la λ y el título antiguos.
+- _Movimiento:_ tokens `--ease-out` y `--ease-in-out` en `globals.css`, hover solo con puntero fino y todo condicionado a `prefers-reduced-motion`; las cifras y los iconos llegan ya en su valor final sin JavaScript.
+- _Comprobado:_ `npm run check`, `npm run build` y, en navegador a 1440 y 390 px, los hubs de Half-Life 1, Half-Life 2 y Alyx y la página del universo, sin errores de página ni desborde.
+- _Pendiente (siguiente):_ fondos por etapa y línea de tiempo en la página del universo, una mejora más de los dossieres (tira de miniaturas), páginas de apartado y de ficha (tarjetas con modelo 3D y ficha con cabecera a sangre) y el bloque de Valve y Steam (fotos de personas, reloj animado, vapor en las tuberías). Sin medir el contraste AA de los textos sobre las capturas.
+
 **Rediseño realista, bloque 1: universos y dossieres (Claude, 2026-11-09, rama `feature/universes-redesign`; decisiones de Manuel: orden universos y dossieres → tarjetas y fichas → Valve y Steam, modelo 3D del juego que gira en las tarjetas, iconos de línea suyos):**
 
 - _Iconos:_ 17 iconos de línea dibujados por Manuel (`public/images/icons/*.webp`, recortados a 1000 px, trazo negro con alfa que se tiñe con `mask-image`) mapeados en `src/data/universe-art.ts` (`lineIcons`). Hunter y hormiga león en Episode Two, Ciudadela en Episode One, calavera C17 y hormiga león en Half-Life 2, pistola en Alyx, Gordon (HEV), marine de la HECU, Barney y Gina y Colette en sus juegos, mercenarios de TF2, supervivientes de L4D1 y L4D2, Counter-Strike y Portal (pistola, cubo, Wheatley y GLaDOS; los de Portal 2 aún sin usar).

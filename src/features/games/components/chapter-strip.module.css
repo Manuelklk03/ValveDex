@@ -1,0 +1,95 @@
+.chapter-strip {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.chapter-strip__title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+}
+
+/* Carrusel con imán: cada captura se detiene al desplazar */
+.chapter-strip__list {
+  display: flex;
+  gap: 1rem;
+  padding-block: 0.5rem 1rem;
+  overflow-x: auto;
+  list-style: none;
+  scroll-snap-type: x proximity;
+  scrollbar-color: var(--border) transparent;
+}
+
+.chapter-strip__list:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.chapter-strip__item {
+  flex: 0 0 min(80vw, 22rem);
+  scroll-snap-align: start;
+}
+
+.chapter-strip__link {
+  display: grid;
+  gap: 0.625rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.chapter-strip__frame {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.chapter-strip__image {
+  object-fit: cover;
+}
+
+.chapter-strip__number {
+  position: absolute;
+  left: 0.625rem;
+  bottom: 0.625rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--background) 82%, transparent);
+  color: var(--accent);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+}
+
+.chapter-strip__name {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.chapter-strip__link:focus-visible .chapter-strip__frame {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .chapter-strip__frame {
+    transition: border-color 160ms var(--ease-out);
+  }
+
+  .chapter-strip__image {
+    transition: transform 260ms var(--ease-out);
+  }
+
+  .chapter-strip__link:hover .chapter-strip__image {
+    transform: scale(1.05);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .chapter-strip__link:hover .chapter-strip__frame {
+    border-color: var(--accent);
+  }
+}
