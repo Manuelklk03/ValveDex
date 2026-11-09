@@ -2,9 +2,12 @@
 import { notFound } from "next/navigation";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
-import type { Game } from "@/domain/game";
+import { universeArt } from "@/data/universe-art";
+import { getGameYear, type Game } from "@/domain/game";
+import { getEntries } from "@/features/catalog/get-entries";
 import { DossierMotion } from "@/features/games/components/dossier-motion";
 import { GameDossier } from "@/features/games/components/game-dossier";
+import { GameHero } from "@/features/games/components/game-hero";
 import { getDossierLook } from "@/features/games/dossier-looks";
 import { UniverseStage } from "@/features/universes/components/universe-stage";
 import {
@@ -53,6 +56,20 @@ export default async function UniversePage({
   }
 
   const stages = getStagesByUniverse(universe.id);
+  const officialGames = getOfficialGamesByUniverse(universe.id);
+  const gameIds = new Set(officialGames.map((game) => game.id));
+  const entryCount = getEntries().filter((entry) =>
+    entry.appearances.some((appearance) => gameIds.has(appearance.gameId)),
+  ).length;
+  const art = universeArt[universe.id];
+
+  // «1998–2001» o «2020»: los años de los juegos de una etapa
+  const stageYears = (games: Game[]) => {
+    const years = games.map(getGameYear).sort((a, b) => a - b);
+    if (years.length === 0) return "";
+    const [first, last] = [years[0], years[years.length - 1]];
+    return first === last ? String(first) : `${first}–${last}`;
+  };
 
   const renderDossiers = (games: Game[]) =>
     games.map((game) => (
@@ -67,50 +84,64 @@ export default async function UniversePage({
 
   return (
     <main className={styles["universe-page"]}>
-      <header className={styles["universe-page__hero"]}>
-        <Breadcrumb
-          items={[
-            { label: "Universos", href: "/universos" },
-            { label: universe.name },
-          ]}
-        />
-        <div className={styles["universe-page__body"]}>
-          <h1 className={styles["universe-page__title"]}>{universe.name}</h1>
-          <p className={styles["universe-page__intro"]}>
-            {universe.description}
-            {stages.length > 0 &&
-              " Elige una etapa y abre el dossier de cada juego."}
-          </p>
-        </div>
-        {/* shortcut: λ solo de Half-Life; con otro universo disponible, el emblema pasará a sus datos */}
-        {universe.id === "half-life" && (
-          <span className={styles["universe-page__mark"]} aria-hidden="true">
-            λ
-          </span>
-        )}
-
+      <GameHero
+        name={universe.name}
+        summary={`${universe.description}${stages.length > 0 ? " Elige una etapa y abre el dossier de cada juego." : ""}`}
+        art={
+          art && {
+            backdrop: art.backdrop,
+            icons: [art.icon],
+            model: art.model,
+            modelTilt: art.modelTilt,
+          }
+        }
+        specs={[
+          { label: "Juegos", value: String(officialGames.length) },
+          { label: "Etapas", value: String(stages.length) },
+          { label: "Fichas", value: String(entryCount) },
+        ]}
+        breadcrumb={
+          <Breadcrumb
+            items={[
+              { label: "Universos", href: "/universos" },
+              { label: universe.name },
+            ]}
+          />
+        }
+      >
         {stages.length > 0 && (
-          <nav aria-label={`Etapas de ${universe.name}`}>
+          <nav
+            className={styles["universe-page__nav"]}
+            aria-label={`Etapas de ${universe.name}`}
+          >
             <ul className={styles["universe-page__stages"]}>
-              {stages.map((stage) => (
-                <li key={stage.id}>
-                  <a
-                    href={`#${stage.id}`}
-                    className={`${styles["universe-page__stage-link"]} ${styles[`universe-page__stage-link--${stage.id}`] ?? ""}`}
-                  >
-                    <span className={styles["universe-page__stage-name"]}>
-                      {stage.name}
-                    </span>
-                    <span className={styles["universe-page__stage-subtitle"]}>
-                      {stage.subtitle}
-                    </span>
-                  </a>
-                </li>
-              ))}
+              {stages.map((stage) => {
+                const stageGames = getGamesByStage(stage.id);
+                return (
+                  <li key={stage.id}>
+                    <a
+                      href={`#${stage.id}`}
+                      className={`${styles["universe-page__stage-link"]} ${styles[`universe-page__stage-link--${stage.id}`] ?? ""}`}
+                    >
+                      <span className={styles["universe-page__stage-name"]}>
+                        {stage.name}
+                      </span>
+                      <span className={styles["universe-page__stage-subtitle"]}>
+                        {stage.subtitle}
+                      </span>
+                      <span className={styles["universe-page__stage-meta"]}>
+                        {stageGames.length > 0
+                          ? `${stageYears(stageGames)} · ${stageGames.length} ${stageGames.length === 1 ? "juego" : "juegos"}`
+                          : "En preparación"}
+                      </span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
         )}
-      </header>
+      </GameHero>
 
       {stages.length > 0 ? (
         stages.map((stage) => {
@@ -128,7 +159,7 @@ export default async function UniversePage({
         })
       ) : (
         <div className={styles["universe-page__dossiers"]}>
-          {renderDossiers(getOfficialGamesByUniverse(universe.id))}
+          {renderDossiers(officialGames)}
         </div>
       )}
 
