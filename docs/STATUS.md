@@ -310,6 +310,14 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 3. **Completar la etapa Source:** contenido con fuentes de Episode One, Episode Two y Alyx (hoy solo tienen lore).
 4. Opcionales: intro de Valve con grabación propia, recorrido con teclado del resto de páginas y `v0.4.0` cuando haya un bloque nuevo estable.
 
+**Rediseño realista, bloque 3: Valve y Steam (Claude, 2026-11-09, rama `feature/valve-steam-redesign`; decisión de Manuel: foto a los desarrolladores que tengan una libre, sin capturar TF2, L4D2 ni CS:S todavía):**
+
+- _Fotos:_ `ValvePerson.image` (`MediaAsset`) con cinco retratos de Wikimedia Commons (CC BY 2.0 y 3.0, licencia y autor comprobados con la API de Commons) en `public/images/people/`: Gabe Newell, Marc Laidlaw (solo 211 px de ancho), Robin Walker, Kim Swift y Chet Faliszek. Mike Harrington y Erik Johnson no tienen foto libre y se quedan sin imagen (en la portada, con sus iniciales). Las fotos salen en `/creditos` y las pruebas de imágenes y de créditos las cubren.
+- _Portada:_ `ValveClock` (cliente, reloj de pared en SVG con la hora real; el HTML sale con las 10:10 y el efecto lo pone en hora, sin desajuste de hidratación; la manecilla roja da un paso por segundo y no se muestra con «reducir movimiento»), montado en la esquina de la válvula sin girar con el scroll. `IndustrialBackdrop` gana tres salidas de vapor sobre las bridas (CSS puro; con movimiento reducido, una nube quieta y tenue).
+- _Páginas:_ `ValveHero` (cabecera a sangre con el fondo industrial y el vapor) en `/valve/historia`, `/valve/hardware` y `/valve/personas/[slug]`, esta última con la foto y su crédito. `/valve/steam` conserva su diseño por épocas. «Figuras clave» de la portada con foto redonda.
+- _Comprobado:_ `npm run check` (114 pruebas), `npm run build` y, en navegador a 1440 y 390 px, la portada, dos fichas de persona (con y sin foto), la historia y el hardware sin desbordes ni errores de página. Sin comprobar: contraste AA del texto sobre el fondo con vapor, recorrido con teclado y el movimiento en un móvil real.
+- _Pendiente:_ fondos por etapa y línea de tiempo en la página del universo, y fondos y 3D de TF, L4D, CS y Portal cuando Manuel decida capturar esos juegos.
+
 **Rediseño realista, bloque 2b: apartados y fichas (Claude, 2026-11-09, rama `feature/section-entry-redesign`):**
 
 - _Página de apartado:_ `GameHero` con `compact` y `EntryTile` (cliente: imagen grande, datos en chips, resumen, insignia «3D» y un solo `ModelSpinner` mientras la ficha está activa por ratón o teclado).
