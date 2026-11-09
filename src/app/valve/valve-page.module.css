@@ -129,3 +129,24 @@
 .valve-page__source-link:hover {
   text-decoration-color: currentColor;
 }
+
+/* Retrato de una persona en su cabecera: la foto y su crédito */
+.valve-page__portrait {
+  display: grid;
+  gap: 0.625rem;
+  margin: 0;
+}
+
+.valve-page__portrait-image {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.valve-page__portrait-credit {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
 import { getEntries } from "@/features/catalog/get-entries";
@@ -14,6 +15,7 @@ import { SteamErasTeaser } from "@/features/valve/components/steam-eras-teaser";
 import { HomeMotion } from "@/features/valve/components/home-motion";
 import { IndustrialBackdrop } from "@/components/ui/industrial-backdrop";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
+import { ValveClock } from "@/components/ui/valve-clock";
 import { ValveWheel } from "@/components/ui/valve-wheel";
 
 // Datos del texto de la sección «Valve» (fuente: Valve Corporation, Wikipedia, en los hitos)
@@ -71,8 +73,11 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <div className={styles["home-page__wheel"]} data-home-wheel>
-            <ValveWheel className={styles["home-page__wheel-svg"]} />
+          <div className={styles["home-page__machine"]}>
+            <div className={styles["home-page__wheel"]} data-home-wheel>
+              <ValveWheel className={styles["home-page__wheel-svg"]} />
+            </div>
+            <ValveClock className={styles["home-page__clock"]} />
           </div>
         </div>
 
@@ -128,6 +133,25 @@ export default function HomePage() {
             <ul className={styles["home-page__people"]}>
               {people.map((person) => (
                 <li key={person.id} className={styles["home-page__person"]}>
+                  {person.image ? (
+                    <Image
+                      src={person.image.src}
+                      alt=""
+                      width={96}
+                      height={96}
+                      className={styles["home-page__person-photo"]}
+                    />
+                  ) : (
+                    <span
+                      className={styles["home-page__person-photo"]}
+                      aria-hidden="true"
+                    >
+                      {person.name
+                        .split(" ")
+                        .map((word) => word[0])
+                        .join("")}
+                    </span>
+                  )}
                   <Link
                     href={`/valve/personas/${person.slug}`}
                     className={styles["home-page__person-link"]}

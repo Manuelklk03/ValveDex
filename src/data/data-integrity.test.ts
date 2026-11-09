@@ -37,6 +37,9 @@ const entryImages = entries.flatMap((entry) =>
 const allImages = [
   ...entryImages,
   ...decorImages.map(({ image, usedIn }) => ({ label: usedIn, image })),
+  ...valvePeople.flatMap((person) =>
+    person.image ? [{ label: person.name, image: person.image }] : [],
+  ),
 ];
 
 describe("universos", () => {

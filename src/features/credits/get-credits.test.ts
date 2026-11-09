@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { decorImages } from "@/data/decor-images";
+import { valvePeople } from "@/data/valve-people";
 import { entries } from "@/data/entries";
 import { getImageCredits, getSourceCredits } from "./get-credits";
 
@@ -33,7 +34,11 @@ describe("getImageCredits", () => {
       ])
       .filter((image) => image !== undefined).length;
 
-    expect(getImageCredits()).toHaveLength(imageCount + decorImages.length);
+    const personCount = valvePeople.filter((person) => person.image).length;
+
+    expect(getImageCredits()).toHaveLength(
+      imageCount + personCount + decorImages.length,
+    );
   });
 
   it("acredita cada imagen decorativa con su uso, sin repetir imágenes", () => {

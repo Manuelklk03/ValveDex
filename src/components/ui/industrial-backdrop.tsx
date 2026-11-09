@@ -1,4 +1,12 @@
+import type { CSSProperties } from "react";
 import styles from "./industrial-backdrop.module.css";
+
+// Salidas de vapor sobre las bridas de la tubería horizontal (x de su centro) y su deriva lateral
+const steamVents = [
+  { x: 271, delay: 0, drift: 36 },
+  { x: 771, delay: 1.1, drift: -28 },
+  { x: 1231, delay: 2.2, drift: 30 },
+];
 
 // Marcas de la esfera del manómetro: una cada 15° en un arco de 270°
 const gaugeTicks = Array.from({ length: 19 }, (_, index) => index * 15 - 135);
@@ -59,6 +67,35 @@ export function IndustrialBackdrop({ className }: IndustrialBackdropProps) {
             transform="rotate(48)"
           />
           <circle r="9" className={styles["industrial-backdrop__hub"]} />
+        </g>
+
+        <defs>
+          <radialGradient id="valve-steam-puff">
+            <stop offset="0" stopColor="rgb(242 239 233)" stopOpacity="0.55" />
+            <stop offset="1" stopColor="rgb(242 239 233)" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+
+        {/* Vapor que escapa por las bridas: tres bocanadas por salida, desfasadas */}
+        <g className={styles["industrial-backdrop__steam"]}>
+          {steamVents.flatMap((vent) =>
+            [0, 1, 2].map((puff) => (
+              <circle
+                key={`${vent.x}-${puff}`}
+                className={styles["industrial-backdrop__puff"]}
+                fill="url(#valve-steam-puff)"
+                cx={vent.x}
+                cy="618"
+                r="22"
+                style={
+                  {
+                    "--delay": `${vent.delay + puff * 1.7}s`,
+                    "--drift": `${vent.drift}px`,
+                  } as CSSProperties
+                }
+              />
+            )),
+          )}
         </g>
 
         <g className={styles["industrial-backdrop__rivets"]}>
