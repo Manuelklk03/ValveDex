@@ -8,6 +8,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Hub de cada juego rehecho: cabecera cinematográfica con captura, iconos de línea y modelo 3D bajo demanda, cifras reales, apartados con miniatura de sus propias fichas y una tira con las capturas de los capítulos.
+- Página de cada universo con la misma cabecera y tarjetas de etapa con sus años y número de juegos.
 - Rediseño de `/universos`: tarjetas de acceso con la captura del juego, iconos de línea, inclinación y profundidad con el ratón, modelo 3D que gira al activarlas y un fondo de página que cambia con cada saga.
 - Dossieres de Half-Life con arte propio: captura de fondo con parallax, iconos de línea que se dibujan y modelo 3D en los de Half-Life 2, Episode One y Episode Two.
 - Niveles: cada capítulo muestra la lista de sus mapas y cada nivel tiene su página (`/fichas/<capítulo>/<mapa>`) con descripción, hueco para fotos, personajes, enemigos y armas, navegación entre niveles y fuentes. Los personajes, enemigos y armas de cada nivel se leen de la lista de entidades de los `.bsp` del juego instalado (`scripts/extract-level-entities.mjs`) para Half-Life 1, Opposing Force, Blue Shift, Half-Life 2 y sus episodios.
