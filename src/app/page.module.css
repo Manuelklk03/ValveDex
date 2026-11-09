@@ -129,10 +129,23 @@
   outline-offset: 4px;
 }
 
-.home-page__wheel {
+/* La válvula y, montado junto a ella, el reloj: el reloj no gira con el scroll */
+.home-page__machine {
+  position: relative;
   justify-self: center;
   width: clamp(12rem, 34vw, 26rem);
+}
+
+.home-page__wheel {
   color: var(--valve-red);
+}
+
+.home-page__clock {
+  position: absolute;
+  right: -6%;
+  bottom: -9%;
+  width: 36%;
+  filter: drop-shadow(0 6px 18px rgb(0 0 0 / 0.5));
 }
 
 .home-page__wheel-svg {
@@ -333,17 +346,34 @@
 .home-page__person {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: 0.25rem 1.5rem;
-  padding: 1.125rem 0;
+  grid-template-columns: 3rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.25rem 1.25rem;
+  padding: 0.875rem 0;
   border-bottom: 1px solid var(--border);
 }
 
 @media (min-width: 40rem) {
   .home-page__person {
-    grid-template-columns: 14rem minmax(0, 1fr) auto;
+    grid-template-columns: 3rem 13rem minmax(0, 1fr) auto;
   }
+}
+
+/* Foto redonda; sin foto libre, las iniciales en el mismo círculo */
+.home-page__person-photo {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--background);
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  object-fit: cover;
+  object-position: 50% 22%;
 }
 
 .home-page__person-link {
@@ -392,13 +422,17 @@
 }
 
 @media (max-width: 39.99rem) {
+  .home-page__person-photo {
+    grid-row: 1 / span 2;
+  }
+
   .home-page__person-role {
-    grid-column: 1;
+    grid-column: 2;
   }
 
   .home-page__person-arrow {
-    grid-row: 1;
-    grid-column: 2;
+    grid-row: 1 / span 2;
+    grid-column: 3;
   }
 }
 
