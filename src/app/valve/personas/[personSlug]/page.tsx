@@ -1,5 +1,7 @@
 ﻿import type { Metadata } from "next";
+import Image from "next/image";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { ValveHero } from "@/features/valve/components/valve-hero";
 import { notFound } from "next/navigation";
 import {
   getValvePeople,
@@ -39,35 +41,66 @@ export default async function ValvePersonPage({
   if (!person) return notFound();
 
   return (
-    <main className={styles["valve-page"]}>
-      <Breadcrumb
-        items={[{ label: "Inicio", href: "/" }, { label: person.name }]}
+    <main>
+      <ValveHero
+        breadcrumb={
+          <Breadcrumb
+            items={[{ label: "Inicio", href: "/" }, { label: person.name }]}
+          />
+        }
+        eyebrow={person.role}
+        title={person.name}
+        intro={person.summary}
+        media={
+          person.image && (
+            <figure className={styles["valve-page__portrait"]}>
+              <Image
+                src={person.image.src}
+                alt={person.image.alt}
+                width={person.image.width}
+                height={person.image.height}
+                priority
+                className={styles["valve-page__portrait-image"]}
+              />
+              <figcaption className={styles["valve-page__portrait-credit"]}>
+                Foto:{" "}
+                <a
+                  href={person.image.source.url}
+                  className={styles["valve-page__source-link"]}
+                >
+                  {person.image.credit}
+                </a>
+                {person.image.license && ` · ${person.image.license}`}
+              </figcaption>
+            </figure>
+          )
+        }
       />
-      <header className={styles["valve-page__header"]}>
-        <p className={styles["valve-page__eyebrow"]}>{person.role}</p>
-        <h1 className={styles["valve-page__title"]}>{person.name}</h1>
-        <p className={styles["valve-page__intro"]}>{person.summary}</p>
-      </header>
-      <section
-        className={styles["valve-page__section"]}
-        aria-labelledby="sources-title"
-      >
-        <h2 id="sources-title" className={styles["valve-page__section-title"]}>
-          Fuentes
-        </h2>
-        <ul className={styles["valve-page__sources"]}>
-          {person.sources.map((source) => (
-            <li key={source.url}>
-              <a
-                href={source.url}
-                className={styles["valve-page__source-link"]}
-              >
-                {source.title}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <div className={styles["valve-page"]}>
+        <section
+          className={styles["valve-page__section"]}
+          aria-labelledby="sources-title"
+        >
+          <h2
+            id="sources-title"
+            className={styles["valve-page__section-title"]}
+          >
+            Fuentes
+          </h2>
+          <ul className={styles["valve-page__sources"]}>
+            {person.sources.map((source) => (
+              <li key={source.url}>
+                <a
+                  href={source.url}
+                  className={styles["valve-page__source-link"]}
+                >
+                  {source.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
     </main>
   );
 }

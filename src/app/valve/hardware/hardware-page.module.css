@@ -8,50 +8,6 @@
   padding: clamp(2rem, 5vw, 3.5rem) 1rem clamp(4rem, 8vw, 6rem);
 }
 
-.hardware-page__header {
-  display: grid;
-  gap: 1rem;
-  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
-  border-bottom: 1px solid var(--border);
-}
-
-.hardware-page__eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--muted);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.hardware-page__eyebrow::before {
-  content: "";
-  width: 2.5rem;
-  height: 1px;
-  background: currentColor;
-}
-
-.hardware-page__title {
-  max-width: 16ch;
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 800;
-  line-height: 0.98;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
-  margin: 0;
-}
-
-.hardware-page__intro {
-  max-width: 65ch;
-  color: var(--muted);
-  font-size: clamp(1rem, 1.6vw, 1.1875rem);
-  line-height: 1.7;
-  text-wrap: pretty;
-  margin: 0;
-}
-
 .hardware-page__grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr));
