@@ -64,6 +64,13 @@ import {
   halfLifeSourceExtras,
   svenCoOpEntries,
 } from "./half-life-extra-games";
+import {
+  teamFortressEnemies,
+  teamFortressMoreCharacters,
+  teamFortressMoreExtras,
+  teamFortressMoreMaps,
+  teamFortressMoreWeapons,
+} from "./team-fortress-expansion";
 import { expansionAppearances } from "./expansion-appearances";
 import { withSourceCaptures } from "./source-captures";
 import { withWikiScreenshots } from "./wiki-screenshots";
@@ -113,6 +120,11 @@ const baseEntries: Entry[] = [
   ...left4DeadWeapons,
   ...left4DeadMaps,
   ...left4DeadExtras,
+  ...teamFortressMoreMaps,
+  ...teamFortressMoreWeapons,
+  ...teamFortressMoreCharacters,
+  ...teamFortressEnemies,
+  ...teamFortressMoreExtras,
   ...svenCoOpEntries,
   ...halfLifeDreamcastEntries,
   ...halfLifeSourceExtras,

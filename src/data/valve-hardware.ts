@@ -1,6 +1,7 @@
+import { valveMoreHardware } from "./valve-expansion";
 import type { ValveHardware } from "@/domain/valve-hardware";
 
-export const valveHardware: ValveHardware[] = [
+const baseHardware: ValveHardware[] = [
   {
     id: "steam-controller",
     slug: "steam-controller",
@@ -256,4 +257,9 @@ export const valveHardware: ValveHardware[] = [
       },
     ],
   },
+];
+
+export const valveHardware: ValveHardware[] = [
+  ...baseHardware,
+  ...valveMoreHardware,
 ];
