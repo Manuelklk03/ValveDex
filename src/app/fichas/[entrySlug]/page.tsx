@@ -5,7 +5,15 @@ import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { dossierArt } from "@/data/dossier-art";
 import { EntryHero } from "@/features/catalog/components/entry-hero";
 import { EntryMedia } from "@/features/catalog/components/entry-media";
-import { getEntries, getEntryBySlug } from "@/features/catalog/get-entries";
+import { EntryTile } from "@/features/catalog/components/entry-tile";
+import {
+  getEntries,
+  getEntryAppearance,
+  getEntryBySlug,
+  getEntrySiblings,
+  getEntrySummaryForGame,
+  getEntryThumbnail,
+} from "@/features/catalog/get-entries";
 import { getChapterLevels } from "@/features/catalog/get-levels";
 import { getRelatedEntries } from "@/features/catalog/get-related-entries";
 import { getGameYearLabel } from "@/features/games/get-game-year-label";
@@ -64,6 +72,9 @@ export default async function EntryPage({
 
   // La ruta sigue al primer juego de la ficha, el mismo que pone el tema en layout.tsx
   const first = gameAppearances[0];
+  const siblings = first
+    ? getEntrySiblings(entry, first.game.id)
+    : { previous: undefined, next: undefined, others: [] };
   const heroImage =
     first?.appearance.images?.hd ?? first?.appearance.images?.original;
   const firstGamePath = first
@@ -247,6 +258,59 @@ export default async function EntryPage({
                 </li>
               ))}
             </ul>
+          </section>
+        )}
+
+        {first && siblings.others.length > 0 && (
+          <section
+            className={styles["entry-page__section"]}
+            aria-labelledby="more-title"
+          >
+            <h2 id="more-title" className={styles["entry-page__section-title"]}>
+              Más de {section?.name ?? "este apartado"} en {first.game.name}
+            </h2>
+            <ul className={styles["entry-page__more"]}>
+              {siblings.others.map((other) => (
+                <EntryTile
+                  key={other.id}
+                  href={`/fichas/${other.slug}`}
+                  name={other.name}
+                  summary={getEntrySummaryForGame(other, first.game.id)}
+                  image={getEntryThumbnail(other, first.game.id)}
+                  isCapture={other.category === "maps"}
+                  model={
+                    getEntryAppearance(other, first.game.id)?.images?.models
+                      ?.original
+                  }
+                  facts={getEntryFacts(other).slice(0, 2)}
+                />
+              ))}
+            </ul>
+            <nav
+              className={styles["entry-page__pager"]}
+              aria-label="Fichas anterior y siguiente"
+            >
+              {siblings.previous ? (
+                <Link
+                  href={`/fichas/${siblings.previous.slug}`}
+                  className={styles["entry-page__pager-link"]}
+                  rel="prev"
+                >
+                  <span aria-hidden="true">←</span> {siblings.previous.name}
+                </Link>
+              ) : (
+                <span />
+              )}
+              {siblings.next && (
+                <Link
+                  href={`/fichas/${siblings.next.slug}`}
+                  className={styles["entry-page__pager-link"]}
+                  rel="next"
+                >
+                  {siblings.next.name} <span aria-hidden="true">→</span>
+                </Link>
+              )}
+            </nav>
           </section>
         )}
 

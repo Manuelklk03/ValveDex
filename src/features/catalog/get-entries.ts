@@ -29,6 +29,33 @@ export function getEntriesByGameAndCategory(
     .sort(compareEntries);
 }
 
+export type EntrySiblings = {
+  previous?: Entry;
+  next?: Entry;
+  // Otras fichas del mismo apartado y juego: las siguientes a la actual primero y, si faltan, las anteriores
+  others: Entry[];
+};
+
+// Las vecinas de una ficha en la lista de su apartado y juego, para la navegación al pie de la ficha
+export function getEntrySiblings(
+  entry: Entry,
+  gameId: string,
+  limit = 4,
+): EntrySiblings {
+  const list = getEntriesByGameAndCategory(gameId, entry.category);
+  const index = list.findIndex((item) => item.id === entry.id);
+  if (index === -1) return { others: [] };
+
+  const after = list.slice(index + 1);
+  const before = list.slice(0, index);
+
+  return {
+    previous: list[index - 1],
+    next: list[index + 1],
+    others: [...after, ...before].slice(0, limit),
+  };
+}
+
 export function getEntries(): Entry[] {
   return [...entries];
 }
