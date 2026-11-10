@@ -211,7 +211,7 @@ export const valveMoreMilestones: Milestone[] = [
     date: "4 de mayo de 2026",
     title: "Nuevo Steam Controller",
     description:
-      "Sale a la venta el Steam Controller de segunda generación, con un precio base de 99 dólares anunciado el 27 de abril. Se agotó en unos 30 minutos.",
+      "Sale a la venta el Steam Controller de segunda generación, con un precio base de 99 dólares anunciado el 27 de abril.",
     sources: [steamController2026Wiki],
   },
   {
