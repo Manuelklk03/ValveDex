@@ -9,18 +9,16 @@ export const valvePeople: ValvePerson[] = [
     summary:
       "Trabajó trece años en Microsoft antes de fundar Valve en 1996 junto a Mike Harrington.",
     image: {
-      src: "/images/people/gabe-newell.webp",
-      alt: "Gabe Newell de perfil, con gafas y barba, en The International 2018",
-      width: 601,
-      height: 802,
+      src: "/images/people/gabe-newell-gdc-2010.webp",
+      alt: "Gabe Newell de frente, con gafas redondas, recogiendo un premio en la Game Developers Conference de 2010",
+      width: 800,
+      height: 990,
       source: {
-        title:
-          "File:The International 2018 (43263984845) (cropped 2).jpg - Wikimedia Commons",
-        url: "https://commons.wikimedia.org/wiki/File:The_International_2018_(43263984845)_(cropped_2).jpg",
+        title: "File:Gabe Newell GDC 2010 (cropped 2).jpg - Wikimedia Commons",
+        url: "https://commons.wikimedia.org/wiki/File:Gabe_Newell_GDC_2010_(cropped_2).jpg",
         kind: "wiki",
       },
-      credit:
-        "Dota 2 The International (Flickr); recortada y convertida a WebP",
+      credit: "Official GDC; recortada y convertida a WebP",
       license: "CC BY 2.0",
       licenseUrl: "https://creativecommons.org/licenses/by/2.0/",
     },
