@@ -10,7 +10,7 @@ type SourceCapture = {
   entryId: string;
   gameId: string;
   // Carpeta del juego de la que sale el modelo
-  folder: "hl2" | "episodic" | "ep2" | "left4dead" | "left4dead2";
+  folder: "hl2" | "episodic" | "ep2" | "left4dead" | "left4dead2" | "tf";
   model: string;
   width: number;
   height: number;
@@ -532,6 +532,105 @@ const captures: SourceCapture[] = [
     model: "weapons/melee/w_frying_pan",
     width: 357,
     height: 743,
+    model3d: true,
+  },
+  {
+    entryId: "tf-scout",
+    gameId: "team-fortress-2",
+    folder: "tf",
+    model: "player/scout",
+    width: 304,
+    height: 868,
+  },
+  {
+    entryId: "tf-soldier",
+    gameId: "team-fortress-2",
+    folder: "tf",
+    model: "player/soldier",
+    width: 435,
+    height: 810,
+  },
+  {
+    entryId: "tf-pyro",
+    gameId: "team-fortress-2",
+    folder: "tf",
+    model: "player/pyro",
+    width: 391,
+    height: 811,
+  },
+  {
+    entryId: "tf-demoman",
+    gameId: "team-fortress-2",
+    folder: "tf",
+    model: "player/demo",
+    width: 432,
+    height: 817,
+  },
+  {
+    entryId: "tf-heavy",
+    gameId: "team-fortress-2",
+    folder: "tf",
+    model: "player/heavy",
+    width: 472,
+    height: 802,
+  },
+  {
+    entryId: "tf-engineer",
+    gameId: "team-fortress-2",
+    folder: "tf",
+    model: "player/engineer",
+    width: 440,
+    height: 804,
+  },
+  {
+    entryId: "tf-medic",
+    gameId: "team-fortress-2",
+    folder: "tf",
+    model: "player/medic",
+    width: 409,
+    height: 828,
+  },
+  {
+    entryId: "tf-sniper",
+    gameId: "team-fortress-2",
+    folder: "tf",
+    model: "player/sniper",
+    width: 408,
+    height: 848,
+  },
+  {
+    entryId: "tf-spy",
+    gameId: "team-fortress-2",
+    folder: "tf",
+    model: "player/spy",
+    width: 423,
+    height: 821,
+  },
+  {
+    entryId: "tf-minigun",
+    gameId: "team-fortress-2",
+    folder: "tf",
+    model: "weapons/w_models/w_minigun",
+    width: 702,
+    height: 401,
+    model3d: true,
+  },
+  {
+    entryId: "tf-rocket-launcher",
+    gameId: "team-fortress-2",
+    folder: "tf",
+    model: "weapons/w_models/w_rocketlauncher",
+    width: 774,
+    height: 351,
+    model3d: true,
+  },
+  {
+    entryId: "tf-wrench",
+    gameId: "team-fortress-2",
+    folder: "tf",
+    model: "weapons/w_models/w_wrench",
+    width: 596,
+    height: 347,
     model3d: true,
   },
 ];

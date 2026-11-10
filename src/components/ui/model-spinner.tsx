@@ -17,11 +17,19 @@ type ModelSpinnerProps = {
   active: boolean;
   // Inclinación del eje, en radianes: una pieza alargada (palanca, arma) gira mejor en diagonal que plana
   tilt?: number;
+  // Giro sobre X, en radianes: los personajes de Source vienen tumbados en su pose de referencia (π/2 los pone de pie)
+  roll?: number;
   // Vueltas por segundo
   speed?: number;
 };
 
-function Spinning({ src, active, tilt = 0, speed = 0.14 }: ModelSpinnerProps) {
+function Spinning({
+  src,
+  active,
+  tilt = 0,
+  roll = 0,
+  speed = 0.14,
+}: ModelSpinnerProps) {
   const spin = useRef<Group>(null);
   const { scene } = useGLTF(src);
   const get = useThree((state) => state.get);
@@ -43,7 +51,7 @@ function Spinning({ src, active, tilt = 0, speed = 0.14 }: ModelSpinnerProps) {
     camera.lookAt(0, 0, 0);
     camera.updateProjectionMatrix();
     invalidate();
-  }, [get, invalidate, scene, tilt]);
+  }, [get, invalidate, scene, tilt, roll]);
 
   useFrame((state, delta) => {
     if (!active || !spin.current) return;
@@ -55,7 +63,7 @@ function Spinning({ src, active, tilt = 0, speed = 0.14 }: ModelSpinnerProps) {
   // El grupo exterior gira sobre el eje vertical; el interior inclina la pieza y la centra
   return (
     <group ref={spin}>
-      <group rotation={[0, 0, tilt]}>
+      <group rotation={[roll, 0, tilt]}>
         <Center>
           <primitive object={scene} />
         </Center>
