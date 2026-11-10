@@ -76,7 +76,18 @@ export default function CreditsPage() {
                 <p className={styles["credits-page__meta"]}>
                   {usedIn}
                   {image.credit && ` · ${image.credit}`}
-                  {image.license && ` · ${image.license}`}
+                  {image.license && " · "}
+                  {image.license &&
+                    (image.licenseUrl ? (
+                      <a
+                        href={image.licenseUrl}
+                        className={styles["credits-page__link"]}
+                      >
+                        {image.license}
+                      </a>
+                    ) : (
+                      image.license
+                    ))}
                 </p>
               </li>
             ))}

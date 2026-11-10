@@ -53,7 +53,8 @@
   fill: currentColor;
 }
 
-/* Vapor: bocanadas que suben, se ensanchan y se disipan. Sin «reducir movimiento» queda una nube quieta y tenue */
+/* Vapor: bocanadas que suben, se ensanchan y se disipan. Opacidad máxima 0,45 × 0,3 = 0,135, para que el texto atenuado conserve 4,5:1.
+   Sin «reducir movimiento» queda una nube quieta y tenue */
 .industrial-backdrop__puff {
   opacity: 0.25;
   transform-box: fill-box;
@@ -75,7 +76,7 @@
   }
 
   18% {
-    opacity: 0.75;
+    opacity: 0.45;
   }
 
   100% {

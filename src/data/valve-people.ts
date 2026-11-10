@@ -19,8 +19,10 @@ export const valvePeople: ValvePerson[] = [
         url: "https://commons.wikimedia.org/wiki/File:The_International_2018_(43263984845)_(cropped_2).jpg",
         kind: "wiki",
       },
-      credit: "Dota 2 The International (Flickr)",
+      credit:
+        "Dota 2 The International (Flickr); recortada y convertida a WebP",
       license: "CC BY 2.0",
+      licenseUrl: "https://creativecommons.org/licenses/by/2.0/",
     },
     sources: [
       {
@@ -62,8 +64,9 @@ export const valvePeople: ValvePerson[] = [
         url: "https://commons.wikimedia.org/wiki/File:Marc_Laidlaw_2011.jpg",
         kind: "wiki",
       },
-      credit: "Official GDC",
+      credit: "Official GDC; recortada y convertida a WebP",
       license: "CC BY 2.0",
+      licenseUrl: "https://creativecommons.org/licenses/by/2.0/",
     },
     sources: [
       {
@@ -95,8 +98,9 @@ export const valvePeople: ValvePerson[] = [
         url: "https://commons.wikimedia.org/wiki/File:Robin_Walker_2.png",
         kind: "wiki",
       },
-      credit: "Washington Interactive Network",
+      credit: "Washington Interactive Network; recortada y convertida a WebP",
       license: "CC BY 3.0",
+      licenseUrl: "https://creativecommons.org/licenses/by/3.0/",
     },
     sources: [
       {
@@ -129,8 +133,9 @@ export const valvePeople: ValvePerson[] = [
         url: "https://commons.wikimedia.org/wiki/File:Kim_Swift_-_Game_Developers_Conference_2010_-_Panel_Day_4_(1).jpg",
         kind: "wiki",
       },
-      credit: "Official GDC",
+      credit: "Official GDC; recortada y convertida a WebP",
       license: "CC BY 2.0",
+      licenseUrl: "https://creativecommons.org/licenses/by/2.0/",
     },
     sources: [
       {
@@ -178,8 +183,9 @@ export const valvePeople: ValvePerson[] = [
         url: "https://commons.wikimedia.org/wiki/File:Gdc_2012_wolpaw_faliszek_pinkerton_cropped_(cropped_1).jpg",
         kind: "wiki",
       },
-      credit: "Official GDC",
+      credit: "Official GDC; recortada y convertida a WebP",
       license: "CC BY 2.0",
+      licenseUrl: "https://creativecommons.org/licenses/by/2.0/",
     },
     sources: [
       {

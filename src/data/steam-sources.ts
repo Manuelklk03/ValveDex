@@ -32,4 +32,14 @@ export const steamSources: Record<string, Source> = {
     url: "https://store.steampowered.com/app/420/HalfLife_2_Episode_Two/",
     kind: "official",
   },
+  "left-4-dead": {
+    title: "Left 4 Dead en Steam (archivos del juego)",
+    url: "https://store.steampowered.com/app/500/Left_4_Dead/",
+    kind: "official",
+  },
+  "left-4-dead-2": {
+    title: "Left 4 Dead 2 en Steam (archivos del juego)",
+    url: "https://store.steampowered.com/app/550/Left_4_Dead_2/",
+    kind: "official",
+  },
 };

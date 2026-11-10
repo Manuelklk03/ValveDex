@@ -71,7 +71,7 @@ export function IndustrialBackdrop({ className }: IndustrialBackdropProps) {
 
         <defs>
           <radialGradient id="valve-steam-puff">
-            <stop offset="0" stopColor="rgb(242 239 233)" stopOpacity="0.55" />
+            <stop offset="0" stopColor="rgb(242 239 233)" stopOpacity="0.3" />
             <stop offset="1" stopColor="rgb(242 239 233)" stopOpacity="0" />
           </radialGradient>
         </defs>
