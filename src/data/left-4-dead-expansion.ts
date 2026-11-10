@@ -130,7 +130,7 @@ export const left4DeadMoreMaps: Entry[] = [
       mapFiles: ["c1m1_hotel", "c1m2_streets", "c1m3_mall", "c1m4_atrium"],
     },
     summary:
-      "Primera campaña de Left 4 Dead 2, en cuatro capítulos (The Hotel, The Streets, The Mall y Atrium Finale). Transcurre en Savannah, Georgia: los supervivientes salen de la azotea de un hotel de CEDA, cruzan las calles y llegan al centro comercial Liberty Mall, donde deben reparar un coche de carreras expuesto.",
+      "Primera campaña de Left 4 Dead 2, en cuatro capítulos (The Hotel, The Streets, The Mall y Atrium Finale). Transcurre en Savannah, Georgia: los supervivientes salen de la azotea de un hotel de CEDA, cruzan las calles y llegan al centro comercial Liberty Mall, donde los espera un coche de carreras expuesto.",
     appearances: l4d2,
     sources: [
       l4dWiki("Dead_Center", "Dead Center"),
@@ -488,7 +488,7 @@ export const left4DeadMoreEnemies: Entry[] = [
     category: "enemies",
     details: { origin: "Infectado especial de la familia «uncommon»" },
     summary:
-      "Piloto de carreras del sur de EE. UU. que, ya infectado, aparece en The Atrium de Dead Center vestido con su mono. Es resistente al fuego y puede cegar con aceite de motor. Los supervivientes le roban su coche de carreras para escapar del centro comercial.",
+      "Piloto de carreras del sur de EE. UU. que, ya infectado, aparece en The Atrium de Dead Center vestido con su mono. Es resistente al fuego y puede cegar con aceite de motor. Su coche de carreras está expuesto en el centro comercial.",
     appearances: l4d2,
     sources: [l4dWiki("Uncommon_Infected", "Uncommon Infected")],
   },

@@ -600,7 +600,7 @@ export const halfLifeSourceExtras: Entry[] = [
     name: "Una Ciudadela y una Ciudad 17 distintas",
     category: "trivia",
     summary:
-      "Episode One cambió mucho el aspecto de la Ciudad 17 y de la Ciudadela respecto al final de Half-Life 2 para mostrar las consecuencias de las acciones del jugador: grandes zonas de edificios destruidos y criaturas que antes no salían de la ciudad.",
+      "Episode One cambió mucho el aspecto de la Ciudad 17 y de la Ciudadela respecto a Half-Life 2: grandes zonas de edificios destruidos y criaturas que antes no salían de la ciudad.",
     appearances: ep1,
     sources: [ep1Wikipedia],
   },
