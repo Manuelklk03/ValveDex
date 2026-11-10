@@ -310,6 +310,14 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 3. **Completar la etapa Source:** contenido con fuentes de Episode One, Episode Two y Alyx (hoy solo tienen lore).
 4. Opcionales: intro de Valve con grabación propia, recorrido con teclado del resto de páginas y `v0.4.0` cuando haya un bloque nuevo estable.
 
+**Modelos de Team Fortress 2, reloj en el fondo y humo (Claude, 2026-11-10, rama `feature/tf2-models`; decisiones de Manuel: capturar TF2, el reloj debe ser el manómetro del fondo en su posición y no uno aparte, el vapor debe parecer humo y no focos, y una foto mejor de Gabe Newell):**
+
+- _TF2:_ `source-mdl-to-glb` con el mod `tf` (tf2_misc + tf2_textures); 12 renders (nueve mercenarios en equipo RED, minigun, lanzacohetes y llave inglesa; las tres armas con .glb). Los personajes vienen tumbados en su pose de referencia: se giran 90° sobre X y las armas 90° sobre Z para fotografiarlos. El Heavy (`tf2-heavy.glb`, texturas a 512 px) gira en el dossier de TF2; `ModelSpinner` y `DossierArt` ganan `roll`. Sin imagen: el reloj de invisibilidad (no hay modelo `w_` suelto) y la versión BLU de cada mercenario.
+- _Reloj:_ `BackdropClock` (cliente) convierte el manómetro de `IndustrialBackdrop` en un reloj con la hora real (sale con las 10:10:30 y el efecto lo pone en hora); la manecilla roja avanza a saltos con rebote y no se muestra con «reducir movimiento». Se borra `ValveClock`.
+- _Humo:_ los «focos» (chorros cónicos y degradados radiales) se sustituyen por tres sprites de nube procedurales (`public/images/decor/steam-{1,2,3}.webp`, generados con ruido multioctava, sin autor ni fuente externa) animados con CSS (suben, se ensanchan girando y se disipan); opacidad máxima 0,17 para el contraste del texto atenuado (calculado, no medido).
+- _Gabe Newell:_ retrato de los GDC Awards 2010 (`File:Gabe Newell GDC 2010 (cropped 2).jpg`, Official GDC, CC BY 2.0) en vez del perfil de The International 2018.
+- _Comprobado:_ `npm run check` (114 pruebas), `npm run build` y, en el servidor de producción a 1440 px, el dossier de TF2 con el Heavy girando, la ficha del Heavy con su render, la portada con el reloj y el humo y la página de Gabe Newell. Nota: el servidor de desarrollo de Manuel servía el dossier de TF2 sin el modelo (caché de la página); se comprobó con `next start`. Sin comprobar: móvil, rendimiento del humo en un móvil real y teclado.
+
 **Modelos de Left 4 Dead y refinado de los dossieres de TF y L4D (Claude, 2026-11-10, rama `feature/dossier-tf-l4d-refinement`; decisión de Manuel: modelos solo de Left 4 Dead 1 y 2 por ahora, sin capturar TF2 ni CS:S):**
 
 - _Conversor:_ `source-mdl-to-glb.mjs` lee los VPK de Left 4 Dead y Left 4 Dead 2 (mods `l4d` y `l4d2`, .mdl v49) y acepta VMT con claves sin comillas (`$baseTexture "…"`, como escriben L4D; antes salían sin textura). `GLB_TEXTURE_MAX=512` reduce las texturas para los modelos de dossier (400–500 KB en vez de varios MB).
