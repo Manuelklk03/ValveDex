@@ -39,7 +39,7 @@
   min-width: 0;
   height: 100%;
   background: var(--art-tint, var(--dossier-accent));
-  opacity: 0.2;
+  opacity: var(--art-icons-opacity, 0.2);
   mask-repeat: no-repeat;
   mask-position: right top;
   mask-size: contain;
@@ -67,7 +67,8 @@
   opacity: 1;
 }
 
-.dossier-art--active .dossier-art__icon {
+/* Los iconos solo ceden el sitio cuando hay un modelo 3D que mostrar */
+.dossier-art--active.dossier-art--model .dossier-art__icon {
   opacity: 0.07;
 }
 
@@ -80,7 +81,7 @@
   }
 
   .dossier-art__icon {
-    opacity: 0.26;
+    opacity: var(--art-icons-opacity, 0.26);
   }
 }
 

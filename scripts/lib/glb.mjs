@@ -51,11 +51,17 @@ export async function writeGlb(output, groups, generator) {
       ...(g.doubleSided && { doubleSided: true }),
     };
     if (g.rgba) {
-      const png = await sharp(g.rgba, {
+      let image = sharp(g.rgba, {
         raw: { width: g.width, height: g.height, channels: 4 },
-      })
-        .png()
-        .toBuffer();
+      });
+      // GLB_TEXTURE_MAX=512 reduce las texturas: los modelos de los dossiers pesan unos cientos de KB en vez de varios MB
+      const max = Number(process.env.GLB_TEXTURE_MAX) || 0;
+      if (max > 0)
+        image = image.resize(max, max, {
+          fit: "inside",
+          withoutEnlargement: true,
+        });
+      const png = await image.png({ palette: max > 0 }).toBuffer();
       images.push({ bufferView: addView(png), mimeType: "image/png" });
       material.pbrMetallicRoughness.baseColorTexture = {
         index: images.length - 1,

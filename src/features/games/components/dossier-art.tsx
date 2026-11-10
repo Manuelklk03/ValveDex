@@ -116,9 +116,13 @@ export function DossierArt({ art }: { art: DossierArtData }) {
     { scope: root },
   );
 
-  const className = active
-    ? `${styles["dossier-art"]} ${styles["dossier-art--active"]}`
-    : styles["dossier-art"];
+  const className = [
+    styles["dossier-art"],
+    active && styles["dossier-art--active"],
+    art.model && styles["dossier-art--model"],
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div
@@ -128,6 +132,7 @@ export function DossierArt({ art }: { art: DossierArtData }) {
         {
           "--art-tint": art.tint,
           "--art-icons-height": art.iconsHeight,
+          "--art-icons-opacity": art.iconsOpacity,
         } as CSSProperties
       }
       aria-hidden="true"

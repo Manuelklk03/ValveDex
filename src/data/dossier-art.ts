@@ -12,6 +12,8 @@ export type DossierArt = {
   tint?: string;
   // Alto de la caja de iconos en pantallas anchas, si debe ser menor que el de serie (valor CSS)
   iconsHeight?: string;
+  // Opacidad de los iconos en pantallas anchas, si deben verse más que de serie (0,26)
+  iconsOpacity?: number;
 };
 
 export const dossierArt: Record<string, DossierArt> = {
@@ -55,8 +57,28 @@ export const dossierArt: Record<string, DossierArt> = {
     backdrop: "/images/entries/alyx-gravity-gloves-half-life-alyx.webp",
     icons: [lineIcons["alyx-pistol"]],
   },
-  "team-fortress-classic": { icons: [lineIcons["tf2-mercenaries"]] },
-  "team-fortress-2": { icons: [lineIcons["tf2-mercenaries"]] },
-  "left-4-dead": { icons: [lineIcons["left-4-dead"]] },
-  "left-4-dead-2": { icons: [lineIcons["left-4-dead-2"]] },
+  // Team Fortress: los mercenarios pintados mitad RED, mitad BLU
+  "team-fortress-classic": {
+    icons: [lineIcons["tf2-mercenaries"]],
+    tint: "linear-gradient(90deg, #c83838 50%, #2b58a6 50%)",
+    iconsOpacity: 0.42,
+  },
+  "team-fortress-2": {
+    icons: [lineIcons["tf2-mercenaries"]],
+    tint: "linear-gradient(115deg, #d14841 50%, #2d6bd2 50%)",
+    iconsOpacity: 0.42,
+  },
+  // Left 4 Dead: la Witch al activar el dossier; el Jockey en la segunda parte. Texturas a 512 px
+  "left-4-dead": {
+    icons: [lineIcons["left-4-dead"]],
+    tint: "#9c2a1d",
+    iconsOpacity: 0.36,
+    model: "/models/universes/l4d-witch.glb",
+  },
+  "left-4-dead-2": {
+    icons: [lineIcons["left-4-dead-2"]],
+    tint: "#7a4a16",
+    iconsOpacity: 0.36,
+    model: "/models/universes/l4d2-jockey.glb",
+  },
 };
