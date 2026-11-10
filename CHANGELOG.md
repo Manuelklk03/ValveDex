@@ -39,6 +39,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Corregido
 
+- Pulsar la tarjeta de una saga en `/universos` entra al universo (el enlace era solo el título y su capa invisible no cubría la tarjeta).
 - Mapas de los capítulos de Half-Life 2, Opposing Force y las expansiones contrastados con los archivos del juego (mapas inexistentes quitados, los que faltaban añadidos).
 - Spoilers en resúmenes de Half-Life 2; personajes y armas de Team Fortress 2 ya no se atribuyen a Team Fortress Classic; No Mercy de Left 4 Dead y de Left 4 Dead 2 separados; fuentes de Left 4 Dead sobre su propia wiki.
 
