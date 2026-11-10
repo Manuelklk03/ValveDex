@@ -71,6 +71,13 @@ import {
   teamFortressMoreMaps,
   teamFortressMoreWeapons,
 } from "./team-fortress-expansion";
+import {
+  left4DeadMoreCharacters,
+  left4DeadMoreEnemies,
+  left4DeadMoreExtras,
+  left4DeadMoreMaps,
+  left4DeadMoreWeapons,
+} from "./left-4-dead-expansion";
 import { expansionAppearances } from "./expansion-appearances";
 import { withSourceCaptures } from "./source-captures";
 import { withWikiScreenshots } from "./wiki-screenshots";
@@ -120,6 +127,11 @@ const baseEntries: Entry[] = [
   ...left4DeadWeapons,
   ...left4DeadMaps,
   ...left4DeadExtras,
+  ...left4DeadMoreMaps,
+  ...left4DeadMoreWeapons,
+  ...left4DeadMoreEnemies,
+  ...left4DeadMoreCharacters,
+  ...left4DeadMoreExtras,
   ...teamFortressMoreMaps,
   ...teamFortressMoreWeapons,
   ...teamFortressMoreCharacters,
