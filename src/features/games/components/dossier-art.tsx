@@ -168,6 +168,7 @@ export function DossierArt({ art }: { art: DossierArtData }) {
           <ModelSpinner
             src={art.model}
             tilt={art.modelTilt}
+            roll={art.modelRoll}
             active={active && !reduceMotion}
           />
         </div>

@@ -15,7 +15,6 @@ import { SteamErasTeaser } from "@/features/valve/components/steam-eras-teaser";
 import { HomeMotion } from "@/features/valve/components/home-motion";
 import { IndustrialBackdrop } from "@/components/ui/industrial-backdrop";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
-import { ValveClock } from "@/components/ui/valve-clock";
 import { ValveWheel } from "@/components/ui/valve-wheel";
 
 // Datos del texto de la sección «Valve» (fuente: Valve Corporation, Wikipedia, en los hitos)
@@ -77,7 +76,6 @@ export default function HomePage() {
             <div className={styles["home-page__wheel"]} data-home-wheel>
               <ValveWheel className={styles["home-page__wheel-svg"]} />
             </div>
-            <ValveClock className={styles["home-page__clock"]} />
           </div>
         </div>
 

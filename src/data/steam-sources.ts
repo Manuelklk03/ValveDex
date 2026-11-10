@@ -42,4 +42,9 @@ export const steamSources: Record<string, Source> = {
     url: "https://store.steampowered.com/app/550/Left_4_Dead_2/",
     kind: "official",
   },
+  "team-fortress-2": {
+    title: "Team Fortress 2 en Steam (archivos del juego)",
+    url: "https://store.steampowered.com/app/440/Team_Fortress_2/",
+    kind: "official",
+  },
 };

@@ -8,6 +8,8 @@ export type DossierArt = {
   icons: LineIcon[];
   model?: string;
   modelTilt?: number;
+  // Giro sobre X para los modelos que vienen tumbados (π/2 los pone de pie)
+  modelRoll?: number;
   // Color del icono si no debe ser el del dossier (valor de `background`, admite degradados)
   tint?: string;
   // Alto de la caja de iconos en pantallas anchas, si debe ser menor que el de serie (valor CSS)
@@ -67,6 +69,8 @@ export const dossierArt: Record<string, DossierArt> = {
     icons: [lineIcons["tf2-mercenaries"]],
     tint: "linear-gradient(115deg, #d14841 50%, #2d6bd2 50%)",
     iconsOpacity: 0.42,
+    model: "/models/universes/tf2-heavy.glb",
+    modelRoll: Math.PI / 2,
   },
   // Left 4 Dead: la Witch al activar el dossier; el Jockey en la segunda parte. Texturas a 512 px
   "left-4-dead": {
