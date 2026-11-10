@@ -59,6 +59,11 @@ import {
   left4DeadMaps,
   left4DeadExtras,
 } from "./left-4-dead";
+import {
+  halfLifeDreamcastEntries,
+  halfLifeSourceExtras,
+  svenCoOpEntries,
+} from "./half-life-extra-games";
 import { expansionAppearances } from "./expansion-appearances";
 import { withSourceCaptures } from "./source-captures";
 import { withWikiScreenshots } from "./wiki-screenshots";
@@ -108,6 +113,9 @@ const baseEntries: Entry[] = [
   ...left4DeadWeapons,
   ...left4DeadMaps,
   ...left4DeadExtras,
+  ...svenCoOpEntries,
+  ...halfLifeDreamcastEntries,
+  ...halfLifeSourceExtras,
   {
     id: "goldsrc-engine",
     slug: "motor-goldsrc",
