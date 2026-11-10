@@ -1,21 +1,30 @@
 import type { CSSProperties } from "react";
+import { BackdropClock } from "./backdrop-clock";
 import styles from "./industrial-backdrop.module.css";
 
-// Salidas de vapor sobre las bridas de la tubería horizontal (x de su centro) y su deriva lateral
+// Salidas de vapor. «up» sube desde la brida de la tubería horizontal (x de su centro); «side» escapa de la
+// vertical hacia la derecha. dx y dy son lo que recorre cada bocanada hasta disiparse.
 const steamVents = [
-  { x: 271, delay: 0, drift: 36 },
-  { x: 771, delay: 1.1, drift: -28 },
-  { x: 1231, delay: 2.2, drift: 30 },
+  { x: 271, y: 600, dx: 46, dy: -250, delay: 0 },
+  { x: 771, y: 600, dx: -38, dy: -270, delay: 1.4 },
+  { x: 1231, y: 600, dx: 42, dy: -240, delay: 2.6 },
+  { x: 210, y: 310, dx: 190, dy: -60, delay: 0.8 },
 ];
 
-// Marcas de la esfera del manómetro: una cada 15° en un arco de 270°
-const gaugeTicks = Array.from({ length: 19 }, (_, index) => index * 15 - 135);
+// Cada bocanada crece distinto: así la columna no parece una repetición
+const puffs = [
+  { offset: 0, grow: 3.2, rise: 1, sprite: 1, turn: 24 },
+  { offset: 1.3, grow: 2.5, rise: 0.82, sprite: 2, turn: -30 },
+  { offset: 2.6, grow: 3.5, rise: 1.08, sprite: 3, turn: 18 },
+  { offset: 3.9, grow: 2.8, rise: 0.9, sprite: 1, turn: -22 },
+  { offset: 5.2, grow: 3.1, rise: 0.96, sprite: 2, turn: 34 },
+];
 
 type IndustrialBackdropProps = {
   className?: string;
 };
 
-// Fondo decorativo de la portada: tuberías con bridas y un manómetro, en trazo muy tenue
+// Fondo decorativo de la portada: tuberías con bridas que sueltan vapor y un manómetro que es un reloj, en trazo muy tenue
 export function IndustrialBackdrop({ className }: IndustrialBackdropProps) {
   return (
     <div
@@ -40,57 +49,41 @@ export function IndustrialBackdrop({ className }: IndustrialBackdropProps) {
           ))}
           <rect x="136" y="300" width="74" height="20" />
           <rect x="136" y="120" width="74" height="20" />
+          {/* Boquillas por las que sale el vapor */}
+          {steamVents
+            .filter((vent) => vent.y === 600)
+            .map((vent) => (
+              <rect
+                key={vent.x}
+                x={vent.x - 8}
+                y="598"
+                width="16"
+                height="28"
+              />
+            ))}
         </g>
 
-        <g
-          className={styles["industrial-backdrop__gauge"]}
-          transform="translate(1180 330)"
-        >
-          <circle r="118" />
-          <circle r="100" className={styles["industrial-backdrop__faint"]} />
-          {gaugeTicks.map((angle) => (
-            <line
-              key={angle}
-              x1="0"
-              y1="-100"
-              x2="0"
-              y2={angle % 45 === 0 ? -80 : -90}
-              transform={`rotate(${angle})`}
-            />
-          ))}
-          <line
-            x1="0"
-            y1="0"
-            x2="0"
-            y2="-84"
-            className={styles["industrial-backdrop__needle"]}
-            transform="rotate(48)"
-          />
-          <circle r="9" className={styles["industrial-backdrop__hub"]} />
-        </g>
+        <BackdropClock />
 
-        <defs>
-          <radialGradient id="valve-steam-puff">
-            <stop offset="0" stopColor="rgb(242 239 233)" stopOpacity="0.3" />
-            <stop offset="1" stopColor="rgb(242 239 233)" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-
-        {/* Vapor que escapa por las bridas: tres bocanadas por salida, desfasadas */}
+        {/* Humo: texturas de nube que salen de cada boquilla, suben, se ensanchan girando y se disipan */}
         <g className={styles["industrial-backdrop__steam"]}>
           {steamVents.flatMap((vent) =>
-            [0, 1, 2].map((puff) => (
-              <circle
-                key={`${vent.x}-${puff}`}
+            puffs.map((puff) => (
+              <image
+                key={`${vent.x}-${vent.y}-${puff.offset}`}
                 className={styles["industrial-backdrop__puff"]}
-                fill="url(#valve-steam-puff)"
-                cx={vent.x}
-                cy="618"
-                r="22"
+                href={`/images/decor/steam-${puff.sprite}.webp`}
+                x={vent.x - 60}
+                y={vent.y - 66}
+                width="120"
+                height="120"
                 style={
                   {
-                    "--delay": `${vent.delay + puff * 1.7}s`,
-                    "--drift": `${vent.drift}px`,
+                    "--delay": `${vent.delay + puff.offset}s`,
+                    "--dx": `${vent.dx * puff.rise}px`,
+                    "--dy": `${vent.dy * puff.rise}px`,
+                    "--grow": puff.grow,
+                    "--turn": `${puff.turn}deg`,
                   } as CSSProperties
                 }
               />

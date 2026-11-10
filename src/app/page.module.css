@@ -129,7 +129,7 @@
   outline-offset: 4px;
 }
 
-/* La válvula y, montado junto a ella, el reloj: el reloj no gira con el scroll */
+/* La válvula, centrada en su columna */
 .home-page__machine {
   position: relative;
   justify-self: center;
@@ -138,14 +138,6 @@
 
 .home-page__wheel {
   color: var(--valve-red);
-}
-
-.home-page__clock {
-  position: absolute;
-  right: -6%;
-  bottom: -9%;
-  width: 36%;
-  filter: drop-shadow(0 6px 18px rgb(0 0 0 / 0.5));
 }
 
 .home-page__wheel-svg {
