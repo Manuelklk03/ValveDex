@@ -310,6 +310,14 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 3. **Completar la etapa Source:** contenido con fuentes de Episode One, Episode Two y Alyx (hoy solo tienen lore).
 4. Opcionales: intro de Valve con grabación propia, recorrido con teclado del resto de páginas y `v0.4.0` cuando haya un bloque nuevo estable.
 
+**Modelos de Left 4 Dead y refinado de los dossieres de TF y L4D (Claude, 2026-11-10, rama `feature/dossier-tf-l4d-refinement`; decisión de Manuel: modelos solo de Left 4 Dead 1 y 2 por ahora, sin capturar TF2 ni CS:S):**
+
+- _Conversor:_ `source-mdl-to-glb.mjs` lee los VPK de Left 4 Dead y Left 4 Dead 2 (mods `l4d` y `l4d2`, .mdl v49) y acepta VMT con claves sin comillas (`$baseTexture "…"`, como escriben L4D; antes salían sin textura). `GLB_TEXTURE_MAX=512` reduce las texturas para los modelos de dossier (400–500 KB en vez de varios MB).
+- _Renders:_ 17 en `source-captures.ts` (supervivientes de L4D1 y L4D2, Hunter, Smoker, Boomer, Tank, Witch, Charger, escopeta automática, bomba de tubo y sartén; las tres armas con .glb para el visor 3D). Tank y Charger vienen tumbados en su pose de referencia y se giraron 90° sobre X al fotografiarlos. Los ojos salen con el color por defecto (su material no tiene textura). El banco de capturas es una página temporal que no se versiona.
+- _Dossieres:_ la Witch (L4D1) y el Jockey (L4D2) giran al activar el dossier; los iconos de línea de TF salen mitad RED y mitad BLU y los de L4D en rojo sangre y ocre; `iconsOpacity` por dossier y los iconos solo ceden el sitio cuando hay un modelo 3D. Team Fortress sigue sin modelos 3D (TF2 está instalado y se puede capturar cuando Manuel lo pida).
+- _Revisión de Codex del bloque 3:_ las fotos CC BY enlazan su licencia (`MediaAsset.licenseUrl`) y dicen que están recortadas y convertidas a WebP; el vapor baja su opacidad máxima a 0,135 para que el texto atenuado conserve 4,5:1 (calculado, no medido en pantalla).
+- _Comprobado:_ `npm run check` (114 pruebas), `npm run build` y, en navegador a 1440 px, los dossieres de TF y L4D con el ratón dentro y fuera, sin errores de página. Sin comprobar: móvil de los dossieres con el modelo 3D, rendimiento real y teclado.
+
 **Rediseño realista, bloque 3: Valve y Steam (Claude, 2026-11-09, rama `feature/valve-steam-redesign`; decisión de Manuel: foto a los desarrolladores que tengan una libre, sin capturar TF2, L4D2 ni CS:S todavía):**
 
 - _Fotos:_ `ValvePerson.image` (`MediaAsset`) con cinco retratos de Wikimedia Commons (CC BY 2.0 y 3.0, licencia y autor comprobados con la API de Commons) en `public/images/people/`: Gabe Newell, Marc Laidlaw (solo 211 px de ancho), Robin Walker, Kim Swift y Chet Faliszek. Mike Harrington y Erik Johnson no tienen foto libre y se quedan sin imagen (en la portada, con sus iniciales). Las fotos salen en `/creditos` y las pruebas de imágenes y de créditos las cubren.

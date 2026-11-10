@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Left 4 Dead y Left 4 Dead 2: 17 renders propios de sus modelos (los 8 supervivientes, Hunter, Smoker, Boomer, Tank, Witch, Charger y tres armas, estas con visor 3D) y modelos 3D de la Witch y el Jockey que giran al activar sus dossieres. Los dossieres de Team Fortress pintan a los mercenarios mitad RED y mitad BLU.
 - Valve y Steam rediseñados: fotos con licencia libre (Commons, CC BY) de Gabe Newell, Marc Laidlaw, Robin Walker, Kim Swift y Chet Faliszek con su crédito en `/creditos`, reloj animado junto a la válvula de la portada, vapor que sale de las tuberías del fondo industrial y cabecera a sangre en la historia, el hardware y la página de cada persona.
 - Páginas de apartado con cabecera compacta y fichas con imagen grande, datos y modelo 3D al pasar el ratón; la ficha de cada entrada tiene cabecera a sangre con su visor 3D o su imagen y un fondo teñido por ella.
 - Icono de la pistola de Portal disparando un portal en la tarjeta de su universo.
