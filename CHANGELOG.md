@@ -10,10 +10,6 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 - Contenido ampliado con fuentes comprobadas: Team Fortress (122 fichas: mapas, armas, clases de TFC, personajes, enemigos y curiosidades), Left 4 Dead y Left 4 Dead 2 (86: todas las campañas, infectados, armas y curiosidades), Sven Co-op y Half-Life para Dreamcast (56 con las curiosidades de HL2, los episodios y Alyx) y la sección de Valve (22 hitos, 10 personas, 5 dispositivos y 17 hechos de Steam, hasta septiembre de 2026).
 - Cada ficha muestra más fichas de su apartado y juego, con navegación a la anterior y la siguiente.
-
-### Corregido
-
-- Pulsar la tarjeta de una saga en `/universos` entra al universo (el enlace era solo el título y su capa invisible no cubría la tarjeta).
 - Team Fortress 2: 12 renders propios de sus modelos (los nueve mercenarios, la minigun, el lanzacohetes y la llave inglesa; las tres armas con visor 3D) y el Heavy girando en 3D en su dossier.
 - El manómetro del fondo industrial es ahora el reloj de la portada y de las páginas de Valve, con la hora real y una manecilla roja que avanza a saltos; el vapor de las tuberías es humo con textura de nube.
 - Foto de Gabe Newell de frente (GDC Awards 2010, CC BY 2.0).
