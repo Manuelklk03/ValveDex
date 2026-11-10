@@ -153,22 +153,21 @@ export function UniverseGate({
           </div>
         )}
 
+        {isAvailable && (
+          <Link
+            href={`/universos/${universe.slug}`}
+            className={styles["universe-gate__link"]}
+            aria-label={`Entrar al universo ${universe.name}`}
+          />
+        )}
+
         <div className={styles["universe-gate__body"]}>
           <p className={styles["universe-gate__band"]} data-gate-reveal>
             <span>{isAvailable ? "Acceso concedido" : "Acceso pendiente"}</span>
             <span>{universe.id}</span>
           </p>
           <h2 className={styles["universe-gate__title"]} data-gate-reveal>
-            {isAvailable ? (
-              <Link
-                href={`/universos/${universe.slug}`}
-                className={styles["universe-gate__link"]}
-              >
-                {universe.name}
-              </Link>
-            ) : (
-              universe.name
-            )}
+            {universe.name}
           </h2>
           <p className={styles["universe-gate__description"]} data-gate-reveal>
             {universe.description}

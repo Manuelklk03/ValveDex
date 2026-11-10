@@ -167,3 +167,32 @@
   font-family: var(--font-plex-mono), monospace;
   font-size: 0.75rem;
 }
+
+/* Más fichas del mismo apartado: la misma cuadrícula de tarjetas que la página de apartado */
+.entry-page__more {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: 1rem;
+  list-style: none;
+}
+
+.entry-page__pager {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.entry-page__pager-link {
+  color: var(--foreground);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--muted);
+  text-underline-offset: 0.25em;
+}
+
+.entry-page__pager-link:hover {
+  text-decoration-color: currentColor;
+}

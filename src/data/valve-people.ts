@@ -1,6 +1,7 @@
+import { valveMorePeople } from "./valve-expansion";
 import type { ValvePerson } from "@/domain/valve-person";
 
-export const valvePeople: ValvePerson[] = [
+const basePeople: ValvePerson[] = [
   {
     id: "gabe-newell",
     slug: "gabe-newell",
@@ -199,3 +200,5 @@ export const valvePeople: ValvePerson[] = [
     ],
   },
 ];
+
+export const valvePeople: ValvePerson[] = [...basePeople, ...valveMorePeople];

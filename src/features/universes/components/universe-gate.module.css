@@ -203,17 +203,12 @@
   letter-spacing: -0.02em;
 }
 
-/* Toda la tarjeta es clicable */
+/* Toda la tarjeta es clicable: el enlace cubre el marco entero, por encima del texto */
 .universe-gate__link {
-  color: inherit;
-  text-decoration: none;
-}
-
-.universe-gate__link::after {
-  content: "";
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 3;
+  border-radius: inherit;
 }
 
 .universe-gate__description {

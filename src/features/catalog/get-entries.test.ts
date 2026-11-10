@@ -8,6 +8,7 @@ import {
   getEntryAppearance,
   getEntryById,
   getEntryBySlug,
+  getEntrySiblings,
   getEntrySummaryForGame,
   getEntryThumbnail,
 } from "./get-entries";
@@ -136,5 +137,34 @@ describe("selectores de fichas del catálogo", () => {
       );
       expect(getEntryThumbnail(palanca, "juego-ajeno")).toBeUndefined();
     }
+  });
+});
+
+describe("getEntrySiblings", () => {
+  it("devuelve la anterior, la siguiente y otras fichas del mismo apartado sin incluir la actual", () => {
+    const list = getEntriesByGameAndCategory("half-life", "weapons");
+    const middle = list[2];
+    const siblings = getEntrySiblings(middle, "half-life");
+
+    expect(siblings.previous?.id).toBe(list[1].id);
+    expect(siblings.next?.id).toBe(list[3].id);
+    expect(siblings.others.length).toBeLessThanOrEqual(4);
+    expect(siblings.others.map((item) => item.id)).not.toContain(middle.id);
+    expect(siblings.others[0].id).toBe(list[3].id);
+  });
+
+  it("la primera ficha no tiene anterior y la última no tiene siguiente", () => {
+    const list = getEntriesByGameAndCategory("half-life", "weapons");
+
+    expect(getEntrySiblings(list[0], "half-life").previous).toBeUndefined();
+    expect(
+      getEntrySiblings(list[list.length - 1], "half-life").next,
+    ).toBeUndefined();
+  });
+
+  it("una ficha que no aparece en el juego no tiene vecinas", () => {
+    const [entry] = getEntriesByGameAndCategory("half-life", "weapons");
+
+    expect(getEntrySiblings(entry, "left-4-dead")).toEqual({ others: [] });
   });
 });

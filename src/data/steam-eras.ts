@@ -1,3 +1,4 @@
+import { steamMoreEvents } from "./valve-expansion";
 import type { Source } from "@/domain/source";
 import type { SteamEra } from "@/domain/steam-era";
 
@@ -7,7 +8,7 @@ const steamWikipedia: Source = {
   kind: "wiki",
 };
 
-export const steamEras: SteamEra[] = [
+const baseEras: SteamEra[] = [
   {
     id: "origins",
     name: "Los orígenes",
@@ -183,3 +184,14 @@ export const steamEras: SteamEra[] = [
     ],
   },
 ];
+
+// Las épocas con los hechos añadidos de valve-expansion.ts, repartidos por su época
+export const steamEras: SteamEra[] = baseEras.map((era) => ({
+  ...era,
+  events: [
+    ...era.events,
+    ...steamMoreEvents
+      .filter((group) => group.eraId === era.id)
+      .flatMap((group) => group.events),
+  ],
+}));

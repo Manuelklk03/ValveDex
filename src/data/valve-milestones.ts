@@ -1,3 +1,4 @@
+import { valveMoreMilestones } from "./valve-expansion";
 import type { Milestone } from "@/domain/milestone";
 import type { Source } from "@/domain/source";
 
@@ -13,7 +14,7 @@ const steamWikipedia: Source = {
   kind: "wiki",
 };
 
-export const valveMilestones: Milestone[] = [
+const baseMilestones: Milestone[] = [
   {
     id: "valve-founded",
     year: 1996,
@@ -112,4 +113,9 @@ export const valveMilestones: Milestone[] = [
       "Se publica Counter-Strike 2, con críticas favorables en general y una acogida desigual entre los jugadores.",
     sources: [valveWikipedia],
   },
+];
+
+export const valveMilestones: Milestone[] = [
+  ...baseMilestones,
+  ...valveMoreMilestones,
 ];

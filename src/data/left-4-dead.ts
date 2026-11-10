@@ -263,7 +263,7 @@ export const left4DeadMaps: Entry[] = [
     name: "Alta médica (No Mercy) en Left 4 Dead 2",
     category: "maps",
     details: {
-      chapter: 1,
+      chapter: 8,
       mapFiles: [
         "c8m1_apartment",
         "c8m2_subway",
