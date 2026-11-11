@@ -1,9 +1,13 @@
 ﻿import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { notFound } from "next/navigation";
-import { isEntryCategory } from "@/domain/entry";
+import { isEntryCategory, type Entry } from "@/domain/entry";
 import type { GameSection } from "@/domain/game-section";
 import { dossierArt } from "@/data/dossier-art";
+import { entryTeams, mercenaryIds } from "@/data/game-teams";
+import { engineerBuildings } from "@/data/team-fortress-buildings";
+import { TeamPicker } from "@/components/ui/team-picker";
+import { BuildingList } from "@/features/catalog/components/building-list";
 import { EntryTile } from "@/features/catalog/components/entry-tile";
 import {
   getEntriesByGameAndCategory,
@@ -91,6 +95,15 @@ export async function generateMetadata({
   };
 }
 
+// Equipos de un grupo de fichas: la unión de los suyos, o ninguno (visible siempre) si alguna ficha sirve a todos
+function getGroupTeams(entries: Entry[]): string | undefined {
+  const lists = entries.map((entry) => entryTeams[entry.id]);
+
+  return lists.every(Boolean)
+    ? [...new Set(lists.flat())].join(" ")
+    : undefined;
+}
+
 export default async function SectionPage({
   params,
 }: PageProps<"/universos/[universeSlug]/[gameSlug]/[sectionSlug]">) {
@@ -103,6 +116,42 @@ export default async function SectionPage({
   }
 
   const { universe, game, section } = data;
+
+  // En los juegos con equipos, los personajes se separan en mercenarios y otros personajes
+  const mercenaries =
+    data.kind === "entries" && section.id === "characters"
+      ? data.entries.filter((entry) => mercenaryIds.has(entry.id))
+      : [];
+  const otherCharacters =
+    data.kind === "entries" && section.id === "characters"
+      ? data.entries.filter((entry) => !mercenaryIds.has(entry.id))
+      : [];
+  const isGrouped = mercenaries.length > 0 && otherCharacters.length > 0;
+
+  function renderTile(entry: Entry) {
+    const buildings = engineerBuildings.filter(
+      (building) =>
+        building.gameId === game.id &&
+        (entry.id === "tf-engineer" || entry.id === "tfc-class-engineer"),
+    );
+
+    return (
+      <EntryTile
+        key={entry.id}
+        href={`/fichas/${entry.slug}`}
+        name={entry.name}
+        summary={getEntrySummaryForGame(entry, game.id)}
+        image={getEntryThumbnail(entry, game.id)}
+        teamImages={getEntryAppearance(entry, game.id)?.images?.teams}
+        isCapture={section.id === "maps"}
+        model={getEntryAppearance(entry, game.id)?.images?.models?.original}
+        facts={getEntryFacts(entry).slice(0, 2)}
+        teams={entryTeams[entry.id]?.join(" ")}
+      >
+        <BuildingList buildings={buildings} />
+      </EntryTile>
+    );
+  }
 
   return (
     <main className={styles["section-page"]}>
@@ -146,6 +195,8 @@ export default async function SectionPage({
       </div>
 
       <div className={styles["section-page__content"]}>
+        <TeamPicker />
+
         {data.kind === "lore" && (
           <article className={styles["section-page__lore"]}>
             {data.lore.paragraphs
@@ -197,22 +248,42 @@ export default async function SectionPage({
             <p className={styles["section-page__empty"]}>
               Todavía no hay fichas en este apartado.
             </p>
+          ) : isGrouped ? (
+            <>
+              <section
+                className={styles["section-page__group"]}
+                aria-labelledby="mercenaries-title"
+                data-teams={getGroupTeams(mercenaries)}
+              >
+                <h2
+                  id="mercenaries-title"
+                  className={styles["section-page__group-title"]}
+                >
+                  Mercenarios
+                </h2>
+                <ul className={styles["section-page__entries"]}>
+                  {mercenaries.map(renderTile)}
+                </ul>
+              </section>
+              <section
+                className={styles["section-page__group"]}
+                aria-labelledby="others-title"
+                data-teams={getGroupTeams(otherCharacters)}
+              >
+                <h2
+                  id="others-title"
+                  className={styles["section-page__group-title"]}
+                >
+                  Otros personajes
+                </h2>
+                <ul className={styles["section-page__entries"]}>
+                  {otherCharacters.map(renderTile)}
+                </ul>
+              </section>
+            </>
           ) : (
             <ul className={styles["section-page__entries"]}>
-              {data.entries.map((entry) => (
-                <EntryTile
-                  key={entry.id}
-                  href={`/fichas/${entry.slug}`}
-                  name={entry.name}
-                  summary={getEntrySummaryForGame(entry, game.id)}
-                  image={getEntryThumbnail(entry, game.id)}
-                  isCapture={section.id === "maps"}
-                  model={
-                    getEntryAppearance(entry, game.id)?.images?.models?.original
-                  }
-                  facts={getEntryFacts(entry).slice(0, 2)}
-                />
-              ))}
+              {data.entries.map(renderTile)}
             </ul>
           ))}
       </div>

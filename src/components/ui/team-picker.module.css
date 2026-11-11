@@ -1,0 +1,89 @@
+.team-picker {
+  display: grid;
+  gap: 0.875rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.team-picker__heading {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.team-picker__title {
+  font-size: 1.125rem;
+}
+
+.team-picker__summary {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.team-picker__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.team-picker__option {
+  position: relative;
+  display: inline-flex;
+}
+
+/* El radio nativo queda encima del botón, invisible: conserva el foco, las flechas y la lectura de pantalla */
+.team-picker__input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.team-picker__chip {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.125rem;
+  border: 2px solid var(--border);
+  border-radius: 999px;
+  color: var(--foreground);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition:
+    border-color 160ms var(--ease-out),
+    background-color 160ms var(--ease-out);
+}
+
+.team-picker__swatch {
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 50%;
+  background: var(--team-accent);
+}
+
+.team-picker__input:checked + .team-picker__chip {
+  border-color: var(--team-accent);
+  background: color-mix(in srgb, var(--team-accent) 18%, transparent);
+}
+
+.team-picker__input:focus-visible + .team-picker__chip {
+  outline: 3px solid var(--team-accent);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .team-picker__input:hover + .team-picker__chip {
+    border-color: var(--team-accent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-picker__chip {
+    transition: none;
+  }
+}

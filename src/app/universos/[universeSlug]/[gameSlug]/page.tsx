@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { TeamPicker } from "@/components/ui/team-picker";
 import { dossierArt } from "@/data/dossier-art";
 import { ChapterStrip } from "@/features/games/components/chapter-strip";
 import { GameHero } from "@/features/games/components/game-hero";
@@ -126,6 +127,8 @@ export default async function GamePage({
       </GameHero>
 
       <div className={styles["game-page__content"]}>
+        <TeamPicker />
+
         <StatStrip stats={stats} />
 
         <section

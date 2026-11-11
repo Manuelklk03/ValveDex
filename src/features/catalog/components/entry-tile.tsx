@@ -3,6 +3,8 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
+import { useTeam } from "@/components/ui/team-scope";
 import { useHoverFocus } from "@/components/ui/use-hover-focus";
 import styles from "./entry-tile.module.css";
 
@@ -16,10 +18,16 @@ type EntryTileProps = {
   name: string;
   summary: string;
   image?: { src: string; width: number; height: number };
+  // Imagen de cada equipo (RED/BLU) cuando hay una variante; si falta la del equipo elegido, vale `image`
+  teamImages?: Record<string, { src: string; width: number; height: number }>;
   // Las capturas (mapas) llenan el marco; los renders con fondo transparente se ajustan enteros
   isCapture?: boolean;
   model?: string;
   facts: { label: string; value: string }[];
+  // Equipos en los que se ve la ficha, separados por espacios; sin él, se ve en todos (los oculta team-scope.module.css)
+  teams?: string;
+  // Contenido extra bajo el resumen, como el desplegable de construcciones del Engineer
+  children?: ReactNode;
 };
 
 // Ficha de un apartado: render o captura grande, datos clave y, si hay modelo, el arma o criatura girando al activarla
@@ -28,11 +36,16 @@ export function EntryTile({
   name,
   summary,
   image,
+  teamImages,
   isCapture = false,
   model,
   facts,
+  teams,
+  children,
 }: EntryTileProps) {
   const { active, everActive, reduceMotion, handlers } = useHoverFocus();
+  const team = useTeam()?.team;
+  const shownImage = (team && teamImages?.[team.id]) || image;
   // Un solo lienzo WebGL activo a la vez: se desmonta al soltar la ficha
   const showModel = Boolean(model) && active && everActive;
 
@@ -43,15 +56,16 @@ export function EntryTile({
           ? `${styles["entry-tile"]} ${styles["entry-tile--active"]}`
           : styles["entry-tile"]
       }
+      data-teams={teams}
       onPointerEnter={handlers.onPointerEnter}
       onPointerLeave={handlers.onPointerLeave}
       onFocus={handlers.onFocus}
       onBlur={handlers.onBlur}
     >
       <div className={styles["entry-tile__media"]} aria-hidden="true">
-        {image && (
+        {shownImage && (
           <Image
-            src={image.src}
+            src={shownImage.src}
             alt=""
             fill
             sizes="(min-width: 64rem) 25vw, (min-width: 40rem) 45vw, 90vw"
@@ -86,6 +100,7 @@ export function EntryTile({
           </ul>
         )}
         <p className={styles["entry-tile__summary"]}>{summary}</p>
+        {children}
       </div>
     </li>
   );

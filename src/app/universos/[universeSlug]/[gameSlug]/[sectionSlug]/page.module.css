@@ -65,3 +65,22 @@
 .section-page__source-link:hover {
   color: var(--accent);
 }
+
+/* Grupos de personajes (mercenarios y otros) en los juegos con equipos */
+.section-page__group {
+  display: grid;
+  gap: 1rem;
+}
+
+.section-page__group + .section-page__group {
+  margin-top: 2rem;
+}
+
+.section-page__group-title {
+  font-size: 1.25rem;
+}
+
+/* Con un desplegable abierto (construcciones del Engineer), las demás fichas no se estiran a su alto */
+.section-page__entries:has(details[open]) {
+  align-items: start;
+}
