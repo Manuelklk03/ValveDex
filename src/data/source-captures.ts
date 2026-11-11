@@ -635,6 +635,24 @@ const captures: SourceCapture[] = [
   },
 ];
 
+// Renders del mismo modelo con la piel de otro equipo (la piel 1 de los mercenarios de TF2 es BLU)
+const teamCaptures: {
+  entryId: string;
+  team: string;
+  width: number;
+  height: number;
+}[] = [
+  { entryId: "tf-scout", team: "blu", width: 348, height: 919 },
+  { entryId: "tf-soldier", team: "blu", width: 486, height: 859 },
+  { entryId: "tf-pyro", team: "blu", width: 454, height: 857 },
+  { entryId: "tf-demoman", team: "blu", width: 498, height: 859 },
+  { entryId: "tf-heavy", team: "blu", width: 521, height: 844 },
+  { entryId: "tf-engineer", team: "blu", width: 524, height: 846 },
+  { entryId: "tf-medic", team: "blu", width: 480, height: 881 },
+  { entryId: "tf-sniper", team: "blu", width: 468, height: 892 },
+  { entryId: "tf-spy", team: "blu", width: 486, height: 861 },
+];
+
 function toImages(capture: SourceCapture, name: string) {
   const { entryId, gameId, folder, model, width, height, model3d } = capture;
   const base = `${entryId}-${gameId}`;
@@ -649,8 +667,26 @@ function toImages(capture: SourceCapture, name: string) {
     credit: `Render propio del modelo ${folder}/models/${model}.mdl${hasModel3d ? " · también como modelo 3D (.glb) convertido del mismo archivo" : ""}`,
     license: "Material del juego © Valve",
   };
+  const teams = Object.fromEntries(
+    teamCaptures
+      .filter((team) => team.entryId === entryId)
+      .map((team) => [
+        team.team,
+        {
+          src: `/images/entries/${entryId}-${team.team}-${gameId}.webp`,
+          alt: `${name}, equipo ${team.team.toUpperCase()}`,
+          width: team.width,
+          height: team.height,
+          source: steamSources[gameId],
+          credit: `Render propio del modelo ${folder}/models/${model}.mdl con la piel del equipo ${team.team.toUpperCase()}`,
+          license: "Material del juego © Valve",
+        } satisfies MediaAsset,
+      ]),
+  );
+
   return {
     original,
+    ...(Object.keys(teams).length > 0 && { teams }),
     ...(hasModel3d && { models: { original: `/models/entries/${base}.glb` } }),
   };
 }

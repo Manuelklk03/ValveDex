@@ -10,6 +10,8 @@ export type EntryImages = {
   hd?: MediaAsset;
   // Modelos .glb convertidos desde el juego (scripts/mdl-to-glb.mjs), para girar la pieza en 3D
   models?: { original: string; hd?: string };
+  // Variantes por equipo (RED/BLU): el mismo modelo con la piel de ese equipo
+  teams?: Record<string, MediaAsset>;
 };
 
 export type EntryAppearance = {
