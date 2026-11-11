@@ -6,7 +6,9 @@ import type { GameSection } from "@/domain/game-section";
 import { dossierArt } from "@/data/dossier-art";
 import { entryTeams, mercenaryIds } from "@/data/game-teams";
 import { engineerBuildings } from "@/data/team-fortress-buildings";
+import { TeamEntryCount } from "@/components/ui/team-entry-count";
 import { TeamPicker } from "@/components/ui/team-picker";
+import { getGameTeams } from "@/data/game-teams";
 import { BuildingList } from "@/features/catalog/components/building-list";
 import { EntryTile } from "@/features/catalog/components/entry-tile";
 import {
@@ -173,9 +175,22 @@ export default async function SectionPage({
             {
               label: "Contenido",
               value:
-                data.kind === "lore"
-                  ? `${data.lore.paragraphs.length} ${data.lore.paragraphs.length === 1 ? "párrafo" : "párrafos"}`
-                  : `${data.entries.length} ${data.entries.length === 1 ? "ficha" : "fichas"}`,
+                data.kind === "lore" ? (
+                  `${data.lore.paragraphs.length} ${data.lore.paragraphs.length === 1 ? "párrafo" : "párrafos"}`
+                ) : (
+                  <TeamEntryCount
+                    total={data.entries.length}
+                    counts={Object.fromEntries(
+                      getGameTeams(game.id).map((team) => [
+                        team.id,
+                        data.entries.filter((entry) => {
+                          const teams = entryTeams[entry.id];
+                          return !teams || teams.includes(team.id);
+                        }).length,
+                      ]),
+                    )}
+                  />
+                ),
             },
           ]}
           breadcrumb={

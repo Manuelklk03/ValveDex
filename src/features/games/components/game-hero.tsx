@@ -19,7 +19,7 @@ const ModelSpinner = dynamic(() => import("@/components/ui/model-spinner"), {
 type GameHeroProps = {
   name: string;
   summary: string;
-  specs: { label: string; value: string }[];
+  specs: { label: string; value: ReactNode }[];
   art?: DossierArt;
   // Migas de pan, que van arriba de la cabecera
   breadcrumb: ReactNode;

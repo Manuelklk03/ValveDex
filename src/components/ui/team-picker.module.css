@@ -72,7 +72,7 @@
 }
 
 .team-picker__input:focus-visible + .team-picker__chip {
-  outline: 3px solid var(--team-accent);
+  outline: 3px solid var(--foreground);
   outline-offset: 3px;
 }
 
