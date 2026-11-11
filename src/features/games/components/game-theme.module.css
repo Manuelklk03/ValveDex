@@ -20,6 +20,8 @@
 .game-theme--counter-strike,
 .game-theme--counter-strike-source,
 .game-theme--counter-strike-global-offensive,
+.game-theme--counter-strike-condition-zero,
+.game-theme--counter-strike-condition-zero-deleted-scenes,
 .game-theme--counter-strike-2 {
   background-color: var(--background);
 }
@@ -285,5 +287,27 @@
   --border: #2f3947;
   --muted: #a1adbb;
   --accent: #5ab0ff;
+  color-scheme: dark;
+}
+
+/* Condition Zero: verde caqui de campaña y dorado de los logros */
+.game-theme--counter-strike-condition-zero {
+  --background: #14170f;
+  --foreground: #e9e8d2;
+  --surface: #1e2216;
+  --border: #383e26;
+  --muted: #adb08f;
+  --accent: #c8b15a;
+  color-scheme: dark;
+}
+
+/* Deleted Scenes: verde apagado de archivo */
+.game-theme--counter-strike-condition-zero-deleted-scenes {
+  --background: #121611;
+  --foreground: #e6e9d6;
+  --surface: #1b2118;
+  --border: #343d2a;
+  --muted: #a9b095;
+  --accent: #b8c07a;
   color-scheme: dark;
 }

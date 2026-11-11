@@ -70,9 +70,9 @@ export const universeStages: UniverseStage[] = [
     id: "goldsrc-cs",
     universeId: "counter-strike",
     name: "GoldSrc",
-    subtitle: "Counter-Strike",
+    subtitle: "Counter-Strike 1.6, Condition Zero y Deleted Scenes",
     summary:
-      "Counter-Strike (2000), el mod de Half-Life que definió el shooter táctico por rondas.",
+      "Counter-Strike (2000), el mod de Half-Life que definió el shooter táctico por rondas, y Condition Zero (2004), que añadió campañas para un jugador con bots.",
     status: "available",
   },
   {

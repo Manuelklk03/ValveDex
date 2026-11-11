@@ -16,6 +16,8 @@ export type DossierLook = {
     | "portal"
     | "portal-2"
     | "counter-strike"
+    | "counter-strike-condition-zero"
+    | "counter-strike-condition-zero-deleted-scenes"
     | "counter-strike-source"
     | "counter-strike-global-offensive"
     | "counter-strike-2";
@@ -132,6 +134,18 @@ const dossierLooks: Record<string, DossierLook> = {
     label: "Ficha táctica · Source 2",
     stamp: "CS2",
     edge: "de_inferno · de_ancient · de_anubis · Premier",
+  },
+  "counter-strike-condition-zero": {
+    variant: "counter-strike-condition-zero",
+    label: "Expediente de campaña · Tour of Duty",
+    stamp: "Un jugador",
+    edge: "Tour of Duty · Bots · Misiones · Logros",
+  },
+  "counter-strike-condition-zero-deleted-scenes": {
+    variant: "counter-strike-condition-zero-deleted-scenes",
+    label: "Escenas eliminadas · Archivo de Ritual",
+    stamp: "Deleted Scenes",
+    edge: "Campaña de Ritual · Misiones · Un jugador",
   },
 };
 
