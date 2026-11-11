@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Universos Portal y Counter-Strike abiertos: seis juegos (Portal, Portal 2, Counter-Strike, Counter-Strike: Source, Global Offensive y Counter-Strike 2), sus etapas por motor, un tema de universo y de juego, un dossier por juego y 151 fichas nuevas con fuentes (Portal: 56, con mapas comprobados contra los archivos del juego; Counter-Strike: 95) y el lore de cada juego.
 - Contenido ampliado con fuentes comprobadas: Team Fortress (122 fichas: mapas, armas, clases de TFC, personajes, enemigos y curiosidades), Left 4 Dead y Left 4 Dead 2 (86: todas las campañas, infectados, armas y curiosidades), Sven Co-op y Half-Life para Dreamcast (56 con las curiosidades de HL2, los episodios y Alyx) y la sección de Valve (22 hitos, 10 personas, 5 dispositivos y 17 hechos de Steam, hasta septiembre de 2026).
 - Cada ficha muestra más fichas de su apartado y juego, con navegación a la anterior y la siguiente.
 - Team Fortress 2: 12 renders propios de sus modelos (los nueve mercenarios, la minigun, el lanzacohetes y la llave inglesa; las tres armas con visor 3D) y el Heavy girando en 3D en su dossier.
