@@ -53,7 +53,7 @@ export const portalLore: GameLore[] = [
         text: "Portal 2 es la secuela de Portal, desarrollada por Valve y publicada en 2011. En la campaña de un jugador, Chell despierta en una cámara de reposo y descubre que el Centro de Enriquecimiento de Aperture Science se ha deteriorado durante lo que parecen milenios. Wheatley, una esfera de personalidad, la guía por las cámaras del primer juego para intentar escapar.",
       },
       {
-        text: "El juego añade embudos de excursión, rayos térmicos, puentes de luz sólida y geles que alteran el movimiento o permiten colocar portales en cualquier superficie. También incorpora un modo cooperativo para dos jugadores, que controlan a los robots Atlas y P-body, y un editor de cámaras.",
+        text: "El juego añade embudos de excursión, rayos térmicos, puentes de luz sólida y geles que alteran el movimiento o permiten colocar portales en las superficies que cubren. También incorpora un modo cooperativo para dos jugadores, que controlan a los robots Atlas y P-body, y un editor de cámaras.",
       },
       {
         text: "Wheatley y Chell reactivan sin querer a GLaDOS, que las separa y empieza a reconstruir el complejo. Chell escapa con ayuda de Wheatley, sabotean la producción de torretas y neurotoxina y, juntos, sustituyen a GLaDOS por Wheatley como controlador del laboratorio.",

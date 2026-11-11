@@ -6,6 +6,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+## [0.4.0] — 2026-11-11
+
 ### Añadido
 
 - Counter-Strike gana Counter-Strike: Condition Zero y Condition Zero: Deleted Scenes en la etapa GoldSrc (con CS 1.6), con 48 fichas (21 mapas, de ellos 13 misiones de Deleted Scenes; armas de misión, bandos, bots, curiosidades y easter eggs) y su lore; las fichas de bandos, rehenes, VIP y mapas clásicos también salen en esos juegos. Counter-Strike pasa a llamarse Counter-Strike 1.6.
