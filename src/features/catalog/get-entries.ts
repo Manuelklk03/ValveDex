@@ -36,13 +36,14 @@ export type EntrySiblings = {
   others: Entry[];
 };
 
-// Las vecinas de una ficha en la lista de su apartado y juego, para la navegación al pie de la ficha
+// Las vecinas de una ficha en la lista de su apartado y juego, para la navegación al pie de la ficha.
+// `list` es la lista del apartado tal como se pinta; sin ella, vale la de la categoría de la ficha
 export function getEntrySiblings(
   entry: Entry,
   gameId: string,
   limit = 4,
+  list: Entry[] = getEntriesByGameAndCategory(gameId, entry.category),
 ): EntrySiblings {
-  const list = getEntriesByGameAndCategory(gameId, entry.category);
   const index = list.findIndex((item) => item.id === entry.id);
   if (index === -1) return { others: [] };
 

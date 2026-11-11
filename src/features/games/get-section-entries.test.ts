@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { getEntrySiblings } from "@/features/catalog/get-entries";
 import { getSectionEntries, getTeamLeaders } from "./get-section-entries";
 
 const names = (gameId: string, category: "characters" | "enemies") =>
@@ -84,5 +85,27 @@ describe("getTeamLeaders", () => {
 
   it("no da líderes a un juego que no los tiene", () => {
     expect(getTeamLeaders("counter-strike-source")).toEqual({});
+  });
+});
+
+describe("navegación de la ficha", () => {
+  it("las vecinas de una ficha siguen la lista y el orden de su apartado", () => {
+    const list = getSectionEntries("team-fortress-2", "enemies").map(
+      (item) => item.entry,
+    );
+    const robot = list.find((entry) => entry.id === "tf-enemy-scout-robot");
+
+    expect(robot).toBeDefined();
+    if (!robot) return;
+
+    const index = list.indexOf(robot);
+    const siblings = getEntrySiblings(robot, "team-fortress-2", 4, list);
+
+    expect(siblings.previous?.id).toBe(list[index - 1]?.id);
+    expect(siblings.next?.id).toBe(list[index + 1]?.id);
+    // Los mercenarios rivales van antes que los robots, como en la página del apartado
+    expect(list.findIndex((entry) => entry.id === "tf-heavy")).toBeLessThan(
+      index,
+    );
   });
 });

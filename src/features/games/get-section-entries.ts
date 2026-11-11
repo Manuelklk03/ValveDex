@@ -13,6 +13,15 @@ import {
 export type SectionGroup =
   "leader" | "mercenaries" | "robots" | "units" | "others";
 
+// Orden en que se pintan los grupos de un apartado
+export const groupOrder: SectionGroup[] = [
+  "leader",
+  "mercenaries",
+  "robots",
+  "units",
+  "others",
+];
+
 export type SectionEntry = {
   entry: Entry;
   // Equipos con los que se ve en este apartado; sin él, se ve con todos
@@ -50,40 +59,45 @@ export function getSectionEntries(
     return getEntriesByGameAndCategory(gameId, category).map(plain);
   }
 
+  const byGroup = (a: SectionEntry, b: SectionEntry) =>
+    groupOrder.indexOf(a.group) - groupOrder.indexOf(b.group);
+
   const pool = [
     ...getEntriesByGameAndCategory(gameId, "characters"),
     ...getEntriesByGameAndCategory(gameId, "enemies"),
   ];
 
-  return pool.flatMap((entry): SectionEntry[] => {
-    const bound = (entryTeams[entry.id] ?? []).filter((id) =>
-      teamIds.includes(id),
-    );
+  return pool
+    .flatMap((entry): SectionEntry[] => {
+      const bound = (entryTeams[entry.id] ?? []).filter((id) =>
+        teamIds.includes(id),
+      );
 
-    if (bound.length === 0) {
-      return entry.category === category ? [plain(entry)] : [];
-    }
+      if (bound.length === 0) {
+        return entry.category === category ? [plain(entry)] : [];
+      }
 
-    if (category === "characters") {
-      return [
-        { entry, teams: bound, isRival: false, group: getGroup(entry, true) },
-      ];
-    }
-
-    // Enemigo de cada equipo que tiene enfrente a otro equipo de la ficha
-    const rivals = teamIds.filter((id) => bound.some((team) => team !== id));
-
-    return rivals.length === 0
-      ? []
-      : [
-          {
-            entry,
-            teams: rivals.length === teamIds.length ? undefined : rivals,
-            isRival: true,
-            group: getGroup(entry, true),
-          },
+      if (category === "characters") {
+        return [
+          { entry, teams: bound, isRival: false, group: getGroup(entry, true) },
         ];
-  });
+      }
+
+      // Enemigo de cada equipo que tiene enfrente a otro equipo de la ficha
+      const rivals = teamIds.filter((id) => bound.some((team) => team !== id));
+
+      return rivals.length === 0
+        ? []
+        : [
+            {
+              entry,
+              teams: rivals.length === teamIds.length ? undefined : rivals,
+              isRival: true,
+              group: getGroup(entry, true),
+            },
+          ];
+    })
+    .sort(byGroup);
 }
 
 // Equipo rival cuya versión de la ficha se enseña a cada equipo en «Enemigos» (RED ve al mercenario BLU)
