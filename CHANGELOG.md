@@ -17,6 +17,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Corregido
 
+- En la ficha, «Más de…» y los botones anterior y siguiente siguen la misma lista y el mismo orden que su apartado, también en los juegos con equipos.
 - Un dato largo ya no se sale de la tarjeta de una ficha.
 
 ## [0.4.0] — 2026-11-11
