@@ -20,6 +20,7 @@ import { GameHero } from "@/features/games/components/game-hero";
 import { getGameLore } from "@/features/games/get-game-lore";
 import {
   getRivalTeam,
+  groupOrder,
   getSectionEntries,
   getTeamLeaders,
   type SectionEntry,
@@ -103,13 +104,6 @@ export async function generateMetadata({
 }
 
 // Orden y título de cada grupo: en «Personajes» es tu equipo; en «Enemigos», el rival
-const groupOrder: SectionGroup[] = [
-  "leader",
-  "mercenaries",
-  "robots",
-  "units",
-  "others",
-];
 const groupTitles: Record<"own" | "rival", Record<SectionGroup, string>> = {
   own: {
     leader: "Líder del equipo",

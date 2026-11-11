@@ -1,3 +1,4 @@
+import { getSectionEntries } from "@/features/games/get-section-entries";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -73,7 +74,14 @@ export default async function EntryPage({
   // La ruta sigue al primer juego de la ficha, el mismo que pone el tema en layout.tsx
   const first = gameAppearances[0];
   const siblings = first
-    ? getEntrySiblings(entry, first.game.id)
+    ? getEntrySiblings(
+        entry,
+        first.game.id,
+        4,
+        getSectionEntries(first.game.id, entry.category).map(
+          (item) => item.entry,
+        ),
+      )
     : { previous: undefined, next: undefined, others: [] };
   const heroImage =
     first?.appearance.images?.hd ?? first?.appearance.images?.original;
