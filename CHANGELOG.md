@@ -8,9 +8,14 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Portal, Portal 2 y Counter-Strike: Source con renders propios de sus modelos: 39 imágenes (dispositivo de portales, cubos, torretas, Chell, Atlas, P-body y Frankenturret; 20 armas y equipo, seis unidades y el rehén de Counter-Strike: Source), 24 de ellas con visor 3D, y un modelo que gira en los dossieres de Portal, Portal 2 y Counter-Strike: Source y en las tarjetas de sus universos.
 - Team Fortress y Counter-Strike se recorren por equipos: el hub y los apartados de cada juego tienen un selector (RED y BLU, más GRAY en Team Fortress 2 para Mann vs. Machine; Terroristas y Antiterroristas en Counter-Strike) que tiñe la página con el color del equipo, muestra los mercenarios con su piel (9 renders BLU propios), oculta lo que no es de ese equipo y se recuerda entre visitas.
 - En esos juegos, el apartado de personajes separa a los mercenarios de los otros personajes (Administradora, Miss Pauling, Saxton Hale y los Mann), y los robots de Mann vs. Machine salen en GRAY.
 - La ficha del Engineer tiene un desplegable con sus construcciones y sus niveles (Sentry Gun, Mini-Sentry, Dispenser y teletransportador en Team Fortress 2; Sentry Gun, Dispenser y teletransportador en Team Fortress Classic) con las cifras de la Official TF2 Wiki.
+
+### Corregido
+
+- Un dato largo ya no se sale de la tarjeta de una ficha.
 
 ## [0.4.0] — 2026-11-11
 
