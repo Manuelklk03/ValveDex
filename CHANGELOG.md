@@ -6,6 +6,12 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+### Añadido
+
+- Team Fortress y Counter-Strike se recorren por equipos: el hub y los apartados de cada juego tienen un selector (RED y BLU, más GRAY en Team Fortress 2 para Mann vs. Machine; Terroristas y Antiterroristas en Counter-Strike) que tiñe la página con el color del equipo, muestra los mercenarios con su piel (9 renders BLU propios), oculta lo que no es de ese equipo y se recuerda entre visitas.
+- En esos juegos, el apartado de personajes separa a los mercenarios de los otros personajes (Administradora, Miss Pauling, Saxton Hale y los Mann), y los robots de Mann vs. Machine salen en GRAY.
+- La ficha del Engineer tiene un desplegable con sus construcciones y sus niveles (Sentry Gun, Mini-Sentry, Dispenser y teletransportador en Team Fortress 2; Sentry Gun, Dispenser y teletransportador en Team Fortress Classic) con las cifras de la Official TF2 Wiki.
+
 ## [0.4.0] — 2026-11-11
 
 ### Añadido

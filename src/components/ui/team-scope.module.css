@@ -1,0 +1,15 @@
+/* El equipo elegido manda sobre el acento del tema del juego en todo lo que está dentro */
+.team-scope {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+/* Una ficha o un grupo con `data-teams` solo se ve en los equipos que cita; sin el atributo, se ve en todos */
+.team-scope[data-team="red"] [data-teams]:not([data-teams~="red"]),
+.team-scope[data-team="blu"] [data-teams]:not([data-teams~="blu"]),
+.team-scope[data-team="gray"] [data-teams]:not([data-teams~="gray"]),
+.team-scope[data-team="t"] [data-teams]:not([data-teams~="t"]),
+.team-scope[data-team="ct"] [data-teams]:not([data-teams~="ct"]) {
+  display: none;
+}

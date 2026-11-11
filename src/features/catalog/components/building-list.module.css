@@ -1,0 +1,72 @@
+/* Por encima del enlace que cubre la tarjeta entera, para que el desplegable se pueda pulsar */
+.building-list {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid var(--border);
+  padding-top: 0.625rem;
+}
+
+.building-list__toggle {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--accent);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.building-list__toggle:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.building-list__items {
+  display: grid;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  list-style: none;
+}
+
+.building-list__name {
+  font-size: 1rem;
+}
+
+.building-list__summary,
+.building-list__note,
+.building-list__sources {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.building-list__levels {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  list-style: none;
+}
+
+.building-list__level {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  font-size: 0.8125rem;
+}
+
+.building-list__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.125rem 0.875rem;
+  list-style: none;
+}
+
+.building-list__stats span {
+  color: var(--muted);
+}
+
+.building-list__sources a {
+  color: inherit;
+  text-decoration: underline;
+}
