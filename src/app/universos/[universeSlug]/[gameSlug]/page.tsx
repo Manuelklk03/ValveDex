@@ -14,6 +14,7 @@ import {
   getSectionPreviews,
 } from "@/features/games/get-game-overview";
 import { getGameYearLabel } from "@/features/games/get-game-year-label";
+import { getTeamLeaders } from "@/features/games/get-section-entries";
 import { getSectionStatuses } from "@/features/games/get-section-statuses";
 import {
   getGameById,
@@ -127,7 +128,7 @@ export default async function GamePage({
       </GameHero>
 
       <div className={styles["game-page__content"]}>
-        <TeamPicker />
+        <TeamPicker leaders={getTeamLeaders(game.id)} />
 
         <StatStrip stats={stats} />
 

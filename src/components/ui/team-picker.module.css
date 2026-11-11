@@ -1,25 +1,40 @@
+/* Dos columnas desde pantallas medias: a la izquierda se elige; a la derecha, la ficha del equipo elegido */
 .team-picker {
   display: grid;
-  gap: 0.875rem;
+  gap: 1.25rem;
   padding: 1.25rem;
   border: 1px solid var(--border);
   border-left: 4px solid var(--accent);
   border-radius: 8px;
-  background: var(--surface);
+  background:
+    linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--accent) 12%, transparent),
+      transparent 60%
+    ),
+    var(--surface);
 }
 
-.team-picker__heading {
+@media (min-width: 48rem) {
+  .team-picker {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    align-items: center;
+    padding: 1.5rem;
+  }
+}
+
+.team-picker__choice {
   display: grid;
-  gap: 0.25rem;
+  gap: 0.75rem;
 }
 
 .team-picker__title {
-  font-size: 1.125rem;
-}
-
-.team-picker__summary {
   color: var(--muted);
-  font-size: 0.875rem;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .team-picker__options {
@@ -72,6 +87,43 @@
 }
 
 .team-picker__input:focus-visible + .team-picker__chip {
+  outline: 3px solid var(--foreground);
+  outline-offset: 3px;
+}
+
+.team-picker__team {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.team-picker__team-name {
+  color: var(--accent);
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.team-picker__summary {
+  color: var(--foreground);
+}
+
+.team-picker__leader,
+.team-picker__hint {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.team-picker__leader-link {
+  color: var(--foreground);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 0.25em;
+}
+
+.team-picker__leader-link:focus-visible {
   outline: 3px solid var(--foreground);
   outline-offset: 3px;
 }
