@@ -108,9 +108,13 @@ export const universeArt: Record<string, UniverseArt> = {
     accent: "#4fb4ff",
     // La pistola mira a la izquierda y dispara una bola de energía al portal; el trazo se dibuja de izquierda a derecha, primero el portal y luego el arma
     icon: lineIcons["portal-gun-fire"],
+    model: "/models/universes/portal-gun.glb",
+    modelTilt: Math.PI / 2,
   },
   "counter-strike": {
     accent: "#d2a64a",
     icon: lineIcons["counter-strike"],
+    model: "/models/universes/css-ak47.glb",
+    modelTilt: 0.3,
   },
 };

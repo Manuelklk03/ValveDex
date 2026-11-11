@@ -42,6 +42,21 @@ export const steamSources: Record<string, Source> = {
     url: "https://store.steampowered.com/app/550/Left_4_Dead_2/",
     kind: "official",
   },
+  portal: {
+    title: "Portal en Steam (archivos del juego)",
+    url: "https://store.steampowered.com/app/400/Portal/",
+    kind: "official",
+  },
+  "portal-2": {
+    title: "Portal 2 en Steam (archivos del juego)",
+    url: "https://store.steampowered.com/app/620/Portal_2/",
+    kind: "official",
+  },
+  "counter-strike-source": {
+    title: "Counter-Strike: Source en Steam (archivos del juego)",
+    url: "https://store.steampowered.com/app/240/CounterStrike_Source/",
+    kind: "official",
+  },
   "team-fortress-2": {
     title: "Team Fortress 2 en Steam (archivos del juego)",
     url: "https://store.steampowered.com/app/440/Team_Fortress_2/",
