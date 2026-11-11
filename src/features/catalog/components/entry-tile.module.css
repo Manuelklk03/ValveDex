@@ -55,6 +55,8 @@
 
 .entry-tile__body {
   display: grid;
+  /* Sin esto, un dato largo ensancha la columna y el texto se sale de la tarjeta */
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.5rem;
   padding: 0.875rem 1rem 1.125rem;
 }

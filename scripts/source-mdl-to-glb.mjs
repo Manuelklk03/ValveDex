@@ -2,7 +2,7 @@
 // Pose: la de referencia (brazos abiertos) o, con [brazos] en grados (24 queda natural), con los brazos bajados.
 // Uso: node scripts/source-mdl-to-glb.mjs <carpeta del juego> <mod> <modelo> <salida.glb> [cuerpos] [piel] [brazos]
 //   node scripts/source-mdl-to-glb.mjs "H:/SteamLibrary/steamapps/common/Half-Life 2" hl2 models/weapons/w_crowbar.mdl w_crowbar.glb
-// <mod>: hl2, episodic o ep2 (ep2 lee antes de episodic y de hl2); l4d o l4d2 con la carpeta de Left 4 Dead o Left 4 Dead 2; tf con la de Team Fortress 2. [cuerpos]: submodelo de cada parte, como 0,1,0.
+// <mod>: hl2, episodic o ep2 (ep2 lee antes de episodic y de hl2); l4d o l4d2 con la carpeta de Left 4 Dead o Left 4 Dead 2; tf con la de Team Fortress 2; portal, portal2 y cstrike con las de Portal, Portal 2 y Counter-Strike: Source. [cuerpos]: submodelo de cada parte, como 0,1,0.
 import { openMount } from "./lib/vpk.mjs";
 import { decodeVtf } from "./lib/vtf.mjs";
 import { writeGlb } from "./lib/glb.mjs";
@@ -25,6 +25,9 @@ const MOUNTS = {
   l4d: ["left4dead"],
   l4d2: ["left4dead2"],
   tf: ["tf", "hl2"],
+  portal: ["portal", "hl2"],
+  portal2: ["portal2_dlc2", "portal2_dlc1", "portal2"],
+  cstrike: ["cstrike", "hl2"],
 };
 if (!MOUNTS[mod])
   throw new Error(`Mod desconocido: ${mod} (${Object.keys(MOUNTS)})`);

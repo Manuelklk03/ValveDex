@@ -90,11 +90,15 @@ export const dossierArt: Record<string, DossierArt> = {
     icons: [lineIcons["portal-gun"], lineIcons["companion-cube"]],
     tint: "linear-gradient(90deg, #ff9d1f 50%, #3aa8ff 50%)",
     iconsOpacity: 0.4,
+    // El dispositivo viene de pie: tumbado gira como una pieza de museo
+    model: "/models/universes/portal-gun.glb",
+    modelTilt: Math.PI / 2,
   },
   "portal-2": {
     icons: [lineIcons.glados, lineIcons.wheatley],
     tint: "#52c7ff",
     iconsOpacity: 0.36,
+    model: "/models/universes/portal2-turret.glb",
   },
   // Counter-Strike: un solo icono, teñido según la época del juego
   "counter-strike": {
@@ -106,6 +110,8 @@ export const dossierArt: Record<string, DossierArt> = {
     icons: [lineIcons["counter-strike"]],
     tint: "#e0a73a",
     iconsOpacity: 0.36,
+    model: "/models/universes/css-ak47.glb",
+    modelTilt: 0.3,
   },
   "counter-strike-global-offensive": {
     icons: [lineIcons["counter-strike"]],
