@@ -4,6 +4,7 @@ import {
   getEntriesByGameAndCategory,
   getEntryThumbnail,
 } from "@/features/catalog/get-entries";
+import { getSectionEntries } from "./get-section-entries";
 import type { SectionStatus } from "./get-section-statuses";
 
 export type SectionPreview = {
@@ -21,7 +22,9 @@ export function getSectionPreviews(
   const previews: Record<string, SectionPreview> = {};
   for (const { section } of statuses) {
     if (section.id === "lore") continue;
-    const entries = getEntriesByGameAndCategory(gameId, section.id);
+    const entries = getSectionEntries(gameId, section.id).map(
+      (item) => item.entry,
+    );
     const withImage = entries
       .map((entry) => ({ entry, image: getEntryThumbnail(entry, gameId) }))
       .find((candidate) => candidate.image);
@@ -41,10 +44,8 @@ export function getGameStats(
 ): { label: string; value: number }[] {
   const count = (id: string) =>
     statuses.find((status) => status.section.id === id)?.entryNames.length ?? 0;
-  const total = statuses.reduce(
-    (sum, status) => sum + status.entryNames.length,
-    0,
-  );
+  // Sin repetir: en los juegos con equipos una misma ficha sale en «Personajes» y en «Enemigos»
+  const total = new Set(statuses.flatMap((status) => status.entryNames)).size;
   return [
     { label: "Fichas", value: total },
     { label: "Capítulos", value: count("maps") },
