@@ -688,7 +688,7 @@ export const portalCharacters: Entry[] = [
     category: "characters",
     details: { affiliation: "Aperture Science (sujeto de pruebas)" },
     summary:
-      "Protagonista muda de Portal y de la campaña de un jugador de Portal 2. Es una sujeto de pruebas del Centro de Enriquecimiento de Aperture Science y Casi todo lo que se sabe de su pasado lo dice GLaDOS, cuya fiabilidad es dudosa.",
+      "Protagonista muda de Portal y de la campaña de un jugador de Portal 2. Es una sujeto de pruebas del Centro de Enriquecimiento de Aperture Science. Casi todo lo que se sabe de su pasado lo dice GLaDOS, cuya fiabilidad es dudosa.",
     appearances: both,
     sources: [
       portalWiki("Chell", "Chell"),

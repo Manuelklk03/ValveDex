@@ -361,6 +361,11 @@ export const games: Game[] = [
         url: "https://en.wikipedia.org/wiki/Counter-Strike:_Condition_Zero_Deleted_Scenes",
         kind: "wiki",
       },
+      {
+        title: "Counter-Strike: Condition Zero Deleted Scenes en Steam",
+        url: "https://store.steampowered.com/app/100/CounterStrike_Condition_Zero_Deleted_Scenes/",
+        kind: "official",
+      },
     ],
   },
   {
