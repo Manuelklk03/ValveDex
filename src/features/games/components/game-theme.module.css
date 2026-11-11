@@ -14,7 +14,13 @@
 .game-theme--team-fortress-classic,
 .game-theme--team-fortress-2,
 .game-theme--left-4-dead,
-.game-theme--left-4-dead-2 {
+.game-theme--left-4-dead-2,
+.game-theme--portal,
+.game-theme--portal-2,
+.game-theme--counter-strike,
+.game-theme--counter-strike-source,
+.game-theme--counter-strike-global-offensive,
+.game-theme--counter-strike-2 {
   background-color: var(--background);
 }
 
@@ -214,4 +220,70 @@
       rgb(189 129 40 / 0.02) 0 1px,
       transparent 1px 5rem
     );
+}
+
+/* Portal: panel blanco de Aperture Science de noche, naranja y azul de los portales */
+.game-theme--portal {
+  --background: #14171b;
+  --foreground: #e9eef2;
+  --surface: #1d2228;
+  --border: #323b44;
+  --muted: #a4afb9;
+  --accent: #ff9d1f;
+  color-scheme: dark;
+}
+
+/* Portal 2: complejo de Aperture abandonado, verdín y azul de los geles de propulsión */
+.game-theme--portal-2 {
+  --background: #101a1c;
+  --foreground: #e6efe9;
+  --surface: #192528;
+  --border: #33443f;
+  --muted: #a2b3ab;
+  --accent: #52c7ff;
+  color-scheme: dark;
+}
+
+/* Counter-Strike: lona militar y arena de Dust */
+.game-theme--counter-strike {
+  --background: #15170f;
+  --foreground: #ebe7d2;
+  --surface: #1f2216;
+  --border: #363a26;
+  --muted: #b0ab90;
+  --accent: #d2a64a;
+  color-scheme: dark;
+}
+
+/* Counter-Strike: Source: acero y ámbar */
+.game-theme--counter-strike-source {
+  --background: #13171a;
+  --foreground: #e4e8ea;
+  --surface: #1c2226;
+  --border: #323c42;
+  --muted: #a3adb3;
+  --accent: #e0a73a;
+  color-scheme: dark;
+}
+
+/* Global Offensive: negro competitivo y naranja de la interfaz */
+.game-theme--counter-strike-global-offensive {
+  --background: #12141a;
+  --foreground: #eceae4;
+  --surface: #1b1e26;
+  --border: #333743;
+  --muted: #a7a9b0;
+  --accent: #f0a23a;
+  color-scheme: dark;
+}
+
+/* Counter-Strike 2: azul frío de Source 2 */
+.game-theme--counter-strike-2 {
+  --background: #0f1318;
+  --foreground: #e8edf3;
+  --surface: #181e26;
+  --border: #2f3947;
+  --muted: #a1adbb;
+  --accent: #5ab0ff;
+  color-scheme: dark;
 }

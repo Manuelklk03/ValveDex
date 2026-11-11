@@ -1376,3 +1376,173 @@
     ),
     #1f4fa8;
 }
+
+/* Portal: ficha de prueba de Aperture Science, panel blanco con rejilla, naranja y azul de los portales */
+.game-dossier--portal {
+  --dossier-paper: #eceff1;
+  --dossier-ink: #14181c;
+  --dossier-muted: #4f5a63;
+  --dossier-accent: #a84700;
+  --dossier-line: rgb(20 24 28 / 0.14);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgb(20 24 28 / 0.045) 0 1px,
+      transparent 1px 2.5rem
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgb(20 24 28 / 0.045) 0 1px,
+      transparent 1px 2.5rem
+    );
+  border: 1px solid #b9c2c9;
+}
+
+.game-dossier--portal .game-dossier__stamp {
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  color: #a84700;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  opacity: 0.95;
+  rotate: -2deg;
+}
+
+/* Portal 2: registro del complejo en ruinas, papel verdoso y azul de los geles */
+.game-dossier--portal-2 {
+  --dossier-paper: #dfe6e3;
+  --dossier-ink: #141a18;
+  --dossier-muted: #4a5852;
+  --dossier-accent: #0a6296;
+  --dossier-line: rgb(20 24 28 / 0.14);
+  background-image:
+    radial-gradient(ellipse at 10% 90%, rgb(60 120 70 / 0.14), transparent 45%),
+    repeating-linear-gradient(
+      0deg,
+      rgb(20 26 24 / 0.04) 0 1px,
+      transparent 1px 2.5rem
+    );
+  border: 1px solid #a9b8b1;
+}
+
+.game-dossier--portal-2 .game-dossier__stamp {
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  color: #0a6296;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  opacity: 0.95;
+  rotate: -2deg;
+}
+
+/* Counter-Strike: orden de misión sobre papel caqui */
+.game-dossier--counter-strike {
+  --dossier-paper: #e4dfcb;
+  --dossier-ink: #1a1a14;
+  --dossier-muted: #555240;
+  --dossier-accent: #7a4f0c;
+  --dossier-line: rgb(20 24 28 / 0.14);
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgb(26 26 20 / 0.04) 0 2px,
+    transparent 2px 10px
+  );
+  border: 1px solid #b6ad8a;
+}
+
+.game-dossier--counter-strike .game-dossier__stamp {
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  color: #7a4f0c;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  opacity: 0.95;
+  rotate: -2deg;
+}
+
+/* Counter-Strike: Source: informe táctico sobre papel gris acero */
+.game-dossier--counter-strike-source {
+  --dossier-paper: #d9dde0;
+  --dossier-ink: #14181c;
+  --dossier-muted: #4b545c;
+  --dossier-accent: #7a5208;
+  --dossier-line: rgb(20 24 28 / 0.14);
+  background-image: repeating-linear-gradient(
+    180deg,
+    rgb(20 24 28 / 0.04) 0 1px,
+    transparent 1px 1.75rem
+  );
+  border: 1px solid #aab2b8;
+}
+
+.game-dossier--counter-strike-source .game-dossier__stamp {
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  color: #7a5208;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  opacity: 0.95;
+  rotate: -2deg;
+}
+
+/* Global Offensive: expediente competitivo, papel hueso y naranja */
+.game-dossier--counter-strike-global-offensive {
+  --dossier-paper: #e9e6df;
+  --dossier-ink: #14161a;
+  --dossier-muted: #54565c;
+  --dossier-accent: #9a4509;
+  --dossier-line: rgb(20 24 28 / 0.14);
+  background-image: linear-gradient(
+    135deg,
+    rgb(240 162 58 / 0.1),
+    transparent 35%
+  );
+  border: 1px solid #bab5a8;
+}
+
+.game-dossier--counter-strike-global-offensive .game-dossier__stamp {
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  color: #9a4509;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  opacity: 0.95;
+  rotate: -2deg;
+}
+
+/* Counter-Strike 2: ficha táctica fría de Source 2 */
+.game-dossier--counter-strike-2 {
+  --dossier-paper: #e4e9ef;
+  --dossier-ink: #11161c;
+  --dossier-muted: #4b5663;
+  --dossier-accent: #1a5fae;
+  --dossier-line: rgb(20 24 28 / 0.14);
+  background-image: linear-gradient(
+    135deg,
+    rgb(90 176 255 / 0.12),
+    transparent 40%
+  );
+  border: 1px solid #a9b4c0;
+}
+
+.game-dossier--counter-strike-2 .game-dossier__stamp {
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  color: #1a5fae;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  opacity: 0.95;
+  rotate: -2deg;
+}

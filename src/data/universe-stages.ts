@@ -57,4 +57,39 @@ export const universeStages: UniverseStage[] = [
       "Left 4 Dead (2008) y su secuela (2009) definieron el cooperativo de supervivencia con la IA Director y ocho supervivientes memorables.",
     status: "available",
   },
+  {
+    id: "source-portal",
+    universeId: "portal",
+    name: "Source",
+    subtitle: "Portal y Portal 2",
+    summary:
+      "Portal (2007) nació de un proyecto de estudiantes y se hizo célebre por su humor y sus puzles; Portal 2 (2011) amplió la historia con cooperativo y geles.",
+    status: "available",
+  },
+  {
+    id: "goldsrc-cs",
+    universeId: "counter-strike",
+    name: "GoldSrc",
+    subtitle: "Counter-Strike",
+    summary:
+      "Counter-Strike (2000), el mod de Half-Life que definió el shooter táctico por rondas.",
+    status: "available",
+  },
+  {
+    id: "source-cs",
+    universeId: "counter-strike",
+    name: "Source",
+    subtitle: "Counter-Strike: Source y Global Offensive",
+    summary:
+      "Las entregas de 2004 y 2012 llevaron la serie al motor Source y a la escena competitiva.",
+    status: "available",
+  },
+  {
+    id: "source-2-cs",
+    universeId: "counter-strike",
+    name: "Source 2",
+    subtitle: "Counter-Strike 2",
+    summary: "Counter-Strike 2 (2023) traslada la serie a Source 2.",
+    status: "available",
+  },
 ];

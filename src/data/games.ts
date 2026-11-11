@@ -268,4 +268,118 @@ export const games: Game[] = [
       },
     ],
   },
+  {
+    id: "portal",
+    slug: "portal",
+    universeId: "portal",
+    stageId: "source-portal",
+    status: "released",
+    releaseYear: 2007,
+    developer: "Valve",
+    name: "Portal",
+    description:
+      "Chell recorre las cámaras de pruebas de Aperture Science con un dispositivo capaz de abrir dos portales enlazados, bajo la vigilancia de la inteligencia artificial GLaDOS.",
+    sources: [
+      {
+        title: "Portal - Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Portal_(video_game)",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    id: "portal-2",
+    slug: "portal-2",
+    universeId: "portal",
+    stageId: "source-portal",
+    status: "released",
+    releaseYear: 2011,
+    developer: "Valve",
+    name: "Portal 2",
+    description:
+      "Secuela con modo cooperativo para dos jugadores, geles que cambian las propiedades de las superficies y un complejo de Aperture Science mucho más grande que el del primer juego.",
+    sources: [
+      {
+        title: "Portal 2 - Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Portal_2",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    id: "counter-strike",
+    slug: "counter-strike",
+    universeId: "counter-strike",
+    stageId: "goldsrc-cs",
+    status: "released",
+    releaseYear: 2000,
+    developer: "Minh Le, Jess Cliffe y Valve",
+    name: "Counter-Strike",
+    description:
+      "Shooter táctico por rondas nacido como mod de Half-Life: terroristas y antiterroristas compran su equipo cada ronda y se enfrentan para colocar o desactivar una bomba o rescatar rehenes.",
+    sources: [
+      {
+        title: "Counter-Strike - Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Counter-Strike",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    id: "counter-strike-source",
+    slug: "counter-strike-source",
+    universeId: "counter-strike",
+    stageId: "source-cs",
+    status: "released",
+    releaseYear: 2004,
+    developer: "Valve",
+    name: "Counter-Strike: Source",
+    description:
+      "Reedición de Counter-Strike para el motor Source, con física, gráficos nuevos y los mapas clásicos rehechos.",
+    sources: [
+      {
+        title: "Counter-Strike: Source - Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Counter-Strike:_Source",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    id: "counter-strike-global-offensive",
+    slug: "counter-strike-global-offensive",
+    universeId: "counter-strike",
+    stageId: "source-cs",
+    status: "released",
+    releaseYear: 2012,
+    developer: "Valve y Hidden Path Entertainment",
+    name: "Counter-Strike: Global Offensive",
+    description:
+      "Cuarta entrega de la serie, con nuevos modos de juego, objetos cosméticos y una escena competitiva profesional.",
+    sources: [
+      {
+        title: "Counter-Strike: Global Offensive - Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Counter-Strike:_Global_Offensive",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    id: "counter-strike-2",
+    slug: "counter-strike-2",
+    universeId: "counter-strike",
+    stageId: "source-2-cs",
+    status: "released",
+    releaseYear: 2023,
+    developer: "Valve",
+    name: "Counter-Strike 2",
+    description:
+      "Evolución de Global Offensive para Source 2, con humo y granadas que reaccionan al mapa y servidores con actualización constante.",
+    sources: [
+      {
+        title: "Counter-Strike 2 - Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Counter-Strike_2",
+        kind: "wiki",
+      },
+    ],
+  },
 ];
