@@ -13,8 +13,9 @@ export const universes: Universe[] = [
     id: "portal",
     slug: "portal",
     name: "Portal",
-    description: "Pruebas de lógica en Aperture Science junto a GLaDOS.",
-    status: "coming-soon",
+    description:
+      "Puzles en primera persona con un dispositivo de portales, las cámaras de pruebas de Aperture Science y la IA GLaDOS.",
+    status: "available",
   },
   {
     id: "team-fortress",
@@ -28,8 +29,9 @@ export const universes: Universe[] = [
     id: "counter-strike",
     slug: "counter-strike",
     name: "Counter-Strike",
-    description: "Shooter táctico de terroristas contra antiterroristas.",
-    status: "coming-soon",
+    description:
+      "Shooter táctico por rondas de terroristas contra antiterroristas, desde el mod de 1999 hasta Counter-Strike 2.",
+    status: "available",
   },
   {
     id: "left-4-dead",

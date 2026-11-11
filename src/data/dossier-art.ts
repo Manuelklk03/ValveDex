@@ -85,4 +85,36 @@ export const dossierArt: Record<string, DossierArt> = {
     iconsOpacity: 0.36,
     model: "/models/universes/l4d2-jockey.glb",
   },
+  // Portal: el dispositivo de portales en naranja y azul; en Portal 2, GLaDOS y Wheatley en azul
+  portal: {
+    icons: [lineIcons["portal-gun"], lineIcons["companion-cube"]],
+    tint: "linear-gradient(90deg, #ff9d1f 50%, #3aa8ff 50%)",
+    iconsOpacity: 0.4,
+  },
+  "portal-2": {
+    icons: [lineIcons.glados, lineIcons.wheatley],
+    tint: "#52c7ff",
+    iconsOpacity: 0.36,
+  },
+  // Counter-Strike: un solo icono, teñido según la época del juego
+  "counter-strike": {
+    icons: [lineIcons["counter-strike"]],
+    tint: "#d2a64a",
+    iconsOpacity: 0.36,
+  },
+  "counter-strike-source": {
+    icons: [lineIcons["counter-strike"]],
+    tint: "#e0a73a",
+    iconsOpacity: 0.36,
+  },
+  "counter-strike-global-offensive": {
+    icons: [lineIcons["counter-strike"]],
+    tint: "#f0a23a",
+    iconsOpacity: 0.36,
+  },
+  "counter-strike-2": {
+    icons: [lineIcons["counter-strike"]],
+    tint: "#5ab0ff",
+    iconsOpacity: 0.36,
+  },
 };

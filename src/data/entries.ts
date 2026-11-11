@@ -78,6 +78,8 @@ import {
   left4DeadMoreMaps,
   left4DeadMoreWeapons,
 } from "./left-4-dead-expansion";
+import { counterStrikeEntries } from "./counter-strike-entries";
+import { portalEntries } from "./portal-expansion";
 import { expansionAppearances } from "./expansion-appearances";
 import { withSourceCaptures } from "./source-captures";
 import { withWikiScreenshots } from "./wiki-screenshots";
@@ -140,6 +142,8 @@ const baseEntries: Entry[] = [
   ...svenCoOpEntries,
   ...halfLifeDreamcastEntries,
   ...halfLifeSourceExtras,
+  ...counterStrikeEntries,
+  ...portalEntries,
   {
     id: "goldsrc-engine",
     slug: "motor-goldsrc",

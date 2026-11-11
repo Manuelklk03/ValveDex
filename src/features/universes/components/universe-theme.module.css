@@ -90,3 +90,53 @@
   font-family: var(--font-plex-mono), monospace;
   font-stretch: normal;
 }
+
+/* Portal: panel de Aperture Science de noche; naranja y azul de los portales */
+.universe-theme--portal {
+  --background: #14171b;
+  --foreground: #e9eef2;
+  --surface: #1d2228;
+  --border: #323b44;
+  --muted: #a4afb9;
+  --accent: #ff9d1f;
+  color-scheme: dark;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgb(255 255 255 / 0.02) 0 1px,
+      transparent 1px 3rem
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0.02) 0 1px,
+      transparent 1px 3rem
+    );
+  font-family: var(--font-barlow), sans-serif;
+}
+
+.universe-theme--portal :where(h1, h2, h3) {
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-stretch: normal;
+}
+
+/* Counter-Strike: lona militar y arena */
+.universe-theme--counter-strike {
+  --background: #15170f;
+  --foreground: #ebe7d2;
+  --surface: #1f2216;
+  --border: #363a26;
+  --muted: #b0ab90;
+  --accent: #d2a64a;
+  color-scheme: dark;
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgb(255 255 255 / 0.02) 0 2px,
+    transparent 2px 12px
+  );
+  font-family: var(--font-barlow), sans-serif;
+}
+
+.universe-theme--counter-strike :where(h1, h2, h3) {
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-stretch: normal;
+}

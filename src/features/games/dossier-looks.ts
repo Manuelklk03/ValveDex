@@ -12,7 +12,13 @@ export type DossierLook = {
     | "team-fortress-classic"
     | "team-fortress-2"
     | "left-4-dead"
-    | "left-4-dead-2";
+    | "left-4-dead-2"
+    | "portal"
+    | "portal-2"
+    | "counter-strike"
+    | "counter-strike-source"
+    | "counter-strike-global-offensive"
+    | "counter-strike-2";
   label: string;
   stamp: string;
   edge: string;
@@ -90,6 +96,42 @@ const dossierLooks: Record<string, DossierLook> = {
     label: "Expediente de evacuación · Sur profundo",
     stamp: "CEDA / Militar",
     edge: "Savannah · Nueva Orleans · Bayou · The Parish",
+  },
+  portal: {
+    variant: "portal",
+    label: "Ficha de prueba · Aperture Science",
+    stamp: "Sujeto de pruebas",
+    edge: "Cámaras de pruebas · Dispositivo de portales · GLaDOS",
+  },
+  "portal-2": {
+    variant: "portal-2",
+    label: "Registro de instalación · Aperture Science",
+    stamp: "Cooperativo",
+    edge: "Geles · Cubo de compañía · Wheatley · Cave Johnson",
+  },
+  "counter-strike": {
+    variant: "counter-strike",
+    label: "Orden de misión · Operaciones tácticas",
+    stamp: "CS 1.6",
+    edge: "de_dust2 · de_inferno · cs_italy · de_nuke",
+  },
+  "counter-strike-source": {
+    variant: "counter-strike-source",
+    label: "Informe táctico · Motor Source",
+    stamp: "CS: Source",
+    edge: "de_dust2 · de_train · cs_office · de_aztec",
+  },
+  "counter-strike-global-offensive": {
+    variant: "counter-strike-global-offensive",
+    label: "Expediente competitivo · Global Offensive",
+    stamp: "Competitivo",
+    edge: "de_mirage · de_overpass · de_cache · Operaciones",
+  },
+  "counter-strike-2": {
+    variant: "counter-strike-2",
+    label: "Ficha táctica · Source 2",
+    stamp: "CS2",
+    edge: "de_inferno · de_ancient · de_anubis · Premier",
   },
 };
 
