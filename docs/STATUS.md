@@ -6,6 +6,8 @@ Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
 ## Versión actual: `v0.3.0` (bloque Valve, Steam y apertura de la etapa Source)
 
+**`v0.4.0` preparada (2026-11-11), sin tag:** `package.json`, el lockfile y el CHANGELOG ya dicen 0.4.0 (rediseño de universos, dossieres, hubs y fichas; Valve y Steam renovados; modelos 3D de Team Fortress 2 y Left 4 Dead; unas 810 fichas con Portal y Counter-Strike abiertos). Tras fusionar esta preparación, el tag anotado y la GitHub Release se crean cuando Manuel lo indique (pasos de «Versiones del proyecto»).
+
 El 2026-11-05 se publica `v0.3.0`: bloque de Valve (sección de hardware `/valve/hardware` con 7 dispositivos históricos y 5 nuevas figuras clave en `/valve/personas`), rediseño histórico de Steam con tres épocas, contenido verificado de Half-Life 2, Team Fortress y Left 4 Dead, suite completa de 100 pruebas unitarias con Vitest (100% de cobertura en dominio y selectores), e integración continua con SonarCloud y Docker Hub. Anteriores: `v0.2.0` (2026-10-26, bloque Half-Life 1) y `v0.1.0` (2026-10-23, esqueleto).
 
 ## Modo de trabajo
@@ -592,7 +594,7 @@ Decisión de Manuel (2026-10-16): versionado semántico con tags de Git y GitHub
 | `v1.0.0` | **Todo el universo Half-Life**: todos sus juegos, expansiones y episodios, con proyectos cancelados y mods, revisado y desplegado |
 | `v1.x.0` | Cada universo nuevo (Portal, Team Fortress…) o funcionalidad grande posterior                                                     |
 
-Publicadas: **`v0.1.0`** (2026-10-23, esqueleto), **`v0.2.0`** (2026-10-26, bloque Half-Life 1) y **`v0.3.0`** (2026-11-05, bloque Valve, Steam y apertura de la etapa Source).
+Preparada, sin publicar: **`v0.4.0`** (2026-11-11). Publicadas: **`v0.1.0`** (2026-10-23, esqueleto), **`v0.2.0`** (2026-10-26, bloque Half-Life 1) y **`v0.3.0`** (2026-11-05, bloque Valve, Steam y apertura de la etapa Source).
 
 Cómo se crea una versión, cuando Manuel lo indique (siempre sobre `main` actualizado y con `npm run check` y `npm run build` superados):
 
