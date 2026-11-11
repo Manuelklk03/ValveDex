@@ -1,8 +1,10 @@
 import type { GameLore } from "@/domain/game-lore";
 import { counterStrikeLore } from "./counter-strike-lore";
+import { portalLore } from "./portal-lore";
 
 export const gameLore: GameLore[] = [
   ...counterStrikeLore,
+  ...portalLore,
   {
     gameId: "half-life",
     paragraphs: [
