@@ -1,4 +1,4 @@
-import type { Entry } from "@/domain/entry";
+import type { Entry, EntryAppearance } from "@/domain/entry";
 import { halfLifeChapters } from "./half-life-chapters";
 import { halfLifeWeapons } from "./half-life-weapons";
 import { halfLifeEnemies } from "./half-life-enemies";
@@ -80,6 +80,7 @@ import {
 } from "./left-4-dead-expansion";
 import { counterStrikeEntries } from "./counter-strike-entries";
 import { portalEntries } from "./portal-expansion";
+import { counterStrikeConditionZeroEntries } from "./counter-strike-condition-zero";
 import { expansionAppearances } from "./expansion-appearances";
 import { withSourceCaptures } from "./source-captures";
 import { withWikiScreenshots } from "./wiki-screenshots";
@@ -144,6 +145,7 @@ const baseEntries: Entry[] = [
   ...halfLifeSourceExtras,
   ...counterStrikeEntries,
   ...portalEntries,
+  ...counterStrikeConditionZeroEntries,
   {
     id: "goldsrc-engine",
     slug: "motor-goldsrc",
@@ -196,8 +198,44 @@ const baseEntries: Entry[] = [
 ];
 
 // Apariciones añadidas por id: Half-Life 1 en sus expansiones y Half-Life 2 en sus episodios
+// Fichas de Counter-Strike que también salen en Condition Zero (cz) y en Deleted Scenes (ds), según el informe de su investigación
+const cz = { gameId: "counter-strike-condition-zero" };
+const ds = { gameId: "counter-strike-condition-zero-deleted-scenes" };
+const counterStrikeZeroAppearances: Record<string, EntryAppearance[]> = {
+  ...Object.fromEntries(
+    [
+      "cs-map-dust",
+      "cs-map-dust2",
+      "cs-map-inferno",
+      "cs-map-aztec",
+      "cs-map-cobblestone",
+      "cs-map-italy",
+      "cs-map-office",
+      "cs-map-militia",
+      "cs-map-havana",
+      "cs-map-oilrig",
+      "cs-char-hostage",
+      "cs-char-vip",
+    ].map((id) => [id, [cz]]),
+  ),
+  ...Object.fromEntries(
+    [
+      "cs-char-elite-crew",
+      "cs-char-phoenix-connexion",
+      "cs-char-seal-team-6",
+      "cs-char-gign",
+      "cs-char-gsg9",
+      "cs-char-sas",
+      "cs-char-terrorists",
+      "cs-char-counter-terrorists",
+      "cs-trivia-condition-zero",
+    ].map((id) => [id, [cz, ds]]),
+  ),
+};
+
 const extraAppearances = {
   ...expansionAppearances,
+  ...counterStrikeZeroAppearances,
   ...halfLife2EpisodeAppearances,
 };
 
