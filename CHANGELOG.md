@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Counter-Strike gana Counter-Strike: Condition Zero y Condition Zero: Deleted Scenes en la etapa GoldSrc (con CS 1.6), con 48 fichas (21 mapas, de ellos 13 misiones de Deleted Scenes; armas de misión, bandos, bots, curiosidades y easter eggs) y su lore; las fichas de bandos, rehenes, VIP y mapas clásicos también salen en esos juegos. Counter-Strike pasa a llamarse Counter-Strike 1.6.
 - Universos Portal y Counter-Strike abiertos: seis juegos (Portal, Portal 2, Counter-Strike, Counter-Strike: Source, Global Offensive y Counter-Strike 2), sus etapas por motor, un tema de universo y de juego, un dossier por juego y 151 fichas nuevas con fuentes (Portal: 56, con mapas comprobados contra los archivos del juego; Counter-Strike: 95) y el lore de cada juego.
 - Contenido ampliado con fuentes comprobadas: Team Fortress (122 fichas: mapas, armas, clases de TFC, personajes, enemigos y curiosidades), Left 4 Dead y Left 4 Dead 2 (86: todas las campañas, infectados, armas y curiosidades), Sven Co-op y Half-Life para Dreamcast (56 con las curiosidades de HL2, los episodios y Alyx) y la sección de Valve (22 hitos, 10 personas, 5 dispositivos y 17 hechos de Steam, hasta septiembre de 2026).
 - Cada ficha muestra más fichas de su apartado y juego, con navegación a la anterior y la siguiente.

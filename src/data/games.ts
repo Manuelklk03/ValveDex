@@ -314,13 +314,51 @@ export const games: Game[] = [
     status: "released",
     releaseYear: 2000,
     developer: "Minh Le, Jess Cliffe y Valve",
-    name: "Counter-Strike",
+    name: "Counter-Strike 1.6",
     description:
       "Shooter táctico por rondas nacido como mod de Half-Life: terroristas y antiterroristas compran su equipo cada ronda y se enfrentan para colocar o desactivar una bomba o rescatar rehenes.",
     sources: [
       {
         title: "Counter-Strike - Wikipedia",
         url: "https://en.wikipedia.org/wiki/Counter-Strike",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    id: "counter-strike-condition-zero",
+    slug: "counter-strike-condition-zero",
+    universeId: "counter-strike",
+    stageId: "goldsrc-cs",
+    status: "released",
+    releaseYear: 2004,
+    developer: "Ritual Entertainment, Turtle Rock Studios y Valve",
+    name: "Counter-Strike: Condition Zero",
+    description:
+      "Continuación de Counter-Strike en GoldSrc, con multijugador renovado y la campaña para un jugador Tour of Duty contra bots.",
+    sources: [
+      {
+        title: "Counter-Strike: Condition Zero - Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Counter-Strike:_Condition_Zero",
+        kind: "wiki",
+      },
+    ],
+  },
+  {
+    id: "counter-strike-condition-zero-deleted-scenes",
+    slug: "counter-strike-condition-zero-deleted-scenes",
+    universeId: "counter-strike",
+    stageId: "goldsrc-cs",
+    status: "released",
+    releaseYear: 2004,
+    developer: "Ritual Entertainment y Valve",
+    name: "Counter-Strike: Condition Zero – Deleted Scenes",
+    description:
+      "Campaña para un jugador de Condition Zero desarrollada por Ritual Entertainment, con misiones propias y distinta de Tour of Duty.",
+    sources: [
+      {
+        title: "Condition Zero: Deleted Scenes - Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Counter-Strike:_Condition_Zero_Deleted_Scenes",
         kind: "wiki",
       },
     ],

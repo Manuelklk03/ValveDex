@@ -117,4 +117,14 @@ export const dossierArt: Record<string, DossierArt> = {
     tint: "#5ab0ff",
     iconsOpacity: 0.36,
   },
+  "counter-strike-condition-zero": {
+    icons: [lineIcons["counter-strike"]],
+    tint: "#c8b15a",
+    iconsOpacity: 0.36,
+  },
+  "counter-strike-condition-zero-deleted-scenes": {
+    icons: [lineIcons["counter-strike"]],
+    tint: "#b8c07a",
+    iconsOpacity: 0.36,
+  },
 };
