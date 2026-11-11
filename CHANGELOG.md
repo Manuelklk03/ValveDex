@@ -8,6 +8,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- En los juegos con equipos, «Personajes» muestra a tu equipo y «Enemigos» a los rivales: en Counter-Strike, los Terroristas ven a sus unidades y tienen enfrente a las antiterroristas (y al revés); en Team Fortress 2, GRAY es el ejército de robots, RED y BLU tienen enfrente a los mercenarios del otro color (con su piel) y a los robots. Cada equipo de Team Fortress 2 muestra a su líder: Redmond Mann, Blutarch Mann y Gray Mann.
+- El selector de equipo enseña el nombre del equipo, qué es y quién lo dirige, y los apartados agrupan las fichas (líder, mercenarios, robots, unidades y otros).
 - Portal, Portal 2 y Counter-Strike: Source con renders propios de sus modelos: 39 imágenes (dispositivo de portales, cubos, torretas, Chell, Atlas, P-body y Frankenturret; 20 armas y equipo, seis unidades y el rehén de Counter-Strike: Source), 24 de ellas con visor 3D, y un modelo que gira en los dossieres de Portal, Portal 2 y Counter-Strike: Source y en las tarjetas de sus universos.
 - Team Fortress y Counter-Strike se recorren por equipos: el hub y los apartados de cada juego tienen un selector (RED y BLU, más GRAY en Team Fortress 2 para Mann vs. Machine; Terroristas y Antiterroristas en Counter-Strike) que tiñe la página con el color del equipo, muestra los mercenarios con su piel (9 renders BLU propios), oculta lo que no es de ese equipo y se recuerda entre visitas.
 - En esos juegos, el apartado de personajes separa a los mercenarios de los otros personajes (Administradora, Miss Pauling, Saxton Hale y los Mann), y los robots de Mann vs. Machine salen en GRAY.

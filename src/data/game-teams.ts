@@ -20,7 +20,7 @@ const gray: Team = {
   id: "gray",
   name: "GRAY",
   accent: "#b4bdc7",
-  summary: "Mann vs. Machine: los robots de Gray Mann",
+  summary: "El ejército de robots de Gray Mann (Mann vs. Machine)",
 };
 
 const sides: Team[] = [
@@ -97,6 +97,13 @@ export const entryTeams: Record<string, string[]> = {
   "cs-char-gsg9": ["ct"],
   "cs-char-sas": ["ct"],
 };
+
+// Líder de cada equipo: los hermanos Mann (Redmond en RED, Blutarch en BLU y Gray, el tercero, con los robots)
+export const leaderIds = new Set<string>([
+  "tf-char-redmond-mann",
+  "tf-char-blutarch-mann",
+  "tf-char-gray-mann",
+]);
 
 // Fichas de personaje que son mercenarios (los demás personajes salen en un grupo aparte)
 export const mercenaryIds = new Set<string>([

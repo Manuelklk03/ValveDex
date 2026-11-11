@@ -1,6 +1,6 @@
 import { isEntryCategory } from "@/domain/entry";
 import type { GameSection } from "@/domain/game-section";
-import { getEntriesByGameAndCategory } from "@/features/catalog/get-entries";
+import { getSectionEntries } from "./get-section-entries";
 import { getGameLore } from "./get-game-lore";
 import { getGameSections } from "./get-game-sections";
 
@@ -15,9 +15,7 @@ export type SectionStatus = {
 export function getSectionStatuses(gameId: string): SectionStatus[] {
   return getGameSections().map((section) => {
     const entryNames = isEntryCategory(section.id)
-      ? getEntriesByGameAndCategory(gameId, section.id).map(
-          (entry) => entry.name,
-        )
+      ? getSectionEntries(gameId, section.id).map((item) => item.entry.name)
       : [];
 
     const count = entryNames.length;

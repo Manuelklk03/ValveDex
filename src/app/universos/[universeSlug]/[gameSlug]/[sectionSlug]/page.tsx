@@ -1,10 +1,9 @@
 ﻿import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { notFound } from "next/navigation";
-import { isEntryCategory, type Entry } from "@/domain/entry";
+import { isEntryCategory } from "@/domain/entry";
 import type { GameSection } from "@/domain/game-section";
 import { dossierArt } from "@/data/dossier-art";
-import { entryTeams, mercenaryIds } from "@/data/game-teams";
 import { engineerBuildings } from "@/data/team-fortress-buildings";
 import { TeamEntryCount } from "@/components/ui/team-entry-count";
 import { TeamPicker } from "@/components/ui/team-picker";
@@ -12,7 +11,6 @@ import { getGameTeams } from "@/data/game-teams";
 import { BuildingList } from "@/features/catalog/components/building-list";
 import { EntryTile } from "@/features/catalog/components/entry-tile";
 import {
-  getEntriesByGameAndCategory,
   getEntryAppearance,
   getEntryThumbnail,
   getEntrySummaryForGame,
@@ -20,6 +18,13 @@ import {
 import { getEntryFacts } from "@/features/catalog/get-entry-facts";
 import { GameHero } from "@/features/games/components/game-hero";
 import { getGameLore } from "@/features/games/get-game-lore";
+import {
+  getRivalTeam,
+  getSectionEntries,
+  getTeamLeaders,
+  type SectionEntry,
+  type SectionGroup,
+} from "@/features/games/get-section-entries";
 import {
   getGameSectionBySlug,
   getGameSections,
@@ -34,7 +39,7 @@ import styles from "./page.module.css";
 
 function hasSectionContent(gameId: string, section: GameSection): boolean {
   return isEntryCategory(section.id)
-    ? getEntriesByGameAndCategory(gameId, section.id).length > 0
+    ? getSectionEntries(gameId, section.id).length > 0
     : getGameLore(gameId) !== undefined;
 }
 
@@ -78,7 +83,7 @@ function getSectionPageData(
       : undefined;
   }
 
-  const entries = getEntriesByGameAndCategory(result.game.id, section.id);
+  const entries = getSectionEntries(result.game.id, section.id);
 
   return { ...result, section, kind: "entries" as const, entries };
 }
@@ -97,12 +102,35 @@ export async function generateMetadata({
   };
 }
 
-// Equipos de un grupo de fichas: la unión de los suyos, o ninguno (visible siempre) si alguna ficha sirve a todos
-function getGroupTeams(entries: Entry[]): string | undefined {
-  const lists = entries.map((entry) => entryTeams[entry.id]);
+// Orden y título de cada grupo: en «Personajes» es tu equipo; en «Enemigos», el rival
+const groupOrder: SectionGroup[] = [
+  "leader",
+  "mercenaries",
+  "robots",
+  "units",
+  "others",
+];
+const groupTitles: Record<"own" | "rival", Record<SectionGroup, string>> = {
+  own: {
+    leader: "Líder del equipo",
+    mercenaries: "Mercenarios",
+    robots: "Robots",
+    units: "Unidades",
+    others: "Otros personajes",
+  },
+  rival: {
+    leader: "Líder rival",
+    mercenaries: "Mercenarios rivales",
+    robots: "Robots",
+    units: "Unidades rivales",
+    others: "Otros enemigos",
+  },
+};
 
-  return lists.every(Boolean)
-    ? [...new Set(lists.flat())].join(" ")
+// Equipos de un grupo de fichas: la unión de los suyos, o ninguno (visible siempre) si alguna ficha sirve a todos
+function getGroupTeams(items: SectionEntry[]): string | undefined {
+  return items.every((item) => item.teams)
+    ? [...new Set(items.flatMap((item) => item.teams ?? []))].join(" ")
     : undefined;
 }
 
@@ -119,22 +147,32 @@ export default async function SectionPage({
 
   const { universe, game, section } = data;
 
-  // En los juegos con equipos, los personajes se separan en mercenarios y otros personajes
-  const mercenaries =
-    data.kind === "entries" && section.id === "characters"
-      ? data.entries.filter((entry) => mercenaryIds.has(entry.id))
-      : [];
-  const otherCharacters =
-    data.kind === "entries" && section.id === "characters"
-      ? data.entries.filter((entry) => !mercenaryIds.has(entry.id))
-      : [];
-  const isGrouped = mercenaries.length > 0 && otherCharacters.length > 0;
+  const teams = getGameTeams(game.id);
+  const items = data.kind === "entries" ? data.entries : [];
+  const titles = groupTitles[section.id === "enemies" ? "rival" : "own"];
+  const groups = groupOrder
+    .map((group) => ({
+      group,
+      items: items.filter((item) => item.group === group),
+    }))
+    .filter((group) => group.items.length > 0);
+  // Solo se agrupa en los juegos con equipos y si hay algo más que el grupo de «otros»
+  const isGrouped =
+    teams.length > 0 && groups.some((group) => group.group !== "others");
 
-  function renderTile(entry: Entry) {
+  function renderTile({ entry, teams: visibleTeams, isRival }: SectionEntry) {
     const buildings = engineerBuildings.filter(
       (building) =>
         building.gameId === game.id &&
         (entry.id === "tf-engineer" || entry.id === "tfc-class-engineer"),
+    );
+    const images = getEntryAppearance(entry, game.id)?.images;
+    // Como enemigo, cada equipo ve la ficha con la piel del rival (RED ve al mercenario BLU)
+    const rivalImages = Object.fromEntries(
+      teams.flatMap((team) => {
+        const image = images?.teams?.[getRivalTeam(entry.id, team.id) ?? ""];
+        return image ? [[team.id, image]] : [];
+      }),
     );
 
     return (
@@ -144,11 +182,11 @@ export default async function SectionPage({
         name={entry.name}
         summary={getEntrySummaryForGame(entry, game.id)}
         image={getEntryThumbnail(entry, game.id)}
-        teamImages={getEntryAppearance(entry, game.id)?.images?.teams}
+        teamImages={isRival ? rivalImages : images?.teams}
         isCapture={section.id === "maps"}
-        model={getEntryAppearance(entry, game.id)?.images?.models?.original}
+        model={images?.models?.original}
         facts={getEntryFacts(entry).slice(0, 2)}
-        teams={entryTeams[entry.id]?.join(" ")}
+        teams={visibleTeams?.join(" ")}
       >
         <BuildingList buildings={buildings} />
       </EntryTile>
@@ -179,14 +217,13 @@ export default async function SectionPage({
                   `${data.lore.paragraphs.length} ${data.lore.paragraphs.length === 1 ? "párrafo" : "párrafos"}`
                 ) : (
                   <TeamEntryCount
-                    total={data.entries.length}
+                    total={items.length}
                     counts={Object.fromEntries(
-                      getGameTeams(game.id).map((team) => [
+                      teams.map((team) => [
                         team.id,
-                        data.entries.filter((entry) => {
-                          const teams = entryTeams[entry.id];
-                          return !teams || teams.includes(team.id);
-                        }).length,
+                        items.filter(
+                          (item) => !item.teams || item.teams.includes(team.id),
+                        ).length,
                       ]),
                     )}
                   />
@@ -210,7 +247,7 @@ export default async function SectionPage({
       </div>
 
       <div className={styles["section-page__content"]}>
-        <TeamPicker />
+        <TeamPicker leaders={getTeamLeaders(game.id)} />
 
         {data.kind === "lore" && (
           <article className={styles["section-page__lore"]}>
@@ -264,41 +301,27 @@ export default async function SectionPage({
               Todavía no hay fichas en este apartado.
             </p>
           ) : isGrouped ? (
-            <>
+            groups.map(({ group, items: groupItems }) => (
               <section
+                key={group}
                 className={styles["section-page__group"]}
-                aria-labelledby="mercenaries-title"
-                data-teams={getGroupTeams(mercenaries)}
+                aria-labelledby={`group-${group}`}
+                data-teams={getGroupTeams(groupItems)}
               >
                 <h2
-                  id="mercenaries-title"
+                  id={`group-${group}`}
                   className={styles["section-page__group-title"]}
                 >
-                  Mercenarios
+                  {titles[group]}
                 </h2>
                 <ul className={styles["section-page__entries"]}>
-                  {mercenaries.map(renderTile)}
+                  {groupItems.map(renderTile)}
                 </ul>
               </section>
-              <section
-                className={styles["section-page__group"]}
-                aria-labelledby="others-title"
-                data-teams={getGroupTeams(otherCharacters)}
-              >
-                <h2
-                  id="others-title"
-                  className={styles["section-page__group-title"]}
-                >
-                  Otros personajes
-                </h2>
-                <ul className={styles["section-page__entries"]}>
-                  {otherCharacters.map(renderTile)}
-                </ul>
-              </section>
-            </>
+            ))
           ) : (
             <ul className={styles["section-page__entries"]}>
-              {data.entries.map(renderTile)}
+              {items.map(renderTile)}
             </ul>
           ))}
       </div>
