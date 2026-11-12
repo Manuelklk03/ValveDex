@@ -1,8 +1,11 @@
+import type { ReactNode } from "react";
 import { getSectionEntries } from "@/features/games/get-section-entries";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { OriginSwitch } from "@/components/ui/origin-switch";
+import type { EntryCategory } from "@/domain/entry";
 import { dossierArt } from "@/data/dossier-art";
 import { EntryHero } from "@/features/catalog/components/entry-hero";
 import { EntryMedia } from "@/features/catalog/components/entry-media";
@@ -73,21 +76,145 @@ export default async function EntryPage({
 
   // La ruta sigue al primer juego de la ficha, el mismo que pone el tema en layout.tsx
   const first = gameAppearances[0];
-  const siblings = first
-    ? getEntrySiblings(
-        entry,
-        first.game.id,
-        4,
-        getSectionEntries(first.game.id, entry.category).map(
-          (item) => item.entry,
-        ),
-      )
-    : { previous: undefined, next: undefined, others: [] };
+  // Apartados del juego en los que sale la ficha: el suyo y, en los juegos con equipos, el del rival
+  const twin: Partial<Record<EntryCategory, EntryCategory>> = {
+    characters: "enemies",
+    enemies: "characters",
+  };
+  const twinCategory = twin[entry.category];
+  const contexts: EntryCategory[] =
+    first &&
+    twinCategory &&
+    getSectionEntries(first.game.id, twinCategory).some(
+      (item) => item.entry.id === entry.id,
+    )
+      ? [entry.category, twinCategory]
+      : [entry.category];
   const heroImage =
     first?.appearance.images?.hd ?? first?.appearance.images?.original;
   const firstGamePath = first
     ? `/universos/${first.universe.slug}/${first.game.slug}`
     : undefined;
+
+  const renderBreadcrumb = (category: EntryCategory) => {
+    const origin = getGameSectionById(category);
+
+    return (
+      <Breadcrumb
+        items={[
+          { label: "Universos", href: "/universos" },
+          ...(first && firstGamePath
+            ? [
+                {
+                  label: first.universe.name,
+                  href: `/universos/${first.universe.slug}`,
+                },
+                { label: first.game.name, href: firstGamePath },
+              ]
+            : []),
+          ...(origin && firstGamePath
+            ? [
+                {
+                  label: origin.name,
+                  href: `${firstGamePath}/${origin.slug}`,
+                },
+              ]
+            : []),
+          { label: entry.name },
+        ]}
+      />
+    );
+  };
+
+  // «Más de…» y anterior/siguiente del apartado dado, con la misma lista y orden que su página
+  const renderMore = (category: EntryCategory) => {
+    if (!first) return null;
+
+    const origin = getGameSectionById(category);
+    const siblings = getEntrySiblings(
+      entry,
+      first.game.id,
+      4,
+      getSectionEntries(first.game.id, category).map((item) => item.entry),
+    );
+    if (siblings.others.length === 0) return null;
+
+    // Una vecina que no es de este apartado por categoría lleva el apartado en el enlace, para no perderlo
+    const hrefOf = (other: { slug: string; category: EntryCategory }) =>
+      other.category !== category && origin
+        ? `/fichas/${other.slug}?apartado=${origin.slug}`
+        : `/fichas/${other.slug}`;
+
+    return (
+      <section
+        className={styles["entry-page__section"]}
+        aria-labelledby="more-title"
+      >
+        <h2 id="more-title" className={styles["entry-page__section-title"]}>
+          Más de {origin?.name ?? "este apartado"} en {first.game.name}
+        </h2>
+        <ul className={styles["entry-page__more"]}>
+          {siblings.others.map((other) => (
+            <EntryTile
+              key={other.id}
+              href={hrefOf(other)}
+              name={other.name}
+              summary={getEntrySummaryForGame(other, first.game.id)}
+              image={getEntryThumbnail(other, first.game.id)}
+              isCapture={other.category === "maps"}
+              model={
+                getEntryAppearance(other, first.game.id)?.images?.models
+                  ?.original
+              }
+              facts={getEntryFacts(other).slice(0, 2)}
+            />
+          ))}
+        </ul>
+        <nav
+          className={styles["entry-page__pager"]}
+          aria-label="Fichas anterior y siguiente"
+        >
+          {siblings.previous ? (
+            <Link
+              href={hrefOf(siblings.previous)}
+              className={styles["entry-page__pager-link"]}
+              rel="prev"
+            >
+              <span aria-hidden="true">←</span> {siblings.previous.name}
+            </Link>
+          ) : (
+            <span />
+          )}
+          {siblings.next && (
+            <Link
+              href={hrefOf(siblings.next)}
+              className={styles["entry-page__pager-link"]}
+              rel="next"
+            >
+              {siblings.next.name} <span aria-hidden="true">→</span>
+            </Link>
+          )}
+        </nav>
+      </section>
+    );
+  };
+
+  // Con dos apartados, la URL (`?apartado=…`) decide cuál se enseña; sin parámetro, el de la categoría de la ficha
+  const byOrigin = (render: (category: EntryCategory) => ReactNode) => {
+    if (contexts.length === 1) return render(entry.category);
+
+    return (
+      <OriginSwitch
+        fallback={getGameSectionById(entry.category)?.slug ?? ""}
+        variants={Object.fromEntries(
+          contexts.map((category) => [
+            getGameSectionById(category)?.slug ?? category,
+            render(category),
+          ]),
+        )}
+      />
+    );
+  };
 
   return (
     <main className={styles["entry-page"]}>
@@ -99,31 +226,7 @@ export default async function EntryPage({
         backdrop={heroImage?.src}
         gameIcon={first ? dossierArt[first.game.id]?.icons[0] : undefined}
         specs={[{ label: "Registro", value: entry.id }, ...facts]}
-        breadcrumb={
-          <Breadcrumb
-            items={[
-              { label: "Universos", href: "/universos" },
-              ...(first && firstGamePath
-                ? [
-                    {
-                      label: first.universe.name,
-                      href: `/universos/${first.universe.slug}`,
-                    },
-                    { label: first.game.name, href: firstGamePath },
-                  ]
-                : []),
-              ...(section && firstGamePath
-                ? [
-                    {
-                      label: section.name,
-                      href: `${firstGamePath}/${section.slug}`,
-                    },
-                  ]
-                : []),
-              { label: entry.name },
-            ]}
-          />
-        }
+        breadcrumb={byOrigin(renderBreadcrumb)}
         media={
           first?.appearance.images ? (
             <EntryMedia appearance={first.appearance} entryName={entry.name} />
@@ -269,58 +372,7 @@ export default async function EntryPage({
           </section>
         )}
 
-        {first && siblings.others.length > 0 && (
-          <section
-            className={styles["entry-page__section"]}
-            aria-labelledby="more-title"
-          >
-            <h2 id="more-title" className={styles["entry-page__section-title"]}>
-              Más de {section?.name ?? "este apartado"} en {first.game.name}
-            </h2>
-            <ul className={styles["entry-page__more"]}>
-              {siblings.others.map((other) => (
-                <EntryTile
-                  key={other.id}
-                  href={`/fichas/${other.slug}`}
-                  name={other.name}
-                  summary={getEntrySummaryForGame(other, first.game.id)}
-                  image={getEntryThumbnail(other, first.game.id)}
-                  isCapture={other.category === "maps"}
-                  model={
-                    getEntryAppearance(other, first.game.id)?.images?.models
-                      ?.original
-                  }
-                  facts={getEntryFacts(other).slice(0, 2)}
-                />
-              ))}
-            </ul>
-            <nav
-              className={styles["entry-page__pager"]}
-              aria-label="Fichas anterior y siguiente"
-            >
-              {siblings.previous ? (
-                <Link
-                  href={`/fichas/${siblings.previous.slug}`}
-                  className={styles["entry-page__pager-link"]}
-                  rel="prev"
-                >
-                  <span aria-hidden="true">←</span> {siblings.previous.name}
-                </Link>
-              ) : (
-                <span />
-              )}
-              {siblings.next && (
-                <Link
-                  href={`/fichas/${siblings.next.slug}`}
-                  className={styles["entry-page__pager-link"]}
-                  rel="next"
-                >
-                  {siblings.next.name} <span aria-hidden="true">→</span>
-                </Link>
-              )}
-            </nav>
-          </section>
-        )}
+        {byOrigin(renderMore)}
 
         <section
           className={styles["entry-page__section"]}

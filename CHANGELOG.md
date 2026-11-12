@@ -17,6 +17,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Corregido
 
+- Una ficha abierta desde «Enemigos» o «Personajes» de un equipo recuerda ese apartado en las migas y en la navegación.
 - En la ficha, «Más de…» y los botones anterior y siguiente siguen la misma lista y el mismo orden que su apartado, también en los juegos con equipos.
 - Un dato largo ya no se sale de la tarjeta de una ficha.
 

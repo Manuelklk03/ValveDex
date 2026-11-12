@@ -172,7 +172,11 @@ export default async function SectionPage({
     return (
       <EntryTile
         key={entry.id}
-        href={`/fichas/${entry.slug}`}
+        href={
+          entry.category === section.id
+            ? `/fichas/${entry.slug}`
+            : `/fichas/${entry.slug}?apartado=${section.slug}`
+        }
         name={entry.name}
         summary={getEntrySummaryForGame(entry, game.id)}
         image={getEntryThumbnail(entry, game.id)}
