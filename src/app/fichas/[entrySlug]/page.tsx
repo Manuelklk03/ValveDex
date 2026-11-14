@@ -5,7 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { OriginSwitch } from "@/components/ui/origin-switch";
-import type { EntryCategory } from "@/domain/entry";
+import type { Entry, EntryCategory } from "@/domain/entry";
 import { dossierArt } from "@/data/dossier-art";
 import { EntryHero } from "@/features/catalog/components/entry-hero";
 import { EntryMedia } from "@/features/catalog/components/entry-media";
@@ -82,21 +82,26 @@ export default async function EntryPage({
     enemies: "characters",
   };
   const twinCategory = twin[entry.category];
-  const contexts: EntryCategory[] =
-    first &&
+  const contextsOf = (gameId: string): EntryCategory[] =>
     twinCategory &&
-    getSectionEntries(first.game.id, twinCategory).some(
+    getSectionEntries(gameId, twinCategory).some(
       (item) => item.entry.id === entry.id,
     )
       ? [entry.category, twinCategory]
       : [entry.category];
+  type Origin = (typeof gameAppearances)[number];
+  // Orígenes posibles de la ficha: cada juego en el que sale, con cada apartado suyo
+  const origins = gameAppearances.flatMap((at) =>
+    contextsOf(at.game.id).map((category) => ({ at, category })),
+  );
   const heroImage =
     first?.appearance.images?.hd ?? first?.appearance.images?.original;
-  const firstGamePath = first
-    ? `/universos/${first.universe.slug}/${first.game.slug}`
-    : undefined;
 
-  const renderBreadcrumb = (category: EntryCategory) => {
+  const renderBreadcrumb = (category: EntryCategory, at?: Origin) => {
+    const first = at;
+    const firstGamePath = first
+      ? `/universos/${first.universe.slug}/${first.game.slug}`
+      : undefined;
     const origin = getGameSectionById(category);
 
     return (
@@ -127,7 +132,8 @@ export default async function EntryPage({
   };
 
   // «Más de…» y anterior/siguiente del apartado dado, con la misma lista y orden que su página
-  const renderMore = (category: EntryCategory) => {
+  const renderMore = (category: EntryCategory, at?: Origin) => {
+    const first = at;
     if (!first) return null;
 
     const origin = getGameSectionById(category);
@@ -139,11 +145,19 @@ export default async function EntryPage({
     );
     if (siblings.others.length === 0) return null;
 
-    // Una vecina que no es de este apartado por categoría lleva el apartado en el enlace, para no perderlo
-    const hrefOf = (other: { slug: string; category: EntryCategory }) =>
-      other.category !== category && origin
-        ? `/fichas/${other.slug}?apartado=${origin.slug}`
+    // El enlace de una vecina lleva el juego y el apartado cuando no son los suyos por defecto, para no perderlos
+    const hrefOf = (other: Entry) => {
+      const query = new URLSearchParams();
+      if (other.appearances[0]?.gameId !== first.game.id)
+        query.set("juego", first.game.slug);
+      if (other.category !== category && origin)
+        query.set("apartado", origin.slug);
+      const suffix = query.toString();
+
+      return suffix
+        ? `/fichas/${other.slug}?${suffix}`
         : `/fichas/${other.slug}`;
+    };
 
     return (
       <section
@@ -199,17 +213,22 @@ export default async function EntryPage({
     );
   };
 
-  // Con dos apartados, la URL (`?apartado=…`) decide cuál se enseña; sin parámetro, el de la categoría de la ficha
-  const byOrigin = (render: (category: EntryCategory) => ReactNode) => {
-    if (contexts.length === 1) return render(entry.category);
+  // Con varios orígenes, la URL (`?juego=…&apartado=…`) decide cuál se enseña; sin parámetros, el primer juego
+  // de la ficha y el apartado de su categoría
+  const byOrigin = (
+    render: (category: EntryCategory, at?: Origin) => ReactNode,
+  ) => {
+    if (!first || origins.length <= 1) return render(entry.category, first);
+
+    const ownSection = getGameSectionById(entry.category)?.slug ?? "";
 
     return (
       <OriginSwitch
-        fallback={getGameSectionById(entry.category)?.slug ?? ""}
+        fallback={`${first.game.slug}/${ownSection}`}
         variants={Object.fromEntries(
-          contexts.map((category) => [
-            getGameSectionById(category)?.slug ?? category,
-            render(category),
+          origins.map(({ at, category }) => [
+            `${at.game.slug}/${getGameSectionById(category)?.slug ?? category}`,
+            render(category, at),
           ]),
         )}
       />

@@ -154,6 +154,17 @@ export default async function SectionPage({
   const isGrouped =
     teams.length > 0 && groups.some((group) => group.group !== "others");
 
+  // El enlace lleva el juego y el apartado cuando no son los que la ficha toma por defecto (su primer juego y
+  // el apartado de su categoría): así la ficha vuelve a esta página
+  function entryHref(entry: SectionEntry["entry"]) {
+    const query = new URLSearchParams();
+    if (entry.appearances[0]?.gameId !== game.id) query.set("juego", game.slug);
+    if (entry.category !== section.id) query.set("apartado", section.slug);
+    const suffix = query.toString();
+
+    return suffix ? `/fichas/${entry.slug}?${suffix}` : `/fichas/${entry.slug}`;
+  }
+
   function renderTile({ entry, teams: visibleTeams, isRival }: SectionEntry) {
     const buildings = engineerBuildings.filter(
       (building) =>
@@ -172,11 +183,7 @@ export default async function SectionPage({
     return (
       <EntryTile
         key={entry.id}
-        href={
-          entry.category === section.id
-            ? `/fichas/${entry.slug}`
-            : `/fichas/${entry.slug}?apartado=${section.slug}`
-        }
+        href={entryHref(entry)}
         name={entry.name}
         summary={getEntrySummaryForGame(entry, game.id)}
         image={getEntryThumbnail(entry, game.id)}

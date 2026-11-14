@@ -4,20 +4,28 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, type ReactNode } from "react";
 
 type OriginSwitchProps = {
-  // Una variante por apartado de origen (su slug); se enseña la del parámetro `apartado` de la URL
+  // Una variante por origen, con la clave «juego/apartado» (sus slugs)
   variants: Record<string, ReactNode>;
-  // Variante que se enseña sin parámetro (y en el HTML del servidor)
+  // Clave que se enseña sin parámetros (y en el HTML del servidor)
   fallback: string;
 };
 
 function Chosen({ variants, fallback }: OriginSwitchProps) {
-  const origin = useSearchParams().get("apartado");
+  const params = useSearchParams();
+  const [fallbackGame, fallbackSection] = fallback.split("/");
+  const game = params.get("juego") ?? fallbackGame;
+  const section = params.get("apartado") ?? fallbackSection;
 
-  return origin && origin in variants ? variants[origin] : variants[fallback];
+  // Si el apartado pedido no existe en ese juego, vale el apartado propio de la ficha
+  return (
+    variants[`${game}/${section}`] ??
+    variants[`${game}/${fallbackSection}`] ??
+    variants[fallback]
+  );
 }
 
-// Una ficha que sale en dos apartados (personaje de tu equipo, enemigo del rival) recuerda desde cuál se abrió:
-// el enlace lleva `?apartado=…` y aquí se elige la ruta de migas y la navegación de ese apartado
+// Una ficha que sale en varios juegos o en dos apartados (personaje de tu equipo, enemigo del rival) recuerda desde
+// dónde se abrió: el enlace lleva `?juego=…&apartado=…` y aquí se eligen las migas y la navegación de ese origen
 export function OriginSwitch({ variants, fallback }: OriginSwitchProps) {
   return (
     <Suspense fallback={variants[fallback]}>
