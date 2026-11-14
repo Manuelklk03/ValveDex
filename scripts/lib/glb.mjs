@@ -1,5 +1,5 @@
 // Escribe un .glb con un primitivo y un material por grupo.
-// grupo = { pos, nrm, uv, idx, rgba?, width?, height?, alphaMode?, doubleSided? }
+// grupo = { pos, nrm, uv, idx, rgba?, width?, height?, alphaMode?, doubleSided?, clamp? }
 import { writeFileSync } from "node:fs";
 import sharp from "sharp";
 
@@ -43,6 +43,7 @@ export async function writeGlb(output, groups, generator) {
     accessors.push(accessor);
     return accessors.length - 1;
   };
+  const clamped = new Set();
   for (const g of groups) {
     const material = {
       pbrMetallicRoughness: { metallicFactor: 0, roughnessFactor: 1 },
@@ -63,6 +64,8 @@ export async function writeGlb(output, groups, generator) {
         });
       const png = await image.png({ palette: max > 0 }).toBuffer();
       images.push({ bufferView: addView(png), mimeType: "image/png" });
+      // El iris de un ojo se proyecta: fuera de su cuadro debe repetirse el borde, no la textura entera
+      if (g.clamp) clamped.add(images.length - 1);
       material.pbrMetallicRoughness.baseColorTexture = {
         index: images.length - 1,
       };
@@ -87,8 +90,14 @@ export async function writeGlb(output, groups, generator) {
     nodes: [{ mesh: 0 }],
     meshes: [{ primitives }],
     materials,
-    textures: images.map((_, source) => ({ source, sampler: 0 })),
-    samplers: [{ magFilter: 9729, minFilter: 9987 }],
+    textures: images.map((_, source) => ({
+      source,
+      sampler: clamped.has(source) ? 1 : 0,
+    })),
+    samplers: [
+      { magFilter: 9729, minFilter: 9987 },
+      { magFilter: 9729, minFilter: 9987, wrapS: 33071, wrapT: 33071 },
+    ],
     images,
     accessors,
     bufferViews,

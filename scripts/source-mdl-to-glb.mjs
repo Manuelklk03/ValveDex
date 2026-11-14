@@ -1,5 +1,6 @@
 // Convierte un modelo del motor Source (.mdl v44-49 + .vvd + .vtx) a .glb, leyéndolo de los VPK del juego.
-// Pose: la de referencia (brazos abiertos) o, con [brazos] en grados (24 queda natural), con los brazos bajados.
+// Pose: la de referencia (brazos abiertos) o, con [brazos], con los brazos bajados: un número de grados o «auto»
+// (los baja hasta dejarlos junto al cuerpo). Los ojos se pintan proyectando el iris, como hace el motor.
 // Uso: node scripts/source-mdl-to-glb.mjs <carpeta del juego> <mod> <modelo> <salida.glb> [cuerpos] [piel] [brazos]
 //   node scripts/source-mdl-to-glb.mjs "H:/SteamLibrary/steamapps/common/Half-Life 2" hl2 models/weapons/w_crowbar.mdl w_crowbar.glb
 // <mod>: hl2, episodic o ep2 (ep2 lee antes de episodic y de hl2); l4d o l4d2 con la carpeta de Left 4 Dead o Left 4 Dead 2; tf con la de Team Fortress 2; portal, portal2 y cstrike con las de Portal, Portal 2 y Counter-Strike: Source. [cuerpos]: submodelo de cada parte, como 0,1,0.
@@ -90,53 +91,108 @@ const inv34 = (m) => {
     -(row[0] * m[0][3] + row[1] * m[1][3] + row[2] * m[2][3]),
   ]);
 };
-function armPoseMatrices(degrees) {
+function readBones() {
   const count = i32(mdl, 156);
-  const bones = [];
+  const list = [];
   for (let b = 0; b < count; b++) {
     const o = i32(mdl, 160) + b * 216;
     const poseToBone = [0, 1, 2].map((r) =>
       [0, 1, 2, 3].map((c) => mdl.readFloatLE(o + 96 + (r * 4 + c) * 4)),
     );
-    bones.push({
+    list.push({
       name: cstr(mdl, o + i32(mdl, o)),
       parent: i32(mdl, o + 4),
       poseToBone,
       world: inv34(poseToBone),
     });
   }
-  const arms = bones.filter((b) => /_(L|R)_UpperArm$/.test(b.name));
-  if (arms.length !== 2)
-    throw new Error(
-      `${modelPath}: no tiene un esqueleto ValveBiped con brazos`,
-    );
-  const posed = [];
-  bones.forEach((bone, b) => {
-    // Hueso local = inversa(mundo del padre) * mundo propio; los brazos giran sobre su propio eje
-    const local =
-      bone.parent < 0
-        ? bone.world
-        : mul34(inv34(bones[bone.parent].world), bone.world);
-    let turned = local;
-    if (arms.includes(bone)) {
-      const sign = bone.name.includes("_L_") ? 1 : -1;
-      const angle = (degrees * Math.PI * sign) / 180;
-      const [c, s] = [Math.cos(angle), Math.sin(angle)];
-      // Los brazos de ValveBiped bajan girando sobre el eje Y del hueso (probado: X y Z los abren o los giran)
-      const rot = [
-        [c, 0, s, 0],
-        [0, 1, 0, 0],
-        [-s, 0, c, 0],
-      ];
-      turned = mul34(local, rot);
-    }
-    posed[b] = bone.parent < 0 ? turned : mul34(posed[bone.parent], turned);
-  });
-  // Matriz de cada hueso para un vértice: pose nueva * pose a hueso
-  return bones.map((bone, b) => mul34(posed[b], bone.poseToBone));
+  return list;
 }
-const armDegrees = Number(armsArg ?? 0);
-const skinMatrices = armDegrees ? armPoseMatrices(armDegrees) : null;
+const bones = readBones();
+const sub = (a, b) => a.map((x, k) => x - b[k]);
+const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+const cross = (a, b) => [
+  a[1] * b[2] - a[2] * b[1],
+  a[2] * b[0] - a[0] * b[2],
+  a[0] * b[1] - a[1] * b[0],
+];
+const unit = (a) => {
+  const length = Math.hypot(...a) || 1;
+  return a.map((x) => x / length);
+};
+const origin = (m) => m.map((row) => row[3]);
+
+// Baja los brazos girando cada uno sobre su hombro, en el espacio del modelo: vale para cualquier esqueleto
+// (ValveBiped, el «bip_» de Team Fortress 2…). Devuelve el mundo de cada hueso en la pose nueva, o null si
+// el modelo no tiene brazos (un robot, una torreta, un arma).
+function lowerArms(mode) {
+  const world = bones.map((bone) => bone.world);
+  // El brazo es el padre del codo: así no importa cómo llame cada esqueleto al hueso (UpperArm, bicep, upperArm…)
+  const isElbow = (name) =>
+    /elbow|fore_?arm|lower_?arm|arm2_/i.test(name) &&
+    !/twist|ulna|roll/i.test(name);
+  const elbowOf = new Map();
+  bones.forEach((bone, b) => {
+    const arm = bone.parent;
+    if (
+      isElbow(bone.name) &&
+      arm >= 0 &&
+      !isElbow(bones[arm].name) &&
+      !elbowOf.has(arm)
+    )
+      elbowOf.set(arm, b);
+  });
+  if (elbowOf.size === 0) return null;
+  const descends = (b, ancestor) => {
+    for (let p = b; p >= 0; p = bones[p].parent)
+      if (p === ancestor) return true;
+    return false;
+  };
+  // «Abajo» sale del esqueleto: algunos modelos (Team Fortress 2) vienen tumbados, con la cabeza hacia +Y
+  const head = bones.find((bone) => /head/i.test(bone.name));
+  const centre = [0, 1, 2].map(
+    (k) =>
+      bones.reduce((sum, bone) => sum + bone.world[k][3], 0) / bones.length,
+  );
+  const upward = head ? sub(origin(head.world), centre) : [0, 0, 1];
+  const axis = [0, 1, 2].reduce((best, k) =>
+    Math.abs(upward[k]) > Math.abs(upward[best]) ? k : best,
+  );
+  const down = [0, 1, 2].map((k) => (k === axis ? -Math.sign(upward[k]) : 0));
+  // Los brazos quedan a 14 grados de la vertical: pegados al cuerpo sin atravesarlo
+  const rest = (14 * Math.PI) / 180;
+  for (const [arm, elbow] of elbowOf) {
+    const shoulder = origin(world[arm]);
+    const direction = unit(sub(origin(world[elbow]), shoulder));
+    const toDown = Math.acos(Math.max(-1, Math.min(1, dot(direction, down))));
+    const wanted =
+      mode === "auto" ? toDown - rest : (Number(mode) * Math.PI) / 180;
+    const angle = Math.min(wanted, toDown - rest);
+    if (!(angle > 0)) continue;
+    const [x, y, z] = unit(cross(direction, down));
+    const [c, sn, t] = [Math.cos(angle), Math.sin(angle), 1 - Math.cos(angle)];
+    // Giro de Rodrigues alrededor del eje, con el hombro como centro
+    const r = [
+      [t * x * x + c, t * x * y - sn * z, t * x * z + sn * y],
+      [t * x * y + sn * z, t * y * y + c, t * y * z - sn * x],
+      [t * x * z - sn * y, t * y * z + sn * x, t * z * z + c],
+    ];
+    const turn = r.map((row, k) => [...row, shoulder[k] - dot(row, shoulder)]);
+    bones.forEach((bone, b) => {
+      if (descends(b, arm)) world[b] = mul34(turn, world[b]);
+    });
+  }
+  return world;
+}
+if (armsArg && armsArg !== "auto" && !(Number(armsArg) >= 0))
+  throw new Error("[brazos] debe ser un número de grados o «auto»");
+const posedWorld = armsArg && armsArg !== "0" ? lowerArms(armsArg) : null;
+// Mundo de cada hueso en la pose final (la de referencia si no se bajan los brazos)
+const boneWorld = posedWorld ?? bones.map((bone) => bone.world);
+// Matriz de cada hueso para un vértice: pose nueva * pose a hueso
+const skinMatrices = posedWorld
+  ? bones.map((bone, b) => mul34(posedWorld[b], bone.poseToBone))
+  : null;
 const apply = (m, v, isNormal) =>
   m.map(
     (row) =>
@@ -220,6 +276,22 @@ for (let p = 0; p < bodyPartCount; p++) {
   const meshCount = i32(mdl, model + 72);
   if (meshCount === 0) continue; // submodelo vacío («blank»)
   const firstVertex = i32(mdl, model + 84) / 48;
+  // Globos oculares del submodelo: centro, ejes y tamaño del iris, en el espacio de su hueso
+  const eyeballs = Array.from({ length: i32(mdl, model + 100) }, (_, e) => {
+    const o = model + i32(mdl, model + 104) + e * 172;
+    const vec = (at) => [0, 1, 2].map((k) => mdl.readFloatLE(o + at + k * 4));
+    const m = boneWorld[i32(mdl, o + 4)];
+    const center = apply(m, vec(8), false);
+    const forward = unit(apply(m, vec(40), true));
+    const right = unit(cross(forward, apply(m, vec(28), true)));
+    return {
+      center,
+      right,
+      up: unit(cross(right, forward)),
+      // Cuántas veces cabe la textura del iris en una unidad: 1,47 en Alyx da un iris de medio centímetro largo
+      scale: mdl.readFloatLE(o + 60) || 1,
+    };
+  });
 
   const vtxPart = i32(vtx, 32) + p * 8;
   const vtxModel = vtxPart + i32(vtx, vtxPart + 4) + choice * 8;
@@ -231,6 +303,9 @@ for (let p = 0; p < bodyPartCount; p++) {
     const mesh = model + i32(mdl, model + 76) + m * 116;
     const texIndex = skinRef(i32(mdl, mesh));
     const vertexOffset = i32(mdl, mesh + 12);
+    // Una malla de ojo (tipo 1) lleva el índice de su globo: su textura es el iris proyectado
+    const eye =
+      i32(mdl, mesh + 24) === 1 ? eyeballs[i32(mdl, mesh + 28)] : null;
     if (!groups.has(texIndex))
       groups.set(texIndex, {
         pos: [],
@@ -246,7 +321,16 @@ for (let p = 0; p < bodyPartCount; p++) {
         // Z hacia arriba (Source) a Y hacia arriba (glTF), como el conversor de GoldSrc
         g.pos.push(v.pos[0], v.pos[2], -v.pos[1]);
         g.nrm.push(v.nrm[0], v.nrm[2], -v.nrm[1]);
-        g.uv.push(v.uv[0], v.uv[1]);
+        if (eye) {
+          const from = sub(v.pos, eye.center);
+          g.uv.push(
+            0.5 - dot(from, eye.right) * eye.scale,
+            0.5 - dot(from, eye.up) * eye.scale,
+          );
+          g.eye = true;
+        } else {
+          g.uv.push(v.uv[0], v.uv[1]);
+        }
         g.remap.set(global, g.pos.length / 3 - 1);
       }
       return g.remap.get(global);
@@ -294,6 +378,10 @@ function findMaterial(name) {
   return null;
 }
 
+// Algunas rutas de textura llevan una barra inicial (Portal: "/models/player/eyeball_l")
+const readTexture = (path) =>
+  vpk.read(`materials/${path.replace(/^[\/]+/, "")}.vtf`);
+
 const missing = [];
 const output_groups = [];
 for (const [texIndex, g] of groups) {
@@ -304,10 +392,32 @@ for (const [texIndex, g] of groups) {
   const material = findMaterial(name);
   // Un material aditivo (el cristal de las gafas de Kleiner) solo suma luz en el juego: glTF no lo puede imitar
   if (material?.["$additive"] === "1") continue;
+  const iris = g.eye && material?.["$iris"] && readTexture(material["$iris"]);
   const vtf =
-    material?.["$basetexture"] &&
-    vpk.read(`materials/${material["$basetexture"]}.vtf`);
-  if (vtf) {
+    material?.["$basetexture"] && readTexture(material["$basetexture"]);
+  if (iris) {
+    // Ojo: el iris sobre el color medio de la esclerótica. El material EyeRefract trae la esclerótica dentro del iris
+    const eye = decodeVtf(iris);
+    const refract =
+      material["$ambientoccltexture"] || material["$corneatexture"];
+    let white = [226, 224, 218];
+    if (!refract && vtf) {
+      const sclera = decodeVtf(vtf).rgba;
+      const sum = [0, 0, 0];
+      for (let p = 0; p < sclera.length; p += 4)
+        for (let k = 0; k < 3; k++) sum[k] += sclera[p + k];
+      white = sum.map((x) => Math.round(x / (sclera.length / 4)));
+    }
+    for (let p = 0; p < eye.rgba.length; p += 4) {
+      const alpha = refract ? 1 : eye.rgba[p + 3] / 255;
+      for (let k = 0; k < 3; k++)
+        eye.rgba[p + k] = Math.round(
+          eye.rgba[p + k] * alpha + white[k] * (1 - alpha),
+        );
+      eye.rgba[p + 3] = 255;
+    }
+    Object.assign(out, eye, { alphaMode: "OPAQUE", clamp: true });
+  } else if (vtf) {
     Object.assign(out, decodeVtf(vtf));
     // El alfa de un material normal es una máscara de brillo, no transparencia
     const alphaTest = material["$alphatest"] === "1";
