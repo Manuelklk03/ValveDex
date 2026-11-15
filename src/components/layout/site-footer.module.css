@@ -20,8 +20,13 @@
   line-height: 1.6;
 }
 
+.site-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+}
+
 .site-footer__link {
-  align-self: flex-start;
   color: var(--muted);
   font-size: 0.875rem;
   text-decoration: underline;
