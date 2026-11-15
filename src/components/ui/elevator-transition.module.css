@@ -219,3 +219,17 @@
   line-height: 0.95;
   text-shadow: 0 2px 24px rgb(0 0 0 / 0.7);
 }
+
+/* El centro de la cortina del destello es casi blanco: la placa va en oscuro para conservar el contraste */
+.elevator[data-variant="flash"] .elevator__plate {
+  color: #0c1418;
+}
+
+.elevator[data-variant="flash"] .elevator__plate-label {
+  background: #0c1418;
+  color: #f4feff;
+}
+
+.elevator[data-variant="flash"] .elevator__plate-title {
+  text-shadow: none;
+}

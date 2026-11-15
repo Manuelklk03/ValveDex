@@ -1971,17 +1971,14 @@
   }
 
   .game-dossier--corridor .game-dossier__sector:nth-child(1) {
-    --door-angle: 24deg;
     min-height: 12rem;
   }
 
   .game-dossier--corridor .game-dossier__sector:nth-child(2) {
-    --door-angle: 16deg;
     min-height: 12.75rem;
   }
 
   .game-dossier--corridor .game-dossier__sector:nth-child(3) {
-    --door-angle: 8deg;
     min-height: 13.5rem;
   }
 
@@ -1990,18 +1987,42 @@
   }
 
   .game-dossier--corridor .game-dossier__sector:nth-child(5) {
-    --door-angle: -8deg;
     min-height: 13.5rem;
   }
 
   .game-dossier--corridor .game-dossier__sector:nth-child(6) {
-    --door-angle: -16deg;
     min-height: 12.75rem;
   }
 
   .game-dossier--corridor .game-dossier__sector:nth-child(7) {
-    --door-angle: -24deg;
     min-height: 12rem;
+  }
+}
+
+/* La inclinación hacia el fondo solo con ratón y movimiento permitido; si no, las puertas quedan rectas */
+@media (min-width: 64rem) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .game-dossier--corridor .game-dossier__sector:nth-child(1) {
+    --door-angle: 24deg;
+  }
+
+  .game-dossier--corridor .game-dossier__sector:nth-child(2) {
+    --door-angle: 16deg;
+  }
+
+  .game-dossier--corridor .game-dossier__sector:nth-child(3) {
+    --door-angle: 8deg;
+  }
+
+  .game-dossier--corridor .game-dossier__sector:nth-child(5) {
+    --door-angle: -8deg;
+  }
+
+  .game-dossier--corridor .game-dossier__sector:nth-child(6) {
+    --door-angle: -16deg;
+  }
+
+  .game-dossier--corridor .game-dossier__sector:nth-child(7) {
+    --door-angle: -24deg;
   }
 }
 
