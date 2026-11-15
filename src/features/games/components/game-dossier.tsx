@@ -48,7 +48,7 @@ export function GameDossier({
         <span className="sr-only">Abrir el dossier de {game.name}</span>
       </Link>
 
-      {art && <DossierArt art={art} />}
+      {art && <DossierArt art={art} corridor={corridor} />}
 
       <span className={styles["game-dossier__tab"]} aria-hidden="true">
         {universeName}

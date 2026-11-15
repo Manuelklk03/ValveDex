@@ -1803,3 +1803,123 @@
     scale: 1.06;
   }
 }
+
+/* --- Pasillo, composición: la escena es el dossier y el título, un cartel de techo --- */
+.game-dossier--corridor {
+  --corridor-tint: #f39a2e;
+  --dossier-paper: #12100d;
+  --dossier-ink: #f3eee4;
+  --dossier-muted: #b9b0a1;
+  --dossier-line: rgb(243 238 228 / 0.2);
+  --dossier-accent: var(--corridor-tint);
+  --art-backdrop-opacity: 1;
+  --art-backdrop-fade: 0%;
+  background-image: none;
+}
+
+/* Cada juego conserva su color: es la luz que entra en su pasillo */
+.game-dossier--corridor.game-dossier--opposing-force {
+  --corridor-tint: #b6d65a;
+}
+
+.game-dossier--corridor.game-dossier--blue-shift {
+  --corridor-tint: #8a8aff;
+}
+
+.game-dossier--corridor.game-dossier--decay {
+  --corridor-tint: #b79cf0;
+}
+
+.game-dossier--corridor.game-dossier--half-life-2 {
+  --corridor-tint: #ff9b21;
+}
+
+.game-dossier--corridor.game-dossier--half-life-2-episode-one {
+  --corridor-tint: #6fb9c9;
+}
+
+.game-dossier--corridor.game-dossier--half-life-2-episode-two {
+  --corridor-tint: #6fcf7a;
+}
+
+.game-dossier--corridor.game-dossier--half-life-alyx {
+  --corridor-tint: #00d4ff;
+}
+
+/* El material de cada variante (cintas, sellos, franjas) cede ante la escena */
+.game-dossier--corridor::before,
+.game-dossier--corridor::after {
+  content: none;
+}
+
+.game-dossier--corridor .game-dossier__header {
+  position: relative;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: end;
+  min-height: 19rem;
+  padding-bottom: 2.75rem;
+  border-bottom: 0;
+}
+
+/* Suelo del pasillo: franjas de peligro con el color del juego */
+.game-dossier--corridor .game-dossier__header::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0.875rem;
+  width: auto;
+  height: 0.625rem;
+  border: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--corridor-tint) 0 0.75rem,
+    #0b0a08 0.75rem 1.5rem
+  );
+  opacity: 0.9;
+  rotate: none;
+  translate: none;
+}
+
+.game-dossier--corridor .game-dossier__heading {
+  max-width: 100%;
+}
+
+@media (min-width: 56rem) {
+  .game-dossier--corridor .game-dossier__heading {
+    max-width: 44%;
+  }
+}
+
+/* El rótulo del dossier es la placa del cartel de techo */
+.game-dossier--corridor .game-dossier__label {
+  display: inline-block;
+  justify-self: start;
+  padding: 0.25rem 0.625rem;
+  background: var(--corridor-tint);
+  color: #12100d;
+}
+
+.game-dossier--corridor .game-dossier__title {
+  font-size: clamp(2.25rem, 5vw, 4.25rem);
+  text-shadow: 0 2px 18px rgb(0 0 0 / 0.55);
+}
+
+/* El sello decorativo se retira: pisaría al protagonista y la placa del cartel ya da el contexto */
+.game-dossier--corridor .game-dossier__stamp {
+  display: none;
+}
+
+/* La ficha técnica se resume en una línea bajo el resumen */
+.game-dossier--corridor .game-dossier__specs {
+  grid-column: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+}
+
+.game-dossier--corridor .game-dossier__spec {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0;
+  border: 0;
+}
