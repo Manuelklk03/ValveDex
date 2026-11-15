@@ -113,3 +113,92 @@
   font-family: var(--font-barlow-condensed), sans-serif;
   font-stretch: normal;
 }
+
+/* Paisaje de cada saga: una silueta con neblina fija en la parte baja de la ventana, por debajo de todo el
+   contenido (z-index -1 dentro del tema aislado). Dibujada en código: el ambiente vivo se mueve por encima. */
+.universe-theme {
+  position: relative;
+  isolation: isolate;
+}
+
+.universe-theme--half-life::before,
+.universe-theme--team-fortress::before,
+.universe-theme--left-4-dead::before,
+.universe-theme--portal::before,
+.universe-theme--counter-strike::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: min(46vh, 28rem);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+
+@media (max-width: 40rem) {
+  .universe-theme--half-life::before,
+  .universe-theme--team-fortress::before,
+  .universe-theme--left-4-dead::before,
+  .universe-theme--portal::before,
+  .universe-theme--counter-strike::before {
+    height: 22vh;
+  }
+}
+
+/* Half-Life: el complejo de Black Mesa al caer la tarde, con la neblina naranja del HUD */
+.universe-theme--half-life::before {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 300' preserveAspectRatio='none'%3E%3Cpath fill='%230b0907' d='M0 300V236h90v-34h60v34h40v-72h50v72h110v-40h30v-64h14v64h56v40h70v-52h60v-50h18v50h50v46h60l14-96h46l14 96h46v-100h8v100h40v-34h90v34h60V198h40v-86h12v86h70v42h90v-34h60v34h80v64z'/%3E%3C/svg%3E"),
+    linear-gradient(to top, rgb(243 154 46 / 0.2), transparent 75%);
+}
+
+/* Team Fortress: mesetas de Badlands al atardecer, con la base RED a un lado y la BLU al otro */
+.universe-theme--team-fortress::before {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 300' preserveAspectRatio='none'%3E%3Cpath fill='%23140e09' d='M0 300V214l70-8 24-52h96l22 46 80 6 40-30h120l30 36 90 10 26-60h120l22 56 84 10 40-24h110l24 30 100 4v136z'/%3E%3Crect x='150' y='168' width='64' height='44' fill='%23b8312b' opacity='.55'/%3E%3Crect x='980' y='172' width='64' height='44' fill='%233d6fae' opacity='.55'/%3E%3C/svg%3E"),
+    linear-gradient(
+      to top,
+      rgb(232 102 95 / 0.22),
+      rgb(224 166 58 / 0.08) 45%,
+      transparent 80%
+    );
+}
+
+/* Left 4 Dead: ciudad en ruinas y cielo rojo de infección */
+.universe-theme--left-4-dead::before {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 300' preserveAspectRatio='none'%3E%3Cpath fill='%23050805' d='M0 300V192h40v-52h30v32h24v-92h36v92h30v-40h40v60h50v-112h28v112h50v-72h60v72h40v-30h46v50h70v-132h34l14-22 14 22v132h50v-60h60v80h60v-100h40v100h30v-40h60v60h50v-74h40v74z'/%3E%3C/svg%3E"),
+    linear-gradient(
+      to top,
+      rgb(196 61 46 / 0.24),
+      rgb(141 176 60 / 0.06) 55%,
+      transparent 85%
+    );
+}
+
+/* Portal: pared de paneles de la cámara de pruebas con los dos portales brillando */
+.universe-theme--portal::before {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 300' preserveAspectRatio='none'%3E%3Cg stroke='%23ffffff' stroke-opacity='.07' stroke-width='2'%3E%3Cpath d='M150 0v300M300 0v300M450 0v300M600 0v300M750 0v300M900 0v300M1050 0v300M0 100h1200M0 200h1200'/%3E%3C/g%3E%3Cellipse cx='120' cy='190' rx='30' ry='78' fill='none' stroke='%23ff9d1f' stroke-width='6'/%3E%3Cellipse cx='1080' cy='190' rx='30' ry='78' fill='none' stroke='%233fa9f5' stroke-width='6'/%3E%3C/svg%3E"),
+    linear-gradient(
+      to top,
+      rgb(63 169 245 / 0.14),
+      rgb(255 157 31 / 0.05) 55%,
+      transparent 85%
+    );
+}
+
+/* Counter-Strike: muros y arcos de Dust bajo una neblina de arena */
+.universe-theme--counter-strike::before {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 300' preserveAspectRatio='none'%3E%3Cpath fill='%23090a0c' d='M0 300V204h160v-30a40 40 0 0 1 80 0v30h140v-60h30v-40h20v40h30v60h140v-20a50 50 0 0 1 100 0v20h130v-70h40v-60h14v60h26v70h160v-30a40 40 0 0 1 80 0v30h50v96z'/%3E%3C/svg%3E"),
+    linear-gradient(
+      to top,
+      rgb(194 178 128 / 0.18),
+      rgb(143 161 178 / 0.06) 55%,
+      transparent 85%
+    );
+}

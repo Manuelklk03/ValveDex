@@ -78,13 +78,13 @@ export const dossierArt: Record<string, DossierArt> = {
   "left-4-dead": {
     icons: [lineIcons["left-4-dead"]],
     tint: "#9c2a1d",
-    iconsOpacity: 0.36,
+    iconsOpacity: 0.5,
     model: "/models/universes/l4d-witch.glb",
   },
   "left-4-dead-2": {
     icons: [lineIcons["left-4-dead-2"]],
     tint: "#7a4a16",
-    iconsOpacity: 0.36,
+    iconsOpacity: 0.5,
     model: "/models/universes/l4d2-jockey.glb",
   },
   // Portal: el dispositivo de portales en naranja y azul; en Portal 2, GLaDOS y Wheatley en azul
@@ -99,40 +99,40 @@ export const dossierArt: Record<string, DossierArt> = {
   "portal-2": {
     icons: [lineIcons.glados, lineIcons.wheatley],
     tint: "#52c7ff",
-    iconsOpacity: 0.36,
+    iconsOpacity: 0.5,
     model: "/models/universes/portal2-turret.glb",
   },
   // Counter-Strike: un icono por juego, teñido según su época
   "counter-strike": {
     icons: [lineIcons["counter-strike-1-6"]],
     tint: "#8fa1b2",
-    iconsOpacity: 0.36,
+    iconsOpacity: 0.5,
   },
   "counter-strike-source": {
     icons: [lineIcons["counter-strike-source"]],
     tint: "#8fa1b2",
-    iconsOpacity: 0.36,
+    iconsOpacity: 0.5,
     model: "/models/universes/css-ak47.glb",
     modelTilt: 0.3,
   },
   "counter-strike-global-offensive": {
     icons: [lineIcons["counter-strike-global-offensive"]],
     tint: "#9fb4c8",
-    iconsOpacity: 0.36,
+    iconsOpacity: 0.5,
   },
   "counter-strike-2": {
     icons: [lineIcons["counter-strike-2"]],
     tint: "#5ab0ff",
-    iconsOpacity: 0.36,
+    iconsOpacity: 0.5,
   },
   "counter-strike-condition-zero": {
     icons: [lineIcons["counter-strike-condition-zero"]],
     tint: "#c2b280",
-    iconsOpacity: 0.36,
+    iconsOpacity: 0.5,
   },
   "counter-strike-condition-zero-deleted-scenes": {
     icons: [lineIcons["counter-strike-condition-zero-deleted-scenes"]],
     tint: "#b8c07a",
-    iconsOpacity: 0.36,
+    iconsOpacity: 0.5,
   },
 };

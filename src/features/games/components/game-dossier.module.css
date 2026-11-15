@@ -1009,287 +1009,6 @@
   rotate: -2deg;
 }
 
-/* Team Fortress Classic: carpeta militar de los 90, papel tacto lona, nine classes,
-   franjas de equipo rojo/azul, clip de metal, sello "TF Classic" */
-.game-dossier--team-fortress-classic {
-  --dossier-paper: #e8e4d9;
-  --dossier-ink: #1a1815;
-  --dossier-muted: #5a554d;
-  --dossier-accent: #c83838;
-  --dossier-line: rgb(26 24 21 / 0.16);
-  --dossier-accent-2: #2b58a6;
-  border: 2px solid #2f2b23;
-  background-image: repeating-linear-gradient(
-    90deg,
-    rgb(200 56 56 / 0.04) 0 2rem,
-    transparent 2rem 4rem,
-    rgb(43 88 166 / 0.04) 4rem 6rem,
-    transparent 6rem 8rem
-  );
-}
-
-/* Clip metálico en el canto superior */
-.game-dossier--team-fortress-classic::before {
-  content: "";
-  position: absolute;
-  top: -0.5rem;
-  left: 2rem;
-  right: 2rem;
-  height: 4px;
-  background: linear-gradient(
-    90deg,
-    #3a352c 0 0.25rem,
-    #c83838 0.25rem 1.25rem,
-    #3a352c 1.25rem 1.5rem,
-    #2b58a6 1.5rem 2.5rem,
-    #3a352c 2.5rem 2.75rem
-  );
-  border-radius: 2px;
-  pointer-events: none;
-}
-
-/* Sello: estarcido militar */
-.game-dossier--team-fortress-classic .game-dossier__stamp {
-  border: 2px solid currentColor;
-  border-radius: 999px;
-  color: var(--dossier-accent);
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  opacity: 0.9;
-  rotate: -4deg;
-}
-
-/* Team Fortress 2: carpeta de Mann Co., papel amarillento, estilo ilustrado años 60,
-   nueve clases, rojo/azul, Australium dorado, humor en los sellos */
-.game-dossier--team-fortress-2 {
-  --dossier-paper: #f2e8d0;
-  --dossier-ink: #1d1a15;
-  --dossier-muted: #6d6558;
-  --dossier-accent: #d14841;
-  --dossier-line: rgb(29 26 21 / 0.14);
-  --tf2-blu: #2d6bd2;
-  --tf2-australium: #c9a83c;
-  --tf2-mann: #8b5a2b;
-  background-image:
-    radial-gradient(ellipse at 5% 5%, rgb(209 72 65 / 0.08), transparent 35%),
-    radial-gradient(
-      ellipse at 95% 95%,
-      rgb(45 107 210 / 0.08),
-      transparent 35%
-    ),
-    repeating-linear-gradient(
-      180deg,
-      rgb(139 90 43 / 0.03) 0 1px,
-      transparent 1px 3rem
-    );
-  border: 1px solid #c9b896;
-}
-
-/* Sello Mann Co. con toque dorado */
-.game-dossier--team-fortress-2 .game-dossier__stamp {
-  border: 2px solid currentColor;
-  border-radius: 999px;
-  color: var(--tf2-mann);
-  background: linear-gradient(
-    135deg,
-    transparent 40%,
-    var(--tf2-australium) 40% 60%,
-    transparent 60%
-  );
-  font-family: var(--font-barlow-condensed), sans-serif;
-  font-size: 0.875rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  opacity: 0.95;
-  rotate: 3deg;
-}
-
-/* Emblema de clase antes del rótulo (alterna rojo/azul en lista) */
-.game-dossier--team-fortress-2 .game-dossier__label {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.game-dossier--team-fortress-2 .game-dossier__label::before {
-  content: "";
-  flex-shrink: 0;
-  width: 1.25rem;
-  height: 1.25rem;
-  background: currentColor;
-  mask: url("/images/decor/tf2-class-silhouette.svg") center / contain no-repeat;
-}
-
-/* Left 4 Dead: informe de brote CEDA, papel oficial amarillo/verde, cinta de aislamiento,
-   silueta de infectado (Hunter/Smoker), sello CEDA, colores de alerta sanitaria */
-.game-dossier--left-4-dead {
-  --dossier-paper: #f5f0d8;
-  --dossier-ink: #1a1814;
-  --dossier-muted: #5a5342;
-  --dossier-accent: #c43d2e;
-  --dossier-line: rgb(26 24 20 / 0.14);
-  --l4d-bio: #2d7d2d;
-  --l4d-warn: #e8a817;
-  background-image:
-    repeating-linear-gradient(
-      45deg,
-      rgb(196 61 46 / 0.04) 0 1.5rem,
-      transparent 1.5rem 3rem,
-      rgb(45 125 45 / 0.04) 3rem 4.5rem,
-      transparent 4.5rem 6rem
-    ),
-    linear-gradient(180deg, transparent 70%, rgb(232 168 23 / 0.05));
-  border: 2px solid #c49a6c;
-}
-
-/* Cinta de aislamiento CEDA en el canto superior */
-.game-dossier--left-4-dead::before {
-  content: "";
-  position: absolute;
-  top: -0.5rem;
-  left: 2rem;
-  right: 2rem;
-  height: 5px;
-  background: repeating-linear-gradient(
-    90deg,
-    #1a1814 0 0.25rem,
-    #c43d2e 0.25rem 0.75rem,
-    #1a1814 0.75rem 1rem,
-    #e8a817 1rem 1.5rem,
-    #1a1814 1.5rem 1.75rem
-  );
-  border-radius: 2px;
-  pointer-events: none;
-}
-
-/* Sello CEDA: circular, autorizado, con fecha */
-.game-dossier--left-4-dead .game-dossier__stamp {
-  border: 2px solid currentColor;
-  border-radius: 999px;
-  color: var(--l4d-bio);
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  opacity: 0.95;
-  rotate: -2deg;
-}
-
-/* Left 4 Dead 2: expediente militar/CEDA, papel más oscuro, tono sureño,
-   silueta de Spitter/Jockey, sello militar, tonos ocres y sangre seca */
-.game-dossier--left-4-dead-2 {
-  --dossier-paper: #e8dcc8;
-  --dossier-ink: #1d1a16;
-  --dossier-muted: #5d5648;
-  --dossier-accent: #a82c1e;
-  --dossier-line: rgb(29 26 22 / 0.14);
-  --l4d2-bile: #7db83d;
-  --l4d2-ochre: #c49a3a;
-  background-image:
-    radial-gradient(ellipse at 10% 10%, rgb(168 44 30 / 0.06), transparent 40%),
-    radial-gradient(
-      ellipse at 90% 90%,
-      rgb(196 154 58 / 0.06),
-      transparent 40%
-    ),
-    repeating-linear-gradient(
-      180deg,
-      rgb(189 129 40 / 0.03) 0 1px,
-      transparent 1px 4rem
-    );
-  border: 1px solid #b8956c;
-}
-
-/* Sello Militar/CEDA: rectangular, autorización de evacuación */
-.game-dossier--left-4-dead-2 .game-dossier__stamp {
-  border: 2px solid currentColor;
-  border-radius: 4px;
-  color: var(--l4d2-bile);
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  opacity: 0.95;
-  rotate: 1deg;
-}
-
-/* Emblema de infectado especial antes del rótulo */
-.game-dossier--left-4-dead-2 .game-dossier__label {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.game-dossier--left-4-dead-2 .game-dossier__label::before {
-  content: "";
-  flex-shrink: 0;
-  width: 1.25rem;
-  height: 1.25rem;
-  background: currentColor;
-  mask: url("/images/decor/l4d2-special-silhouette.svg") center / contain
-    no-repeat;
-}
-
-/* Emblemas oficiales: marca grande en el hueco entre el texto y la ficha técnica (solo desde 64rem),
-   como la λ de Half-Life 1. Se pintan con mask para tomar los colores de cada dossier */
-.game-dossier--team-fortress-classic::after,
-.game-dossier--team-fortress-2::after,
-.game-dossier--left-4-dead::after,
-.game-dossier--left-4-dead-2::after {
-  content: "";
-  position: absolute;
-  top: 1.25rem;
-  right: calc(var(--dossier-padding) + 17.5rem);
-  display: none;
-  width: clamp(8rem, 13vw, 11rem);
-  aspect-ratio: 1;
-  pointer-events: none;
-}
-
-/* Team Fortress: el emblema partido en los colores de los dos equipos */
-.game-dossier--team-fortress-classic::after {
-  background: linear-gradient(90deg, #c83838 50%, #2b58a6 50%);
-  mask: url("/images/decor/tf2-emblem.png") center / contain no-repeat;
-  opacity: 0.22;
-}
-
-.game-dossier--team-fortress-2::after {
-  background: linear-gradient(135deg, #d14841 50%, var(--tf2-blu) 50%);
-  mask: url("/images/decor/tf2-emblem.png") center / contain no-repeat;
-  opacity: 0.2;
-}
-
-/* Left 4 Dead: el 4 ensangrentado; en la segunda parte, el mismo trazo en ocre y girado */
-.game-dossier--left-4-dead::after {
-  background: url("/images/decor/l4d-official-icon.png") center / contain
-    no-repeat;
-  opacity: 0.35;
-}
-
-.game-dossier--left-4-dead-2::after {
-  background: url("/images/decor/l4d-official-icon.png") center / contain
-    no-repeat;
-  filter: sepia(0.9) saturate(0.6);
-  opacity: 0.4;
-  rotate: 8deg;
-}
-
-@media (min-width: 64rem) {
-  .game-dossier--team-fortress-classic::after,
-  .game-dossier--team-fortress-2::after,
-  .game-dossier--left-4-dead::after,
-  .game-dossier--left-4-dead-2::after {
-    display: block;
-  }
-}
 /* Enlace principal del dossier: una capa que cubre la carpeta entera, sin anidar enlaces.
    La cabecera y el pie de dejar pasar el clic; los apartados quedan por encima con sus propios enlaces */
 .game-dossier__open {
@@ -1377,227 +1096,581 @@
     #1f4fa8;
 }
 
-/* Portal: ficha de prueba de Aperture Science, panel blanco con rejilla, naranja y azul de los portales */
-.game-dossier--portal {
-  --dossier-paper: #eceff1;
-  --dossier-ink: #14181c;
-  --dossier-muted: #4f5a63;
-  --dossier-accent: #a84700;
-  --dossier-line: rgb(20 24 28 / 0.14);
+/* ===== Mundos de Team Fortress, Left 4 Dead, Portal y Counter-Strike =====
+   Cada dossier toma el material de su juego: cartel de Mann Co., pared de refugio, panel de Aperture,
+   lona de campaña… Las variantes solo cambian variables (papel, tinta, acento) y materiales de fondo; la
+   estructura, los apartados y el movimiento son los del dossier base. */
+
+/* Sello compartido: tinta del acento del mundo, esquinas casi rectas */
+.game-dossier--team-fortress-classic .game-dossier__stamp,
+.game-dossier--team-fortress-2 .game-dossier__stamp,
+.game-dossier--left-4-dead .game-dossier__stamp,
+.game-dossier--left-4-dead-2 .game-dossier__stamp,
+.game-dossier--portal .game-dossier__stamp,
+.game-dossier--portal-2 .game-dossier__stamp,
+.game-dossier--counter-strike .game-dossier__stamp,
+.game-dossier--counter-strike-condition-zero .game-dossier__stamp,
+.game-dossier--counter-strike-condition-zero-deleted-scenes
+  .game-dossier__stamp,
+.game-dossier--counter-strike-source .game-dossier__stamp,
+.game-dossier--counter-strike-global-offensive .game-dossier__stamp,
+.game-dossier--counter-strike-2 .game-dossier__stamp {
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  opacity: 0.95;
+  rotate: -3deg;
+}
+
+/* Banda superior de color en los mundos que la llevan (cinta, franja de equipo, panel) */
+.game-dossier--team-fortress-classic::before,
+.game-dossier--team-fortress-2::before,
+.game-dossier--left-4-dead::before,
+.game-dossier--left-4-dead-2::before,
+.game-dossier--portal::before,
+.game-dossier--portal-2::before,
+.game-dossier--counter-strike-condition-zero-deleted-scenes::before,
+.game-dossier--counter-strike-global-offensive::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 0.6rem;
+  border-radius: var(--dossier-radius) var(--dossier-radius) 0 0;
+  pointer-events: none;
+}
+
+/* Marcos de esquina estilo HUD (Counter-Strike: Source y Counter-Strike 2) */
+.game-dossier--counter-strike-source::before,
+.game-dossier--counter-strike-2::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0.75rem;
+  background:
+    linear-gradient(var(--dossier-accent), var(--dossier-accent)) top left /
+      1.5rem 2px no-repeat,
+    linear-gradient(var(--dossier-accent), var(--dossier-accent)) top left / 2px
+      1.5rem no-repeat,
+    linear-gradient(var(--dossier-accent), var(--dossier-accent)) top right /
+      1.5rem 2px no-repeat,
+    linear-gradient(var(--dossier-accent), var(--dossier-accent)) top right /
+      2px 1.5rem no-repeat,
+    linear-gradient(var(--dossier-accent), var(--dossier-accent)) bottom left /
+      1.5rem 2px no-repeat,
+    linear-gradient(var(--dossier-accent), var(--dossier-accent)) bottom left /
+      2px 1.5rem no-repeat,
+    linear-gradient(var(--dossier-accent), var(--dossier-accent)) bottom right /
+      1.5rem 2px no-repeat,
+    linear-gradient(var(--dossier-accent), var(--dossier-accent)) bottom right /
+      2px 1.5rem no-repeat;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* --- Team Fortress Classic: carpeta militar de lona oliva, franjas de equipo RED y BLU --- */
+.game-dossier--team-fortress-classic {
+  --dossier-paper: #24271d;
+  --dossier-ink: #efe9d4;
+  --dossier-muted: #b3ad98;
+  --dossier-accent: #f68f87;
+  --dossier-line: rgb(239 233 212 / 0.2);
+  border: 2px solid #3d4130;
   background-image:
     repeating-linear-gradient(
       0deg,
-      rgb(20 24 28 / 0.045) 0 1px,
+      rgb(255 255 255 / 0.025) 0 1px,
+      transparent 1px 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0.025) 0 1px,
+      transparent 1px 4px
+    ),
+    linear-gradient(
+      90deg,
+      rgb(200 56 56 / 0.16),
+      transparent 28%,
+      transparent 72%,
+      rgb(43 88 166 / 0.2)
+    );
+}
+
+.game-dossier--team-fortress-classic::before {
+  background: repeating-linear-gradient(
+    -45deg,
+    #c83838 0 1.25rem,
+    #1a1c14 1.25rem 1.5rem,
+    #2b58a6 1.5rem 2.75rem,
+    #1a1c14 2.75rem 3rem
+  );
+}
+
+/* --- Team Fortress 2: cartel ilustrado de Mann Co., medios tonos y franja RED/BLU --- */
+.game-dossier--team-fortress-2 {
+  --dossier-paper: #f2e8d0;
+  --dossier-ink: #1d1a15;
+  --dossier-muted: #5f5748;
+  --dossier-accent: #a52a24;
+  --dossier-line: rgb(29 26 21 / 0.18);
+  --tf2-blu: #3d6fae;
+  --tf2-australium: #c9a83c;
+  --tf2-mann: #6b4423;
+  border: 3px double #8b5a2b;
+  background-image:
+    radial-gradient(
+      circle at 1px 1px,
+      rgb(139 90 43 / 0.16) 1px,
+      transparent 1.6px
+    ),
+    radial-gradient(ellipse at 0% 0%, rgb(184 49 43 / 0.14), transparent 40%),
+    radial-gradient(
+      ellipse at 100% 100%,
+      rgb(61 111 174 / 0.16),
+      transparent 40%
+    );
+  background-size:
+    9px 9px,
+    auto,
+    auto;
+}
+
+.game-dossier--team-fortress-2::before {
+  background: linear-gradient(
+    105deg,
+    #b8312b 0 50%,
+    var(--tf2-australium) 50% 51.5%,
+    var(--tf2-blu) 51.5% 100%
+  );
+}
+
+.game-dossier--team-fortress-2 .game-dossier__title {
+  text-shadow: 3px 3px 0 rgb(184 49 43 / 0.28);
+}
+
+.game-dossier--team-fortress-2 .game-dossier__stamp {
+  border-color: var(--tf2-mann);
+  background: var(--tf2-australium);
+  color: #2a1b0a;
+  border-radius: 999px;
+  rotate: 4deg;
+}
+
+.game-dossier--team-fortress-2 .game-dossier__label {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.game-dossier--team-fortress-2 .game-dossier__label::before {
+  content: "";
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: currentColor;
+  mask: url("/images/decor/tf2-class-silhouette.svg") center / contain no-repeat;
+}
+
+/* --- Left 4 Dead: pared de refugio, hormigón sucio, cinta de cuarentena y rojo de espray --- */
+.game-dossier--left-4-dead {
+  --dossier-paper: #141a12;
+  --dossier-ink: #e9efdc;
+  --dossier-muted: #a9b894;
+  --dossier-accent: #9cc24a;
+  --dossier-line: rgb(233 239 220 / 0.2);
+  --l4d-blood: #c43d2e;
+  --l4d-warn: #e8a817;
+  border: 2px solid #2b3a26;
+  background-image:
+    radial-gradient(ellipse at 85% 0%, rgb(141 176 60 / 0.2), transparent 45%),
+    radial-gradient(ellipse at 0% 100%, rgb(196 61 46 / 0.14), transparent 40%),
+    repeating-linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0.018) 0 2px,
+      transparent 2px 14px
+    ),
+    linear-gradient(180deg, rgb(255 255 255 / 0.03), transparent 25%);
+}
+
+.game-dossier--left-4-dead::before {
+  height: 0.7rem;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--l4d-warn) 0 0.9rem,
+    #14170f 0.9rem 1.8rem
+  );
+}
+
+.game-dossier--left-4-dead .game-dossier__stamp {
+  border-style: dashed;
+  border-color: var(--l4d-blood);
+  background: rgb(196 61 46 / 0.12);
+  color: #f08a7c;
+  text-shadow: 0 0 6px rgb(196 61 46 / 0.6);
+  rotate: -5deg;
+}
+
+/* --- Left 4 Dead 2: evacuación al atardecer en el Sur profundo, ocre y cinta militar --- */
+.game-dossier--left-4-dead-2 {
+  --dossier-paper: #1c1810;
+  --dossier-ink: #f0e4cb;
+  --dossier-muted: #bfae8a;
+  --dossier-accent: #b6d44f;
+  --dossier-line: rgb(240 228 203 / 0.2);
+  --l4d2-ochre: #e0a63a;
+  border: 2px solid #4a3d24;
+  background-image:
+    linear-gradient(
+      180deg,
+      transparent 45%,
+      rgb(224 130 46 / 0.2) 80%,
+      rgb(196 61 46 / 0.18)
+    ),
+    radial-gradient(
+      ellipse at 12% 12%,
+      rgb(182 212 79 / 0.14),
+      transparent 42%
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.02) 0 1px,
+      transparent 1px 3.5rem
+    );
+}
+
+.game-dossier--left-4-dead-2::before {
+  height: 0.7rem;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--l4d2-ochre) 0 0.9rem,
+    #14110a 0.9rem 1.8rem
+  );
+}
+
+.game-dossier--left-4-dead-2 .game-dossier__stamp {
+  border-color: var(--l4d2-ochre);
+  color: var(--l4d2-ochre);
+  rotate: 2deg;
+}
+
+.game-dossier--left-4-dead-2 .game-dossier__label {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.game-dossier--left-4-dead-2 .game-dossier__label::before {
+  content: "";
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: currentColor;
+  mask: url("/images/decor/l4d2-special-silhouette.svg") center / contain
+    no-repeat;
+}
+
+/* Emblemas oficiales: marca grande en el hueco entre el texto y la ficha técnica (solo desde 64rem),
+   como la λ de Half-Life 1. Se pintan con mask para tomar los colores de cada dossier */
+.game-dossier--team-fortress-classic::after,
+.game-dossier--team-fortress-2::after,
+.game-dossier--left-4-dead::after,
+.game-dossier--left-4-dead-2::after {
+  content: "";
+  position: absolute;
+  top: 1.25rem;
+  right: calc(var(--dossier-padding) + 17.5rem);
+  display: none;
+  width: clamp(8rem, 13vw, 11rem);
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+
+/* Team Fortress: el emblema partido en los colores de los dos equipos */
+.game-dossier--team-fortress-classic::after {
+  background: linear-gradient(90deg, #c83838 50%, #2b58a6 50%);
+  mask: url("/images/decor/tf2-emblem.png") center / contain no-repeat;
+  opacity: 0.3;
+}
+
+.game-dossier--team-fortress-2::after {
+  background: linear-gradient(135deg, #b8312b 50%, var(--tf2-blu) 50%);
+  mask: url("/images/decor/tf2-emblem.png") center / contain no-repeat;
+  opacity: 0.22;
+}
+
+/* Left 4 Dead: el 4 ensangrentado; en la segunda parte, el mismo trazo en ocre y girado */
+.game-dossier--left-4-dead::after {
+  background: url("/images/decor/l4d-official-icon.png") center / contain
+    no-repeat;
+  opacity: 0.45;
+}
+
+.game-dossier--left-4-dead-2::after {
+  background: url("/images/decor/l4d-official-icon.png") center / contain
+    no-repeat;
+  filter: sepia(0.9) saturate(0.7);
+  opacity: 0.5;
+  rotate: 8deg;
+}
+
+@media (min-width: 64rem) {
+  .game-dossier--team-fortress-classic::after,
+  .game-dossier--team-fortress-2::after,
+  .game-dossier--left-4-dead::after,
+  .game-dossier--left-4-dead-2::after {
+    display: block;
+  }
+}
+
+/* --- Portal: panel blanco de Aperture Science con cámara de pruebas, naranja y azul de portal --- */
+.game-dossier--portal {
+  --dossier-paper: #eef1f4;
+  --dossier-ink: #12161a;
+  --dossier-muted: #4a555e;
+  --dossier-accent: #964000;
+  --dossier-line: rgb(18 22 26 / 0.18);
+  border: 1px solid #aeb8c0;
+  background-image:
+    radial-gradient(circle at 1.25rem 1.25rem, #9aa5ae 3px, transparent 4px),
+    radial-gradient(
+      circle at calc(100% - 1.25rem) 1.25rem,
+      #9aa5ae 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 1.25rem calc(100% - 1.25rem),
+      #9aa5ae 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at calc(100% - 1.25rem) calc(100% - 1.25rem),
+      #9aa5ae 3px,
+      transparent 4px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgb(18 22 26 / 0.06) 0 1px,
       transparent 1px 2.5rem
     ),
     repeating-linear-gradient(
       90deg,
-      rgb(20 24 28 / 0.045) 0 1px,
+      rgb(18 22 26 / 0.06) 0 1px,
       transparent 1px 2.5rem
+    ),
+    radial-gradient(
+      ellipse at 90% 100%,
+      rgb(63 169 245 / 0.14),
+      transparent 40%
     );
-  border: 1px solid #b9c2c9;
+}
+
+.game-dossier--portal::before {
+  height: 0.5rem;
+  background: linear-gradient(90deg, #ff9d1f 0 50%, #3fa9f5 50% 100%);
 }
 
 .game-dossier--portal .game-dossier__stamp {
-  border: 2px solid currentColor;
-  border-radius: 4px;
   color: #a84700;
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  opacity: 0.95;
   rotate: -2deg;
 }
 
-/* Portal 2: registro del complejo en ruinas, papel verdoso y azul de los geles */
+/* --- Portal 2: complejo de Aperture en ruinas, panel oscuro, vegetación y geles --- */
 .game-dossier--portal-2 {
-  --dossier-paper: #dfe6e3;
-  --dossier-ink: #141a18;
-  --dossier-muted: #4a5852;
-  --dossier-accent: #0a6296;
-  --dossier-line: rgb(20 24 28 / 0.14);
+  --dossier-paper: #121d1e;
+  --dossier-ink: #e5f0ea;
+  --dossier-muted: #a4b7ae;
+  --dossier-accent: #56c8ff;
+  --dossier-line: rgb(229 240 234 / 0.2);
+  border: 1px solid #2f4540;
   background-image:
-    radial-gradient(ellipse at 10% 90%, rgb(60 120 70 / 0.14), transparent 45%),
+    radial-gradient(ellipse at 8% 100%, rgb(88 150 70 / 0.3), transparent 42%),
+    radial-gradient(
+      ellipse at 96% 10%,
+      rgb(255 157 31 / 0.16),
+      transparent 38%
+    ),
+    radial-gradient(
+      ellipse at 70% 90%,
+      rgb(86 200 255 / 0.14),
+      transparent 40%
+    ),
     repeating-linear-gradient(
       0deg,
-      rgb(20 26 24 / 0.04) 0 1px,
+      rgb(255 255 255 / 0.03) 0 1px,
       transparent 1px 2.5rem
     );
-  border: 1px solid #a9b8b1;
+}
+
+.game-dossier--portal-2::before {
+  height: 0.5rem;
+  background: linear-gradient(
+    90deg,
+    #56c8ff 0 33%,
+    #ff9d1f 33% 66%,
+    #7dd35a 66%
+  );
 }
 
 .game-dossier--portal-2 .game-dossier__stamp {
-  border: 2px solid currentColor;
-  border-radius: 4px;
-  color: #0a6296;
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  opacity: 0.95;
   rotate: -2deg;
 }
 
-/* Counter-Strike: orden de misión sobre papel caqui */
+/* --- Counter-Strike 1.6: caja de Dust, arena y estarcido de munición --- */
 .game-dossier--counter-strike {
-  --dossier-paper: #e4dfcb;
-  --dossier-ink: #1a1a14;
-  --dossier-muted: #555240;
-  --dossier-accent: #7a4f0c;
-  --dossier-line: rgb(20 24 28 / 0.14);
-  background-image: repeating-linear-gradient(
-    135deg,
-    rgb(26 26 20 / 0.04) 0 2px,
-    transparent 2px 10px
-  );
-  border: 1px solid #b6ad8a;
+  --dossier-paper: #201d14;
+  --dossier-ink: #efe6cb;
+  --dossier-muted: #bdb391;
+  --dossier-accent: #dcb65a;
+  --dossier-line: rgb(239 230 203 / 0.2);
+  border: 2px solid #4a4026;
+  background-image:
+    radial-gradient(
+      ellipse at 100% 0%,
+      rgb(220 182 90 / 0.18),
+      transparent 45%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgb(255 255 255 / 0.025) 0 2px,
+      transparent 2px 12px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgb(0 0 0 / 0.18) 0 1px,
+      transparent 1px 2.5rem
+    );
 }
 
 .game-dossier--counter-strike .game-dossier__stamp {
-  border: 2px solid currentColor;
-  border-radius: 4px;
-  color: #7a4f0c;
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  opacity: 0.95;
-  rotate: -2deg;
+  background: rgb(220 182 90 / 0.1);
+  rotate: -4deg;
 }
 
-/* Counter-Strike: Source: informe táctico sobre papel gris acero */
-.game-dossier--counter-strike-source {
-  --dossier-paper: #d9dde0;
-  --dossier-ink: #14181c;
-  --dossier-muted: #4b545c;
-  --dossier-accent: #7a5208;
-  --dossier-line: rgb(20 24 28 / 0.14);
-  background-image: repeating-linear-gradient(
-    180deg,
-    rgb(20 24 28 / 0.04) 0 1px,
-    transparent 1px 1.75rem
-  );
-  border: 1px solid #aab2b8;
-}
-
-.game-dossier--counter-strike-source .game-dossier__stamp {
-  border: 2px solid currentColor;
-  border-radius: 4px;
-  color: #7a5208;
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  opacity: 0.95;
-  rotate: -2deg;
-}
-
-/* Global Offensive: expediente competitivo, papel hueso y naranja */
-.game-dossier--counter-strike-global-offensive {
-  --dossier-paper: #e9e6df;
-  --dossier-ink: #14161a;
-  --dossier-muted: #54565c;
-  --dossier-accent: #9a4509;
-  --dossier-line: rgb(20 24 28 / 0.14);
-  background-image: linear-gradient(
-    135deg,
-    rgb(240 162 58 / 0.1),
-    transparent 35%
-  );
-  border: 1px solid #bab5a8;
-}
-
-.game-dossier--counter-strike-global-offensive .game-dossier__stamp {
-  border: 2px solid currentColor;
-  border-radius: 4px;
-  color: #9a4509;
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  opacity: 0.95;
-  rotate: -2deg;
-}
-
-/* Counter-Strike 2: ficha táctica fría de Source 2 */
-.game-dossier--counter-strike-2 {
-  --dossier-paper: #e4e9ef;
-  --dossier-ink: #11161c;
-  --dossier-muted: #4b5663;
-  --dossier-accent: #1a5fae;
-  --dossier-line: rgb(20 24 28 / 0.14);
-  background-image: linear-gradient(
-    135deg,
-    rgb(90 176 255 / 0.12),
-    transparent 40%
-  );
-  border: 1px solid #a9b4c0;
-}
-
-.game-dossier--counter-strike-2 .game-dossier__stamp {
-  border: 2px solid currentColor;
-  border-radius: 4px;
-  color: #1a5fae;
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  opacity: 0.95;
-  rotate: -2deg;
-}
-
-/* Condition Zero: expediente de campaña, papel verdoso */
+/* --- Condition Zero: campaña Tour of Duty, camuflaje oliva --- */
 .game-dossier--counter-strike-condition-zero {
-  --dossier-paper: #e0e2cc;
-  --dossier-ink: #181a12;
-  --dossier-muted: #51553f;
-  --dossier-accent: #6a5a0a;
-  --dossier-line: rgb(20 24 28 / 0.14);
-  background-image: repeating-linear-gradient(
-    135deg,
-    rgb(24 26 18 / 0.04) 0 2px,
-    transparent 2px 10px
-  );
-  border: 1px solid #b0b494;
+  --dossier-paper: #1b2016;
+  --dossier-ink: #e8ebd4;
+  --dossier-muted: #b0b695;
+  --dossier-accent: #cdb95e;
+  --dossier-line: rgb(232 235 212 / 0.2);
+  border: 2px solid #3c4528;
+  background-image:
+    radial-gradient(ellipse at 18% 30%, rgb(94 108 52 / 0.35), transparent 28%),
+    radial-gradient(ellipse at 72% 70%, rgb(88 70 40 / 0.3), transparent 26%),
+    radial-gradient(ellipse at 88% 18%, rgb(60 78 40 / 0.35), transparent 24%),
+    radial-gradient(ellipse at 40% 90%, rgb(70 84 44 / 0.3), transparent 24%);
 }
 
-.game-dossier--counter-strike-condition-zero .game-dossier__stamp {
-  border: 2px solid currentColor;
-  border-radius: 4px;
-  color: #6a5a0a;
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  opacity: 0.95;
-  rotate: -2deg;
-}
-
-/* Deleted Scenes: archivo de Ritual, papel gris verdoso */
+/* --- Deleted Scenes: archivo de Ritual, tarjetas de cinta y barrido de monitor --- */
 .game-dossier--counter-strike-condition-zero-deleted-scenes {
-  --dossier-paper: #dde1ce;
-  --dossier-ink: #161a12;
-  --dossier-muted: #4e553f;
-  --dossier-accent: #55631a;
-  --dossier-line: rgb(20 24 28 / 0.14);
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgb(22 26 18 / 0.04) 0 1px,
-    transparent 1px 1.75rem
+  --dossier-paper: #141813;
+  --dossier-ink: #e5e9d3;
+  --dossier-muted: #a9b295;
+  --dossier-accent: #c3cc7e;
+  --dossier-line: rgb(229 233 211 / 0.2);
+  border: 2px solid #2f3a26;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgb(195 204 126 / 0.05) 0 1px,
+      transparent 1px 3px
+    ),
+    radial-gradient(ellipse at 50% 0%, rgb(195 204 126 / 0.12), transparent 55%);
+}
+
+.game-dossier--counter-strike-condition-zero-deleted-scenes::before {
+  height: 0.5rem;
+  background: repeating-linear-gradient(
+    90deg,
+    #c3cc7e 0 1rem,
+    #141813 1rem 1.25rem
   );
-  border: 1px solid #aab190;
 }
 
 .game-dossier--counter-strike-condition-zero-deleted-scenes
   .game-dossier__stamp {
-  border: 2px solid currentColor;
-  border-radius: 4px;
-  color: #55631a;
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  opacity: 0.95;
-  rotate: -2deg;
+  border-style: dashed;
+}
+
+/* --- Counter-Strike: Source: informe táctico de acero con marcos de HUD --- */
+.game-dossier--counter-strike-source {
+  --dossier-paper: #141a20;
+  --dossier-ink: #e6ebf0;
+  --dossier-muted: #a2afba;
+  --dossier-accent: #9db2c6;
+  --dossier-line: rgb(230 235 240 / 0.2);
+  border: 1px solid #2e3b46;
+  background-image:
+    linear-gradient(
+      135deg,
+      rgb(157 178 198 / 0.14),
+      transparent 40%,
+      rgb(0 0 0 / 0.25)
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.03) 0 1px,
+      transparent 1px 1.75rem
+    );
+}
+
+/* --- Global Offensive: competitivo, CT azul contra T naranja --- */
+.game-dossier--counter-strike-global-offensive {
+  --dossier-paper: #121419;
+  --dossier-ink: #ecebe6;
+  --dossier-muted: #aaacb3;
+  --dossier-accent: #f0a23a;
+  --dossier-line: rgb(236 235 230 / 0.2);
+  border: 1px solid #2d3340;
+  background-image:
+    linear-gradient(
+      115deg,
+      rgb(91 143 203 / 0.2),
+      transparent 38%,
+      transparent 62%,
+      rgb(240 162 58 / 0.2)
+    ),
+    repeating-linear-gradient(
+      -60deg,
+      rgb(255 255 255 / 0.02) 0 1px,
+      transparent 1px 14px
+    );
+}
+
+.game-dossier--counter-strike-global-offensive::before {
+  height: 0.4rem;
+  background: linear-gradient(90deg, #5b8fcb 0 50%, #f0a23a 50% 100%);
+}
+
+/* --- Counter-Strike 2: cristal frío de Source 2, brillo azul y marcos de HUD --- */
+.game-dossier--counter-strike-2 {
+  --dossier-paper: #0f1620;
+  --dossier-ink: #e8eef6;
+  --dossier-muted: #a3b1c2;
+  --dossier-accent: #6ab6ff;
+  --dossier-line: rgb(232 238 246 / 0.2);
+  border: 1px solid #263648;
+  background-image:
+    radial-gradient(
+      ellipse at 100% 0%,
+      rgb(90 176 255 / 0.28),
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 0% 100%,
+      rgb(90 176 255 / 0.12),
+      transparent 45%
+    ),
+    linear-gradient(180deg, rgb(255 255 255 / 0.04), transparent 30%);
 }
