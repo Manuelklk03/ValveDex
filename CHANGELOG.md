@@ -6,6 +6,11 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+### Cambiado
+
+- Los dossieres de Team Fortress, Left 4 Dead, Portal y Counter-Strike dejan de ser cartulinas pálidas iguales y toman el material de su juego (lona con franjas de equipo, cartel de Mann Co., pared de refugio, panel de Aperture, camuflaje, acero y cristal con marcos de HUD).
+- Cada universo tiene un paisaje fijo detrás del contenido (Black Mesa, Badlands, ruinas de Left 4 Dead, paneles de Portal y arcos de Dust), dibujado en código.
+
 ## [0.4.0] — 2026-11-15
 
 La preparación del 2026-11-11 (rediseño, Portal y Counter-Strike) y el trabajo posterior (equipos, modelos de Source, ambiente vivo, paleta e iconos por saga) entran en la misma versión.
