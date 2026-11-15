@@ -104,6 +104,15 @@ export function ElevatorTransition() {
     };
   }, [release, router, slide]);
 
+  // «Atrás» o «Adelante» durante el cierre mandan: se anula la navegación pendiente aunque el camino no cambie
+  useEffect(() => {
+    const onPopState = () => {
+      if (pending.current) release();
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [release]);
+
   // Llegó una página: si es la del enlace pulsado, las puertas se abren dentro; si es otra (el visitante
   // pulsó «Atrás» durante el cierre), se abren igualmente y la navegación pendiente queda anulada
   useEffect(() => {
