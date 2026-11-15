@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Atlas, P-body y el zombi rápido ya no salen con los brazos en cruz o en garra: el conversor deduce «arriba» de la cabeza y los pies del esqueleto (el robot de Portal 2 no tiene hueso de cabeza) y baja también los antebrazos que cuelgan doblados hacia delante.
 - Los personajes y criaturas de Source (Half-Life 2 y sus episodios, Left 4 Dead, Team Fortress 2, Portal y Counter-Strike: Source) se fotografían con los ojos pintados con su iris y con los brazos junto al cuerpo en lugar de en T o en A: 59 renders y los modelos de dossier del Heavy, la Witch, el Jockey y el zombine rehechos. El conversor lee el globo ocular del modelo y baja los brazos de cualquier esqueleto con la opción «auto».
 - Una ficha abierta desde un juego o un apartado concretos recuerda ese origen en las migas y en la navegación (`?juego=…&apartado=…`).
 - En los juegos con equipos, «Personajes» muestra a tu equipo y «Enemigos» a los rivales: en Counter-Strike, los Terroristas ven a sus unidades y tienen enfrente a las antiterroristas (y al revés); en Team Fortress 2, GRAY es el ejército de robots, RED y BLU tienen enfrente a los mercenarios del otro color (con su piel) y a los robots. Cada equipo de Team Fortress 2 muestra a su líder: Redmond Mann, Blutarch Mann y Gray Mann.

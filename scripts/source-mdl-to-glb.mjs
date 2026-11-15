@@ -149,12 +149,21 @@ function lowerArms(mode) {
     return false;
   };
   // «Abajo» sale del esqueleto: algunos modelos (Team Fortress 2) vienen tumbados, con la cabeza hacia +Y
-  const head = bones.find((bone) => /head/i.test(bone.name));
-  const centre = [0, 1, 2].map(
-    (k) =>
-      bones.reduce((sum, bone) => sum + bone.world[k][3], 0) / bones.length,
-  );
-  const upward = head ? sub(origin(head.world), centre) : [0, 0, 1];
+  const average = (pattern) => {
+    const found = bones.filter((bone) => pattern.test(bone.name));
+    return found.length
+      ? [0, 1, 2].map(
+          (k) =>
+            found.reduce((sum, bone) => sum + bone.world[k][3], 0) /
+            found.length,
+        )
+      : null;
+  };
+  const centre = average(/^/);
+  const top = average(/head|neck|eye/i);
+  const bottom = average(/foot|toe|ankle/i);
+  // Cabeza y pies si existen (el robot de Portal 2 no tiene «head»), si no, la cabeza contra el centro
+  const upward = top ? sub(top, bottom ?? centre) : [0, 0, 1];
   const axis = [0, 1, 2].reduce((best, k) =>
     Math.abs(upward[k]) > Math.abs(upward[best]) ? k : best,
   );
@@ -181,6 +190,43 @@ function lowerArms(mode) {
     bones.forEach((bone, b) => {
       if (descends(b, arm)) world[b] = mul34(turn, world[b]);
     });
+    // Un antebrazo que sigue doblado hacia delante (los zombis caminan con los brazos en garra) se baja también
+    if (mode === "auto") {
+      const kids = bones
+        .map((bone, b) => b)
+        .filter(
+          (b) =>
+            bones[b].parent === elbow && !/twist|roll/i.test(bones[b].name),
+        );
+      const hand =
+        kids.find((b) => /hand|wrist/i.test(bones[b].name)) ?? kids[0];
+      if (hand !== undefined) {
+        const pivot = origin(world[elbow]);
+        const lower = unit(sub(origin(world[hand]), pivot));
+        const bent = Math.acos(Math.max(-1, Math.min(1, dot(lower, down))));
+        if (bent > (35 * Math.PI) / 180) {
+          const spin = bent - rest;
+          const [ax, ay, az] = unit(cross(lower, down));
+          const [cc, ss, tt] = [
+            Math.cos(spin),
+            Math.sin(spin),
+            1 - Math.cos(spin),
+          ];
+          const rr = [
+            [tt * ax * ax + cc, tt * ax * ay - ss * az, tt * ax * az + ss * ay],
+            [tt * ax * ay + ss * az, tt * ay * ay + cc, tt * ay * az - ss * ax],
+            [tt * ax * az - ss * ay, tt * ay * az + ss * ax, tt * az * az + cc],
+          ];
+          const turnElbow = rr.map((row, k) => [
+            ...row,
+            pivot[k] - dot(row, pivot),
+          ]);
+          bones.forEach((bone, b) => {
+            if (descends(b, elbow)) world[b] = mul34(turnElbow, world[b]);
+          });
+        }
+      }
+    }
   }
   return world;
 }
@@ -416,6 +462,13 @@ for (const [texIndex, g] of groups) {
         );
       eye.rgba[p + 3] = 255;
     }
+    // Portal 1: la textura del iris es el ojo entero (esclerótica con venas y un iris pequeño), no solo el iris:
+    // se proyecta más pequeña para que el iris tenga su tamaño y no un pupilón negro
+    if (
+      /^\/?models\/player\/eyeball_/i.test(material["$iris"]) &&
+      /_ambient$/i.test(material["$ambientoccltexture"] ?? "")
+    )
+      out.uv = out.uv.map((v) => 0.5 + (v - 0.5) * 0.45);
     Object.assign(out, eye, { alphaMode: "OPAQUE", clamp: true });
   } else if (vtf) {
     Object.assign(out, decodeVtf(vtf));
