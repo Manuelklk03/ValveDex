@@ -4,7 +4,9 @@
 Fuente: Claude Code y Antigravity con acceso al repositorio local; la comprobación del estado de `main` y de las PR es de Claude Code (2026-11-06).
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
-## Versión actual: `v0.3.0` (bloque Valve, Steam y apertura de la etapa Source)
+## Versión actual: `v0.6.0` (Half-Life como mundos, navegación y paleta por saga)
+
+**`v0.6.0` publicada (2026-11-16):** buscador Ctrl+K y menús grandes en la cabecera, portada cinematográfica, paleta de marca y paisaje por saga, ambiente vivo de partículas, y los dossieres de Half-Life convertidos en mundos: material propio de cada juego, puertas en arco en perspectiva 3D, protagonista 3D que aparece con el ratón y una entrada animada propia por juego (ascensor, persiana, compuerta, monitor, tajo, destello, energía vortigaunt y rejilla). Se salta la 0.5.0 a petición de Manuel.
 
 **`v0.4.0` publicada (2026-11-15):** rediseño de universos, dossieres, hubs y fichas; Valve y Steam renovados; modelos 3D de Team Fortress 2, Left 4 Dead, Portal y Counter-Strike: Source; unas 810 fichas con Portal y Counter-Strike abiertos; dossieres de Team Fortress y Counter-Strike por equipos; ambiente vivo con partículas; paleta de marca e iconos por saga. Tag anotado y GitHub Release creados a petición de Manuel (el 2026-11-15, sobre el merge de la PR de preparación).
 
@@ -693,7 +695,7 @@ Decisión de Manuel (2026-10-16): versionado semántico con tags de Git y GitHub
 | `v1.0.0` | **Todo el universo Half-Life**: todos sus juegos, expansiones y episodios, con proyectos cancelados y mods, revisado y desplegado |
 | `v1.x.0` | Cada universo nuevo (Portal, Team Fortress…) o funcionalidad grande posterior                                                     |
 
-Publicadas: **`v0.1.0`** (2026-10-23, esqueleto), **`v0.2.0`** (2026-10-26, bloque Half-Life 1), **`v0.3.0`** (2026-11-05, bloque Valve, Steam y apertura de la etapa Source) y **`v0.4.0`** (2026-11-15, universos rediseñados, Portal y Counter-Strike abiertos, modelos de Source, equipos y paleta por saga).
+Publicadas: **`v0.1.0`** (2026-10-23, esqueleto), **`v0.2.0`** (2026-10-26, bloque Half-Life 1), **`v0.3.0`** (2026-11-05, bloque Valve, Steam y apertura de la etapa Source) **`v0.4.0`** (2026-11-15, universos rediseñados, Portal y Counter-Strike abiertos, modelos de Source, equipos y paleta por saga) y **`v0.6.0`** (2026-11-16, Half-Life como mundos con entradas animadas, navegación y buscador; se salta la 0.5.0).
 
 Cómo se crea una versión, cuando Manuel lo indique (siempre sobre `main` actualizado y con `npm run check` y `npm run build` superados):
 
