@@ -19,6 +19,10 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 - En esos juegos, el apartado de personajes separa a los mercenarios de los otros personajes (Administradora, Miss Pauling, Saxton Hale y los Mann), y los robots de Mann vs. Machine salen en GRAY.
 - La ficha del Engineer tiene un desplegable con sus construcciones y sus niveles (Sentry Gun, Mini-Sentry, Dispenser y teletransportador en Team Fortress 2; Sentry Gun, Dispenser y teletransportador en Team Fortress Classic) con las cifras de la Official TF2 Wiki.
 
+### Cambiado
+
+- Team Fortress Classic y cada juego de Counter-Strike (1.6, Condition Zero, Deleted Scenes, Source, Global Offensive y 2) tienen su propio dibujo de línea en el dossier, en lugar de repetir el de Team Fortress 2 o el de Counter-Strike. Se añaden además cinco emblemas de saga, todavía sin uso.
+
 ### Corregido
 
 - Los dossieres de la página de cada universo se ven siempre: antes se ocultaban con una animación hasta acercarse con el scroll y, en Left 4 Dead, Portal y otros, parecían no existir.
