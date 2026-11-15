@@ -6,6 +6,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+## [0.5.0] — 2026-11-16
+
 ### Añadido
 
 - Buscador global: Ctrl+K (⌘K en Mac) o el botón «Buscar» de la cabecera abren una paleta que encuentra sagas, juegos, fichas, personas y páginas, sin importar tildes ni mayúsculas, y se maneja con flechas e Intro.
