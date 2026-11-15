@@ -73,12 +73,17 @@ export function DossierArt({ art }: { art: DossierArtData }) {
     const onFocusOut = (event: FocusEvent) => {
       if (!card.contains(event.relatedTarget as Node | null)) setFocused(false);
     };
-    // El modelo se pide al acercarse el dossier a la pantalla, no en el primer hover: así ya está cuando se mira
+    // El modelo se pide al acercarse el dossier a la pantalla (solo con ratón: en táctil nunca se muestra) y se
+    // descarta al alejarse, para no tener montados los lienzos de todos los dossieres a la vez
+    const canHover = window.matchMedia("(hover: hover)").matches;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) return;
-        prepare();
-        observer.disconnect();
+        if (entry.isIntersecting) {
+          if (canHover) prepare();
+          return;
+        }
+        setEverActive(false);
+        setModelReady(false);
       },
       { rootMargin: "300px 0px" },
     );
