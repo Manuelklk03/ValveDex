@@ -13,6 +13,7 @@
   position: absolute;
   inset: -8% 0;
   opacity: var(--art-backdrop-opacity, 0.22);
+  mix-blend-mode: var(--art-backdrop-blend, normal);
   mask-image: linear-gradient(
     to right,
     transparent var(--art-backdrop-fade, 15%),
@@ -27,7 +28,7 @@
 
 .dossier-art__image {
   object-fit: cover;
-  filter: grayscale(0.55) contrast(1.05);
+  filter: var(--art-backdrop-filter, grayscale(0.55) contrast(1.05));
 }
 
 /* Primer plano: ocupa todo el dossier y por encima del velo del pasillo; los hijos se colocan sobre él */
@@ -135,6 +136,11 @@
 }
 
 /* --- Pasillo de Half-Life: la escena llena el dossier y el modelo o el dibujo es el protagonista --- */
+.dossier-art--corridor {
+  mask-image: var(--art-mask, none);
+  -webkit-mask-image: var(--art-mask, none);
+}
+
 .dossier-art--corridor .dossier-art__backdrop {
   inset: -10% -3%;
 }
@@ -147,19 +153,61 @@
   background:
     linear-gradient(
       90deg,
-      rgb(18 16 13 / 0.96) 0,
-      rgb(18 16 13 / 0.86) 48%,
-      rgb(18 16 13 / 0.12) 78%
+      color-mix(
+          in srgb,
+          var(--corridor-veil, var(--dossier-paper)) 96%,
+          transparent
+        )
+        0,
+      color-mix(
+          in srgb,
+          var(--corridor-veil, var(--dossier-paper)) 86%,
+          transparent
+        )
+        48%,
+      color-mix(
+          in srgb,
+          var(--corridor-veil, var(--dossier-paper)) 12%,
+          transparent
+        )
+        78%
     ),
-    linear-gradient(0deg, rgb(18 16 13 / 0.95), transparent 42%);
+    linear-gradient(
+      0deg,
+      color-mix(
+        in srgb,
+        var(--corridor-veil, var(--dossier-paper)) 95%,
+        transparent
+      ),
+      transparent 42%
+    );
 }
 
 /* En pantallas estrechas el texto ocupa todo el ancho: el velo es uniforme para no perder el contraste */
 @media (max-width: 55.99rem) {
   .dossier-art--corridor::after {
     background:
-      linear-gradient(rgb(18 16 13 / 0.86), rgb(18 16 13 / 0.86)),
-      linear-gradient(0deg, rgb(18 16 13 / 0.95), transparent 42%);
+      linear-gradient(
+        color-mix(
+          in srgb,
+          var(--corridor-veil, var(--dossier-paper)) 86%,
+          transparent
+        ),
+        color-mix(
+          in srgb,
+          var(--corridor-veil, var(--dossier-paper)) 86%,
+          transparent
+        )
+      ),
+      linear-gradient(
+        0deg,
+        color-mix(
+          in srgb,
+          var(--corridor-veil, var(--dossier-paper)) 95%,
+          transparent
+        ),
+        transparent 42%
+      );
   }
 }
 
@@ -180,15 +228,6 @@
 
 .dossier-art--corridor .dossier-art__icon:nth-child(2) {
   opacity: var(--art-icons-opacity, 0.9);
-}
-
-/* Con el modelo ya cargado, el dibujo cede el protagonismo */
-.dossier-art--corridor.dossier-art--model-ready .dossier-art__model {
-  opacity: 1;
-}
-
-.dossier-art--corridor.dossier-art--model-ready .dossier-art__icon {
-  opacity: 0.12;
 }
 
 @media (min-width: 56rem) {
