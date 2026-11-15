@@ -444,8 +444,19 @@ for (const [texIndex, g] of groups) {
   if (iris) {
     // Ojo: el iris sobre el color medio de la esclerótica. El material EyeRefract trae la esclerótica dentro del iris
     const eye = decodeVtf(iris);
+    // El alfa de algunos iris (Left 4 Dead) es ruido de córnea; el de otros (pupil_x de Portal 1, Alyx) es la máscara del disco
+    let transparent = 0;
+    let solid = 0;
+    for (let p = 3; p < eye.rgba.length; p += 4) {
+      if (eye.rgba[p] < 8) transparent++;
+      if (eye.rgba[p] > 248) solid++;
+    }
+    const pixels = eye.rgba.length / 4;
+    // Máscara = hay un disco opaco y un fondo transparente; el ruido de córnea no llega a ninguno de los dos extremos
+    const hasMask = transparent > pixels / 10 && solid > pixels / 10;
     const refract =
-      material["$ambientoccltexture"] || material["$corneatexture"];
+      !hasMask &&
+      (material["$ambientoccltexture"] || material["$corneatexture"]);
     let white = [226, 224, 218];
     if (!refract && vtf) {
       const sclera = decodeVtf(vtf).rgba;
@@ -462,13 +473,6 @@ for (const [texIndex, g] of groups) {
         );
       eye.rgba[p + 3] = 255;
     }
-    // Portal 1: la textura del iris es el ojo entero (esclerótica con venas y un iris pequeño), no solo el iris:
-    // se proyecta más pequeña para que el iris tenga su tamaño y no un pupilón negro
-    if (
-      /^\/?models\/player\/eyeball_/i.test(material["$iris"]) &&
-      /_ambient$/i.test(material["$ambientoccltexture"] ?? "")
-    )
-      out.uv = out.uv.map((v) => 0.5 + (v - 0.5) * 0.45);
     Object.assign(out, eye, { alphaMode: "OPAQUE", clamp: true });
   } else if (vtf) {
     Object.assign(out, decodeVtf(vtf));
