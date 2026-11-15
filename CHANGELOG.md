@@ -21,6 +21,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Corregido
 
+- Los dossieres de la página de cada universo se ven siempre: antes se ocultaban con una animación hasta acercarse con el scroll y, en Left 4 Dead, Portal y otros, parecían no existir.
+
 - Una ficha abierta desde «Enemigos» o «Personajes» de un equipo recuerda ese apartado en las migas y en la navegación.
 - En la ficha, «Más de…» y los botones anterior y siguiente siguen la misma lista y el mismo orden que su apartado, también en los juegos con equipos.
 - Un dato largo ya no se sale de la tarjeta de una ficha.
