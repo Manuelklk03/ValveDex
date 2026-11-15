@@ -64,6 +64,8 @@ export const dossierArt: Record<string, DossierArt> = {
     icons: [lineIcons["team-fortress-classic"]],
     tint: "linear-gradient(90deg, #c83838 50%, #2b58a6 50%)",
     iconsOpacity: 0.42,
+    // El título «Team Fortress Classic» es largo: un icono más pequeño cabe en el hueco sin pisarlo
+    iconsHeight: "9rem",
   },
   "team-fortress-2": {
     icons: [lineIcons["tf2-mercenaries"]],
