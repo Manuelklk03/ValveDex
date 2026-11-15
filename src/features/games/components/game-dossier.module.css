@@ -1973,11 +1973,8 @@
     overscroll-behavior-x: contain;
     scroll-padding-inline: var(--dossier-padding);
     scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-  }
-
-  .game-dossier--corridor .game-dossier__sectors::-webkit-scrollbar {
-    display: none;
+    scrollbar-width: thin;
+    scrollbar-color: var(--dossier-line) transparent;
   }
 
   .game-dossier--corridor .game-dossier__sector {
@@ -2078,5 +2075,16 @@
     .game-dossier__sector:is(:hover, :focus-within)
     .game-dossier__door-image {
     scale: 1.12;
+  }
+}
+
+/* Con el carrusel móvil la puerta no avanza en Z: el desplazamiento recortaría su resalte en los extremos */
+@media (max-width: 63.99rem) {
+  .game-dossier--corridor
+    .game-dossier__sector:not(.game-dossier__sector--empty):is(
+      :hover,
+      :focus-within
+    ) {
+    transform: none;
   }
 }
