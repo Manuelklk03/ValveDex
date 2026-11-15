@@ -36,3 +36,22 @@ Origen: Manuel dijo que los dossieres seguían siendo «muy simples», con asset
 - Escritorio rico; móvil con banda de arte arriba y apartados en chips o carrusel.
 - Sin franjas «1 fuente» ni slug interno en el pie: un dato real de la saga.
 - Movimiento condicionado a `prefers-reduced-motion`; teclado con el mismo resultado que el ratón.
+
+## Grill-me largo del 2026-11-16 (rediseño completo)
+
+Manuel pidió llevar todo el rediseño con rondas largas de `grill-me`. Decisiones:
+
+**Objetivo de la v1.0:** impacto visual y enciclopedia fiable a la vez; público de fans y portfolio a partes iguales; entra **todo Valve** con el rediseño de Valve/Steam y más datos; un mundo completo cada vez; sin fecha.
+
+**Dossieres de Half-Life**
+
+- Viaje en 3 tramos: la escena cobra vida al llegar; al pulsar el dossier, una transición propia del juego hacia el hub; al pulsar una puerta, la misma transición hacia el apartado.
+- **Material propio de cada juego** (papel claro en Half-Life 1, Blue Shift, Decay y Episode Two; oscuro en Opposing Force, Half-Life 2, Episode One y Alyx), con su luz y su suelo. En los claros la escena se estampa sobre el papel; Blue Shift la limita a su banda azul.
+- Apartados como **puertas en arco en perspectiva 3D**, sin bordes de tarjeta; muestran miniatura real, nombre y número de fichas; en móvil, carrusel horizontal con imanes.
+- Altura compacta (~700 px).
+- **Modelo 3D:** aparece con el ratón o el foco y se desvanece al quitarlos; en reposo, el dibujo de línea.
+- **Ocho entradas animadas**, una por juego, con placa del nombre del juego: ascensor (Half-Life), persiana de la HECU (Opposing Force), compuerta (Blue Shift), monitor (Decay), tajo (Half-Life 2), destello (Episode One), energía vortigaunt (Episode Two) y barrido de rejilla (Alyx).
+
+**Siguiente en Half-Life:** el hub hereda la identidad del dossier; el apartado pasa a galería inmersiva con modelo 3D; la ficha, a visor 3D protagonista con datos en capas; el sonido entra al cerrar Half-Life visual.
+
+**Después, Valve:** un mundo con cuatro salas (Historia, Steam, Hardware y Gente) con navegación clara y más datos (catálogo completo de juegos de Valve, funciones y cifras de Steam, personas y estudios, tecnología), con fuentes oficiales primero y revisión de Codex.
