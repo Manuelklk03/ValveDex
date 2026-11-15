@@ -21,6 +21,8 @@ type ModelSpinnerProps = {
   roll?: number;
   // Vueltas por segundo
   speed?: number;
+  // Se llama una vez cuando el modelo ya está cargado y encuadrado
+  onReady?: () => void;
 };
 
 function Spinning({
@@ -29,6 +31,7 @@ function Spinning({
   tilt = 0,
   roll = 0,
   speed = 0.14,
+  onReady,
 }: ModelSpinnerProps) {
   const spin = useRef<Group>(null);
   const { scene } = useGLTF(src);
@@ -51,7 +54,8 @@ function Spinning({
     camera.lookAt(0, 0, 0);
     camera.updateProjectionMatrix();
     invalidate();
-  }, [get, invalidate, scene, tilt, roll]);
+    onReady?.();
+  }, [get, invalidate, scene, tilt, roll, onReady]);
 
   useFrame((state, delta) => {
     if (!active || !spin.current) return;

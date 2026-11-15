@@ -1,4 +1,4 @@
-/* Capa de arte detrás del contenido del dossier: z-index -1 dentro del stacking context del dossier */
+﻿/* Capa de arte detrÃ¡s del contenido del dossier: z-index -1 dentro del stacking context del dossier */
 .dossier-art {
   position: absolute;
   inset: 0;
@@ -22,7 +22,7 @@
   filter: grayscale(0.55) contrast(1.05);
 }
 
-/* Iconos: en el hueco entre el texto y la ficha técnica; detrás del texto en pantallas estrechas */
+/* Iconos: en el hueco entre el texto y la ficha tÃ©cnica; detrÃ¡s del texto en pantallas estrechas */
 .dossier-art__icons {
   position: absolute;
   top: 1rem;
@@ -39,7 +39,7 @@
   min-width: 0;
   height: 100%;
   background: var(--art-tint, var(--dossier-accent));
-  opacity: var(--art-icons-opacity, 0.2);
+  opacity: var(--art-icons-opacity, 0.5);
   mask-repeat: no-repeat;
   mask-position: right top;
   mask-size: contain;
@@ -51,7 +51,6 @@
 .dossier-art__icon:nth-child(2) {
   height: 72%;
   margin-top: 1rem;
-  opacity: 0.12;
 }
 
 .dossier-art__model {
@@ -63,13 +62,13 @@
   opacity: 0;
 }
 
-.dossier-art--active .dossier-art__model {
+.dossier-art--model-ready .dossier-art__model {
   opacity: 1;
 }
 
-/* Los iconos solo ceden el sitio cuando hay un modelo 3D que mostrar */
-.dossier-art--active.dossier-art--model .dossier-art__icon {
-  opacity: 0.07;
+/* Los iconos ceden el sitio solo cuando el modelo 3D ya está cargado y visible */
+.dossier-art--model-ready .dossier-art__icon {
+  opacity: 0.12;
 }
 
 @media (min-width: 56rem) {
@@ -81,7 +80,7 @@
   }
 
   .dossier-art__icon {
-    opacity: var(--art-icons-opacity, 0.26);
+    opacity: var(--art-icons-opacity, 0.6);
   }
 }
 
