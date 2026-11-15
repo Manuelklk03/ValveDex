@@ -60,6 +60,68 @@ export const lineIcons = {
     width: 685,
     height: 1016,
   },
+  // Iconos de cada juego de Counter-Strike y de Team Fortress Classic (lote 1 de assets, hechos con Codex)
+  "counter-strike-1-6": {
+    src: "/images/icons/counter-strike-1-6.webp",
+    width: 949,
+    height: 1016,
+  },
+  "counter-strike-condition-zero": {
+    src: "/images/icons/counter-strike-condition-zero.webp",
+    width: 746,
+    height: 1016,
+  },
+  "counter-strike-condition-zero-deleted-scenes": {
+    src: "/images/icons/counter-strike-condition-zero-deleted-scenes.webp",
+    width: 999,
+    height: 1016,
+  },
+  "counter-strike-source": {
+    src: "/images/icons/counter-strike-source.webp",
+    width: 944,
+    height: 1016,
+  },
+  "counter-strike-global-offensive": {
+    src: "/images/icons/counter-strike-global-offensive.webp",
+    width: 1016,
+    height: 665,
+  },
+  "counter-strike-2": {
+    src: "/images/icons/counter-strike-2.webp",
+    width: 1016,
+    height: 849,
+  },
+  "team-fortress-classic": {
+    src: "/images/icons/team-fortress-classic.webp",
+    width: 1016,
+    height: 937,
+  },
+  // Emblemas de saga: marca de un trazo para tarjetas, menú y buscador (aún sin usar)
+  "emblem-half-life": {
+    src: "/images/icons/emblem-half-life.webp",
+    width: 1008,
+    height: 1016,
+  },
+  "emblem-portal": {
+    src: "/images/icons/emblem-portal.webp",
+    width: 1016,
+    height: 837,
+  },
+  "emblem-team-fortress": {
+    src: "/images/icons/emblem-team-fortress.webp",
+    width: 1010,
+    height: 1016,
+  },
+  "emblem-left-4-dead": {
+    src: "/images/icons/emblem-left-4-dead.webp",
+    width: 1014,
+    height: 988,
+  },
+  "emblem-counter-strike": {
+    src: "/images/icons/emblem-counter-strike.webp",
+    width: 866,
+    height: 1016,
+  },
   "portal-gun": {
     src: "/images/icons/portal-gun.webp",
     width: 1016,
