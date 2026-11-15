@@ -30,6 +30,13 @@
   filter: grayscale(0.55) contrast(1.05);
 }
 
+/* Primer plano: ocupa todo el dossier y por encima del velo del pasillo; los hijos se colocan sobre él */
+.dossier-art__front {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
 /* Iconos: en el hueco entre el texto y la ficha técnica; detrás del texto en pantallas estrechas */
 .dossier-art__icons {
   position: absolute;
@@ -151,7 +158,7 @@
 @media (max-width: 55.99rem) {
   .dossier-art--corridor::after {
     background:
-      linear-gradient(rgb(18 16 13 / 0.78), rgb(18 16 13 / 0.78)),
+      linear-gradient(rgb(18 16 13 / 0.86), rgb(18 16 13 / 0.86)),
       linear-gradient(0deg, rgb(18 16 13 / 0.95), transparent 42%);
   }
 }

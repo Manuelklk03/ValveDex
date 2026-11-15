@@ -1690,7 +1690,7 @@
     to top,
     rgb(10 8 6 / 0.94) 0,
     rgb(10 8 6 / 0.8) 40%,
-    rgb(10 8 6 / 0.1) 78%
+    rgb(10 8 6 / 0.32) 100%
   );
 }
 
@@ -1884,7 +1884,8 @@
 }
 
 @media (min-width: 56rem) {
-  .game-dossier--corridor .game-dossier__heading {
+  .game-dossier--corridor .game-dossier__heading,
+  .game-dossier--corridor .game-dossier__specs {
     max-width: 44%;
   }
 }

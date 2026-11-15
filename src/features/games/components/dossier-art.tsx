@@ -149,8 +149,8 @@ export function DossierArt({
         if (corridor) {
           gsap.fromTo(
             "[data-art-front]",
-            { yPercent: 7 },
-            { yPercent: -7, ease: "none", scrollTrigger: scrub },
+            { yPercent: 4 },
+            { yPercent: -4, ease: "none", scrollTrigger: scrub },
           );
         }
       });
@@ -192,31 +192,34 @@ export function DossierArt({
         </div>
       )}
 
-      <div className={styles["dossier-art__icons"]} data-art-front>
-        {art.icons.map((icon) => (
-          <div
-            key={icon.src}
-            className={styles["dossier-art__icon"]}
-            style={{
-              maskImage: `url(${icon.src})`,
-              WebkitMaskImage: `url(${icon.src})`,
-            }}
-            data-art-icon
-          />
-        ))}
-      </div>
-
-      {everActive && art.model && (
-        <div className={styles["dossier-art__model"]} data-art-front>
-          <ModelSpinner
-            src={art.model}
-            tilt={art.modelTilt}
-            roll={art.modelRoll}
-            active={active && !reduceMotion}
-            onReady={handleReady}
-          />
+      {/* Primer plano: iconos y modelo se mueven juntos con el scroll, aunque el modelo se monte más tarde */}
+      <div className={styles["dossier-art__front"]} data-art-front>
+        <div className={styles["dossier-art__icons"]}>
+          {art.icons.map((icon) => (
+            <div
+              key={icon.src}
+              className={styles["dossier-art__icon"]}
+              style={{
+                maskImage: `url(${icon.src})`,
+                WebkitMaskImage: `url(${icon.src})`,
+              }}
+              data-art-icon
+            />
+          ))}
         </div>
-      )}
+
+        {everActive && art.model && (
+          <div className={styles["dossier-art__model"]}>
+            <ModelSpinner
+              src={art.model}
+              tilt={art.modelTilt}
+              roll={art.modelRoll}
+              active={active && !reduceMotion}
+              onReady={handleReady}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
