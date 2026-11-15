@@ -26,10 +26,17 @@
   border-bottom: 1px solid var(--dossier-line);
 }
 
+/* Tres columnas: texto, hueco reservado al arte (misma medida que dossier-art) y ficha técnica.
+   El arte nunca queda debajo de un título largo */
 @media (min-width: 56rem) {
   .game-dossier__header {
-    grid-template-columns: minmax(0, 1fr) 17rem;
+    grid-template-columns: minmax(0, 1fr) clamp(9rem, 18vw, 16rem) 17rem;
+    column-gap: 2.5rem;
     align-items: end;
+  }
+
+  .game-dossier__specs {
+    grid-column: 3;
   }
 }
 

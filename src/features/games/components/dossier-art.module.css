@@ -75,7 +75,7 @@
   .dossier-art__icons,
   .dossier-art__model {
     right: calc(var(--dossier-padding) + 17rem + 2.5rem);
-    width: clamp(10rem, 24vw, 21rem);
+    width: clamp(9rem, 18vw, 16rem);
     height: var(--art-icons-height, min(19rem, 62%));
   }
 
