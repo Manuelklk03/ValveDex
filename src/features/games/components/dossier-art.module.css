@@ -183,6 +183,14 @@
     );
 }
 
+/* En móvil el protagonista queda detrás del texto: más tenue para no competir con él */
+@media (max-width: 55.99rem) {
+  .dossier-art--corridor .dossier-art__icon,
+  .dossier-art--corridor .dossier-art__icon:nth-child(2) {
+    opacity: var(--art-icons-opacity, 0.3);
+  }
+}
+
 /* En pantallas estrechas el texto ocupa todo el ancho: el velo es uniforme para no perder el contraste */
 @media (max-width: 55.99rem) {
   .dossier-art--corridor::after {

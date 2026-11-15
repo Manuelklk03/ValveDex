@@ -1963,6 +1963,30 @@
   }
 }
 
+/* En móvil el pasillo se recorre con el dedo: las puertas van en fila y se detienen una a una */
+@media (max-width: 63.99rem) {
+  .game-dossier--corridor .game-dossier__sectors {
+    display: flex;
+    margin-inline: calc(var(--dossier-padding) * -1);
+    padding: 0.5rem var(--dossier-padding) 1rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: var(--dossier-padding);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .game-dossier--corridor .game-dossier__sectors::-webkit-scrollbar {
+    display: none;
+  }
+
+  .game-dossier--corridor .game-dossier__sector {
+    flex: 0 0 10.5rem;
+    min-height: 14rem;
+    scroll-snap-align: start;
+  }
+}
+
 /* Desde pantallas anchas las siete puertas forman el pasillo: las de los lados se inclinan hacia el fondo */
 @media (min-width: 64rem) {
   .game-dossier--corridor .game-dossier__sectors {
