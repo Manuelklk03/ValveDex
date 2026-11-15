@@ -1,13 +1,14 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import styles from "./site-header.module.css";
 
-const navLinks = [
-  { href: "/", label: "Inicio" },
-  { href: "/universos", label: "Universos" },
-  { href: "/explorar", label: "Explorar" },
-];
+type SiteHeaderProps = {
+  // Elementos <li> del menú principal y el buscador: los pone el layout, porque dependen de las funcionalidades
+  nav: ReactNode;
+  search: ReactNode;
+};
 
-export function SiteHeader() {
+export function SiteHeader({ nav, search }: SiteHeaderProps) {
   return (
     <header className={styles["site-header"]}>
       <div className={styles["site-header__inner"]}>
@@ -42,16 +43,16 @@ export function SiteHeader() {
           </svg>
           ValveDex
         </Link>
-        <nav aria-label="Principal">
+        <nav aria-label="Principal" className={styles["site-header__nav"]}>
           <ul className={styles["site-header__list"]}>
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} className={styles["site-header__link"]}>
-                  {link.label}
-                </Link>
-              </li>
-            ))}
+            <li>
+              <Link href="/" className={styles["site-header__link"]}>
+                Inicio
+              </Link>
+            </li>
+            {nav}
           </ul>
+          {search}
         </nav>
       </div>
     </header>
