@@ -105,19 +105,19 @@ export const dossierArt: Record<string, DossierArt> = {
   // Counter-Strike: un icono por juego, teñido según su época
   "counter-strike": {
     icons: [lineIcons["counter-strike-1-6"]],
-    tint: "#d2a64a",
+    tint: "#8fa1b2",
     iconsOpacity: 0.36,
   },
   "counter-strike-source": {
     icons: [lineIcons["counter-strike-source"]],
-    tint: "#e0a73a",
+    tint: "#8fa1b2",
     iconsOpacity: 0.36,
     model: "/models/universes/css-ak47.glb",
     modelTilt: 0.3,
   },
   "counter-strike-global-offensive": {
     icons: [lineIcons["counter-strike-global-offensive"]],
-    tint: "#f0a23a",
+    tint: "#9fb4c8",
     iconsOpacity: 0.36,
   },
   "counter-strike-2": {
@@ -127,7 +127,7 @@ export const dossierArt: Record<string, DossierArt> = {
   },
   "counter-strike-condition-zero": {
     icons: [lineIcons["counter-strike-condition-zero"]],
-    tint: "#c8b15a",
+    tint: "#c2b280",
     iconsOpacity: 0.36,
   },
   "counter-strike-condition-zero-deleted-scenes": {

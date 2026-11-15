@@ -1,7 +1,8 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 import { AtmosphereCanvas } from "@/components/ui/atmosphere-canvas";
 import { atmospheres } from "@/data/atmospheres";
+import { universePalettes } from "@/data/universe-palettes";
 import styles from "./universe-theme.module.css";
 
 // Tipografía de señalética del universo Half-Life (docs/design.md): solo se carga en sus páginas
@@ -31,8 +32,20 @@ export function UniverseTheme({ universeId, children }: UniverseThemeProps) {
     ? `${styles["universe-theme"]} ${themeClass} ${barlow.variable} ${barlowCondensed.variable}`
     : styles["universe-theme"];
 
+  const palette = universeId ? universePalettes[universeId] : undefined;
+  const style = palette
+    ? ({
+        "--background": palette.background,
+        "--foreground": palette.foreground,
+        "--surface": palette.surface,
+        "--border": palette.border,
+        "--muted": palette.muted,
+        "--accent": palette.accent,
+      } as CSSProperties)
+    : undefined;
+
   return (
-    <div className={className}>
+    <div className={className} style={style}>
       {atmosphere && <AtmosphereCanvas atmosphere={atmosphere} />}
       {children}
     </div>
