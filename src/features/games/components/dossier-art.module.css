@@ -62,12 +62,12 @@
   opacity: 0;
 }
 
-.dossier-art--model-ready .dossier-art__model {
+.dossier-art--active.dossier-art--model-ready .dossier-art__model {
   opacity: 1;
 }
 
-/* Los iconos ceden el sitio solo cuando el modelo 3D ya está cargado y visible */
-.dossier-art--model-ready .dossier-art__icon {
+/* Los iconos ceden el sitio solo cuando el dossier está activo y el modelo 3D ya está cargado */
+.dossier-art--active.dossier-art--model-ready .dossier-art__icon {
   opacity: 0.12;
 }
 
