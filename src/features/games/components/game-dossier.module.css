@@ -26,10 +26,17 @@
   border-bottom: 1px solid var(--dossier-line);
 }
 
+/* Tres columnas: texto, hueco reservado al arte (misma medida que dossier-art) y ficha técnica.
+   El arte nunca queda debajo de un título largo */
 @media (min-width: 56rem) {
   .game-dossier__header {
-    grid-template-columns: minmax(0, 1fr) 17rem;
+    grid-template-columns: minmax(0, 1fr) clamp(9rem, 18vw, 16rem) 17rem;
+    column-gap: 2.5rem;
     align-items: end;
+  }
+
+  .game-dossier__specs {
+    grid-column: 3;
   }
 }
 
@@ -135,6 +142,25 @@
 
 .game-dossier__sector--easter-eggs {
   --sector-color: #f9a825;
+}
+
+/* Fuera de Half-Life, los apartados toman el color de su saga en vez de los pasillos de Black Mesa */
+:where(
+    .game-dossier--team-fortress-classic,
+    .game-dossier--team-fortress-2,
+    .game-dossier--left-4-dead,
+    .game-dossier--left-4-dead-2,
+    .game-dossier--portal,
+    .game-dossier--portal-2,
+    .game-dossier--counter-strike,
+    .game-dossier--counter-strike-condition-zero,
+    .game-dossier--counter-strike-condition-zero-deleted-scenes,
+    .game-dossier--counter-strike-source,
+    .game-dossier--counter-strike-global-offensive,
+    .game-dossier--counter-strike-2
+  )
+  .game-dossier__sector {
+  --sector-color: var(--dossier-accent);
 }
 
 /* Va después de los colores de sector para que un apartado vacío quede en gris */
@@ -901,7 +927,6 @@
       transparent 0 1.6rem,
       rgb(24 36 28 / 0.07) 1.6rem calc(1.6rem + 1px)
     );
-  border-left: 8px solid var(--dossier-accent);
 }
 
 /* Marcas de la cinta ámbar en el canto, como las balizas de la ruta de White Forest */
@@ -910,7 +935,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: -8px;
+  left: 0;
   width: 8px;
   background: repeating-linear-gradient(
     180deg,
@@ -951,7 +976,6 @@
       transparent 1px 4rem
     ),
     linear-gradient(180deg, transparent 60%, rgb(126 200 74 / 0.06));
-  border-left: 6px solid var(--dossier-accent);
 }
 
 /* Precinto de la Alianza en el canto superior */
@@ -1378,59 +1402,6 @@
   background: currentColor;
   mask: url("/images/decor/l4d2-special-silhouette.svg") center / contain
     no-repeat;
-}
-
-/* Emblemas oficiales: marca grande en el hueco entre el texto y la ficha técnica (solo desde 64rem),
-   como la λ de Half-Life 1. Se pintan con mask para tomar los colores de cada dossier */
-.game-dossier--team-fortress-classic::after,
-.game-dossier--team-fortress-2::after,
-.game-dossier--left-4-dead::after,
-.game-dossier--left-4-dead-2::after {
-  content: "";
-  position: absolute;
-  top: 1.25rem;
-  right: calc(var(--dossier-padding) + 17.5rem);
-  display: none;
-  width: clamp(8rem, 13vw, 11rem);
-  aspect-ratio: 1;
-  pointer-events: none;
-}
-
-/* Team Fortress: el emblema partido en los colores de los dos equipos */
-.game-dossier--team-fortress-classic::after {
-  background: linear-gradient(90deg, #c83838 50%, #2b58a6 50%);
-  mask: url("/images/decor/tf2-emblem.png") center / contain no-repeat;
-  opacity: 0.3;
-}
-
-.game-dossier--team-fortress-2::after {
-  background: linear-gradient(135deg, #b8312b 50%, var(--tf2-blu) 50%);
-  mask: url("/images/decor/tf2-emblem.png") center / contain no-repeat;
-  opacity: 0.22;
-}
-
-/* Left 4 Dead: el 4 ensangrentado; en la segunda parte, el mismo trazo en ocre y girado */
-.game-dossier--left-4-dead::after {
-  background: url("/images/decor/l4d-official-icon.png") center / contain
-    no-repeat;
-  opacity: 0.45;
-}
-
-.game-dossier--left-4-dead-2::after {
-  background: url("/images/decor/l4d-official-icon.png") center / contain
-    no-repeat;
-  filter: sepia(0.9) saturate(0.7);
-  opacity: 0.5;
-  rotate: 8deg;
-}
-
-@media (min-width: 64rem) {
-  .game-dossier--team-fortress-classic::after,
-  .game-dossier--team-fortress-2::after,
-  .game-dossier--left-4-dead::after,
-  .game-dossier--left-4-dead-2::after {
-    display: block;
-  }
 }
 
 /* --- Portal: panel blanco de Aperture Science con cámara de pruebas, naranja y azul de portal --- */

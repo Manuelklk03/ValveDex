@@ -5,7 +5,13 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import type { DossierArt as DossierArtData } from "@/data/dossier-art";
 import styles from "./dossier-art.module.css";
 
@@ -23,6 +29,8 @@ export function DossierArt({ art }: { art: DossierArtData }) {
   const [focused, setFocused] = useState(false);
   const [everActive, setEverActive] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [modelReady, setModelReady] = useState(false);
+  const handleReady = useCallback(() => setModelReady(true), []);
   const active = pointerOver || focused;
 
   // Ratón y foco son orígenes distintos: salir de uno no apaga el otro
@@ -65,12 +73,28 @@ export function DossierArt({ art }: { art: DossierArtData }) {
     const onFocusOut = (event: FocusEvent) => {
       if (!card.contains(event.relatedTarget as Node | null)) setFocused(false);
     };
+    // El modelo se pide al acercarse el dossier a la pantalla (solo con ratón: en táctil nunca se muestra) y se
+    // descarta al alejarse, para no tener montados los lienzos de todos los dossieres a la vez
+    const canHover = window.matchMedia("(hover: hover)").matches;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (canHover) prepare();
+          return;
+        }
+        setEverActive(false);
+        setModelReady(false);
+      },
+      { rootMargin: "300px 0px" },
+    );
+    observer.observe(card);
     card.addEventListener("pointerenter", onEnter);
     card.addEventListener("pointerleave", onLeave);
     card.addEventListener("pointermove", onMove);
     card.addEventListener("focusin", onFocusIn);
     card.addEventListener("focusout", onFocusOut);
     return () => {
+      observer.disconnect();
       card.removeEventListener("pointerenter", onEnter);
       card.removeEventListener("pointerleave", onLeave);
       card.removeEventListener("pointermove", onMove);
@@ -119,7 +143,7 @@ export function DossierArt({ art }: { art: DossierArtData }) {
   const className = [
     styles["dossier-art"],
     active && styles["dossier-art--active"],
-    art.model && styles["dossier-art--model"],
+    modelReady && styles["dossier-art--model-ready"],
   ]
     .filter(Boolean)
     .join(" ");
@@ -170,6 +194,7 @@ export function DossierArt({ art }: { art: DossierArtData }) {
             tilt={art.modelTilt}
             roll={art.modelRoll}
             active={active && !reduceMotion}
+            onReady={handleReady}
           />
         </div>
       )}

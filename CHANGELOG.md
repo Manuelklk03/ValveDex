@@ -19,6 +19,9 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 - Los dossieres de Team Fortress, Left 4 Dead, Portal y Counter-Strike dejan de ser cartulinas pálidas iguales y toman el material de su juego (lona con franjas de equipo, cartel de Mann Co., pared de refugio, panel de Aperture, camuflaje, acero y cristal con marcos de HUD).
 - Cada universo tiene un paisaje fijo detrás del contenido (Black Mesa, Badlands, ruinas de Left 4 Dead, paneles de Portal y arcos de Dust), dibujado en código.
+- El arte de los dossieres se ve mejor: los iconos de línea son más opacos, el modelo 3D se precarga al acercarse el dossier (solo con ratón) y se descarta al alejarse, y los iconos ya no se apagan antes de que el modelo esté cargado.
+- La cabecera del dossier reserva una columna al arte, así que los títulos largos (Opposing Force, Episode Two, Global Offensive) ya no lo pisan.
+- Los apartados de Team Fortress, Left 4 Dead, Portal y Counter-Strike usan el color de su saga en vez de los pasillos de Black Mesa; desaparecen el emblema duplicado de Team Fortress y Left 4 Dead y las franjas laterales de Episode Two y Alyx.
 
 ## [0.4.0] — 2026-11-15
 

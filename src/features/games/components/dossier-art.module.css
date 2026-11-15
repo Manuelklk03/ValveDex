@@ -39,7 +39,7 @@
   min-width: 0;
   height: 100%;
   background: var(--art-tint, var(--dossier-accent));
-  opacity: var(--art-icons-opacity, 0.2);
+  opacity: var(--art-icons-opacity, 0.5);
   mask-repeat: no-repeat;
   mask-position: right top;
   mask-size: contain;
@@ -51,7 +51,6 @@
 .dossier-art__icon:nth-child(2) {
   height: 72%;
   margin-top: 1rem;
-  opacity: 0.12;
 }
 
 .dossier-art__model {
@@ -63,25 +62,25 @@
   opacity: 0;
 }
 
-.dossier-art--active .dossier-art__model {
+.dossier-art--active.dossier-art--model-ready .dossier-art__model {
   opacity: 1;
 }
 
-/* Los iconos solo ceden el sitio cuando hay un modelo 3D que mostrar */
-.dossier-art--active.dossier-art--model .dossier-art__icon {
-  opacity: 0.07;
+/* Los iconos ceden el sitio solo cuando el dossier está activo y el modelo 3D ya está cargado */
+.dossier-art--active.dossier-art--model-ready .dossier-art__icon {
+  opacity: 0.12;
 }
 
 @media (min-width: 56rem) {
   .dossier-art__icons,
   .dossier-art__model {
     right: calc(var(--dossier-padding) + 17rem + 2.5rem);
-    width: clamp(10rem, 24vw, 21rem);
+    width: clamp(9rem, 18vw, 16rem);
     height: var(--art-icons-height, min(19rem, 62%));
   }
 
   .dossier-art__icon {
-    opacity: var(--art-icons-opacity, 0.26);
+    opacity: var(--art-icons-opacity, 0.6);
   }
 }
 
