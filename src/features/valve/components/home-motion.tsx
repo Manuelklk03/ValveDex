@@ -54,6 +54,19 @@ export function HomeMotion() {
         },
       });
 
+      // La escena de Black Mesa se acerca despacio mientras se baja: profundidad de cine
+      gsap.to("[data-home-scene]", {
+        scale: 1.12,
+        yPercent: 8,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "main",
+          start: "top top",
+          end: "+=900",
+          scrub: true,
+        },
+      });
+
       // El fondo industrial se mueve más despacio que el contenido
       gsap.to("[data-parallax-backdrop]", {
         yPercent: 12,

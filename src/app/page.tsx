@@ -10,6 +10,7 @@ import {
 import { getValveMilestones } from "@/features/valve/get-valve-milestones";
 import { getValvePeople } from "@/features/valve/get-valve-people";
 import { GamesShowcase } from "@/features/universes/components/games-showcase";
+import { SagaEmblems } from "@/features/universes/components/saga-emblems";
 import { ProductionLine } from "@/features/valve/components/production-line";
 import { SteamErasTeaser } from "@/features/valve/components/steam-eras-teaser";
 import { HomeMotion } from "@/features/valve/components/home-motion";
@@ -46,7 +47,23 @@ export default function HomePage() {
         className={styles["home-page__hero"]}
         aria-labelledby="home-title"
       >
+        {/* Escena: captura propia de Black Mesa tratada (oscurecida y teñida) con la tubería y la válvula encima */}
+        <div className={styles["home-page__scene"]} aria-hidden="true">
+          <div className={styles["home-page__scene-frame"]} data-home-scene>
+            <Image
+              src="/images/entries/black-mesa-inbound-half-life.webp"
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className={styles["home-page__scene-image"]}
+            />
+          </div>
+        </div>
         <IndustrialBackdrop />
+        <p className={styles["home-page__scene-credit"]} aria-hidden="true">
+          Black Mesa · Half-Life · captura propia
+        </p>
         <div className={styles["home-page__hero-inner"]}>
           <div className={styles["home-page__hero-content"]}>
             <p className={styles["home-page__eyebrow"]} data-hero-item>
@@ -70,6 +87,12 @@ export default function HomePage() {
               <Link href="/explorar" className={styles["home-page__link"]}>
                 Explorar fichas
               </Link>
+            </div>
+            <div className={styles["home-page__sagas"]} data-hero-item>
+              <p className={styles["home-page__sagas-label"]}>
+                Entrar por una saga
+              </p>
+              <SagaEmblems />
             </div>
           </div>
           <div className={styles["home-page__machine"]}>
