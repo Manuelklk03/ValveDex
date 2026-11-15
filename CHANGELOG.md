@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Cada universo tiene su ambiente vivo: partículas con profundidad sobre todas sus páginas (chispas y polvo en Half-Life, motas de panel en Portal, ceniza y confeti en Team Fortress, viento con arena en Counter-Strike, ceniza y esporas en Left 4 Dead) que se apartan del puntero, reaccionan al scroll y llevan un halo de luz que sigue al ratón. En móvil o con «reducir movimiento» se dibuja un solo fotograma quieto.
 - Atlas, P-body y el zombi rápido ya no salen con los brazos en cruz o en garra: el conversor deduce «arriba» de la cabeza y los pies del esqueleto (el robot de Portal 2 no tiene hueso de cabeza) y baja también los antebrazos que cuelgan doblados hacia delante.
 - Los personajes y criaturas de Source (Half-Life 2 y sus episodios, Left 4 Dead, Team Fortress 2, Portal y Counter-Strike: Source) se fotografían con los ojos pintados con su iris y con los brazos junto al cuerpo en lugar de en T o en A: 59 renders y los modelos de dossier del Heavy, la Witch, el Jockey y el zombine rehechos. El conversor lee el globo ocular del modelo y baja los brazos de cualquier esqueleto con la opción «auto».
 - Una ficha abierta desde un juego o un apartado concretos recuerda ese origen en las migas y en la navegación (`?juego=…&apartado=…`).
