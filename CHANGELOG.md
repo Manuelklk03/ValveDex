@@ -6,6 +6,10 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+## [0.4.0] — 2026-11-15
+
+La preparación del 2026-11-11 (rediseño, Portal y Counter-Strike) y el trabajo posterior (equipos, modelos de Source, ambiente vivo, paleta e iconos por saga) entran en la misma versión.
+
 ### Añadido
 
 - Cada universo tiene su ambiente vivo: partículas con profundidad sobre todas sus páginas (chispas y polvo en Half-Life, motas de panel en Portal, ceniza y confeti en Team Fortress, viento con arena en Counter-Strike, ceniza y esporas en Left 4 Dead) que se apartan del puntero, reaccionan al scroll y llevan un halo de luz que sigue al ratón. En móvil o con «reducir movimiento» se dibuja un solo fotograma quieto.
@@ -32,9 +36,9 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 - En la ficha, «Más de…» y los botones anterior y siguiente siguen la misma lista y el mismo orden que su apartado, también en los juegos con equipos.
 - Un dato largo ya no se sale de la tarjeta de una ficha.
 
-## [0.4.0] — 2026-11-11
+### Primera preparación (2026-11-11)
 
-### Añadido
+#### Añadido
 
 - Counter-Strike gana Counter-Strike: Condition Zero y Condition Zero: Deleted Scenes en la etapa GoldSrc (con CS 1.6), con 48 fichas (21 mapas, de ellos 13 misiones de Deleted Scenes; armas de misión, bandos, bots, curiosidades y easter eggs) y su lore; las fichas de bandos, rehenes, VIP y mapas clásicos también salen en esos juegos. Counter-Strike pasa a llamarse Counter-Strike 1.6.
 - Universos Portal y Counter-Strike abiertos: seis juegos (Portal, Portal 2, Counter-Strike, Counter-Strike: Source, Global Offensive y Counter-Strike 2), sus etapas por motor, un tema de universo y de juego, un dossier por juego y 151 fichas nuevas con fuentes (Portal: 56, con mapas comprobados contra los archivos del juego; Counter-Strike: 95) y el lore de cada juego.
@@ -59,11 +63,11 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 - Capturas propias de 61 capítulos de Half-Life 1, Opposing Force, Blue Shift, Half-Life 2 y sus episodios, hechas con el juego instalado desde el punto de aparición del jugador.
 - Despliegue en Render: staging al llegar a `main` y producción al crear un tag, con aprobación manual y comprobación posterior (`docs/deploy.md`).
 
-### Cambiado
+#### Cambiado
 
 - Gordon Freeman, el G-Man, Barney Calhoun, Eli Vance e Isaac Kleiner tienen una ficha propia en Half-Life 2 (otros modelos) enlazada con la de Half-Life 1 mediante «Otra versión del personaje».
 
-### Corregido
+#### Corregido
 
 - Revisión de Codex del contenido ampliado: fichas de Dead Center, Jimmy Gibbs Junior y Episode One sin spoilers visibles y sin la cifra de ventas del Steam Controller (sin fuente).
 - Pulsar la tarjeta de una saga en `/universos` entra al universo (el enlace era solo el título y su capa invisible no cubría la tarjeta).
