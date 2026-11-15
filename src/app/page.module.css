@@ -12,13 +12,89 @@
   isolation: isolate;
   display: grid;
   grid-template-rows: 1fr auto;
-  min-height: min(88svh, 54rem);
+  min-height: min(92svh, 58rem);
   padding: clamp(3rem, 8vw, 6rem) var(--gutter) 0;
-  background: radial-gradient(
-    40rem 30rem at 78% 42%,
-    rgb(247 72 67 / 0.07),
-    transparent 70%
-  );
+  background: var(--background);
+}
+
+/* Escena de cine: la captura de Black Mesa va al fondo, oscurecida y con tinte cálido; encima, un degradado
+   por la izquierda para que el título se lea, otro por abajo que la funde con la página y el rojo de la válvula */
+.home-page__scene {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+}
+
+.home-page__scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      44rem 34rem at 76% 48%,
+      rgb(247 72 67 / 0.22),
+      transparent 70%
+    ),
+    linear-gradient(
+      90deg,
+      rgb(11 11 11 / 0.94) 0%,
+      rgb(11 11 11 / 0.68) 40%,
+      rgb(11 11 11 / 0.12) 74%,
+      rgb(11 11 11 / 0.35) 100%
+    ),
+    linear-gradient(0deg, var(--background) 0%, transparent 38%),
+    linear-gradient(180deg, rgb(11 11 11 / 0.7) 0%, transparent 22%);
+}
+
+.home-page__scene-frame {
+  position: absolute;
+  inset: -4%;
+  transform-origin: 70% 60%;
+}
+
+.home-page__scene-image {
+  object-fit: cover;
+  object-position: 62% 40%;
+  filter: saturate(0.95) contrast(1.1) brightness(0.9);
+}
+
+/* Rótulo discreto de la captura, como el pie de una fotografía de archivo */
+.home-page__scene-credit {
+  position: absolute;
+  z-index: 1;
+  right: var(--gutter);
+  bottom: 9.5rem;
+  color: rgb(242 239 233 / 0.55);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 47.99rem) {
+  .home-page__scene-credit {
+    display: none;
+  }
+
+  .home-page__scene-image {
+    object-position: 70% 40%;
+  }
+}
+
+/* Entrada por saga: etiqueta y emblemas bajo los botones */
+.home-page__sagas {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.home-page__sagas-label {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .home-page__hero-inner,
@@ -138,6 +214,8 @@
 
 .home-page__wheel {
   color: var(--valve-red);
+  filter: drop-shadow(0 0 2.5rem rgb(247 72 67 / 0.45))
+    drop-shadow(0 1.5rem 2rem rgb(0 0 0 / 0.55));
 }
 
 .home-page__wheel-svg {
