@@ -6,7 +6,13 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+### Añadido
+
+- La portada tiene una escena de cine: captura de Black Mesa de fondo que se acerca al hacer scroll, la válvula con su resplandor y una fila «Entrar por una saga» con el emblema de cada universo en su color.
+
 ### Cambiado
+
+- La sección «Juegos» de la portada usa los colores de marca de cada saga, también Portal y Counter-Strike.
 
 - Los dossieres de Team Fortress, Left 4 Dead, Portal y Counter-Strike dejan de ser cartulinas pálidas iguales y toman el material de su juego (lona con franjas de equipo, cartel de Mann Co., pared de refugio, panel de Aperture, camuflaje, acero y cristal con marcos de HUD).
 - Cada universo tiene un paisaje fijo detrás del contenido (Black Mesa, Badlands, ruinas de Left 4 Dead, paneles de Portal y arcos de Dust), dibujado en código.
