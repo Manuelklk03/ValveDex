@@ -44,7 +44,11 @@ export function GameDossier({
   return (
     <article className={className} aria-labelledby={titleId} data-reveal>
       {/* Enlace principal en capa: cubre la carpeta; los apartados quedan por encima */}
-      <Link href={hubHref} className={styles["game-dossier__open"]}>
+      <Link
+        href={hubHref}
+        className={styles["game-dossier__open"]}
+        data-elevator={corridor || undefined}
+      >
         <span className="sr-only">Abrir el dossier de {game.name}</span>
       </Link>
 
