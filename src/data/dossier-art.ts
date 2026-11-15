@@ -61,7 +61,7 @@ export const dossierArt: Record<string, DossierArt> = {
   },
   // Team Fortress: los mercenarios pintados mitad RED, mitad BLU
   "team-fortress-classic": {
-    icons: [lineIcons["tf2-mercenaries"]],
+    icons: [lineIcons["team-fortress-classic"]],
     tint: "linear-gradient(90deg, #c83838 50%, #2b58a6 50%)",
     iconsOpacity: 0.42,
   },
@@ -100,36 +100,36 @@ export const dossierArt: Record<string, DossierArt> = {
     iconsOpacity: 0.36,
     model: "/models/universes/portal2-turret.glb",
   },
-  // Counter-Strike: un solo icono, teñido según la época del juego
+  // Counter-Strike: un icono por juego, teñido según su época
   "counter-strike": {
-    icons: [lineIcons["counter-strike"]],
+    icons: [lineIcons["counter-strike-1-6"]],
     tint: "#d2a64a",
     iconsOpacity: 0.36,
   },
   "counter-strike-source": {
-    icons: [lineIcons["counter-strike"]],
+    icons: [lineIcons["counter-strike-source"]],
     tint: "#e0a73a",
     iconsOpacity: 0.36,
     model: "/models/universes/css-ak47.glb",
     modelTilt: 0.3,
   },
   "counter-strike-global-offensive": {
-    icons: [lineIcons["counter-strike"]],
+    icons: [lineIcons["counter-strike-global-offensive"]],
     tint: "#f0a23a",
     iconsOpacity: 0.36,
   },
   "counter-strike-2": {
-    icons: [lineIcons["counter-strike"]],
+    icons: [lineIcons["counter-strike-2"]],
     tint: "#5ab0ff",
     iconsOpacity: 0.36,
   },
   "counter-strike-condition-zero": {
-    icons: [lineIcons["counter-strike"]],
+    icons: [lineIcons["counter-strike-condition-zero"]],
     tint: "#c8b15a",
     iconsOpacity: 0.36,
   },
   "counter-strike-condition-zero-deleted-scenes": {
-    icons: [lineIcons["counter-strike"]],
+    icons: [lineIcons["counter-strike-condition-zero-deleted-scenes"]],
     tint: "#b8c07a",
     iconsOpacity: 0.36,
   },
