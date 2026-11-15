@@ -2,6 +2,8 @@
 // icono de línea (public/images/icons, trazo negro con alfa que se tiñe con el color de la saga) y un modelo 3D
 // opcional que gira al pasar el ratón. Los iconos los dibuja Manuel; las capturas y los modelos salen de los juegos.
 
+import { universePalettes } from "./universe-palettes";
+
 export type LineIcon = { src: string; width: number; height: number };
 
 // Los 19 iconos de línea, recortados al trazo (lado largo de 1000 px)
@@ -151,7 +153,7 @@ export type UniverseArt = {
 
 export const universeArt: Record<string, UniverseArt> = {
   "half-life": {
-    accent: "#f28c28",
+    accent: universePalettes["half-life"].accent,
     backdrop: "/images/entries/anomalous-materials-half-life.webp",
     icon: lineIcons["gordon-hev"],
     model: "/models/entries/crowbar-half-life-hd.glb",
@@ -159,22 +161,22 @@ export const universeArt: Record<string, UniverseArt> = {
     modelTilt: 0.95,
   },
   "team-fortress": {
-    accent: "#e0664a",
+    accent: universePalettes["team-fortress"].accent,
     icon: lineIcons["tf2-mercenaries"],
   },
   "left-4-dead": {
-    accent: "#8fae6a",
+    accent: universePalettes["left-4-dead"].accent,
     icon: lineIcons["left-4-dead"],
   },
   portal: {
-    accent: "#4fb4ff",
+    accent: universePalettes.portal.accent,
     // La pistola mira a la izquierda y dispara una bola de energía al portal; el trazo se dibuja de izquierda a derecha, primero el portal y luego el arma
     icon: lineIcons["portal-gun-fire"],
     model: "/models/universes/portal-gun.glb",
     modelTilt: Math.PI / 2,
   },
   "counter-strike": {
-    accent: "#d2a64a",
+    accent: universePalettes["counter-strike"].accent,
     icon: lineIcons["counter-strike"],
     model: "/models/universes/css-ak47.glb",
     modelTilt: 0.3,
