@@ -1,15 +1,20 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { dossierTransitions } from "@/domain/dossier-transition";
+import { transitionByLook } from "./dossier-transitions";
 
-// El pasillo de Half-Life pone todos sus dossieres sobre una escena oscura y cada juego aporta su «luz» (--corridor-tint).
-// Esta prueba lee esos colores del CSS y exige contraste AA, para que un retoque no deje un rótulo ilegible.
+// En el pasillo de Half-Life cada juego conserva su material (papel, tinta, atenuado y acento) y aporta su luz
+// (el acento) y el texto de la placa del cartel. Esta prueba lee esos colores del CSS y exige contraste AA, para que
+// un retoque no deje un rótulo ilegible, y comprueba que cada juego tiene su propia entrada animada.
 const css = readFileSync(
   join(__dirname, "components", "game-dossier.module.css"),
   "utf8",
 );
 
-const variants = [
+// Juego → clase del dossier. Half-Life 1 usa el papel de serie de `.game-dossier`
+const games = [
+  "half-life",
   "opposing-force",
   "blue-shift",
   "decay",
@@ -17,17 +22,19 @@ const variants = [
   "half-life-2-episode-one",
   "half-life-2-episode-two",
   "half-life-alyx",
+] as const;
+
+// Los juegos de papel claro, que el CSS del pasillo declara con una placa de texto blanco
+const lightGames = [
+  "half-life",
+  "blue-shift",
+  "decay",
+  "half-life-2-episode-two",
 ];
 
-// Une todas las reglas con ese selector: el pasillo se define en varios bloques del archivo
 function getBlock(selector: string) {
-  let blocks = "";
-  let start = css.indexOf(`${selector} {`);
-  while (start >= 0) {
-    blocks += css.slice(start, css.indexOf("}", start));
-    start = css.indexOf(`${selector} {`, start + 1);
-  }
-  return blocks;
+  const start = css.indexOf(`${selector} {`);
+  return start < 0 ? "" : css.slice(start, css.indexOf("}", start));
 }
 
 function readVariable(block: string, name: string) {
@@ -49,44 +56,59 @@ function contrast(a: string, b: string) {
   return (light + 0.05) / (dark + 0.05);
 }
 
-const base = getBlock(".game-dossier--corridor");
-const paper = readVariable(base, "dossier-paper")!;
-// Texto oscuro de la placa del cartel de techo (game-dossier__label)
-const plateInk = "#12100d";
+// Material de un juego: lo suyo y, si no lo define, el de serie del dossier
+function material(game: string, name: string) {
+  const own = readVariable(getBlock(`.game-dossier--${game}`), name);
+  return own ?? readVariable(getBlock(".game-dossier"), name)!;
+}
 
 describe("pasillo de Half-Life", () => {
-  it("define papel, tinta, atenuado y luz de serie", () => {
-    for (const name of [
-      "dossier-paper",
-      "dossier-ink",
-      "dossier-muted",
-      "corridor-tint",
-    ]) {
-      expect(readVariable(base, name), name).toBeDefined();
-    }
-  });
-
-  it("la tinta y el atenuado se leen sobre el papel oscuro", () => {
-    expect(
-      contrast(readVariable(base, "dossier-ink")!, paper),
-    ).toBeGreaterThanOrEqual(4.5);
-    expect(
-      contrast(readVariable(base, "dossier-muted")!, paper),
-    ).toBeGreaterThanOrEqual(4.5);
-  });
-
-  it.each(["", ...variants])(
-    "la luz de «%s» se lee como texto y como placa",
-    (variant) => {
-      const block = variant
-        ? getBlock(`.game-dossier--corridor.game-dossier--${variant}`)
-        : base;
-      const tint = readVariable(block, "corridor-tint");
-
-      expect(tint, variant || "serie").toBeDefined();
-      // La luz se usa como texto sobre el papel y como fondo de la placa con texto oscuro
-      expect(contrast(tint!, paper)).toBeGreaterThanOrEqual(4.5);
-      expect(contrast(plateInk, tint!)).toBeGreaterThanOrEqual(4.5);
+  it.each(games)(
+    "%s se lee: tinta, atenuado y acento sobre su papel",
+    (game) => {
+      const paper = material(game, "dossier-paper");
+      for (const name of ["dossier-ink", "dossier-muted", "dossier-accent"]) {
+        expect(
+          contrast(material(game, name), paper),
+          `${game} ${name}`,
+        ).toBeGreaterThanOrEqual(4.5);
+      }
     },
   );
+
+  it.each(games)("%s tiene una placa legible con su luz", (game) => {
+    const tint = material(game, "dossier-accent");
+    const plateInk = lightGames.includes(game) ? "#ffffff" : "#12100d";
+
+    expect(contrast(plateInk, tint), game).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("el CSS declara como papel claro justo los juegos que lo son", () => {
+    const declared = css.slice(
+      css.indexOf(".game-dossier--corridor:is("),
+      css.indexOf("--plate-ink: #ffffff"),
+    );
+
+    for (const game of lightGames) {
+      expect(declared, game).toContain(`.game-dossier--${game}`);
+    }
+    for (const game of games.filter((game) => !lightGames.includes(game))) {
+      expect(declared, game).not.toContain(`.game-dossier--${game},`);
+    }
+  });
+});
+
+describe("entradas animadas de los dossieres", () => {
+  it("cada juego del pasillo tiene su propia entrada, distinta de las demás", () => {
+    const used = games.map((game) => transitionByLook[game]);
+
+    for (const transition of used) expect(transition).toBeDefined();
+    expect(new Set(used).size).toBe(games.length);
+  });
+
+  it("todas las entradas existen en el catálogo de animaciones", () => {
+    for (const transition of Object.values(transitionByLook)) {
+      expect(dossierTransitions).toContain(transition);
+    }
+  });
 });
