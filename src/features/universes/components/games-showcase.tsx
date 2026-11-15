@@ -1,4 +1,6 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
+import { universePalettes } from "@/data/universe-palettes";
 import { getGameYear } from "@/domain/game";
 import {
   getOfficialGamesByUniverse,
@@ -22,7 +24,14 @@ export function GamesShowcase() {
       {sagas.map(({ universe, games }) => (
         <section
           key={universe.id}
-          className={`${styles["games-showcase__saga"]} ${styles[`games-showcase__saga--${universe.id}`] ?? ""}`}
+          className={styles["games-showcase__saga"]}
+          style={
+            universePalettes[universe.id]
+              ? ({
+                  "--saga-accent": universePalettes[universe.id].accent,
+                } as CSSProperties)
+              : undefined
+          }
           aria-labelledby={`saga-${universe.id}`}
         >
           <header className={styles["games-showcase__saga-head"]}>

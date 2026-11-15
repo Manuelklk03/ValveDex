@@ -3,23 +3,11 @@
   gap: clamp(2rem, 4vw, 3rem);
 }
 
-/* Cada saga lleva su color, el mismo que su tema (universe-theme.module.css) */
+/* Cada saga lleva su color de marca: lo pone el componente desde src/data/universe-palettes.ts */
 .games-showcase__saga {
   --saga-accent: var(--foreground);
   display: grid;
   gap: 1rem;
-}
-
-.games-showcase__saga--half-life {
-  --saga-accent: #f28c28;
-}
-
-.games-showcase__saga--team-fortress {
-  --saga-accent: #e0664a;
-}
-
-.games-showcase__saga--left-4-dead {
-  --saga-accent: #e8705a;
 }
 
 .games-showcase__saga-head {
