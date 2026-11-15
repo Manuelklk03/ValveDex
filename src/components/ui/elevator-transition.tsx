@@ -10,14 +10,19 @@ const EASE = "cubic-bezier(0.77, 0, 0.175, 1)";
 // Si la página nueva no llega, las puertas se abren solas para no dejar al visitante encerrado
 const FAILSAFE_MS = 4000;
 
-// Puertas de ascensor de Black Mesa: se cierran sobre la pantalla al pulsar un enlace marcado con
-// `data-elevator` y se abren cuando llega la página nueva. Con «reducir movimiento» no hace nada
-// y la navegación es la normal.
+// Navegación en curso: su identificador evita que una respuesta tardía actúe sobre otra navegación
+type Pending = { id: number };
+
+// Puertas de ascensor de Black Mesa: se cierran sobre la pantalla al pulsar un enlace interno marcado con
+// `data-elevator` y se abren cuando llega la página nueva. Con «reducir movimiento» no hace nada y la
+// navegación es la normal.
 export function ElevatorTransition() {
   const root = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const pathname = usePathname();
-  const closed = useRef(false);
+  const pending = useRef<Pending | null>(null);
+  const failsafe = useRef<number | undefined>(undefined);
+  const counter = useRef(0);
 
   const slide = useCallback((closing: boolean) => {
     const element = root.current;
@@ -39,10 +44,19 @@ export function ElevatorTransition() {
         },
       ).finished;
     });
-    return Promise.all(finished).then(() => {
-      if (!closing) delete element.dataset.active;
-    });
+    // Una animación cancelada rechaza `finished`: no debe dejar las puertas a medias ni romper la cadena
+    return Promise.all(finished)
+      .catch(() => undefined)
+      .then(() => {
+        if (!closing) delete element.dataset.active;
+      });
   }, []);
+
+  const release = useCallback(() => {
+    window.clearTimeout(failsafe.current);
+    pending.current = null;
+    void slide(false);
+  }, [slide]);
 
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
@@ -58,30 +72,43 @@ export function ElevatorTransition() {
       const link = (event.target as Element).closest<HTMLAnchorElement>(
         "a[data-elevator]",
       );
-      const href = link?.getAttribute("href");
-      if (!link || !href || link.target === "_blank") return;
+      if (!link) return;
+      // Solo enlaces internos que Next.js navegaría en esta misma pestaña
+      if (
+        link.origin !== window.location.origin ||
+        (link.target && link.target !== "_self") ||
+        link.hasAttribute("download")
+      )
+        return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+      // Un segundo clic mientras las puertas se cierran no lanza otra navegación
       event.preventDefault();
-      closed.current = true;
-      void slide(true).then(() => router.push(href));
-      window.setTimeout(() => {
-        if (!closed.current) return;
-        closed.current = false;
-        void slide(false);
+      if (pending.current) return;
+
+      const id = ++counter.current;
+      pending.current = { id };
+      const href = `${link.pathname}${link.search}${link.hash}`;
+      void slide(true).then(() => {
+        if (pending.current?.id === id) router.push(href);
+      });
+      failsafe.current = window.setTimeout(() => {
+        if (pending.current?.id === id) release();
       }, FAILSAFE_MS);
     };
     // En captura: el enlace de Next.js navega en la fase de burbuja y, si ya hay preventDefault, no lo hace
     document.addEventListener("click", onClick, true);
-    return () => document.removeEventListener("click", onClick, true);
-  }, [router, slide]);
+    return () => {
+      document.removeEventListener("click", onClick, true);
+      window.clearTimeout(failsafe.current);
+    };
+  }, [release, router, slide]);
 
-  // La página nueva ya está: las puertas se abren dentro del hub
+  // Llegó una página: si es la del enlace pulsado, las puertas se abren dentro; si es otra (el visitante
+  // pulsó «Atrás» durante el cierre), se abren igualmente y la navegación pendiente queda anulada
   useEffect(() => {
-    if (!closed.current) return;
-    closed.current = false;
-    void slide(false);
-  }, [pathname, slide]);
+    if (pending.current) release();
+  }, [pathname, release]);
 
   return (
     <div ref={root} className={styles["elevator"]} aria-hidden="true">
