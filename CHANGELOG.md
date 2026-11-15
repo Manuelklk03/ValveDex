@@ -8,6 +8,9 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- Buscador global: Ctrl+K (⌘K en Mac) o el botón «Buscar» de la cabecera abren una paleta que encuentra sagas, juegos, fichas, personas y páginas, sin importar tildes ni mayúsculas, y se maneja con flechas e Intro.
+- Menús grandes en la cabecera: «Universos», con una columna por saga y sus juegos, y «Valve», con la empresa y sus figuras clave.
+
 - La portada tiene una escena de cine: captura de Black Mesa de fondo que se acerca al hacer scroll, la válvula con su resplandor y una fila «Entrar por una saga» con el emblema de cada universo en su color.
 
 ### Cambiado
