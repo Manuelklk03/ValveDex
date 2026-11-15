@@ -24,6 +24,12 @@ Decidido por Manuel el 2026-11-15 tras un `grill-me` largo. Sustituye al orden a
 - **Contenido de Half-Life:** verificación de todo con Codex en solo lectura antes de publicar (fuentes, cifras, spoilers); lo que no se pueda verificar se marca «por revisar» en la propia ficha.
 - **Encargos de assets:** Claude prepara un brief por lote (nombre de archivo, medidas, estilo, color de saga y referencia), Manuel se lo pasa a Codex e integramos los archivos que lleguen a `public/`.
 
+- **Paleta por saga (2026-11-15):** aprobada la propuesta con la condición de Manuel de que **se parezca a su universo**: Half-Life naranja HEV `#F39A2E` sobre carbón; Portal azul Aperture `#3FA9F5` con el naranja de portal solo en detalles; Team Fortress RED `#D14841` y BLU `#5B8FCB` a partes iguales; Left 4 Dead verde enfermizo `#8DB03C` con rojo sangre en detalles; Counter-Strike gris acero `#8FA1B2` con caqui `#C2B280`. Al aplicarla se afinan los tonos contra el arte real de cada saga y se mide el contraste AA.
+- **Fuente única del acento:** hoy el acento de cada saga está en dos sitios con valores distintos (`universe-theme.module.css`, por ejemplo Half-Life `#f39a2e`, Portal `#ff9d1f`, TF `#d14841`, L4D `#c43d2e`; y `universe-art.ts`, TF `#e0664a`, L4D `#8fae6a`, Portal `#4fb4ff`). Es parte de por qué las sagas se confunden: se unifica en un solo lugar.
+- **Cabecera:** logo, «Universos» (menú grande), «Valve» y «Buscar» (Ctrl+K); «Explorar» pasa dentro del buscador.
+- **Pistas de música:** las elige Manuel (un enlace oficial por universo y por juego) y Claude las conecta.
+- **Primer lote de assets:** emblemas de saga e iconos de juego que faltan, en [assets-brief-1.md](assets-brief-1.md).
+
 **Assets que hacen falta:**
 
 | Asset                                                                                                                                                          | Quién                             | Para qué                                         |
