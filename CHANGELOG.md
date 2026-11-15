@@ -21,6 +21,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Cambiado
 
+- Cada saga tiene su paleta de marca, definida en un solo archivo: Half-Life naranja, Portal azul, Team Fortress rojo y azul, Left 4 Dead verde y Counter-Strike gris acero. Antes Half-Life y Portal compartían casi el mismo naranja, y Team Fortress y Left 4 Dead casi el mismo rojo. El acento de Team Fortress se aclara para cumplir el contraste AA.
 - Team Fortress Classic y cada juego de Counter-Strike (1.6, Condition Zero, Deleted Scenes, Source, Global Offensive y 2) tienen su propio dibujo de línea en el dossier, en lugar de repetir el de Team Fortress 2 o el de Counter-Strike. Se añaden además cinco emblemas de saga, todavía sin uso.
 
 ### Corregido

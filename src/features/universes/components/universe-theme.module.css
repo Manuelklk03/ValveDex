@@ -1,21 +1,16 @@
+/* Los colores de cada saga (fondo, texto, superficie, borde, acento…) vienen de src/data/universe-palettes.ts y
+   los pone UniverseTheme como variables en línea. Aquí solo quedan la textura de fondo y la tipografía. */
 .universe-theme {
   flex: 1;
   display: flex;
   flex-direction: column;
   background: var(--background);
   color: var(--foreground);
+  color-scheme: dark;
 }
 
-/* Half-Life: oscuro cálido que sale del negro de Valve, texto de papel de laboratorio y el naranja del HUD.
-   El papel claro chocaba con la cabecera y el pie negros (decisión de Manuel, 2026-10-24) */
+/* Half-Life: papel de laboratorio rayado, señalética de Black Mesa */
 .universe-theme--half-life {
-  --background: #13110e;
-  --foreground: #ece4d6;
-  --surface: #1c1915;
-  --border: #3a332a;
-  --muted: #b3a895;
-  --accent: #f39a2e;
-  color-scheme: dark;
   background-image: linear-gradient(
     rgb(236 228 214 / 0.025) 1px,
     transparent 1px
@@ -30,23 +25,20 @@
   font-stretch: normal;
 }
 
-/* Team Fortress: estilo ilustrado Mann Co., papel envejecido, rojo/azul de equipo, Australium.
+/* Team Fortress: estilo ilustrado Mann Co., rojo y azul de equipo, Australium.
    Tipografía condensada como carteles de reclutamiento. */
 .universe-theme--team-fortress {
-  --background: #1a1712;
-  --foreground: #f2e8d0;
-  --surface: #24201a;
-  --border: #4a4034;
-  --muted: #b8a890;
-  --accent: #d14841;
-  --accent-blu: #2d6bd2;
+  --accent-blu: #5b8fcb;
   --accent-australium: #c9a83c;
-  color-scheme: dark;
   background-image:
-    radial-gradient(ellipse at 15% 15%, rgb(209 72 65 / 0.08), transparent 45%),
+    radial-gradient(
+      ellipse at 15% 15%,
+      rgb(232 102 95 / 0.08),
+      transparent 45%
+    ),
     radial-gradient(
       ellipse at 85% 85%,
-      rgb(45 107 210 / 0.08),
+      rgb(91 143 203 / 0.08),
       transparent 45%
     ),
     repeating-linear-gradient(
@@ -62,24 +54,17 @@
   font-stretch: normal;
 }
 
-/* Left 4 Dead: CEDA, alerta sanitaria, verde biohazard, amarillo advertencia.
+/* Left 4 Dead: alerta sanitaria, verde de infectado con rojo sangre en los detalles.
    Tipografía monoespeciada como informes oficiales. */
 .universe-theme--left-4-dead {
-  --background: #1a1814;
-  --foreground: #f5f0d8;
-  --surface: #24201a;
-  --border: #3d3528;
-  --muted: #a89878;
-  --accent: #c43d2e;
-  --accent-bio: #2d7d2d;
+  --accent-blood: #c43d2e;
   --accent-warn: #e8a817;
-  color-scheme: dark;
   background-image:
     repeating-linear-gradient(
       45deg,
-      rgb(196 61 46 / 0.02) 0 3rem,
+      rgb(141 176 60 / 0.03) 0 3rem,
       transparent 3rem 6rem,
-      rgb(45 125 45 / 0.02) 6rem 9rem,
+      rgb(196 61 46 / 0.02) 6rem 9rem,
       transparent 9rem 12rem
     ),
     linear-gradient(180deg, transparent 65%, rgb(232 168 23 / 0.03));
@@ -91,15 +76,9 @@
   font-stretch: normal;
 }
 
-/* Portal: panel de Aperture Science de noche; naranja y azul de los portales */
+/* Portal: panel de Aperture Science de noche; azul de portal y naranja del portal contrario */
 .universe-theme--portal {
-  --background: #14171b;
-  --foreground: #e9eef2;
-  --surface: #1d2228;
-  --border: #323b44;
-  --muted: #a4afb9;
-  --accent: #ff9d1f;
-  color-scheme: dark;
+  --accent-orange: #ff9d1f;
   background-image:
     repeating-linear-gradient(
       0deg,
@@ -119,15 +98,9 @@
   font-stretch: normal;
 }
 
-/* Counter-Strike: lona militar y arena */
+/* Counter-Strike: acero y lona militar */
 .universe-theme--counter-strike {
-  --background: #15170f;
-  --foreground: #ebe7d2;
-  --surface: #1f2216;
-  --border: #363a26;
-  --muted: #b0ab90;
-  --accent: #d2a64a;
-  color-scheme: dark;
+  --accent-khaki: #c2b280;
   background-image: repeating-linear-gradient(
     135deg,
     rgb(255 255 255 / 0.02) 0 2px,

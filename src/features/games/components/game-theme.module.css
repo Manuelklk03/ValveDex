@@ -151,7 +151,7 @@
   --surface: #2a2620;
   --border: #4a4236;
   --muted: #a8a08d;
-  --accent: #c83838;
+  --accent: #e8665f;
   --accent-2: #2b58a6;
   color-scheme: dark;
   background-image: repeating-linear-gradient(
@@ -170,8 +170,8 @@
   --surface: #24201a;
   --border: #4a4034;
   --muted: #b8a890;
-  --accent: #d14841;
-  --accent-blu: #2d6bd2;
+  --accent: #e8665f;
+  --accent-blu: #5b8fcb;
   --accent-australium: #c9a83c;
   color-scheme: dark;
   background-image:
@@ -181,20 +181,20 @@
 
 /* Left 4 Dead: CEDA, alerta sanitaria, verde biohazard, amarillo advertencia, papel oficial */
 .game-theme--left-4-dead {
-  --background: #1a1814;
-  --foreground: #f5f0d8;
-  --surface: #24201a;
-  --border: #3d3528;
-  --muted: #a89878;
-  --accent: #c43d2e;
-  --accent-bio: #2d7d2d;
+  --background: #0e130d;
+  --foreground: #e6edd8;
+  --surface: #151c13;
+  --border: #2b3a26;
+  --muted: #9fb08a;
+  --accent: #8db03c;
+  --accent-blood: #c43d2e;
   --accent-warn: #e8a817;
   color-scheme: dark;
   background-image: repeating-linear-gradient(
     45deg,
-    rgb(196 61 46 / 0.02) 0 2rem,
+    rgb(141 176 60 / 0.03) 0 2rem,
     transparent 2rem 4rem,
-    rgb(45 125 45 / 0.02) 4rem 6rem,
+    rgb(196 61 46 / 0.02) 4rem 6rem,
     transparent 6rem 8rem
   );
 }
@@ -206,7 +206,7 @@
   --surface: #28241d;
   --border: #42382a;
   --muted: #b0a080;
-  --accent: #a82c1e;
+  --accent: #a4c24a;
   --accent-bile: #7db83d;
   --accent-ochre: #c49a3a;
   color-scheme: dark;
@@ -226,12 +226,12 @@
 
 /* Portal: panel blanco de Aperture Science de noche, naranja y azul de los portales */
 .game-theme--portal {
-  --background: #14171b;
+  --background: #0e151c;
   --foreground: #e9eef2;
-  --surface: #1d2228;
-  --border: #323b44;
-  --muted: #a4afb9;
-  --accent: #ff9d1f;
+  --surface: #151e27;
+  --border: #2a3947;
+  --muted: #9fb0bf;
+  --accent: #3fa9f5;
   color-scheme: dark;
 }
 
@@ -248,12 +248,12 @@
 
 /* Counter-Strike: lona militar y arena de Dust */
 .game-theme--counter-strike {
-  --background: #15170f;
-  --foreground: #ebe7d2;
-  --surface: #1f2216;
-  --border: #363a26;
-  --muted: #b0ab90;
-  --accent: #d2a64a;
+  --background: #12161a;
+  --foreground: #e3e8ec;
+  --surface: #1a2025;
+  --border: #2f3a43;
+  --muted: #9aa7b2;
+  --accent: #8fa1b2;
   color-scheme: dark;
 }
 
@@ -264,7 +264,7 @@
   --surface: #1c2226;
   --border: #323c42;
   --muted: #a3adb3;
-  --accent: #e0a73a;
+  --accent: #8fa1b2;
   color-scheme: dark;
 }
 
@@ -275,7 +275,7 @@
   --surface: #1b1e26;
   --border: #333743;
   --muted: #a7a9b0;
-  --accent: #f0a23a;
+  --accent: #9fb4c8;
   color-scheme: dark;
 }
 
