@@ -1,4 +1,4 @@
-﻿/* Capa de arte detrÃ¡s del contenido del dossier: z-index -1 dentro del stacking context del dossier */
+/* Capa de arte detrás del contenido del dossier: z-index -1 dentro del stacking context del dossier */
 .dossier-art {
   position: absolute;
   inset: 0;
@@ -22,7 +22,7 @@
   filter: grayscale(0.55) contrast(1.05);
 }
 
-/* Iconos: en el hueco entre el texto y la ficha tÃ©cnica; detrÃ¡s del texto en pantallas estrechas */
+/* Iconos: en el hueco entre el texto y la ficha técnica; detrás del texto en pantallas estrechas */
 .dossier-art__icons {
   position: absolute;
   top: 1rem;
@@ -66,7 +66,7 @@
   opacity: 1;
 }
 
-/* Los iconos ceden el sitio solo cuando el dossier está activo y el modelo 3D ya está cargado */
+/* Los iconos ceden el sitio solo cuando el dossier est� activo y el modelo 3D ya est� cargado */
 .dossier-art--active.dossier-art--model-ready .dossier-art__icon {
   opacity: 0.12;
 }
