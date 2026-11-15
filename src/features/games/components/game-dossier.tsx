@@ -1,7 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 import { dossierArt } from "@/data/dossier-art";
 import type { Game } from "@/domain/game";
 import type { DossierLook } from "../dossier-looks";
+import { getSectionPreviews } from "../get-game-overview";
 import { getGameYearLabel } from "../get-game-year-label";
 import { getSectionStatuses } from "../get-section-statuses";
 import { DossierArt } from "./dossier-art";
@@ -29,9 +31,15 @@ export function GameDossier({
   const hubHref = `/universos/${universeSlug}/${game.slug}`;
   const titleId = `${game.id}-title`;
   const art = dossierArt[game.id];
-  const className = look
-    ? `${styles["game-dossier"]} ${styles[`game-dossier--${look.variant}`]}`
+  // Half-Life es un pasillo de Black Mesa: cada apartado es una puerta con la foto real de sus fichas
+  const corridor = universeSlug === "half-life";
+  const previews = corridor ? getSectionPreviews(game.id, statuses) : {};
+  const baseClass = corridor
+    ? `${styles["game-dossier"]} ${styles["game-dossier--corridor"]}`
     : styles["game-dossier"];
+  const className = look
+    ? `${baseClass} ${styles[`game-dossier--${look.variant}`]}`
+    : baseClass;
 
   return (
     <article className={className} aria-labelledby={titleId} data-reveal>
@@ -104,69 +112,86 @@ export function GameDossier({
         className={styles["game-dossier__sectors"]}
         aria-label={`Apartados de ${game.name}`}
       >
-        {statuses.map(({ section, entryNames, isAvailable, label }, index) => (
-          <li
-            key={section.id}
-            className={`${styles["game-dossier__sector"]} ${styles[`game-dossier__sector--${section.id}`]} ${isAvailable ? "" : styles["game-dossier__sector--empty"]}`}
-            data-expandable={isAvailable || undefined}
-          >
-            <span
-              className={styles["game-dossier__sector-index"]}
-              aria-hidden="true"
+        {statuses.map(({ section, entryNames, isAvailable, label }, index) => {
+          const preview = previews[section.id];
+          return (
+            <li
+              key={section.id}
+              className={`${styles["game-dossier__sector"]} ${styles[`game-dossier__sector--${section.id}`]} ${isAvailable ? "" : styles["game-dossier__sector--empty"]}`}
+              data-expandable={isAvailable || undefined}
             >
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            {isAvailable ? (
-              <Link
-                href={`${hubHref}/${section.slug}`}
-                className={styles["game-dossier__sector-link"]}
-              >
-                {section.name}
-              </Link>
-            ) : (
-              <span className={styles["game-dossier__sector-name"]}>
-                {section.name}
-              </span>
-            )}
-            <span className={styles["game-dossier__sector-status"]}>
-              {label}
-            </span>
-
-            {isAvailable && (
-              <>
+              {preview?.thumbnail && (
                 <span
-                  className={styles["game-dossier__sector-arrow"]}
+                  className={`${styles["game-dossier__door"]} ${preview.isCapture ? styles["game-dossier__door--capture"] : ""}`}
                   aria-hidden="true"
                 >
-                  →
+                  <Image
+                    src={preview.thumbnail.src}
+                    alt=""
+                    fill
+                    sizes="(min-width: 64rem) 14vw, 45vw"
+                    className={styles["game-dossier__door-image"]}
+                  />
                 </span>
-                {/* Solo los apartados con enlace despliegan: así el teclado llega con :focus-within */}
-                <div className={styles["game-dossier__sector-panel"]}>
-                  <p className={styles["game-dossier__sector-description"]}>
-                    {section.description}
-                  </p>
-                  {entryNames.length > 0 && (
-                    <ul className={styles["game-dossier__sector-entries"]}>
-                      {entryNames.slice(0, PREVIEW_COUNT).map((name) => (
-                        <li
-                          key={name}
-                          className={styles["game-dossier__sector-entry"]}
-                        >
-                          {name}
-                        </li>
-                      ))}
-                      {entryNames.length > PREVIEW_COUNT && (
-                        <li className={styles["game-dossier__sector-entry"]}>
-                          y {entryNames.length - PREVIEW_COUNT} más
-                        </li>
-                      )}
-                    </ul>
-                  )}
-                </div>
-              </>
-            )}
-          </li>
-        ))}
+              )}
+              <span
+                className={styles["game-dossier__sector-index"]}
+                aria-hidden="true"
+              >
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              {isAvailable ? (
+                <Link
+                  href={`${hubHref}/${section.slug}`}
+                  className={styles["game-dossier__sector-link"]}
+                >
+                  {section.name}
+                </Link>
+              ) : (
+                <span className={styles["game-dossier__sector-name"]}>
+                  {section.name}
+                </span>
+              )}
+              <span className={styles["game-dossier__sector-status"]}>
+                {label}
+              </span>
+
+              {isAvailable && (
+                <>
+                  <span
+                    className={styles["game-dossier__sector-arrow"]}
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
+                  {/* Solo los apartados con enlace despliegan: así el teclado llega con :focus-within */}
+                  <div className={styles["game-dossier__sector-panel"]}>
+                    <p className={styles["game-dossier__sector-description"]}>
+                      {section.description}
+                    </p>
+                    {entryNames.length > 0 && (
+                      <ul className={styles["game-dossier__sector-entries"]}>
+                        {entryNames.slice(0, PREVIEW_COUNT).map((name) => (
+                          <li
+                            key={name}
+                            className={styles["game-dossier__sector-entry"]}
+                          >
+                            {name}
+                          </li>
+                        ))}
+                        {entryNames.length > PREVIEW_COUNT && (
+                          <li className={styles["game-dossier__sector-entry"]}>
+                            y {entryNames.length - PREVIEW_COUNT} más
+                          </li>
+                        )}
+                      </ul>
+                    )}
+                  </div>
+                </>
+              )}
+            </li>
+          );
+        })}
       </ul>
 
       <footer className={styles["game-dossier__footer"]}>
