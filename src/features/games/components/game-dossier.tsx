@@ -3,6 +3,7 @@ import Link from "next/link";
 import { dossierArt } from "@/data/dossier-art";
 import type { Game } from "@/domain/game";
 import type { DossierLook } from "../dossier-looks";
+import { transitionByLook } from "../dossier-transitions";
 import { getSectionPreviews } from "../get-game-overview";
 import { getGameYearLabel } from "../get-game-year-label";
 import { getSectionStatuses } from "../get-section-statuses";
@@ -34,6 +35,16 @@ export function GameDossier({
   // Half-Life es un pasillo de Black Mesa: cada apartado es una puerta con la foto real de sus fichas
   const corridor = universeSlug === "half-life";
   const previews = corridor ? getSectionPreviews(game.id, statuses) : {};
+  // Entrada animada propia del juego: la usan el enlace principal y cada puerta
+  const transition =
+    corridor && look ? transitionByLook[look.variant] : undefined;
+  const transitionProps = transition
+    ? {
+        "data-elevator": transition,
+        "data-elevator-title": game.name,
+        "data-elevator-label": look?.label,
+      }
+    : {};
   const baseClass = corridor
     ? `${styles["game-dossier"]} ${styles["game-dossier--corridor"]}`
     : styles["game-dossier"];
@@ -47,7 +58,7 @@ export function GameDossier({
       <Link
         href={hubHref}
         className={styles["game-dossier__open"]}
-        data-elevator={corridor || undefined}
+        {...transitionProps}
       >
         <span className="sr-only">Abrir el dossier de {game.name}</span>
       </Link>
@@ -148,6 +159,7 @@ export function GameDossier({
                 <Link
                   href={`${hubHref}/${section.slug}`}
                   className={styles["game-dossier__sector-link"]}
+                  {...transitionProps}
                 >
                   {section.name}
                 </Link>

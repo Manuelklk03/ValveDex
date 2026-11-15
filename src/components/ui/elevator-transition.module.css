@@ -1,4 +1,4 @@
-/* Puertas de ascensor: encima de todo, sin interceptar nada mientras están abiertas */
+/* Entrada animada a un mundo: encima de todo, sin interceptar nada mientras está abierta (data-active) */
 .elevator {
   position: fixed;
   inset: 0;
@@ -13,7 +13,7 @@
   pointer-events: auto;
 }
 
-/* Cada hoja ocupa la mitad (un poco más, para que no quede rendija) y arranca fuera de la pantalla */
+/* --- Ascensor de Black Mesa (doors) y compuerta de seguridad (gate): dos hojas --- */
 .elevator__door {
   position: absolute;
   top: 0;
@@ -48,7 +48,7 @@
   transform: translateX(100%);
 }
 
-/* Franja de peligro en el borde de cada hoja, como las de las puertas de las instalaciones */
+/* Franja de peligro en el borde de cada hoja */
 .elevator__door::after {
   content: "";
   position: absolute;
@@ -66,4 +66,156 @@
 .elevator__door--right::after {
   right: auto;
   left: 0;
+}
+
+/* Compuerta de Blue Shift: una hoja arriba y otra abajo, azul de seguridad */
+.elevator[data-variant="gate"] .elevator__door {
+  inset: 0 0 auto;
+  width: auto;
+  height: 50.5%;
+  border: 0;
+  border-bottom: 2px solid #050810;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 9rem,
+      rgb(0 0 0 / 0.3) 9rem calc(9rem + 2px)
+    ),
+    linear-gradient(180deg, #1c2a52, #0c1330);
+  box-shadow: inset 0 -0.5rem 1.5rem rgb(0 0 0 / 0.5);
+  transform: translateY(-100%);
+}
+
+.elevator[data-variant="gate"] .elevator__door--right {
+  inset: auto 0 0;
+  border-top: 2px solid #050810;
+  border-bottom: 0;
+  box-shadow: inset 0 0.5rem 1.5rem rgb(0 0 0 / 0.5);
+  transform: translateY(100%);
+}
+
+.elevator[data-variant="gate"] .elevator__door::after {
+  inset: auto 0 0;
+  width: auto;
+  height: 0.625rem;
+  background: repeating-linear-gradient(
+    -45deg,
+    #8a8aff 0 0.75rem,
+    #070b14 0.75rem 1.5rem
+  );
+}
+
+.elevator[data-variant="gate"] .elevator__door--right::after {
+  inset: 0 0 auto;
+}
+
+.elevator:not([data-variant="doors"], [data-variant="gate"]) .elevator__door {
+  display: none;
+}
+
+/* --- Cortinas a pantalla completa: una por juego --- */
+.elevator__curtain {
+  position: absolute;
+  inset: 0;
+  display: none;
+  opacity: 0;
+}
+
+.elevator:not([data-variant="doors"], [data-variant="gate"])
+  .elevator__curtain {
+  display: block;
+}
+
+/* Opposing Force: persiana blindada de la HECU */
+.elevator[data-variant="shutter"] .elevator__curtain {
+  border-bottom: 0.75rem solid #9bd23c;
+  background: repeating-linear-gradient(
+    180deg,
+    #2f3a24 0 2.25rem,
+    #151b10 2.25rem 2.5rem
+  );
+}
+
+/* Decay: monitor del laboratorio, con líneas de barrido */
+.elevator[data-variant="crt"] .elevator__curtain {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgb(183 156 240 / 0.14) 0 2px,
+      transparent 2px 4px
+    ),
+    radial-gradient(ellipse at center, #1f1a2e, #0b0912 80%);
+}
+
+/* Half-Life 2: tajo diagonal de la Resistencia, naranja sobre hormigón */
+.elevator[data-variant="slash"] .elevator__curtain {
+  background:
+    repeating-linear-gradient(
+      -55deg,
+      transparent 0 3rem,
+      rgb(242 138 27 / 0.9) 3rem 3.4rem
+    ),
+    #1d1f1c;
+}
+
+/* Episode One: destello del núcleo */
+.elevator[data-variant="flash"] .elevator__curtain {
+  background: radial-gradient(
+    circle at 50% 50%,
+    #f4feff 0,
+    #8fd0e6 30%,
+    #1d232a 85%
+  );
+}
+
+/* Episode Two: energía vortigaunt que sube */
+.elevator[data-variant="rise"] .elevator__curtain {
+  background:
+    radial-gradient(ellipse at 50% 100%, #7be68a, transparent 60%),
+    linear-gradient(0deg, #2c7533, #10231a 70%);
+}
+
+/* Alyx: rejilla de realidad virtual */
+.elevator[data-variant="scan"] .elevator__curtain {
+  background:
+    linear-gradient(90deg, rgb(0 212 255 / 0.2) 1px, transparent 1px) 0 0 / 3rem
+      3rem,
+    linear-gradient(0deg, rgb(0 212 255 / 0.2) 1px, transparent 1px) 0 0 / 3rem
+      3rem,
+    #0b1218;
+  box-shadow: inset -0.5rem 0 3rem rgb(0 212 255 / 0.55);
+}
+
+/* --- Placa con el nombre del juego mientras la pantalla está cerrada --- */
+.elevator__plate {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-content: center;
+  gap: 0.5rem;
+  justify-items: center;
+  color: #f6f1e7;
+  opacity: 0;
+  pointer-events: none;
+  text-align: center;
+}
+
+.elevator__plate-label {
+  padding: 0.25rem 0.75rem;
+  background: #f6f1e7;
+  color: #12100d;
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.elevator__plate-title {
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-weight: 800;
+  line-height: 0.95;
+  text-shadow: 0 2px 24px rgb(0 0 0 / 0.7);
 }
