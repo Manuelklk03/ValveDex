@@ -12,9 +12,17 @@
 .dossier-art__backdrop {
   position: absolute;
   inset: -8% 0;
-  opacity: 0.22;
-  mask-image: linear-gradient(to right, transparent 15%, #000 85%);
-  -webkit-mask-image: linear-gradient(to right, transparent 15%, #000 85%);
+  opacity: var(--art-backdrop-opacity, 0.22);
+  mask-image: linear-gradient(
+    to right,
+    transparent var(--art-backdrop-fade, 15%),
+    #000 85%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent var(--art-backdrop-fade, 15%),
+    #000 85%
+  );
 }
 
 .dossier-art__image {

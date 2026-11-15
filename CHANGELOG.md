@@ -22,6 +22,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 - El arte de los dossieres se ve mejor: los iconos de línea son más opacos, el modelo 3D se precarga al acercarse el dossier (solo con ratón) y se descarta al alejarse, y los iconos ya no se apagan antes de que el modelo esté cargado.
 - La cabecera del dossier reserva una columna al arte, así que los títulos largos (Opposing Force, Episode Two, Global Offensive) ya no lo pisan.
 - Los apartados de Team Fortress, Left 4 Dead, Portal y Counter-Strike usan el color de su saga en vez de los pasillos de Black Mesa; desaparecen el emblema duplicado de Team Fortress y Left 4 Dead y las franjas laterales de Episode Two y Alyx.
+- Los dossieres de Half-Life son un pasillo de Black Mesa: cada apartado es una puerta oscura con la foto real de sus fichas (captura o render), en una sola fila en escritorio y en dos columnas en móvil, con un velo con los nombres de las primeras fichas al pasar el ratón o enfocar. La escena de fondo se ve más.
 
 ## [0.4.0] — 2026-11-15
 

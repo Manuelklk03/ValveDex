@@ -1645,3 +1645,161 @@
     ),
     linear-gradient(180deg, rgb(255 255 255 / 0.04), transparent 30%);
 }
+
+/* --- Half-Life: pasillo de Black Mesa. Cada apartado es una puerta con la foto real de sus fichas --- */
+.game-dossier__door {
+  display: none;
+}
+
+.game-dossier--corridor {
+  --art-backdrop-opacity: 0.45;
+  --art-backdrop-fade: 38%;
+}
+
+.game-dossier--corridor .game-dossier__sectors {
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: 0.5rem;
+}
+
+.game-dossier--corridor .game-dossier__sector {
+  min-height: 10.5rem;
+  align-content: end;
+  overflow: hidden;
+  padding: 0.75rem 0.875rem 0.875rem;
+  border: 0;
+  border-bottom: 4px solid var(--sector-color);
+}
+
+.game-dossier--corridor .game-dossier__sector--empty {
+  border: 1px dashed var(--dossier-line);
+}
+
+/* La foto llena la puerta; un degradado oscuro por abajo asegura el contraste del rótulo */
+.game-dossier--corridor .game-dossier__door {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: color-mix(in srgb, #0d0c0a 82%, var(--sector-color));
+}
+
+.game-dossier--corridor .game-dossier__door::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgb(10 8 6 / 0.94) 0,
+    rgb(10 8 6 / 0.8) 40%,
+    rgb(10 8 6 / 0.1) 78%
+  );
+}
+
+.game-dossier--corridor .game-dossier__door-image {
+  object-fit: contain;
+  padding: 0.75rem 0.75rem 3.5rem;
+}
+
+.game-dossier--corridor .game-dossier__door--capture .game-dossier__door-image {
+  padding: 0;
+  object-fit: cover;
+}
+
+/* Las siete puertas en una sola fila desde pantallas anchas */
+@media (min-width: 64rem) {
+  .game-dossier--corridor .game-dossier__sectors {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}
+
+/* Toda puerta con contenido es oscura, con o sin foto, y su rótulo va claro por encima de la imagen */
+.game-dossier--corridor
+  .game-dossier__sector:not(.game-dossier__sector--empty) {
+  background: color-mix(in srgb, #0d0c0a 82%, var(--sector-color));
+  color: #f6f1e7;
+}
+
+.game-dossier--corridor
+  .game-dossier__sector:not(.game-dossier__sector--empty)
+  :is(
+    .game-dossier__sector-index,
+    .game-dossier__sector-status,
+    .game-dossier__sector-link
+  ) {
+  position: relative;
+  z-index: 1;
+  color: inherit;
+}
+
+.game-dossier--corridor .game-dossier__sector-arrow {
+  z-index: 1;
+  color: #f6f1e7;
+}
+
+.game-dossier--corridor .game-dossier__sector-link::after {
+  z-index: 2;
+}
+
+/* La ficha desplegable se convierte en un velo sobre la propia puerta */
+.game-dossier--corridor .game-dossier__sector-panel {
+  inset: 0;
+  align-content: center;
+  padding: 0.875rem;
+  border: 0;
+  z-index: 1;
+  background: rgb(10 8 6 / 0.98);
+  box-shadow: none;
+  color: #f6f1e7;
+  /* El clic sigue llegando al enlace que cubre la puerta */
+  pointer-events: none;
+}
+
+/* En una puerta no cabe la descripción: el velo enseña solo los nombres de las primeras fichas */
+.game-dossier--corridor .game-dossier__sector-description {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.game-dossier--corridor .game-dossier__sector-entry {
+  border-color: rgb(246 241 231 / 0.35);
+}
+
+/* El foco se marca en el borde de la puerta, en claro y hacia dentro: el overflow de la puerta recortaría un contorno exterior */
+.game-dossier--corridor .game-dossier__sector-link:focus-visible {
+  outline: none;
+}
+
+.game-dossier--corridor
+  .game-dossier__sector:has(.game-dossier__sector-link:focus-visible) {
+  outline: 3px solid #f6f1e7;
+  outline-offset: -3px;
+}
+
+/* En táctil no cabe el velo, pero su texto sigue disponible para lectores de pantalla */
+@media (hover: none) {
+  .game-dossier--corridor .game-dossier__sector-panel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .game-dossier--corridor .game-dossier__door-image {
+    transition: scale 400ms var(--ease-out, ease-out);
+  }
+
+  .game-dossier--corridor
+    .game-dossier__sector:hover
+    .game-dossier__door-image {
+    scale: 1.06;
+  }
+}
