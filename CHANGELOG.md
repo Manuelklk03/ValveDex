@@ -23,6 +23,8 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 - La cabecera del dossier reserva una columna al arte, así que los títulos largos (Opposing Force, Episode Two, Global Offensive) ya no lo pisan.
 - Los apartados de Team Fortress, Left 4 Dead, Portal y Counter-Strike usan el color de su saga en vez de los pasillos de Black Mesa; desaparecen el emblema duplicado de Team Fortress y Left 4 Dead y las franjas laterales de Episode Two y Alyx.
 - Los dossieres de Half-Life son un pasillo de Black Mesa: cada apartado es una puerta oscura con la foto real de sus fichas (captura o render), en una sola fila en escritorio y en dos columnas en móvil, con un velo con los nombres de las primeras fichas al pasar el ratón o enfocar. La escena de fondo se ve más.
+- Los dossieres de Half-Life dejan de ser una carpeta de papel y pasan a ser un lugar: la escena del juego llena el dossier, el título es la placa de un cartel de techo con el color de cada juego (naranja HEV, verde militar, azul, lila, cian…), un suelo de franjas de peligro separa la cabecera de las puertas y el modelo 3D o el dibujo del juego es el protagonista, siempre visible y a gran escala. Con el puntero cada capa se mueve a distinta velocidad y, al hacer scroll, la cámara avanza (la escena se acerca y el protagonista sube más deprisa).
+- Al abrir el hub de un juego de Half-Life, dos puertas de ascensor de Black Mesa se cierran sobre la pantalla y se abren ya dentro (no ocurre con «reducir movimiento»).
 
 ## [0.4.0] — 2026-11-15
 

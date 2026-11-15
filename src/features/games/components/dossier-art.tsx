@@ -23,7 +23,14 @@ const ModelSpinner = dynamic(() => import("@/components/ui/model-spinner"), {
 
 // Capa de arte de un dossier: captura de fondo, iconos de línea que se dibujan y modelo 3D al activarlo.
 // Va dentro del <article> del dossier (que es de servidor), así que escucha ratón y foco en él.
-export function DossierArt({ art }: { art: DossierArtData }) {
+export function DossierArt({
+  art,
+  corridor = false,
+}: {
+  art: DossierArtData;
+  // Pasillo de Half-Life: el arte es la escena, a gran escala y siempre visible
+  corridor?: boolean;
+}) {
   const root = useRef<HTMLDivElement>(null);
   const [pointerOver, setPointerOver] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -121,29 +128,41 @@ export function DossierArt({ art }: { art: DossierArtData }) {
           },
         );
         // Parallax: la captura se mueve más despacio que la página
+        const scrub = {
+          trigger: card,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        };
         gsap.fromTo(
           "[data-art-backdrop]",
-          { yPercent: -6 },
+          corridor ? { yPercent: -6, scale: 1 } : { yPercent: -6 },
           {
             yPercent: 6,
+            // En el pasillo la cámara avanza: la escena se acerca mientras se cruza el dossier
+            ...(corridor ? { scale: 1.16 } : {}),
             ease: "none",
-            scrollTrigger: {
-              trigger: card,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: true,
-            },
+            scrollTrigger: scrub,
           },
         );
+        // El protagonista está en primer plano: sube más deprisa que la escena y da profundidad
+        if (corridor) {
+          gsap.fromTo(
+            "[data-art-front]",
+            { yPercent: 4 },
+            { yPercent: -4, ease: "none", scrollTrigger: scrub },
+          );
+        }
       });
     },
-    { scope: root },
+    { scope: root, dependencies: [corridor] },
   );
 
   const className = [
     styles["dossier-art"],
     active && styles["dossier-art--active"],
     modelReady && styles["dossier-art--model-ready"],
+    corridor && styles["dossier-art--corridor"],
   ]
     .filter(Boolean)
     .join(" ");
@@ -173,31 +192,34 @@ export function DossierArt({ art }: { art: DossierArtData }) {
         </div>
       )}
 
-      <div className={styles["dossier-art__icons"]}>
-        {art.icons.map((icon) => (
-          <div
-            key={icon.src}
-            className={styles["dossier-art__icon"]}
-            style={{
-              maskImage: `url(${icon.src})`,
-              WebkitMaskImage: `url(${icon.src})`,
-            }}
-            data-art-icon
-          />
-        ))}
-      </div>
-
-      {everActive && art.model && (
-        <div className={styles["dossier-art__model"]}>
-          <ModelSpinner
-            src={art.model}
-            tilt={art.modelTilt}
-            roll={art.modelRoll}
-            active={active && !reduceMotion}
-            onReady={handleReady}
-          />
+      {/* Primer plano: iconos y modelo se mueven juntos con el scroll, aunque el modelo se monte más tarde */}
+      <div className={styles["dossier-art__front"]} data-art-front>
+        <div className={styles["dossier-art__icons"]}>
+          {art.icons.map((icon) => (
+            <div
+              key={icon.src}
+              className={styles["dossier-art__icon"]}
+              style={{
+                maskImage: `url(${icon.src})`,
+                WebkitMaskImage: `url(${icon.src})`,
+              }}
+              data-art-icon
+            />
+          ))}
         </div>
-      )}
+
+        {everActive && art.model && (
+          <div className={styles["dossier-art__model"]}>
+            <ModelSpinner
+              src={art.model}
+              tilt={art.modelTilt}
+              roll={art.modelRoll}
+              active={active && !reduceMotion}
+              onReady={handleReady}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

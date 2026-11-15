@@ -1,3 +1,4 @@
+import { ElevatorTransition } from "@/components/ui/elevator-transition";
 import { UniverseTheme } from "@/features/universes/components/universe-theme";
 import { getUniverseBySlug } from "@/features/universes/get-universes";
 
@@ -9,5 +10,10 @@ export default async function UniverseLayout({
 
   const universe = getUniverseBySlug(universeSlug);
 
-  return <UniverseTheme universeId={universe?.id}>{children}</UniverseTheme>;
+  return (
+    <UniverseTheme universeId={universe?.id}>
+      {children}
+      <ElevatorTransition />
+    </UniverseTheme>
+  );
 }

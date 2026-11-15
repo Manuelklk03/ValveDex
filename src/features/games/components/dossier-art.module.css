@@ -30,6 +30,13 @@
   filter: grayscale(0.55) contrast(1.05);
 }
 
+/* Primer plano: ocupa todo el dossier y por encima del velo del pasillo; los hijos se colocan sobre él */
+.dossier-art__front {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
 /* Iconos: en el hueco entre el texto y la ficha técnica; detrás del texto en pantallas estrechas */
 .dossier-art__icons {
   position: absolute;
@@ -124,5 +131,88 @@
 @keyframes dossier-art-breathe {
   50% {
     scale: 1.03;
+  }
+}
+
+/* --- Pasillo de Half-Life: la escena llena el dossier y el modelo o el dibujo es el protagonista --- */
+.dossier-art--corridor .dossier-art__backdrop {
+  inset: -10% -3%;
+}
+
+/* Degradado oscuro bajo el texto y sobre el suelo: asegura el contraste sin apagar la escena de la derecha */
+.dossier-art--corridor::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgb(18 16 13 / 0.96) 0,
+      rgb(18 16 13 / 0.86) 48%,
+      rgb(18 16 13 / 0.12) 78%
+    ),
+    linear-gradient(0deg, rgb(18 16 13 / 0.95), transparent 42%);
+}
+
+/* En pantallas estrechas el texto ocupa todo el ancho: el velo es uniforme para no perder el contraste */
+@media (max-width: 55.99rem) {
+  .dossier-art--corridor::after {
+    background:
+      linear-gradient(rgb(18 16 13 / 0.86), rgb(18 16 13 / 0.86)),
+      linear-gradient(0deg, rgb(18 16 13 / 0.95), transparent 42%);
+  }
+}
+
+.dossier-art--corridor .dossier-art__icons,
+.dossier-art--corridor .dossier-art__model {
+  top: 1rem;
+  right: 1.25rem;
+  z-index: 1;
+  width: clamp(10rem, 40vw, 16rem);
+  height: 62%;
+}
+
+.dossier-art--corridor .dossier-art__icon {
+  opacity: var(--art-icons-opacity, 0.9);
+  mask-position: center top;
+  -webkit-mask-position: center top;
+}
+
+.dossier-art--corridor .dossier-art__icon:nth-child(2) {
+  opacity: var(--art-icons-opacity, 0.9);
+}
+
+/* Con el modelo ya cargado, el dibujo cede el protagonismo */
+.dossier-art--corridor.dossier-art--model-ready .dossier-art__model {
+  opacity: 1;
+}
+
+.dossier-art--corridor.dossier-art--model-ready .dossier-art__icon {
+  opacity: 0.12;
+}
+
+@media (min-width: 56rem) {
+  .dossier-art--corridor .dossier-art__icons,
+  .dossier-art--corridor .dossier-art__model {
+    top: 1.25rem;
+    right: 3rem;
+    width: clamp(16rem, 36%, 28rem);
+    height: 78%;
+  }
+}
+
+/* El puntero mueve cada capa a distinta velocidad: la escena al revés, el modelo el que más */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .dossier-art--corridor .dossier-art__backdrop {
+    translate: calc(var(--px, 0) * -16px) calc(var(--py, 0) * -10px);
+    transition: translate 500ms ease-out;
+  }
+
+  .dossier-art--corridor .dossier-art__icons {
+    translate: calc(var(--px, 0) * 24px) calc(var(--py, 0) * 12px);
+  }
+
+  .dossier-art--corridor .dossier-art__model {
+    translate: calc(var(--px, 0) * 38px) calc(var(--py, 0) * 20px);
   }
 }
