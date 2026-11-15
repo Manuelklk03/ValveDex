@@ -1,13 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
-
-// Entrada de los dossiers al hacer scroll y cierre de sus desplegables con Escape
+// Cierre de los desplegables de los dossiers con Escape. Los dossiers se ven siempre: antes se
+// ocultaban con GSAP hasta acercarse con el scroll y, en pantallas altas o cargas lentas, no aparecían
 export function DossierMotion() {
   // Escape cierra la ficha desplegada (WCAG 1.4.13) hasta que el ratón o el foco salen del apartado
   useEffect(() => {
@@ -29,35 +25,6 @@ export function DossierMotion() {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
-
-  useGSAP(() => {
-    const mm = gsap.matchMedia();
-    mm.add("(prefers-reduced-motion: no-preference)", () => {
-      gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((dossier) => {
-        gsap
-          .timeline({
-            scrollTrigger: { trigger: dossier, start: "top 85%", once: true },
-          })
-          .from(dossier, {
-            y: 48,
-            opacity: 0,
-            duration: 0.9,
-            ease: "power3.out",
-          })
-          .from(
-            dossier.querySelectorAll("li"),
-            {
-              y: 12,
-              opacity: 0,
-              duration: 0.5,
-              ease: "power2.out",
-              stagger: 0.05,
-            },
-            "-=0.5",
-          );
-      });
-    });
-  });
 
   return null;
 }
