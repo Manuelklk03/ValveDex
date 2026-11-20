@@ -1,0 +1,223 @@
+/* Las cuatro salas de Valve: cada una es una franja oscura con su material y su color. Texto siempre claro sobre
+   fondo oscuro, así que el contraste no depende del tema de la página */
+.valve-rooms {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.valve-room {
+  --room-ink: #f3efe6;
+  --room-muted: #c7c0b2;
+  --room-color: #f39a2e;
+  --room-bg: #14110d;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: center;
+  min-height: clamp(18rem, 38vw, 26rem);
+  padding: clamp(2.5rem, 6vw, 4.5rem) max(1rem, calc((100% - 72rem) / 2));
+  background: var(--room-bg);
+  color: var(--room-ink);
+  overflow: clip;
+  transition: background-color 0.25s var(--ease-out, ease-out);
+}
+
+/* Número gigante con trazo del color de la sala */
+.valve-room__number {
+  position: absolute;
+  inset-block: 0;
+  right: max(1rem, calc((100% - 72rem) / 2));
+  z-index: -1;
+  display: grid;
+  align-items: center;
+  color: transparent;
+  font-size: clamp(9rem, 26vw, 20rem);
+  font-weight: 800;
+  line-height: 1;
+  -webkit-text-stroke: 2px
+    color-mix(in srgb, var(--room-color) 55%, transparent);
+  pointer-events: none;
+}
+
+.valve-room:nth-child(even) .valve-room__number {
+  right: auto;
+  left: max(1rem, calc((100% - 72rem) / 2));
+}
+
+.valve-room:nth-child(even) .valve-room__body {
+  justify-self: end;
+  text-align: right;
+}
+
+.valve-room__body {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 34rem;
+}
+
+.valve-room__kicker {
+  margin: 0;
+  color: var(--room-color);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.valve-room__title {
+  margin: 0;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 0.95;
+}
+
+/* El enlace cubre toda la sala */
+.valve-room__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.valve-room__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.valve-room__link:focus-visible {
+  outline: none;
+}
+
+.valve-room:has(.valve-room__link:focus-visible) {
+  outline: 3px solid var(--room-ink);
+  outline-offset: -6px;
+}
+
+.valve-room__summary {
+  margin: 0;
+  color: var(--room-muted);
+  line-height: 1.6;
+}
+
+.valve-room__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  color: var(--room-color);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.875rem;
+}
+
+.valve-room:nth-child(even) .valve-room__meta {
+  justify-content: flex-end;
+}
+
+.valve-room__enter {
+  font-weight: 700;
+  transition: translate 0.25s var(--ease-out, ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .valve-room:hover {
+    background-color: color-mix(in srgb, var(--room-color) 9%, var(--room-bg));
+  }
+
+  .valve-room:hover .valve-room__enter {
+    translate: 0.375rem 0;
+  }
+}
+
+/* --- Materiales: cada sala tiene el suyo --- */
+/* Historia: archivo industrial de la línea de producción, con la cinta de peligro */
+.valve-room--history {
+  --room-color: #f39a2e;
+  --room-bg: #17130e;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 1.25rem,
+    rgb(243 154 46 / 0.05) 1.25rem 2.5rem
+  );
+}
+
+.valve-room--history::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  z-index: -1;
+  height: 0.625rem;
+  background: repeating-linear-gradient(
+    -45deg,
+    #f39a2e 0 0.75rem,
+    #0b0a08 0.75rem 1.5rem
+  );
+}
+
+/* Steam: azul noche del cliente, con cápsulas de fondo */
+.valve-room--steam {
+  --room-color: #66c0f4;
+  --room-bg: #0f1a2b;
+  background-image:
+    radial-gradient(
+      ellipse 50% 90% at 85% 40%,
+      rgb(102 192 244 / 0.16),
+      transparent 70%
+    ),
+    linear-gradient(180deg, #0f1a2b, #162233);
+}
+
+/* Hardware: plano de laboratorio, cuadrícula cian sobre verde petróleo */
+.valve-room--hardware {
+  --room-color: #5fd4c4;
+  --room-bg: #0b1a1a;
+  background-image:
+    linear-gradient(rgb(95 212 196 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(95 212 196 / 0.07) 1px, transparent 1px);
+  background-size: 2.5rem 2.5rem;
+}
+
+/* Gente: pared de credenciales, rectángulos tenues como placas de identificación */
+.valve-room--people {
+  --room-color: #e8b86a;
+  --room-bg: #1b1510;
+  background-image:
+    linear-gradient(rgb(232 184 106 / 0.06) 2px, transparent 2px),
+    linear-gradient(90deg, rgb(232 184 106 / 0.06) 2px, transparent 2px);
+  background-size: 9rem 6rem;
+}
+
+/* Las salas aparecen al llegar a ellas (solo con scroll-driven animations y sin «reducir movimiento») */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .valve-room__body {
+      animation: valve-room-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 50%;
+    }
+  }
+}
+
+@keyframes valve-room-in {
+  from {
+    opacity: 0;
+    translate: 0 2rem;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .valve-room:nth-child(even) .valve-room__body {
+    justify-self: start;
+    text-align: left;
+  }
+
+  .valve-room:nth-child(even) .valve-room__meta {
+    justify-content: flex-start;
+  }
+
+  .valve-room__number,
+  .valve-room:nth-child(even) .valve-room__number {
+    right: 0.5rem;
+    left: auto;
+    opacity: 0.6;
+  }
+}

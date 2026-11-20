@@ -32,6 +32,18 @@ const pages: SearchItem[] = [
   },
   {
     type: "page",
+    name: "Valve",
+    detail: "Historia, Steam, hardware y gente de la empresa",
+    href: "/valve",
+  },
+  {
+    type: "page",
+    name: "Gente de Valve",
+    detail: "Fundadores, guionistas y diseñadores",
+    href: "/valve/personas",
+  },
+  {
+    type: "page",
     name: "Historia de Valve",
     detail: "Cronología de la empresa desde 1996",
     href: "/valve/historia",
