@@ -6,6 +6,10 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+### Seguridad
+
+- Next.js sube de 16.4.2 a 16.4.6, que corrige los avisos de seguridad publicados para 16.0.0–16.4.4 (cachés de `use cache`, optimización de imágenes y respuestas reenviadas en despliegues propios).
+
 ### Añadido
 
 - El hub de cada juego de Half-Life continúa el mundo del dossier: la cabecera es la misma escena a todo el ancho, con el material del juego, el cartel de techo, el suelo, los detalles y el protagonista, y sus apartados dejan de ser tarjetas para ser salas: franjas a todo el ancho con la foto real de sus fichas, un número gigante, los nombres de las primeras fichas y una entrada que usa la animación del juego. Las salas alternan de lado, se encienden al acercarse y aparecen al hacer scroll, y al bajar por la página la luz del juego se apaga y el fondo se oscurece, del exterior al interior.
