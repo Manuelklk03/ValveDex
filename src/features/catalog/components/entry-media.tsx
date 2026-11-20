@@ -6,10 +6,19 @@ import styles from "./entry-media.module.css";
 type EntryMediaProps = {
   appearance: EntryAppearance;
   entryName: string;
+  // El visor 3D se abre solo (cabecera de la ficha como mundo)
+  start3d?: boolean;
+  // Sin pie de crédito: en la cabecera de la ficha, los créditos van en la capa «Fuentes»
+  hideCredit?: boolean;
 };
 
 // Imagen de una aparición con su crédito: comparador original/HD, visor 3D o imagen sola
-export function EntryMedia({ appearance, entryName }: EntryMediaProps) {
+export function EntryMedia({
+  appearance,
+  entryName,
+  start3d = false,
+  hideCredit = false,
+}: EntryMediaProps) {
   const original = appearance.images?.original;
   const hd = appearance.images?.hd;
   const single = hd ?? original;
@@ -27,9 +36,15 @@ export function EntryMedia({ appearance, entryName }: EntryMediaProps) {
           beforeLabel="Original"
           afterLabel="HD Pack"
           models={models}
+          start3d={start3d}
         />
       ) : models ? (
-        <ImageCompare before={single} beforeLabel={entryName} models={models} />
+        <ImageCompare
+          before={single}
+          beforeLabel={entryName}
+          models={models}
+          start3d={start3d}
+        />
       ) : (
         <Image
           src={single.src}
@@ -40,16 +55,17 @@ export function EntryMedia({ appearance, entryName }: EntryMediaProps) {
         />
       )}
 
-      {credits.map((image) => (
-        <figcaption key={image.src} className={styles["entry-media__credit"]}>
-          Imagen:{" "}
-          <a href={image.source.url} className={styles["entry-media__link"]}>
-            {image.source.title}
-          </a>
-          {image.credit && ` · ${image.credit}`}
-          {image.license && ` · ${image.license}`}
-        </figcaption>
-      ))}
+      {!hideCredit &&
+        credits.map((image) => (
+          <figcaption key={image.src} className={styles["entry-media__credit"]}>
+            Imagen:{" "}
+            <a href={image.source.url} className={styles["entry-media__link"]}>
+              {image.source.title}
+            </a>
+            {image.credit && ` · ${image.credit}`}
+            {image.license && ` · ${image.license}`}
+          </figcaption>
+        ))}
     </figure>
   );
 }
