@@ -28,6 +28,8 @@ type EntryTileProps = {
   teams?: string;
   // Contenido extra bajo el resumen, como el desplegable de construcciones del Engineer
   children?: ReactNode;
+  // Pieza de un mundo de Half-Life: sin marco de tarjeta, el objeto flota sobre la luz del juego
+  world?: boolean;
 };
 
 // Ficha de un apartado: render o captura grande, datos clave y, si hay modelo, el arma o criatura girando al activarla
@@ -42,6 +44,7 @@ export function EntryTile({
   facts,
   teams,
   children,
+  world = false,
 }: EntryTileProps) {
   const { active, everActive, reduceMotion, handlers } = useHoverFocus();
   const team = useTeam()?.team;
@@ -51,11 +54,13 @@ export function EntryTile({
 
   return (
     <li
-      className={
-        active
-          ? `${styles["entry-tile"]} ${styles["entry-tile--active"]}`
-          : styles["entry-tile"]
-      }
+      className={[
+        styles["entry-tile"],
+        active && styles["entry-tile--active"],
+        world && styles["entry-tile--world"],
+      ]
+        .filter(Boolean)
+        .join(" ")}
       data-teams={teams}
       onPointerEnter={handlers.onPointerEnter}
       onPointerLeave={handlers.onPointerLeave}

@@ -13,6 +13,12 @@ type WorldHeroProps = {
   breadcrumb: ReactNode;
   // Datos extra bajo el resumen: juego base, fuentes…
   children?: ReactNode;
+  // Las páginas de apartado reutilizan el mundo del juego con su propio título, resumen y etiqueta
+  title?: string;
+  summary?: string;
+  label?: string;
+  // Versión baja, para las páginas interiores
+  compact?: boolean;
 };
 
 // Cabecera del hub de un juego de Half-Life: es el mismo mundo del dossier (material, escena, cartel de techo,
@@ -23,6 +29,10 @@ export function WorldHero({
   specs,
   breadcrumb,
   children,
+  title = game.name,
+  summary = game.description,
+  label = look.label,
+  compact = false,
 }: WorldHeroProps) {
   const art = dossierArt[game.id];
   const titleId = `${game.id}-world-title`;
@@ -31,7 +41,10 @@ export function WorldHero({
     styles["game-dossier--corridor"],
     styles[`game-dossier--${look.variant}`],
     styles["game-dossier--hero"],
-  ].join(" ");
+    compact && styles["game-dossier--compact"],
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <article className={className} aria-labelledby={titleId}>
@@ -47,11 +60,11 @@ export function WorldHero({
       <header className={styles["game-dossier__header"]}>
         <div className={styles["game-dossier__heading"]}>
           <div className={styles["game-dossier__crumbs"]}>{breadcrumb}</div>
-          <p className={styles["game-dossier__label"]}>{look.label}</p>
+          <p className={styles["game-dossier__label"]}>{label}</p>
           <h1 id={titleId} className={styles["game-dossier__title"]}>
-            {game.name}
+            {title}
           </h1>
-          <p className={styles["game-dossier__summary"]}>{game.description}</p>
+          <p className={styles["game-dossier__summary"]}>{summary}</p>
           {children}
         </div>
 

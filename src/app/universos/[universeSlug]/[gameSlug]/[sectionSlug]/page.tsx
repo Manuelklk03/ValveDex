@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { notFound } from "next/navigation";
 import { isEntryCategory } from "@/domain/entry";
@@ -17,6 +17,8 @@ import {
 } from "@/features/catalog/get-entries";
 import { getEntryFacts } from "@/features/catalog/get-entry-facts";
 import { GameHero } from "@/features/games/components/game-hero";
+import { WorldHero } from "@/features/games/components/world-hero";
+import { getDossierLook } from "@/features/games/dossier-looks";
 import { getGameLore } from "@/features/games/get-game-lore";
 import {
   getRivalTeam,
@@ -36,6 +38,7 @@ import {
   getUniverses,
 } from "@/features/universes/get-universes";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
+import worldTheme from "@/features/games/world-theme.module.css";
 import styles from "./page.module.css";
 
 function hasSectionContent(gameId: string, section: GameSection): boolean {
@@ -140,6 +143,9 @@ export default async function SectionPage({
   }
 
   const { universe, game, section } = data;
+  // Los juegos de Half-Life con dossier mantienen su mundo dentro del apartado: cabecera del juego y piezas sin tarjeta
+  const look =
+    universe.slug === "half-life" ? getDossierLook(game.id) : undefined;
 
   const teams = getGameTeams(game.id);
   const items = data.kind === "entries" ? data.entries : [];
@@ -192,64 +198,88 @@ export default async function SectionPage({
         model={images?.models?.original}
         facts={getEntryFacts(entry).slice(0, 2)}
         teams={visibleTeams?.join(" ")}
+        world={Boolean(look)}
       >
         <BuildingList buildings={buildings} />
       </EntryTile>
     );
   }
 
+  const specs = [
+    { label: "Juego", value: game.name },
+    {
+      label: "Contenido",
+      value:
+        data.kind === "lore" ? (
+          `${data.lore.paragraphs.length} ${data.lore.paragraphs.length === 1 ? "párrafo" : "párrafos"}`
+        ) : (
+          <TeamEntryCount
+            total={items.length}
+            counts={Object.fromEntries(
+              teams.map((team) => [
+                team.id,
+                items.filter(
+                  (item) => !item.teams || item.teams.includes(team.id),
+                ).length,
+              ]),
+            )}
+          />
+        ),
+    },
+  ];
+  const breadcrumb = (
+    <Breadcrumb
+      items={[
+        { label: "Universos", href: "/universos" },
+        { label: universe.name, href: `/universos/${universe.slug}` },
+        {
+          label: game.name,
+          href: `/universos/${universe.slug}/${game.slug}`,
+        },
+        { label: section.name },
+      ]}
+    />
+  );
+
   return (
-    <main className={styles["section-page"]}>
-      {/* El acento de la cabecera es el color del sector del apartado */}
-      <div
-        style={{ "--accent": `var(--sector-${section.id})` } as CSSProperties}
-      >
-        <GameHero
+    <main
+      className={
+        look
+          ? `${styles["section-page"]} ${worldTheme["world-theme"]}`
+          : styles["section-page"]
+      }
+      data-variant={look?.variant}
+    >
+      {look ? (
+        <WorldHero
+          game={game}
+          look={look}
           compact
-          name={section.name}
+          title={section.name}
           summary={section.description}
-          art={
-            dossierArt[game.id]?.backdrop
-              ? { backdrop: dossierArt[game.id].backdrop, icons: [] }
-              : undefined
-          }
-          specs={[
-            { label: "Juego", value: game.name },
-            {
-              label: "Contenido",
-              value:
-                data.kind === "lore" ? (
-                  `${data.lore.paragraphs.length} ${data.lore.paragraphs.length === 1 ? "párrafo" : "párrafos"}`
-                ) : (
-                  <TeamEntryCount
-                    total={items.length}
-                    counts={Object.fromEntries(
-                      teams.map((team) => [
-                        team.id,
-                        items.filter(
-                          (item) => !item.teams || item.teams.includes(team.id),
-                        ).length,
-                      ]),
-                    )}
-                  />
-                ),
-            },
-          ]}
-          breadcrumb={
-            <Breadcrumb
-              items={[
-                { label: "Universos", href: "/universos" },
-                { label: universe.name, href: `/universos/${universe.slug}` },
-                {
-                  label: game.name,
-                  href: `/universos/${universe.slug}/${game.slug}`,
-                },
-                { label: section.name },
-              ]}
-            />
-          }
+          label={game.name}
+          specs={specs}
+          breadcrumb={breadcrumb}
         />
-      </div>
+      ) : (
+        /* El acento de la cabecera es el color del sector del apartado */
+        <div
+          style={{ "--accent": `var(--sector-${section.id})` } as CSSProperties}
+        >
+          <GameHero
+            compact
+            name={section.name}
+            summary={section.description}
+            art={
+              dossierArt[game.id]?.backdrop
+                ? { backdrop: dossierArt[game.id].backdrop, icons: [] }
+                : undefined
+            }
+            specs={specs}
+            breadcrumb={breadcrumb}
+          />
+        </div>
+      )}
 
       <div className={styles["section-page__content"]}>
         <TeamPicker leaders={getTeamLeaders(game.id)} />
