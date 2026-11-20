@@ -28,6 +28,8 @@ type ImageCompareProps = {
   beforeLabel: string;
   afterLabel?: string;
   models?: { original: string; hd?: string };
+  // Empieza en el visor 3D (la ficha como mundo): las capturas quedan a un botón
+  start3d?: boolean;
 };
 
 export function ImageCompare({
@@ -36,9 +38,10 @@ export function ImageCompare({
   beforeLabel,
   afterLabel,
   models,
+  start3d = false,
 }: ImageCompareProps) {
   const [position, setPosition] = useState(50);
-  const [is3d, setIs3d] = useState(false);
+  const [is3d, setIs3d] = useState(start3d);
 
   return (
     <div className={styles["image-compare"]}>

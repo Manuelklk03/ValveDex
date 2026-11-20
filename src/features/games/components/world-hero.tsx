@@ -19,6 +19,8 @@ type WorldHeroProps = {
   label?: string;
   // Versión baja, para las páginas interiores
   compact?: boolean;
+  // Protagonista propio (el visor 3D de una ficha): ocupa el lado derecho y sustituye al arte del dossier
+  aside?: ReactNode;
 };
 
 // Cabecera del hub de un juego de Half-Life: es el mismo mundo del dossier (material, escena, cartel de techo,
@@ -33,6 +35,7 @@ export function WorldHero({
   summary = game.description,
   label = look.label,
   compact = false,
+  aside,
 }: WorldHeroProps) {
   const art = dossierArt[game.id];
   const titleId = `${game.id}-world-title`;
@@ -42,13 +45,20 @@ export function WorldHero({
     styles[`game-dossier--${look.variant}`],
     styles["game-dossier--hero"],
     compact && styles["game-dossier--compact"],
+    aside && styles["game-dossier--stage"],
   ]
     .filter(Boolean)
     .join(" ");
 
   return (
     <article className={className} aria-labelledby={titleId}>
-      {art && <DossierArt art={art} corridor priority />}
+      {art && (
+        <DossierArt
+          art={aside ? { backdrop: art.backdrop, icons: [] } : art}
+          corridor
+          priority
+        />
+      )}
 
       <span className={styles["game-dossier__stamp"]} aria-hidden="true">
         {look.stamp}
@@ -81,6 +91,8 @@ export function WorldHero({
           ))}
         </dl>
       </header>
+
+      {aside && <div className={styles["game-dossier__aside"]}>{aside}</div>}
     </article>
   );
 }

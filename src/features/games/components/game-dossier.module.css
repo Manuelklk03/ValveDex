@@ -2140,3 +2140,27 @@
 .game-dossier--compact .game-dossier__title {
   font-size: clamp(2.25rem, 5.5vw, 4.5rem);
 }
+
+/* --- Ficha como mundo: el visor 3D es el protagonista, a la derecha de la cabecera --- */
+.game-dossier__aside {
+  position: relative;
+  z-index: 2;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 56rem) {
+  .game-dossier--stage .game-dossier__aside {
+    position: absolute;
+    inset: 1.5rem var(--hero-inline) 3.25rem auto;
+    width: min(46%, 38rem);
+    margin: 0;
+  }
+
+  .game-dossier--hero.game-dossier--stage {
+    min-height: 42rem;
+  }
+
+  .game-dossier--stage .game-dossier__header {
+    min-height: 36rem;
+  }
+}
