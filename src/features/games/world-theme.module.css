@@ -107,3 +107,10 @@
     opacity: 0.55;
   }
 }
+
+/* Sin ambiente que cambia con el scroll: solo aporta la luz y el suelo de su juego (fichas, donde el fijo taparía
+   el contenido que no pertenece al tema) */
+.world-theme--still::before,
+.world-theme--still::after {
+  content: none;
+}
