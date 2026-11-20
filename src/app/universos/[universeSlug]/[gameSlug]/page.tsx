@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
@@ -29,6 +29,7 @@ import {
   getUniverses,
 } from "@/features/universes/get-universes";
 
+import worldTheme from "@/features/games/world-theme.module.css";
 import styles from "./page.module.css";
 
 // Next 16.4 avisa en desarrollo de que `params` se lee fuera de Suspense; la página se genera entera
@@ -134,7 +135,7 @@ export default async function GamePage({
     <main
       className={
         look
-          ? `${styles["game-page"]} ${styles["game-page--world"]}`
+          ? `${styles["game-page"]} ${worldTheme["world-theme"]}`
           : styles["game-page"]
       }
       data-variant={look?.variant}

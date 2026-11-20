@@ -1,0 +1,109 @@
+/* Tema de mundo de los juegos de Half-Life: la luz y el suelo de cada juego, y el ambiente que cambia al hacer scroll.
+   Lo usan el hub y las páginas de apartado (clase world-theme y data-variant con la variante del dossier) */
+.world-theme {
+  --world-light: #f39a2e;
+  --world-floor: repeating-linear-gradient(
+    -45deg,
+    var(--world-light) 0 0.75rem,
+    #0b0a08 0.75rem 1.5rem
+  );
+  position: relative;
+  isolation: isolate;
+}
+
+/* La luz de cada juego sobre el fondo oscuro de sus salas */
+.world-theme[data-variant="opposing-force"] {
+  --world-light: #9bd23c;
+  --world-floor: repeating-linear-gradient(
+    45deg,
+    var(--world-light) 0 0.5rem,
+    #0a0d07 0.5rem 1rem
+  );
+}
+
+.world-theme[data-variant="blue-shift"] {
+  --world-light: #8a8aff;
+}
+
+.world-theme[data-variant="decay"] {
+  --world-light: #b79cf0;
+  --world-floor: repeating-linear-gradient(
+    90deg,
+    var(--world-light) 0 2px,
+    transparent 2px 0.875rem
+  );
+}
+
+.world-theme[data-variant="half-life-2"] {
+  --world-light: #f28a1b;
+}
+
+.world-theme[data-variant="half-life-2-episode-one"] {
+  --world-light: #8fd0e6;
+  --world-floor: repeating-linear-gradient(
+    90deg,
+    var(--world-light) 0 2.5rem,
+    #070d10 2.5rem 3rem
+  );
+}
+
+.world-theme[data-variant="half-life-2-episode-two"] {
+  --world-light: #6fcf7a;
+}
+
+.world-theme[data-variant="half-life-alyx"] {
+  --world-light: #00d4ff;
+  --world-floor: repeating-linear-gradient(
+    -45deg,
+    #ffcc00 0 0.75rem,
+    #0a0e12 0.75rem 1.5rem
+  );
+}
+
+/* Del exterior al interior: al bajar, la luz del juego se apaga y la sala se oscurece. Solo con
+   scroll-driven animations y sin «reducir movimiento» */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .world-theme::before,
+    .world-theme::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      animation-timeline: scroll(root);
+      animation-fill-mode: both;
+      animation-timing-function: linear;
+    }
+
+    .world-theme::before {
+      background: radial-gradient(
+        ellipse at 50% 0,
+        color-mix(in srgb, var(--world-light) 22%, transparent),
+        transparent 65%
+      );
+      animation-name: world-light-fade;
+    }
+
+    .world-theme::after {
+      background: #060504;
+      animation-name: world-darken;
+    }
+  }
+}
+
+@keyframes world-light-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes world-darken {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.55;
+  }
+}
