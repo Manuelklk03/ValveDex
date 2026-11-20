@@ -13,6 +13,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 ### Añadido
 
 - El hub de cada juego de Half-Life continúa el mundo del dossier: la cabecera es la misma escena a todo el ancho, con el material del juego, el cartel de techo, el suelo, los detalles y el protagonista, y sus apartados dejan de ser tarjetas para ser salas: franjas a todo el ancho con la foto real de sus fichas, un número gigante, los nombres de las primeras fichas y una entrada que usa la animación del juego. Las salas alternan de lado, se encienden al acercarse y aparecen al hacer scroll, y al bajar por la página la luz del juego se apaga y el fondo se oscurece, del exterior al interior.
+- Las páginas de apartado de Half-Life (armas, mapas, personajes, enemigos…) son un pasillo de piezas: la cabecera es el mundo del juego con el título del apartado y cada ficha deja de ser una tarjeta; el objeto flota sobre la luz del juego con su sombra en el suelo, los mapas se asoman por un arco como las puertas, y al acercarse la luz se intensifica, la pieza se levanta y el objeto gira en 3D.
 
 ## [0.5.0] — 2026-11-16
 
