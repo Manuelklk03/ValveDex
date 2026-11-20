@@ -87,3 +87,80 @@
 .section-page__entries:has(details[open]) {
   align-items: start;
 }
+
+/* --- Lore en un mundo de Half-Life: expediente que se desvela al bajar, con el resto de la historia clasificado --- */
+.section-page__lore--world {
+  --lore-light: var(--world-light, var(--accent));
+  position: relative;
+  max-width: 48rem;
+  gap: 2rem;
+  padding: 0 0 0 clamp(1rem, 3vw, 2rem);
+  border-left: 3px solid var(--lore-light);
+  counter-reset: lore;
+}
+
+.section-page__lore--world > .section-page__lore-text {
+  position: relative;
+  font-size: 1.125rem;
+  line-height: 1.75;
+  counter-increment: lore;
+}
+
+/* Número de párrafo, como en un informe */
+.section-page__lore--world > .section-page__lore-text::before {
+  content: "§" counter(lore, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.375rem;
+  color: var(--lore-light);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+  letter-spacing: 0.12em;
+}
+
+/* Sello de material clasificado: el desplegable cerrado es un sello; abierto, el texto desclasificado */
+.section-page__lore--world .section-page__spoilers {
+  gap: 2rem;
+  padding: 1.25rem 1.5rem;
+  border: 2px dashed var(--lore-light);
+  background: color-mix(in srgb, var(--lore-light) 7%, var(--surface));
+}
+
+.section-page__lore--world .section-page__spoilers-toggle {
+  color: var(--foreground);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.section-page__lore--world .section-page__spoilers-toggle:focus-visible {
+  outline: 3px solid var(--lore-light);
+  outline-offset: 4px;
+}
+
+.section-page__lore--world .section-page__spoilers[open] {
+  border-style: solid;
+}
+
+/* Los párrafos entran al llegar a ellos (solo con scroll-driven animations y sin «reducir movimiento») */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .section-page__lore--world > .section-page__lore-text {
+      animation: lore-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+  }
+}
+
+@keyframes lore-reveal {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}
+
+/* Dentro de un details los hijos no son items del flex: el espacio entre párrafos va como margen */
+.section-page__lore--world .section-page__spoilers > .section-page__lore-text {
+  margin-top: 1.25rem;
+}
