@@ -9,7 +9,15 @@ import type { Entry, EntryCategory } from "@/domain/entry";
 import { dossierArt } from "@/data/dossier-art";
 import { EntryHero } from "@/features/catalog/components/entry-hero";
 import { EntryMedia } from "@/features/catalog/components/entry-media";
+import {
+  EntryStage,
+  type EntryLayer,
+} from "@/features/catalog/components/entry-stage";
+import stageStyles from "@/features/catalog/components/entry-stage.module.css";
 import { EntryTile } from "@/features/catalog/components/entry-tile";
+import { WorldHero } from "@/features/games/components/world-hero";
+import { getDossierLook } from "@/features/games/dossier-looks";
+import worldTheme from "@/features/games/world-theme.module.css";
 import {
   getEntries,
   getEntryAppearance,
@@ -97,6 +105,10 @@ export default async function EntryPage({
   const heroImage =
     first?.appearance.images?.hd ?? first?.appearance.images?.original;
 
+  // Solo los juegos de Half-Life con dossier tienen mundo; la ficha usa el del juego desde el que se llega
+  const worldLookOf = (at?: Origin) =>
+    at?.universe.slug === "half-life" ? getDossierLook(at.game.id) : undefined;
+
   const renderBreadcrumb = (category: EntryCategory, at?: Origin) => {
     const first = at;
     const firstGamePath = first
@@ -159,7 +171,9 @@ export default async function EntryPage({
         : `/fichas/${other.slug}`;
     };
 
-    return (
+    const moreLook = worldLookOf(first);
+
+    const more = (
       <section
         className={styles["entry-page__section"]}
         aria-labelledby="more-title"
@@ -181,6 +195,7 @@ export default async function EntryPage({
                   ?.original
               }
               facts={getEntryFacts(other).slice(0, 2)}
+              world={Boolean(moreLook)}
             />
           ))}
         </ul>
@@ -211,6 +226,18 @@ export default async function EntryPage({
         </nav>
       </section>
     );
+
+    // Las piezas de un juego de Half-Life llevan la luz y el suelo de ese juego (sin el ambiente fijo del hub)
+    return moreLook ? (
+      <div
+        className={`${worldTheme["world-theme"]} ${worldTheme["world-theme--still"]}`}
+        data-variant={moreLook.variant}
+      >
+        {more}
+      </div>
+    ) : (
+      more
+    );
   };
 
   // Con varios orígenes, la URL (`?juego=…&apartado=…`) decide cuál se enseña; sin parámetros, el primer juego
@@ -235,23 +262,307 @@ export default async function EntryPage({
     );
   };
 
-  return (
-    <main className={styles["entry-page"]}>
-      <EntryHero
-        name={entry.name}
+  // Contenido de la ficha, una sola vez: en los juegos con mundo va en las capas del visor y, en el resto, en secciones
+  const factsBody = (
+    <dl className={stageStyles["entry-stage__facts"]}>
+      {facts.map((fact) => (
+        <div key={fact.label} className={stageStyles["entry-stage__fact"]}>
+          <dt>{fact.label}</dt>
+          <dd>{fact.value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+
+  const notesBody = entry.notes && entry.notes.length > 0 && (
+    <ul className={styles["entry-page__notes"]}>
+      {entry.notes.map((note) => (
+        <li key={note} className={styles["entry-page__note"]}>
+          {note}
+        </li>
+      ))}
+    </ul>
+  );
+
+  // Con mundo, el visor ya enseña la imagen del juego de origen: la lista no repite imágenes
+  const renderAppearances = (withMedia: boolean) => (
+    <ul className={styles["entry-page__games"]}>
+      {gameAppearances.map(({ appearance, game, universe }, index) => (
+        <li key={game.id} className={styles["entry-page__game"]}>
+          <div>
+            <Link
+              href={`/universos/${universe.slug}/${game.slug}`}
+              className={styles["entry-page__game-link"]}
+            >
+              {game.name}
+            </Link>{" "}
+            <span className={styles["entry-page__game-year"]}>
+              ({getGameYearLabel(game)})
+            </span>
+          </div>
+
+          {appearance.summary && (
+            <p className={styles["entry-page__game-summary"]}>
+              {appearance.summary}
+            </p>
+          )}
+
+          {/* La imagen de la primera aparición ya está en la cabecera */}
+          {withMedia && index > 0 && (
+            <EntryMedia appearance={appearance} entryName={entry.name} />
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+  const appearancesBody = renderAppearances(true);
+
+  const relatedBody = relatedEntries.length > 0 && (
+    <ul className={styles["entry-page__related"]}>
+      {relatedEntries.map(({ label, entry: related }) => (
+        <li key={`${label}-${related.id}`}>
+          <span className={styles["entry-page__related-label"]}>{label}:</span>{" "}
+          <Link
+            href={`/fichas/${related.slug}`}
+            className={styles["entry-page__related-link"]}
+          >
+            {related.name}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+
+  const sourcesBody = (
+    <ul className={styles["entry-page__sources"]}>
+      {entry.sources.map((source) => (
+        <li key={source.url}>
+          <a href={source.url} className={styles["entry-page__source-link"]}>
+            {source.title}
+          </a>
+          {/* Decisión de Manuel: lo que viene de foros y comunidades se distingue a simple vista */}
+          {source.kind === "community" && (
+            <span className={styles["entry-page__source-kind"]}>
+              {" "}
+              (comunidad)
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+
+  // Créditos de las imágenes de la ficha (en la cabecera con mundo no hay pie de foto)
+  const imageCredits = [
+    ...new Map(
+      gameAppearances
+        .flatMap(({ appearance }) => [
+          appearance.images?.original,
+          appearance.images?.hd,
+        ])
+        .filter((image) => image !== undefined)
+        .map((image) => [image.src, image] as const),
+    ).values(),
+  ];
+  const worldSourcesBody = (
+    <>
+      {sourcesBody}
+      {imageCredits.length > 0 && (
+        <>
+          <p className={stageStyles["entry-stage__subtitle"]}>Imágenes</p>
+          <ul className={styles["entry-page__sources"]}>
+            {imageCredits.map((image) => (
+              <li key={image.src}>
+                <a
+                  href={image.source.url}
+                  className={styles["entry-page__source-link"]}
+                >
+                  {image.source.title}
+                </a>
+                {image.credit && ` · ${image.credit}`}
+                {image.license && ` · ${image.license}`}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </>
+  );
+
+  const layers: EntryLayer[] = [
+    ...(facts.length > 0
+      ? [{ id: "datos", label: "Datos", content: factsBody }]
+      : []),
+    ...(notesBody
+      ? [
+          {
+            id: "desarrollo",
+            label: "Desarrollo",
+            count: entry.notes?.length,
+            content: notesBody,
+          },
+        ]
+      : []),
+    {
+      id: "apariciones",
+      label: "Apariciones",
+      count: gameAppearances.length,
+      content: renderAppearances(false),
+    },
+    ...(relatedBody
+      ? [
+          {
+            id: "relacionado",
+            label: "Relacionado",
+            count: relatedEntries.length,
+            content: relatedBody,
+          },
+        ]
+      : []),
+    {
+      id: "fuentes",
+      label: "Fuentes",
+      count: entry.sources.length,
+      content: worldSourcesBody,
+    },
+  ];
+
+  // Cabecera: en un juego de Half-Life, el mundo del juego con el visor 3D protagonista y las capas alrededor;
+  // en el resto, la cabecera de siempre
+  const renderHero = (category: EntryCategory, at?: Origin) => {
+    const look = worldLookOf(at);
+    const breadcrumb = renderBreadcrumb(category, at);
+
+    if (!look || !at) {
+      return (
+        <EntryHero
+          name={entry.name}
+          summary={entry.summary}
+          sectionName={section?.name}
+          sectionId={section?.id}
+          backdrop={heroImage?.src}
+          gameIcon={first ? dossierArt[first.game.id]?.icons[0] : undefined}
+          specs={[{ label: "Registro", value: entry.id }, ...facts]}
+          breadcrumb={breadcrumb}
+          media={
+            first?.appearance.images ? (
+              <EntryMedia
+                appearance={first.appearance}
+                entryName={entry.name}
+              />
+            ) : undefined
+          }
+        />
+      );
+    }
+
+    const gameIcon = dossierArt[at.game.id]?.icons[0];
+
+    return (
+      <WorldHero
+        game={at.game}
+        look={look}
+        compact
+        title={entry.name}
         summary={entry.summary}
-        sectionName={section?.name}
-        sectionId={section?.id}
-        backdrop={heroImage?.src}
-        gameIcon={first ? dossierArt[first.game.id]?.icons[0] : undefined}
-        specs={[{ label: "Registro", value: entry.id }, ...facts]}
-        breadcrumb={byOrigin(renderBreadcrumb)}
-        media={
-          first?.appearance.images ? (
-            <EntryMedia appearance={first.appearance} entryName={entry.name} />
-          ) : undefined
+        label={getGameSectionById(category)?.name ?? look.label}
+        specs={[{ label: "Registro", value: entry.id }]}
+        breadcrumb={breadcrumb}
+        aside={
+          <EntryStage layers={layers}>
+            {at.appearance.images ? (
+              <EntryMedia
+                appearance={at.appearance}
+                entryName={entry.name}
+                start3d
+                hideCredit
+              />
+            ) : (
+              gameIcon && (
+                <div
+                  className={stageStyles["entry-stage__icon"]}
+                  style={{
+                    maskImage: `url(${gameIcon.src})`,
+                    WebkitMaskImage: `url(${gameIcon.src})`,
+                  }}
+                  aria-hidden="true"
+                />
+              )
+            )}
+          </EntryStage>
         }
       />
+    );
+  };
+
+  // Secciones de siempre, solo para las fichas sin mundo (en las demás, esos datos están en las capas)
+  const renderClassicSections = (_category: EntryCategory, at?: Origin) => {
+    if (worldLookOf(at)) return null;
+
+    return (
+      <>
+        {notesBody && (
+          <section
+            className={styles["entry-page__section"]}
+            aria-labelledby="notes-title"
+          >
+            <h2
+              id="notes-title"
+              className={styles["entry-page__section-title"]}
+            >
+              Desarrollo y curiosidades
+            </h2>
+            {notesBody}
+          </section>
+        )}
+
+        <section
+          className={styles["entry-page__section"]}
+          aria-labelledby="appearances-title"
+        >
+          <h2
+            id="appearances-title"
+            className={styles["entry-page__section-title"]}
+          >
+            Aparece en
+          </h2>
+          {appearancesBody}
+        </section>
+
+        {relatedBody && (
+          <section
+            className={styles["entry-page__section"]}
+            aria-labelledby="related-title"
+          >
+            <h2
+              id="related-title"
+              className={styles["entry-page__section-title"]}
+            >
+              Relacionado
+            </h2>
+            {relatedBody}
+          </section>
+        )}
+      </>
+    );
+  };
+
+  const renderClassicSources = (_category: EntryCategory, at?: Origin) =>
+    worldLookOf(at) ? null : (
+      <section
+        className={styles["entry-page__section"]}
+        aria-labelledby="sources-title"
+      >
+        <h2 id="sources-title" className={styles["entry-page__section-title"]}>
+          Fuentes
+        </h2>
+        {sourcesBody}
+      </section>
+    );
+
+  return (
+    <main className={styles["entry-page"]}>
+      {byOrigin(renderHero)}
 
       <div className={styles["entry-page__content"]}>
         {levels.length > 0 && (
@@ -296,133 +607,11 @@ export default async function EntryPage({
           </section>
         )}
 
-        {entry.notes && entry.notes.length > 0 && (
-          <section
-            className={styles["entry-page__section"]}
-            aria-labelledby="notes-title"
-          >
-            <h2
-              id="notes-title"
-              className={styles["entry-page__section-title"]}
-            >
-              Desarrollo y curiosidades
-            </h2>
-            <ul className={styles["entry-page__notes"]}>
-              {entry.notes.map((note) => (
-                <li key={note} className={styles["entry-page__note"]}>
-                  {note}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        <section
-          className={styles["entry-page__section"]}
-          aria-labelledby="appearances-title"
-        >
-          <h2
-            id="appearances-title"
-            className={styles["entry-page__section-title"]}
-          >
-            Aparece en
-          </h2>
-          <ul className={styles["entry-page__games"]}>
-            {gameAppearances.map(({ appearance, game, universe }, index) => {
-              return (
-                <li key={game.id} className={styles["entry-page__game"]}>
-                  <div>
-                    <Link
-                      href={`/universos/${universe.slug}/${game.slug}`}
-                      className={styles["entry-page__game-link"]}
-                    >
-                      {game.name}
-                    </Link>{" "}
-                    <span className={styles["entry-page__game-year"]}>
-                      ({getGameYearLabel(game)})
-                    </span>
-                  </div>
-
-                  {appearance.summary && (
-                    <p className={styles["entry-page__game-summary"]}>
-                      {appearance.summary}
-                    </p>
-                  )}
-
-                  {/* La imagen de la primera aparición ya está en la cabecera */}
-                  {index > 0 && (
-                    <EntryMedia
-                      appearance={appearance}
-                      entryName={entry.name}
-                    />
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-
-        {relatedEntries.length > 0 && (
-          <section
-            className={styles["entry-page__section"]}
-            aria-labelledby="related-title"
-          >
-            <h2
-              id="related-title"
-              className={styles["entry-page__section-title"]}
-            >
-              Relacionado
-            </h2>
-            <ul className={styles["entry-page__related"]}>
-              {relatedEntries.map(({ label, entry: related }) => (
-                <li key={`${label}-${related.id}`}>
-                  <span className={styles["entry-page__related-label"]}>
-                    {label}:
-                  </span>{" "}
-                  <Link
-                    href={`/fichas/${related.slug}`}
-                    className={styles["entry-page__related-link"]}
-                  >
-                    {related.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+        {byOrigin(renderClassicSections)}
 
         {byOrigin(renderMore)}
 
-        <section
-          className={styles["entry-page__section"]}
-          aria-labelledby="sources-title"
-        >
-          <h2
-            id="sources-title"
-            className={styles["entry-page__section-title"]}
-          >
-            Fuentes
-          </h2>
-          <ul className={styles["entry-page__sources"]}>
-            {entry.sources.map((source) => (
-              <li key={source.url}>
-                <a
-                  href={source.url}
-                  className={styles["entry-page__source-link"]}
-                >
-                  {source.title}
-                </a>
-                {/* Decisión de Manuel: lo que viene de foros y comunidades se distingue a simple vista */}
-                {source.kind === "community" && (
-                  <span className={styles["entry-page__source-kind"]}>
-                    {" "}
-                    (comunidad)
-                  </span>
-                )}
-              </li>
-            ))}
-          </ul>
-        </section>
+        {byOrigin(renderClassicSources)}
       </div>
     </main>
   );
