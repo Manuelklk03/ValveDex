@@ -7,3 +7,6 @@ next-env.d.ts
 package-lock.json
 *.tsbuildinfo
 README.md
+.serena/
+receipts/
+review-receipts/
