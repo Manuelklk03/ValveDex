@@ -15,6 +15,7 @@ import {
 } from "@/features/catalog/components/entry-stage";
 import stageStyles from "@/features/catalog/components/entry-stage.module.css";
 import { EntryTile } from "@/features/catalog/components/entry-tile";
+import { GameTheme } from "@/features/games/components/game-theme";
 import { WorldHero } from "@/features/games/components/world-hero";
 import { getDossierLook } from "@/features/games/dossier-looks";
 import worldTheme from "@/features/games/world-theme.module.css";
@@ -560,59 +561,67 @@ export default async function EntryPage({
       </section>
     );
 
-  return (
-    <main className={styles["entry-page"]}>
-      {byOrigin(renderHero)}
+  // Toda la página va dentro del tema del juego de origen: el layout solo conoce el primer juego de la ficha
+  const renderPage = (category: EntryCategory, at?: Origin) => (
+    <GameTheme gameId={at?.game.id}>
+      <main className={styles["entry-page"]}>
+        {renderHero(category, at)}
 
-      <div className={styles["entry-page__content"]}>
-        {levels.length > 0 && (
-          <section
-            className={styles["entry-page__section"]}
-            aria-labelledby="levels-title"
-          >
-            <h2
-              id="levels-title"
-              className={styles["entry-page__section-title"]}
+        <div className={styles["entry-page__content"]}>
+          {levels.length > 0 && (
+            <section
+              className={styles["entry-page__section"]}
+              aria-labelledby="levels-title"
             >
-              Niveles del capítulo
-            </h2>
-            <ol className={styles["entry-page__levels"]}>
-              {levels.map((level) => (
-                <li key={level.mapFile} className={styles["entry-page__level"]}>
-                  <span
-                    className={styles["entry-page__level-number"]}
-                    aria-hidden="true"
+              <h2
+                id="levels-title"
+                className={styles["entry-page__section-title"]}
+              >
+                Niveles del capítulo
+              </h2>
+              <ol className={styles["entry-page__levels"]}>
+                {levels.map((level) => (
+                  <li
+                    key={level.mapFile}
+                    className={styles["entry-page__level"]}
                   >
-                    {String(level.order).padStart(2, "0")}
-                  </span>
-                  <div className={styles["entry-page__level-body"]}>
-                    <Link
-                      href={`/fichas/${entry.slug}/${level.mapFile}`}
-                      className={styles["entry-page__level-link"]}
+                    <span
+                      className={styles["entry-page__level-number"]}
+                      aria-hidden="true"
                     >
-                      {level.title}
-                    </Link>
-                    <span className={styles["entry-page__level-file"]}>
-                      {level.mapFile}
+                      {String(level.order).padStart(2, "0")}
                     </span>
-                    {level.detail && (
-                      <p className={styles["entry-page__level-summary"]}>
-                        {level.detail.summary}
-                      </p>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </section>
-        )}
+                    <div className={styles["entry-page__level-body"]}>
+                      <Link
+                        href={`/fichas/${entry.slug}/${level.mapFile}`}
+                        className={styles["entry-page__level-link"]}
+                      >
+                        {level.title}
+                      </Link>
+                      <span className={styles["entry-page__level-file"]}>
+                        {level.mapFile}
+                      </span>
+                      {level.detail && (
+                        <p className={styles["entry-page__level-summary"]}>
+                          {level.detail.summary}
+                        </p>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
 
-        {byOrigin(renderClassicSections)}
+          {renderClassicSections(category, at)}
 
-        {byOrigin(renderMore)}
+          {renderMore(category, at)}
 
-        {byOrigin(renderClassicSources)}
-      </div>
-    </main>
+          {renderClassicSources(category, at)}
+        </div>
+      </main>
+    </GameTheme>
   );
+
+  return byOrigin(renderPage);
 }
