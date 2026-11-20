@@ -1,0 +1,64 @@
+/* Pared de credenciales: una placa por persona, clicable entera */
+.people-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 1rem;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 3.5rem) 1rem;
+  list-style: none;
+}
+
+.people-page__card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.people-page__photo,
+.people-page__initials {
+  flex: none;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.people-page__initials {
+  display: grid;
+  place-items: center;
+  background: var(--border);
+  color: var(--foreground);
+  font-weight: 700;
+}
+
+.people-page__name {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.people-page__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.people-page__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.people-page__link:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.people-page__role {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
