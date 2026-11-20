@@ -35,7 +35,7 @@ export function WorldHero({
 
   return (
     <article className={className} aria-labelledby={titleId}>
-      {art && <DossierArt art={art} corridor />}
+      {art && <DossierArt art={art} corridor priority />}
 
       <span className={styles["game-dossier__stamp"]} aria-hidden="true">
         {look.stamp}
