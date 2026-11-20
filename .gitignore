@@ -60,3 +60,7 @@ graphify-out/
 .playwright-cli/
 
 debug.log
+# Carpetas que crean los plugins de Claude Code en cada PC
+.serena/
+receipts/
+review-receipts/

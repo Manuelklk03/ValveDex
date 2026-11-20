@@ -55,3 +55,5 @@ Manuel pidió llevar todo el rediseño con rondas largas de `grill-me`. Decision
 **Siguiente en Half-Life:** el hub hereda la identidad del dossier; el apartado pasa a galería inmersiva con modelo 3D; la ficha, a visor 3D protagonista con datos en capas; el sonido entra al cerrar Half-Life visual.
 
 **Después, Valve:** un mundo con cuatro salas (Historia, Steam, Hardware y Gente) con navegación clara y más datos (catálogo completo de juegos de Valve, funciones y cifras de Steam, personas y estudios, tecnología), con fuentes oficiales primero y revisión de Codex.
+
+**Ronda del 2026-11-20 (hub y universo):** el hub hereda la escena, la luz y los detalles del dossier, con los apartados como salas y un ambiente que cambia al bajar; la página del universo será un recorrido por etapas (GoldSrc, Source, Source 2) con los dossieres como paradas. Se empieza por el hub de Half-Life.

@@ -26,10 +26,13 @@ const ModelSpinner = dynamic(() => import("@/components/ui/model-spinner"), {
 export function DossierArt({
   art,
   corridor = false,
+  priority = false,
 }: {
   art: DossierArtData;
   // Pasillo de Half-Life: el arte es la escena, a gran escala y siempre visible
   corridor?: boolean;
+  // La escena de fondo es la imagen más grande de la página (LCP): se carga con prioridad en las cabeceras
+  priority?: boolean;
 }) {
   const root = useRef<HTMLDivElement>(null);
   const [pointerOver, setPointerOver] = useState(false);
@@ -186,6 +189,7 @@ export function DossierArt({
             src={art.backdrop}
             alt=""
             fill
+            priority={priority}
             sizes="(min-width: 64rem) 70vw, 100vw"
             className={styles["dossier-art__image"]}
           />
