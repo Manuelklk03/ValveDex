@@ -5,6 +5,8 @@ import styles from "./universe-stage.module.css";
 type UniverseStageProps = {
   stage: UniverseStageData;
   gameCount: number;
+  // Años de sus juegos («1998–2001»); vacío si aún no tiene ninguno
+  years?: string;
   children?: ReactNode;
 };
 
@@ -12,6 +14,7 @@ type UniverseStageProps = {
 export function UniverseStage({
   stage,
   gameCount,
+  years,
   children,
 }: UniverseStageProps) {
   const titleId = `${stage.id}-title`;
@@ -26,6 +29,15 @@ export function UniverseStage({
 
   return (
     <section id={stage.id} className={className} aria-labelledby={titleId}>
+      {/* Fundido con la etapa anterior, partículas de la época y espina de la línea de tiempo con su año */}
+      <div className={styles["universe-stage__blend"]} aria-hidden="true" />
+      <div className={styles["universe-stage__motes"]} aria-hidden="true" />
+      <div className={styles["universe-stage__rail"]} aria-hidden="true">
+        <span className={styles["universe-stage__year"]}>
+          {years ?? "Próximamente"}
+        </span>
+      </div>
+
       <header className={styles["universe-stage__plate"]}>
         <h2 id={titleId} className={styles["universe-stage__name"]}>
           {stage.name}

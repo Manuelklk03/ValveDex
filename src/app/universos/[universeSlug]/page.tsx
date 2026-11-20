@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
@@ -152,6 +152,7 @@ export default async function UniversePage({
               key={stage.id}
               stage={stage}
               gameCount={stageGames.length}
+              years={stageYears(stageGames) || undefined}
             >
               {renderDossiers(stageGames)}
             </UniverseStage>
