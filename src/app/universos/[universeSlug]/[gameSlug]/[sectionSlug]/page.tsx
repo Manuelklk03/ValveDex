@@ -306,7 +306,7 @@ export default async function SectionPage({
               <details className={styles["section-page__spoilers"]}>
                 <summary className={styles["section-page__spoilers-toggle"]}>
                   {look
-                    ? "Material clasificado: desclasificar el resto de la historia"
+                    ? "Material clasificado, contiene spoilers: desclasificar el resto de la historia"
                     : "Contiene spoilers: mostrar el resto de la historia"}
                 </summary>
                 {data.lore.paragraphs
