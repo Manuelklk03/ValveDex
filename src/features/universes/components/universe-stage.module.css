@@ -7,7 +7,8 @@
   /* Algo translúcido para que el paisaje fijo de la saga (universe-theme) se vea entre los dossieres */
   background-color: color-mix(in srgb, var(--stage-bg) 70%, transparent);
   scroll-margin-top: 1rem;
-  overflow: hidden;
+  /* clip y no hidden: hidden crearía un contenedor de scroll y el año sticky no se quedaría a la vista */
+  overflow: clip;
 }
 
 .universe-stage__plate {
@@ -310,20 +311,24 @@
   }
 }
 
-/* Partículas: GoldSrc, polvo cálido que sube; Source, ceniza fría que cae; Source 2, líneas de escaneo */
+/* Partículas: GoldSrc, polvo cálido que sube; Source, ceniza fría que cae; Source 2, líneas de escaneo.
+   La textura es más alta que la etapa y se mueve con transform (sin repintar): cada vuelta avanza exactamente
+   --motes-loop, el mínimo común de las alturas de sus mosaicos, y empieza de nuevo sin saltos */
 .universe-stage__motes {
+  --motes-loop: 36rem;
   opacity: 0.55;
-  mask-image: linear-gradient(transparent, #000 15%, #000 85%, transparent);
   background-repeat: repeat;
+  will-change: transform;
 }
 
 .universe-stage--goldsrc .universe-stage__motes {
+  inset: 0 0 calc(var(--motes-loop) * -1);
   background-image:
     radial-gradient(circle, rgb(243 154 46 / 0.7) 0 1.5px, transparent 2px),
     radial-gradient(circle, rgb(255 214 150 / 0.45) 0 1px, transparent 1.5px);
   background-size:
-    9rem 11rem,
-    14rem 17rem;
+    9rem 12rem,
+    14rem 18rem;
   background-position:
     0 0,
     4rem 6rem;
@@ -331,6 +336,7 @@
 }
 
 .universe-stage--source .universe-stage__motes {
+  inset: calc(var(--motes-loop) * -1) 0 0;
   background-image:
     radial-gradient(circle, rgb(170 200 212 / 0.55) 0 1.5px, transparent 2px),
     radial-gradient(circle, rgb(120 150 165 / 0.4) 0 1px, transparent 1.5px);
@@ -344,33 +350,25 @@
 }
 
 .universe-stage--source-2 .universe-stage__motes {
+  --motes-loop: 7px;
+  inset: calc(var(--motes-loop) * -1) 0 0;
   background-image: repeating-linear-gradient(
     0deg,
     rgb(217 177 59 / 0.1) 0 1px,
     transparent 1px 7px
   );
-  animation: motes-scan 24s linear infinite;
+  animation: motes-fall 3s linear infinite;
 }
 
 @keyframes motes-rise {
   to {
-    background-position:
-      0 -44rem,
-      4rem -68rem;
+    translate: 0 calc(var(--motes-loop) * -1);
   }
 }
 
 @keyframes motes-fall {
   to {
-    background-position:
-      0 48rem,
-      5rem 36rem;
-  }
-}
-
-@keyframes motes-scan {
-  to {
-    background-position: 0 7px;
+    translate: 0 var(--motes-loop);
   }
 }
 
@@ -381,7 +379,6 @@
     animation: none;
   }
 }
-
 /* La placa de cada etapa entra al llegar a ella (solo con scroll-driven animations y sin «reducir movimiento») */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
