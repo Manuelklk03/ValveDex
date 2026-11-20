@@ -2088,3 +2088,42 @@
     transform: none;
   }
 }
+
+/* --- Cabecera del hub: el mismo mundo del dossier, a todo el ancho y sin puertas --- */
+.game-dossier--hero {
+  /* Los colores de la página (migas, fuentes) se leen sobre el papel del juego, claro u oscuro */
+  --foreground: var(--dossier-ink);
+  --muted: var(--dossier-muted);
+  --accent: var(--dossier-accent);
+  --border: var(--dossier-line);
+  --hero-inline: max(
+    var(--dossier-padding),
+    calc((100% - var(--content-width)) / 2)
+  );
+  min-height: 34rem;
+  align-content: end;
+  padding: 1.5rem var(--hero-inline) 3rem;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.game-dossier--hero .game-dossier__header {
+  min-height: 26rem;
+}
+
+.game-dossier--hero .game-dossier__title {
+  font-size: clamp(2.75rem, 7vw, 6rem);
+}
+
+.game-dossier__crumbs {
+  margin-bottom: 0.75rem;
+}
+
+/* Blue Shift: su cabecera es una banda azul con texto claro; como hub, todo el fondo es esa banda */
+.game-dossier--hero.game-dossier--blue-shift {
+  --foreground: #ffffff;
+  --muted: #d6dcf2;
+  --accent: #c9c9ff;
+  --border: rgb(255 255 255 / 0.28);
+  background-color: #14213d;
+}
