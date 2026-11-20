@@ -25,7 +25,7 @@ export function HistoryLine({ milestones }: HistoryLineProps) {
       <div className={styles["history-line__pipe"]} aria-hidden="true" />
       <ol className={styles["history-line__eras"]}>
         {groupByDecade(milestones).map(({ decade, items }) => (
-          <li key={decade} className={styles["history-line__era"]}>
+          <li key={decade}>
             <h2 className={styles["history-line__decade"]}>{decade}s</h2>
             <ol className={styles["history-line__stations"]}>
               {items.map((milestone) => (

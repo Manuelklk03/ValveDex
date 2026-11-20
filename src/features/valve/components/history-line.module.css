@@ -40,7 +40,8 @@
   @media (prefers-reduced-motion: no-preference) {
     .history-line__pipe::after {
       animation: history-fill linear both;
-      animation-timeline: scroll(root);
+      animation-timeline: view();
+      animation-range: cover 15% cover 85%;
     }
   }
 }
