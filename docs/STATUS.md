@@ -144,7 +144,7 @@ Comprobado por Claude Code el 2026-10-23 en `main` (`a0267e4`, PR #38 fusionada)
 | ------------ | ----------------------------------------------------------------- |
 | Node.js      | 24.21.0 (sin `engines` ni `.nvmrc`)                               |
 | npm          | 12.1.0                                                            |
-| Next.js      | 16.4.2 (App Router, `src/`, alias `@/*`)                          |
+| Next.js      | 16.4.6 (App Router, `src/`, alias `@/*`)                          |
 | React        | 19.3.0                                                            |
 | TypeScript   | 5.9.3, `strict: true`                                             |
 | Tailwind CSS | 4.3.3, cargado con `@tailwindcss/turbopack`                       |
@@ -347,6 +347,8 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 - _Hecho en este PR:_ modelo precargado con `IntersectionObserver` (solo con ratón, se descarta al alejarse) y `onReady` para que los iconos no cedan antes de tiempo; iconos más opacos; columna reservada al arte en la cabecera; apartados con el color de su saga fuera de Half-Life; sin emblema `::after` de TF y L4D ni franjas laterales de EP2 y Alyx. Codex revisó los cambios (dos hallazgos válidos corregidos: carga de todos los modelos cercanos y un carácter corrupto en un comentario). `npm run check` (175 pruebas) y capturas a 1440, 900 y 390 px sin desborde. **No se ha ejecutado `npm run build` en local.**
 - _Siguiente:_ Half-Life como lugar (taquilla y pasillo de Black Mesa, apartados como rótulos con miniaturas, modelo o escena protagonista, transición de ascensor, móvil), y después TF2, L4D, Portal y CS con su gesto. Sin hacer: arte en móvil y brief de lote 2.
 
+**Next.js 16.4.2 → 16.4.6 (Claude, 2026-11-20, rama `chore/next-security-update`; Manuel aprobó la actualización de seguridad tras el aviso de `next dev`):** `npm audit --omit=dev` listaba 7 avisos moderados para Next 16.0.0–16.4.4 (caché de `use cache`, rechazo de SVG en la optimización de imágenes, cabecera interna en rutas Edge y respuestas reenviadas en self-hosted, entre otros); `npm install next@16.4.6 --save-exact` los corrige (`npm audit --omit=dev`: 0 vulnerabilidades). `npm run check` (210 pruebas); el build lo ejecuta el CI. Sin cambios de código. Sin comprobar: el comportamiento visual con 16.4.6 (solo se ejecutó el CI).
+
 **Hub de Half-Life como mundo (Claude, 2026-11-20, rama `feature/half-life-hub-world`; decisiones de Manuel tras `grill-me`: el hub hereda la identidad del dossier, apartados como salas, detalles del juego en toda la página y ambiente que cambia al hacer scroll; en [dossier-places-plan.md](dossier-places-plan.md)):**
 
 - _Cabecera:_ `WorldHero` reutiliza el mundo del dossier (material, escena, cartel de techo, suelo, sello, detalles y protagonista) a todo el ancho y sin puertas; las migas y las fuentes se leen sobre el papel de cada juego y Blue Shift es toda ella su banda azul. La escena carga con `priority` (candidata a LCP).
@@ -354,8 +356,7 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 - _Ambiente:_ en la página, `::before` y `::after` fijos (con `scroll(root)`) apagan la luz del juego y oscurecen el fondo al bajar; con «reducir movimiento» o sin soporte, la página queda estática. Los juegos de Half-Life sin dossier (Sven Co-op, Dreamcast) conservan el hub de siempre.
 - _Pruebas:_ `world-hub.test.ts` (contraste AA de la luz de los ocho juegos y del color de los siete apartados sobre las salas): 210 en total. **Contraste medido sobre píxeles reales** de la cabecera (texto oculto, fondo muestreado en su peor caso): los ocho juegos superan AA a 1440 y 390 px, con 5,17:1 como peor caso (Blue Shift).
 - _Revisión de Codex:_ LCP de la escena (corregido), contraste de los ocho héroes (medido) y coste de las dos capas fijas del ambiente (sin medir en móvil real). `npm run check` y capturas a 1440 px de Half-Life 2 y Blue Shift. **No se ha ejecutado `npm run build` en local.**
-- _Sin hacer:_ objetos 3D dentro de las salas (hoy son renders planos), la página de apartado y la ficha como mundo, la página del universo como recorrido por etapas, TF, L4D, Portal y CS con su mundo y Valve/Steam con cuatro salas. Nota:
-  ext dev avisó el 2026-11-20 de que Next.js 16.4.2 tiene una vulnerabilidad conocida y propuso `next upgrade --agent=security`; pendiente de que Manuel decida.
+- _Sin hacer:_ objetos 3D dentro de las salas (hoy son renders planos), la página de apartado y la ficha como mundo, la página del universo como recorrido por etapas, TF, L4D, Portal y CS con su mundo y Valve/Steam con cuatro salas. Nota: `next dev` avisó el 2026-11-20 de que Next.js 16.4.2 tenía una vulnerabilidad conocida; resuelto en la rama `chore/next-security-update` (ver abajo).
 
 **Mundos de Half-Life: material propio, puertas en arco y entradas por juego (Claude, 2026-11-16, rama `feature/dossier-worlds-v2`; Manuel: «cada dossier ha perdido la paleta y sus detalles», «al pulsar una sección no entra», «la entrada es la misma para todos», «parecen tarjetas», «los modelos no desaparecen»; decisiones tras 5 rondas de `grill-me`, en [dossier-places-plan.md](dossier-places-plan.md)):**
 
