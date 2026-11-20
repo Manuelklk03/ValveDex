@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { ValveHero } from "@/features/valve/components/valve-hero";
@@ -45,7 +45,12 @@ export default async function ValvePersonPage({
       <ValveHero
         breadcrumb={
           <Breadcrumb
-            items={[{ label: "Inicio", href: "/" }, { label: person.name }]}
+            items={[
+              { label: "Inicio", href: "/" },
+              { label: "Valve", href: "/valve" },
+              { label: "Gente", href: "/valve/personas" },
+              { label: person.name },
+            ]}
           />
         }
         eyebrow={person.role}

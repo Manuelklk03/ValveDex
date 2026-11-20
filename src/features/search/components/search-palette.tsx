@@ -51,7 +51,7 @@ export function SearchPalette() {
       prepared
         .map((entry) => entry.item)
         .filter((item) => item.type === "page" || item.type === "universe")
-        .slice(0, 8),
+        .slice(0, 14),
     [prepared],
   );
 
