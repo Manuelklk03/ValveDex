@@ -5,19 +5,7 @@ import { describe, expect, it } from "vitest";
 // El hub de un juego de Half-Life continúa el mundo del dossier: las salas son oscuras y cada juego pone su luz
 // (--world-light en la página) y cada apartado su color (--room-color en la sala). Esta prueba lee esos colores del CSS
 // y exige contraste AA del texto de color sobre el fondo de la sala.
-const pageCss = readFileSync(
-  join(
-    __dirname,
-    "..",
-    "..",
-    "app",
-    "universos",
-    "[universeSlug]",
-    "[gameSlug]",
-    "page.module.css",
-  ),
-  "utf8",
-);
+const pageCss = readFileSync(join(__dirname, "world-theme.module.css"), "utf8");
 const roomsCss = readFileSync(
   join(__dirname, "components", "world-rooms.module.css"),
   "utf8",
@@ -104,11 +92,8 @@ describe("hub de Half-Life: salas", () => {
 
   it.each(variants)("la luz de «%s» se lee sobre las salas", (variant) => {
     const light =
-      hex(
-        pageCss,
-        `.game-page--world[data-variant="${variant}"]`,
-        "world-light",
-      ) ?? hex(pageCss, ".game-page--world", "world-light");
+      hex(pageCss, `.world-theme[data-variant="${variant}"]`, "world-light") ??
+      hex(pageCss, ".world-theme", "world-light");
 
     expect(light, variant).toBeDefined();
     expect(
