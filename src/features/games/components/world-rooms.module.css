@@ -1,0 +1,332 @@
+/* Salas de un juego de Half-Life: franjas a todo el ancho, oscuras y con la luz del juego (--world-light y
+   --world-floor se definen en la página según el juego). Nada de tarjetas: cada sala es un lugar */
+.world-rooms {
+  --room-paper: #12100d;
+  --room-ink: #f3eee4;
+  --room-muted: #b9b0a1;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+.world-room {
+  --room-color: var(--world-light);
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 24rem;
+  overflow: hidden;
+  isolation: isolate;
+  background: color-mix(in srgb, var(--room-paper) 90%, var(--room-color));
+  color: var(--room-ink);
+}
+
+/* Cada sala conserva el color de su apartado, como las puertas del dossier */
+.world-room--lore {
+  --room-color: #b9b0a1;
+}
+
+.world-room--maps {
+  --room-color: #4fb356;
+}
+
+.world-room--weapons {
+  --room-color: #e5605a;
+}
+
+.world-room--characters {
+  --room-color: #5b9bf0;
+}
+
+.world-room--enemies {
+  --room-color: #f08a35;
+}
+
+.world-room--trivia {
+  --room-color: #b27be0;
+}
+
+.world-room--easter-eggs {
+  --room-color: #f6c24a;
+}
+
+/* Suelo entre salas, con el material del juego; la primera sala ya tiene el suelo de la cabecera encima */
+.world-room::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 3;
+  height: 0.5rem;
+  background: var(--world-floor);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.world-room:first-child::before {
+  display: none;
+}
+
+.world-room__scene {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(
+      ellipse at 80% 40%,
+      color-mix(in srgb, var(--room-color) 30%, transparent),
+      transparent 60%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 2rem,
+      color-mix(in srgb, var(--room-color) 6%, transparent) 2rem
+        calc(2rem + 1px)
+    );
+}
+
+/* Velo oscuro bajo el texto, con el lado de la escena libre */
+.world-room__scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--room-paper) 96%, transparent) 0,
+    color-mix(in srgb, var(--room-paper) 88%, transparent) 42%,
+    color-mix(in srgb, var(--room-paper) 15%, transparent) 78%
+  );
+}
+
+.world-room__capture,
+.world-room__render {
+  object-position: right center;
+}
+
+.world-room__capture {
+  object-fit: cover;
+}
+
+/* Sala sin foto propia: la escena del juego, más apagada */
+.world-room__capture--dim {
+  opacity: 0.45;
+  filter: grayscale(0.4);
+}
+
+/* Los renders de modelos van enteros, grandes y con luz propia */
+.world-room__render {
+  padding: 2rem 3rem 2rem 45%;
+  object-fit: contain;
+  filter: drop-shadow(0 1.5rem 2rem rgb(0 0 0 / 0.7));
+}
+
+.world-room__body {
+  position: relative;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 0.5rem;
+  width: min(100% - 2rem, var(--content-width));
+  max-width: 100%;
+  margin-inline: auto;
+  padding: 3rem 0;
+}
+
+.world-room__body > * {
+  max-width: 34rem;
+}
+
+.world-room__index {
+  color: transparent;
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-size: clamp(4rem, 9vw, 7.5rem);
+  font-weight: 800;
+  line-height: 0.85;
+  -webkit-text-stroke: 2px var(--room-color);
+}
+
+.world-room__link,
+.world-room__name {
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  font-weight: 800;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.world-room__link {
+  color: var(--room-ink);
+  text-decoration: none;
+}
+
+/* Todo el cuarto abre el apartado; el foco se ve como un marco claro dentro de la sala */
+.world-room__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.world-room__link:focus-visible {
+  outline: none;
+}
+
+.world-room:has(.world-room__link:focus-visible) {
+  outline: 3px solid var(--room-ink);
+  outline-offset: -3px;
+}
+
+.world-room__name {
+  color: var(--room-muted);
+}
+
+.world-room__description {
+  color: var(--room-muted);
+  line-height: 1.55;
+}
+
+.world-room__count {
+  color: var(--room-color);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.world-room__entries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: 0.25rem;
+  list-style: none;
+}
+
+.world-room__entry {
+  padding: 0.125rem 0.625rem;
+  border: 1px solid color-mix(in srgb, var(--room-ink) 30%, transparent);
+  font-size: 0.8125rem;
+}
+
+.world-room__enter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  color: var(--room-color);
+  font-family: var(--font-barlow-condensed), sans-serif;
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.world-room--empty {
+  min-height: 11rem;
+  background: var(--room-paper);
+}
+
+.world-room--empty .world-room__index {
+  -webkit-text-stroke-color: color-mix(
+    in srgb,
+    var(--room-ink) 30%,
+    transparent
+  );
+}
+
+/* En pantallas anchas las salas alternan de lado, como un pasillo con puertas a izquierda y derecha */
+@media (min-width: 64rem) {
+  .world-room--flip .world-room__scene::after {
+    background: linear-gradient(
+      270deg,
+      color-mix(in srgb, var(--room-paper) 96%, transparent) 0,
+      color-mix(in srgb, var(--room-paper) 88%, transparent) 42%,
+      color-mix(in srgb, var(--room-paper) 15%, transparent) 78%
+    );
+  }
+
+  .world-room--flip .world-room__body {
+    justify-items: end;
+    text-align: right;
+  }
+
+  .world-room--flip .world-room__entries {
+    justify-content: flex-end;
+  }
+
+  .world-room--flip .world-room__capture,
+  .world-room--flip .world-room__render {
+    object-position: left center;
+  }
+
+  .world-room--flip .world-room__render {
+    padding: 2rem 45% 2rem 3rem;
+  }
+}
+
+/* En móvil el texto ocupa todo el ancho: la escena queda de fondo y tenue */
+@media (max-width: 63.99rem) {
+  .world-room__scene::after {
+    background: color-mix(in srgb, var(--room-paper) 82%, transparent);
+  }
+
+  .world-room__render {
+    padding: 1rem;
+    opacity: 0.55;
+  }
+}
+
+/* Al acercarse con el ratón, la sala se enciende y la escena se acerca */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .world-room__capture,
+  .world-room__render {
+    transition: scale 700ms var(--ease-out, ease-out);
+  }
+
+  .world-room:not(.world-room--empty):hover
+    :is(.world-room__capture, .world-room__render) {
+    scale: 1.06;
+  }
+
+  .world-room__arrow {
+    display: inline-block;
+    transition: translate 300ms var(--ease-out, ease-out);
+  }
+
+  .world-room:hover .world-room__arrow {
+    translate: 0.5rem 0;
+  }
+}
+
+/* Entrada por scroll: el cuerpo de cada sala sube y aparece, y la escena se desplaza más despacio.
+   Solo con scroll-driven animations y sin «reducir movimiento»; sin soporte, todo se ve de entrada */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .world-room__body {
+      animation: world-room-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+
+    .world-room__scene {
+      animation: world-room-pan linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+@keyframes world-room-in {
+  from {
+    opacity: 0;
+    translate: 0 2rem;
+  }
+}
+
+@keyframes world-room-pan {
+  from {
+    translate: 0 -1.5rem;
+  }
+
+  to {
+    translate: 0 1.5rem;
+  }
+}

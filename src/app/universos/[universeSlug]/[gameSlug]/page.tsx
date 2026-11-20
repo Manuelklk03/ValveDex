@@ -8,6 +8,10 @@ import { ChapterStrip } from "@/features/games/components/chapter-strip";
 import { GameHero } from "@/features/games/components/game-hero";
 import { SectionPortal } from "@/features/games/components/section-portal";
 import { StatStrip } from "@/features/games/components/stat-strip";
+import { WorldHero } from "@/features/games/components/world-hero";
+import { WorldRooms } from "@/features/games/components/world-rooms";
+import { getDossierLook } from "@/features/games/dossier-looks";
+import { transitionByLook } from "@/features/games/dossier-transitions";
 import {
   getChapterShots,
   getGameStats,
@@ -77,84 +81,130 @@ export default async function GamePage({
   const cancelledGames = getCancelledGamesByGame(game.id);
   const availableCount = statuses.filter((status) => status.isAvailable).length;
 
-  return (
-    <main className={styles["game-page"]}>
-      <GameHero
-        name={game.name}
-        summary={game.description}
-        art={dossierArt[game.id]}
-        specs={[
-          { label: "Año", value: getGameYearLabel(game) },
-          { label: "Estudio", value: game.developer },
-          {
-            label: "Apartados",
-            value: `${availableCount} de ${statuses.length}`,
-          },
-        ]}
-        breadcrumb={
-          <Breadcrumb
-            items={[
-              { label: "Universos", href: "/universos" },
-              { label: universe.name, href: `/universos/${universe.slug}` },
-              { label: game.name },
-            ]}
-          />
-        }
-      >
-        {baseGame && (
-          <p className={styles["game-page__meta"]}>
-            {game.status === "cancelled"
-              ? "Proyecto cancelado basado en"
-              : "Mod de"}{" "}
-            <Link
-              href={`/universos/${universe.slug}/${baseGame.slug}`}
-              className={styles["game-page__mod-link"]}
-            >
-              {baseGame.name}
-            </Link>
-          </p>
-        )}
-        <p className={styles["game-page__sources"]}>
-          Fuente:{" "}
-          {game.sources.map((source, index) => (
-            <span key={source.url}>
-              {index > 0 && ", "}
-              <a href={source.url} className={styles["game-page__source-link"]}>
-                {source.title}
-              </a>
-            </span>
-          ))}
+  // Los juegos de Half-Life con dossier continúan su mundo dentro: cabecera con su material y apartados como salas
+  const look =
+    universe.slug === "half-life" ? getDossierLook(game.id) : undefined;
+  const hubHref = `/universos/${universe.slug}/${game.slug}`;
+  const transitionName = look ? transitionByLook[look.variant] : undefined;
+
+  const specs = [
+    { label: "Año", value: getGameYearLabel(game) },
+    { label: "Estudio", value: game.developer },
+    { label: "Apartados", value: `${availableCount} de ${statuses.length}` },
+  ];
+  const breadcrumb = (
+    <Breadcrumb
+      items={[
+        { label: "Universos", href: "/universos" },
+        { label: universe.name, href: `/universos/${universe.slug}` },
+        { label: game.name },
+      ]}
+    />
+  );
+  const heroExtras = (
+    <>
+      {baseGame && (
+        <p className={styles["game-page__meta"]}>
+          {game.status === "cancelled"
+            ? "Proyecto cancelado basado en"
+            : "Mod de"}{" "}
+          <Link
+            href={`/universos/${universe.slug}/${baseGame.slug}`}
+            className={styles["game-page__mod-link"]}
+          >
+            {baseGame.name}
+          </Link>
         </p>
-      </GameHero>
+      )}
+      <p className={styles["game-page__sources"]}>
+        Fuente:{" "}
+        {game.sources.map((source, index) => (
+          <span key={source.url}>
+            {index > 0 && ", "}
+            <a href={source.url} className={styles["game-page__source-link"]}>
+              {source.title}
+            </a>
+          </span>
+        ))}
+      </p>
+    </>
+  );
+
+  return (
+    <main
+      className={
+        look
+          ? `${styles["game-page"]} ${styles["game-page--world"]}`
+          : styles["game-page"]
+      }
+      data-variant={look?.variant}
+    >
+      {look ? (
+        <WorldHero
+          game={game}
+          look={look}
+          specs={specs}
+          breadcrumb={breadcrumb}
+        >
+          {heroExtras}
+        </WorldHero>
+      ) : (
+        <GameHero
+          name={game.name}
+          summary={game.description}
+          art={dossierArt[game.id]}
+          specs={specs}
+          breadcrumb={breadcrumb}
+        >
+          {heroExtras}
+        </GameHero>
+      )}
+
+      {look && (
+        <WorldRooms
+          gameName={game.name}
+          hubHref={hubHref}
+          statuses={statuses}
+          previews={previews}
+          fallbackScene={dossierArt[game.id]?.backdrop}
+          transition={
+            transitionName
+              ? { name: transitionName, title: game.name, label: look.label }
+              : undefined
+          }
+        />
+      )}
 
       <div className={styles["game-page__content"]}>
         <TeamPicker leaders={getTeamLeaders(game.id)} />
 
         <StatStrip stats={stats} />
 
-        <section
-          className={styles["game-page__section"]}
-          aria-labelledby="sections-title"
-        >
-          <h2
-            id="sections-title"
-            className={styles["game-page__section-title"]}
+        {!look && (
+          <section
+            className={styles["game-page__section"]}
+            aria-labelledby="sections-title"
           >
-            Apartados
-          </h2>
-          <ul className={styles["game-page__sections"]}>
-            {statuses.map((status, index) => (
-              <SectionPortal
-                key={status.section.id}
-                index={index + 1}
-                status={status}
-                preview={previews[status.section.id]}
-                gameIcon={dossierArt[game.id]?.icons[0]}
-                href={`/universos/${universe.slug}/${game.slug}/${status.section.slug}`}
-              />
-            ))}
-          </ul>
-        </section>
+            <h2
+              id="sections-title"
+              className={styles["game-page__section-title"]}
+            >
+              Apartados
+            </h2>
+            <ul className={styles["game-page__sections"]}>
+              {statuses.map((status, index) => (
+                <SectionPortal
+                  key={status.section.id}
+                  index={index + 1}
+                  status={status}
+                  preview={previews[status.section.id]}
+                  gameIcon={dossierArt[game.id]?.icons[0]}
+                  href={`${hubHref}/${status.section.slug}`}
+                />
+              ))}
+            </ul>
+          </section>
+        )}
 
         <ChapterStrip shots={chapterShots} />
 
