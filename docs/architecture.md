@@ -22,24 +22,24 @@ Buscamos responsabilidades claras, tipos explícitos, comprobaciones reproducibl
 
 ## 2. Responsabilidades
 
-| Ruta prevista              | Responsabilidad                                                           |
-| -------------------------- | ------------------------------------------------------------------------- |
-| `src/app/`                 | Rutas, composición de páginas, layouts y metadatos                        |
-| `src/features/valve/`      | Lectura del contenido sobre Valve (hitos y personas)                      |
-| `src/features/games/`      | Hub de juego: apartados (`getGameSections`) y, más adelante, su contenido |
-| `src/features/universes/`  | Lectura de universos y juegos, tarjetas y tema visual por universo        |
-| `src/features/catalog/`    | Tarjetas, fichas, búsqueda, filtros y lectura del catálogo                |
-| `src/features/favorites/`  | Estado y persistencia de favoritos, cuando se implemente                  |
-| `src/features/comparison/` | Selección y comparación de armas, cuando se implemente                    |
-| `src/components/ui/`       | Presentación reutilizable sin lógica de funcionalidad: `Timeline`         |
-| `src/components/layout/`   | Cabecera, navegación y pie comunes                                        |
-| `src/domain/`              | Tipos y reglas compartidas de juegos, fichas y fuentes, sin React         |
-| `src/lib/`                 | Utilidades técnicas compartidas con una finalidad concreta                |
-| `src/data/`                | Catálogo local inicial y referencias de contenido                         |
-| `public/`                  | Recursos estáticos que se puedan publicar                                 |
-| `tests/e2e/`               | Recorridos de usuario en navegador                                        |
-| `.github/workflows/`       | Comprobaciones automáticas, cuando se configuren                          |
-| `docs/`                    | Arquitectura, planificación y estado de continuidad                       |
+| Ruta prevista              | Responsabilidad                                                                |
+| -------------------------- | ------------------------------------------------------------------------------ |
+| `src/app/`                 | Rutas, composición de páginas, layouts y metadatos                             |
+| `src/features/valve/`      | Lectura del contenido sobre Valve (hitos y personas)                           |
+| `src/features/games/`      | Hub de juego: apartados (`getGameSections`) y, más adelante, su contenido      |
+| `src/features/universes/`  | Lectura de universos y juegos, tarjetas y tema visual por universo             |
+| `src/features/catalog/`    | Tarjetas, fichas, búsqueda, filtros y lectura del catálogo                     |
+| `src/features/favorites/`  | Estado y persistencia de favoritos, cuando se implemente                       |
+| `src/features/comparison/` | Selección y comparación de armas, cuando se implemente                         |
+| `src/components/ui/`       | Presentación reutilizable sin lógica de funcionalidad: `Breadcrumb`, `NavMenu` |
+| `src/components/layout/`   | Cabecera, navegación y pie comunes                                             |
+| `src/domain/`              | Tipos y reglas compartidas de juegos, fichas y fuentes, sin React              |
+| `src/lib/`                 | Utilidades técnicas compartidas con una finalidad concreta                     |
+| `src/data/`                | Catálogo local inicial y referencias de contenido                              |
+| `public/`                  | Recursos estáticos que se puedan publicar                                      |
+| `tests/e2e/`               | Recorridos de usuario en navegador                                             |
+| `.github/workflows/`       | Comprobaciones automáticas, cuando se configuren                               |
+| `docs/`                    | Arquitectura, planificación y estado de continuidad                            |
 
 Dentro de una funcionalidad se crearán `components/`, `hooks/`, `utils/` o `server/` según haga falta. Los tests unitarios se colocarán junto al código que prueban. No se crearán directorios vacíos por completar el esquema.
 
@@ -110,7 +110,7 @@ Cuando una aparición tiene imagen original y HD, la ficha las muestra con `Imag
 
 Los IDs serán estables y diferentes de los nombres visibles. Una ficha compartida conservará su ID en los tres juegos. Las estadísticas deberán indicar juego, versión, dificultad y unidad cuando afecten al valor. «Desconocido» no significa cero. La comparación solo mostrará medidas equivalentes.
 
-Primer caso implementado: `src/data/valve-milestones.ts` contiene los hitos de Valve; `getValveMilestones()` (`src/features/valve`) devuelve una copia ordenada por año, y la página la pasa por props al componente común `Timeline`, que solo depende del tipo `Milestone`. La portada es un resumen: `getLatestValveMilestones(count)` le da los últimos hitos y `/valve/historia` muestra todos. Las personas de Valve tienen su propio tipo (`ValvePerson`: `id`, `slug`, `name`, `role`, `summary`, `sources`), porque no son fichas de juego, y su ruta `/valve/personas/[personSlug]`. Las tres páginas de `/valve` comparten el bloque BEM `valve-page` (`src/app/valve/valve-page.module.css`); un archivo que no se llama `page.tsx` no crea ruta, así que puede vivir en `src/app`.
+Primer caso implementado: `src/data/valve-milestones.ts` contiene los hitos de Valve; `getValveMilestones()` (`src/features/valve`) devuelve una copia ordenada por año, y la página la pasa por props a `HistoryLine` (`src/features/valve/components`, la línea de producción vertical por décadas), que solo depende del tipo `Milestone`. La portada es un resumen: `getLatestValveMilestones(count)` le da los últimos hitos y `/valve/historia` muestra todos. Las personas de Valve tienen su propio tipo (`ValvePerson`: `id`, `slug`, `name`, `role`, `summary`, `sources`), porque no son fichas de juego, y su ruta `/valve/personas/[personSlug]`. Las tres páginas de `/valve` comparten el bloque BEM `valve-page` (`src/app/valve/valve-page.module.css`); un archivo que no se llama `page.tsx` no crea ruta, así que puede vivir en `src/app`.
 
 La relación universo–juego vive solo en `Game.universeId`: `Universe` no guarda la lista de sus juegos, porque dos copias de la misma relación podrían contradecirse. `src/features/universes/get-universes.ts` expone `getUniverses()`, `getUniverseBySlug(slug)` (devuelve `undefined` si no existe, para responder con 404) y `getGamesByUniverse(universeId)`. El `id` es único en todo el proyecto; el `slug` de un juego solo tiene que ser único dentro de su universo (`/universos/half-life/opposing-force`).
 
