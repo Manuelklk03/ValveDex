@@ -17,6 +17,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 - La ficha de un objeto, personaje o mapa de Half-Life es un mundo: la cabecera usa el material del juego desde el que llegas, con el visor 3D grande y arrastrable como protagonista y, debajo, capas que se abren sobre el visor (Datos, Desarrollo, Apariciones, Relacionado y Fuentes, esta con los créditos de las imágenes). Fuera de Half-Life la ficha no cambia.
 - La página de un universo es un recorrido por etapas: una espina de línea de tiempo con el año de cada etapa que se queda a la vista al bajar, un fundido entre una etapa y la siguiente y partículas propias de cada época (polvo cálido en GoldSrc, ceniza fría en Source y líneas de escaneo en Source 2). Las etapas sin juegos siguen mostrándose como «En preparación».
 - La lore de los juegos de Half-Life es un expediente: párrafos numerados como un informe, con la luz del juego, que se desvelan al bajar, y el resto de la historia tras un sello de material clasificado que se abre al pulsarlo.
+- Valve tiene portada propia en /valve: cuatro salas (Historia, Steam, Hardware y Gente) con su material y su color, y un índice de personas en /valve/personas. El menú Valve y el buscador las incluyen.
 
 ## [0.5.0] — 2026-11-16
 
