@@ -36,11 +36,12 @@ export function getValveMenuGroups(): NavMenuGroup[] {
   return [
     {
       title: "La empresa",
-      href: "/valve/historia",
+      href: "/valve",
       links: [
         { label: "Historia", href: "/valve/historia", detail: "desde 1996" },
         { label: "Steam", href: "/valve/steam", detail: "por épocas" },
         { label: "Hardware", href: "/valve/hardware" },
+        { label: "Gente", href: "/valve/personas" },
         { label: "Créditos y fuentes", href: "/creditos" },
       ],
     },
