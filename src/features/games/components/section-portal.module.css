@@ -7,10 +7,20 @@
   min-height: 16rem;
   overflow: hidden;
   border: 1px solid var(--border);
-  border-top: 3px solid var(--sector-color);
   border-radius: 8px;
   background: var(--surface);
   list-style: none;
+}
+
+/* Franja del color del sector: dentro de la tarjeta, así la recorta la curva de las esquinas en vez de chocar con ella */
+.section-portal::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 1;
+  height: 3px;
+  background: var(--sector-color);
+  pointer-events: none;
 }
 
 .section-portal--lore {
