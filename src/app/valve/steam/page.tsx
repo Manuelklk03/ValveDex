@@ -28,7 +28,11 @@ export default function SteamPage() {
 
       <div className={styles["steam-page__intro"]}>
         <Breadcrumb
-          items={[{ label: "Inicio", href: "/" }, { label: "Steam" }]}
+          items={[
+            { label: "Inicio", href: "/" },
+            { label: "Valve", href: "/valve" },
+            { label: "Steam" },
+          ]}
         />
 
         <header className={styles["steam-page__header"]}>

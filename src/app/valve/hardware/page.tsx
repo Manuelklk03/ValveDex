@@ -20,7 +20,11 @@ export default function ValveHardwarePage() {
       <ValveHero
         breadcrumb={
           <Breadcrumb
-            items={[{ label: "Inicio", href: "/" }, { label: "Hardware" }]}
+            items={[
+              { label: "Inicio", href: "/" },
+              { label: "Valve", href: "/valve" },
+              { label: "Hardware" },
+            ]}
           />
         }
         eyebrow="Valve"
