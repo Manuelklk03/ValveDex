@@ -52,8 +52,27 @@ export function UniverseGalaxy({ worlds }: UniverseGalaxyProps) {
   const active = worlds.find((world) => world.id === activeId);
   const timer = useRef<number | undefined>(undefined);
 
-  // Si la página se desmonta a mitad de la transición, no queda una navegación pendiente
-  useEffect(() => () => window.clearTimeout(timer.current), []);
+  // La navegación diferida se cancela si otra la adelanta (Atrás, buscador, otro enlace) y la página se desmonta, y el
+  // círculo se retira al volver a esta página desde la caché del navegador
+  useEffect(() => {
+    function cancel() {
+      window.clearTimeout(timer.current);
+      timer.current = undefined;
+    }
+    function restore() {
+      cancel();
+      setEntering(undefined);
+    }
+    window.addEventListener("popstate", cancel);
+    window.addEventListener("pagehide", cancel);
+    window.addEventListener("pageshow", restore);
+    return () => {
+      cancel();
+      window.removeEventListener("popstate", cancel);
+      window.removeEventListener("pagehide", cancel);
+      window.removeEventListener("pageshow", restore);
+    };
+  }, []);
 
   function handleMove(event: PointerEvent<HTMLDivElement>) {
     const el = field.current;

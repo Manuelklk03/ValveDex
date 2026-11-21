@@ -208,7 +208,7 @@
   background: var(--portal-color);
   clip-path: circle(0 at var(--portal-x) var(--portal-y));
   animation: galaxy-portal 0.65s var(--ease-in-out, ease-in-out) forwards;
-  pointer-events: none;
+  /* Cubre la página: durante la entrada, ningún otro enlace recibe clics y cambia el destino */
 }
 
 @keyframes galaxy-portal {
