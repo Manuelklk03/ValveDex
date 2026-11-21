@@ -122,6 +122,24 @@ const plans: Record<DossierTransition, Plan> = {
       ms: 640,
     },
   },
+  // Portal: se abre un portal desde el centro y te atraviesa; al llegar, se cierra detrás
+  portal: {
+    layer: "curtain",
+    close: {
+      keyframes: [
+        { opacity: 1, clipPath: "ellipse(0% 0% at 50% 50%)" },
+        { opacity: 1, clipPath: "ellipse(90% 130% at 50% 50%)" },
+      ],
+      ms: 560,
+    },
+    open: {
+      keyframes: [
+        { opacity: 1, clipPath: "ellipse(90% 130% at 50% 50%)" },
+        { opacity: 1, clipPath: "ellipse(0% 0% at 50% 50%)" },
+      ],
+      ms: 620,
+    },
+  },
   scan: {
     layer: "curtain",
     close: {

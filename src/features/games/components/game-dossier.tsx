@@ -8,6 +8,7 @@ import { getSectionPreviews } from "../get-game-overview";
 import { getGameYearLabel } from "../get-game-year-label";
 import { getSectionStatuses } from "../get-section-statuses";
 import { DossierArt } from "./dossier-art";
+import { PortalField } from "./portal-field";
 import styles from "./game-dossier.module.css";
 
 // Nombres que se ven al desplegar un apartado; el resto se resume en «y N más»
@@ -35,9 +36,11 @@ export function GameDossier({
   // Half-Life es un pasillo de Black Mesa: cada apartado es una puerta con la foto real de sus fichas
   const corridor = universeSlug === "half-life";
   const previews = corridor ? getSectionPreviews(game.id, statuses) : {};
+  // Portal tiene su gesto: dos portales que siguen el cursor por el dossier
+  const portals = universeSlug === "portal";
   // Entrada animada propia del juego: la usan el enlace principal y cada puerta
   const transition =
-    corridor && look ? transitionByLook[look.variant] : undefined;
+    (corridor || portals) && look ? transitionByLook[look.variant] : undefined;
   const transitionProps = transition
     ? {
         "data-elevator": transition,
@@ -64,6 +67,7 @@ export function GameDossier({
       </Link>
 
       {art && <DossierArt art={art} corridor={corridor} />}
+      {portals && <PortalField />}
 
       <span className={styles["game-dossier__tab"]} aria-hidden="true">
         {universeName}
