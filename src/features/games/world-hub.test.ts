@@ -20,6 +20,8 @@ const variants = [
   "half-life-2-episode-one",
   "half-life-2-episode-two",
   "half-life-alyx",
+  "portal",
+  "portal-2",
 ] as const;
 const sections = [
   "lore",
