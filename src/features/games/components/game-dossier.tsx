@@ -139,6 +139,7 @@ export function GameDossier({
         <ClassPicker
           gameId={game.id}
           classes={tf2Classes}
+          elevator={transitionProps}
           teams={getGameTeams(game.id).filter((team) => team.id !== "gray")}
         />
       )}

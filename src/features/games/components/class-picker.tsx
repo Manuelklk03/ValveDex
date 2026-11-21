@@ -12,9 +12,14 @@ type ClassPickerProps = {
   classes: Tf2Class[];
   // Solo RED y BLU: GRAY (los robots) no tiene mercenarios
   teams: Team[];
+  // Atributos de la entrada animada del juego (data-elevator…), para que elegir una clase también use las puertas
+  elevator?: Record<string, string | undefined>;
 };
 
-function Picker({ classes }: Pick<ClassPickerProps, "classes">) {
+function Picker({
+  classes,
+  elevator,
+}: Pick<ClassPickerProps, "classes" | "elevator">) {
   const scope = useTeam();
   if (!scope) return null;
   const { team, teams, setTeam } = scope;
@@ -57,6 +62,7 @@ function Picker({ classes }: Pick<ClassPickerProps, "classes">) {
                 href={item.href}
                 className={styles["class-picker__link"]}
                 aria-label={item.name}
+                {...elevator}
               >
                 <Image
                   src={image.src}
@@ -83,10 +89,15 @@ function Picker({ classes }: Pick<ClassPickerProps, "classes">) {
 
 // Gesto del dossier de Team Fortress 2: la pantalla de selección de clase. Las nueve clases en fila, con el equipo
 // que se elige aquí (se recuerda y lo usan el hub y los apartados); al acercarse, la clase se adelanta
-export function ClassPicker({ gameId, classes, teams }: ClassPickerProps) {
+export function ClassPicker({
+  gameId,
+  classes,
+  teams,
+  elevator,
+}: ClassPickerProps) {
   return (
     <TeamScope storageKey={gameId} teams={teams}>
-      <Picker classes={classes} />
+      <Picker classes={classes} elevator={elevator} />
     </TeamScope>
   );
 }
