@@ -6,6 +6,10 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+### Corregido
+
+- Las migas de pan ya no empiezan una línea con la barra separadora, las de Hardware y Steam cuelgan de Valve y la pistola de portales del dossier y de la tarjeta de Portal ya no sale al revés.
+
 ### Seguridad
 
 - Next.js sube de 16.4.2 a 16.4.6, que corrige los avisos de seguridad publicados para 16.0.0–16.4.4 (cachés de `use cache`, optimización de imágenes y respuestas reenviadas en despliegues propios).
@@ -19,6 +23,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 - La lore de los juegos de Half-Life es un expediente: párrafos numerados como un informe, con la luz del juego, que se desvelan al bajar, y el resto de la historia tras un sello de material clasificado que se abre al pulsarlo.
 - Valve tiene portada propia en /valve: cuatro salas (Historia, Steam, Hardware y Gente) con su material y su color, y un índice de personas en /valve/personas. El menú Valve y el buscador las incluyen.
 - La historia de Valve es una línea de producción vertical: hitos agrupados por década, una tubería central que se llena al bajar y estaciones que alternan de lado, sobre fondo industrial.
+- /universos abre con un mapa estelar: cada saga es un mundo con su emblema y su luz, el cursor mueve el campo con profundidad, el mundo activo tiñe el fondo con su color y al entrar se abre un círculo de ese color. Las tarjetas de acceso quedan debajo.
 
 ## [0.5.0] — 2026-11-16
 
