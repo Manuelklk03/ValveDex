@@ -2164,3 +2164,24 @@
     min-height: 36rem;
   }
 }
+
+/* --- Portal como mundo (hub, apartados y ficha): Aperture claro con acentos naranja y azul; Portal 2, en ruinas --- */
+.game-dossier--corridor.game-dossier--portal {
+  --corridor-tint: #ff9a1f;
+  --plate-ink: #12100d;
+  --art-backdrop-opacity: 0.5;
+  --art-backdrop-blend: multiply;
+  --art-backdrop-filter: grayscale(0.7) contrast(1.05);
+  --floor: linear-gradient(90deg, #ff9a1f 0 50%, #3fa9f5 50% 100%);
+}
+
+.game-dossier--corridor.game-dossier--portal-2 {
+  --corridor-tint: #56c8ff;
+  --plate-ink: #0b1520;
+  --floor: linear-gradient(
+    90deg,
+    #56c8ff 0 33%,
+    #ff9a1f 33% 66%,
+    #7dd35a 66% 100%
+  );
+}

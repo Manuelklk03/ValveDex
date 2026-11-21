@@ -25,6 +25,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 - La historia de Valve es una línea de producción vertical: hitos agrupados por década, una tubería central que se llena al bajar y estaciones que alternan de lado, sobre fondo industrial.
 - `/universos` es un mapa de mundos a pantalla completa, sin tarjetas: cada saga es un universo con su captura en movimiento, su luz y su anillo de órbita; al acercarse crece, gira su modelo 3D, el fondo toma su color y sus juegos aparecen como lunas, y al entrar se abre un círculo de su color.
 - El dossier de Portal abre dos portales enlazados con el cursor (el naranja donde lo pones, el azul en el punto opuesto) y Portal y Portal 2 se entran atravesando un portal que se abre desde el centro.
+- El hub, los apartados y las fichas de Portal son un mundo: cabecera con el material de Aperture, salas claras de panel blanco con cuadrícula fina y suelo naranja y azul, piezas y fichas con el visor 3D y las capas. Portal 2 conserva salas oscuras, como su dossier.
 
 ## [0.5.0] — 2026-11-16
 

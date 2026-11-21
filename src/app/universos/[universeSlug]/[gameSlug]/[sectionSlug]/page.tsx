@@ -19,6 +19,7 @@ import { getEntryFacts } from "@/features/catalog/get-entry-facts";
 import { GameHero } from "@/features/games/components/game-hero";
 import { WorldHero } from "@/features/games/components/world-hero";
 import { getDossierLook } from "@/features/games/dossier-looks";
+import { isWorldUniverse } from "@/features/games/world-universes";
 import { getGameLore } from "@/features/games/get-game-lore";
 import {
   getRivalTeam,
@@ -144,8 +145,9 @@ export default async function SectionPage({
 
   const { universe, game, section } = data;
   // Los juegos de Half-Life con dossier mantienen su mundo dentro del apartado: cabecera del juego y piezas sin tarjeta
-  const look =
-    universe.slug === "half-life" ? getDossierLook(game.id) : undefined;
+  const look = isWorldUniverse(universe.slug)
+    ? getDossierLook(game.id)
+    : undefined;
 
   const teams = getGameTeams(game.id);
   const items = data.kind === "entries" ? data.entries : [];

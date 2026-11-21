@@ -18,6 +18,7 @@ import { EntryTile } from "@/features/catalog/components/entry-tile";
 import { GameTheme } from "@/features/games/components/game-theme";
 import { WorldHero } from "@/features/games/components/world-hero";
 import { getDossierLook } from "@/features/games/dossier-looks";
+import { isWorldUniverse } from "@/features/games/world-universes";
 import worldTheme from "@/features/games/world-theme.module.css";
 import {
   getEntries,
@@ -108,7 +109,9 @@ export default async function EntryPage({
 
   // Solo los juegos de Half-Life con dossier tienen mundo; la ficha usa el del juego desde el que se llega
   const worldLookOf = (at?: Origin) =>
-    at?.universe.slug === "half-life" ? getDossierLook(at.game.id) : undefined;
+    at && isWorldUniverse(at.universe.slug)
+      ? getDossierLook(at.game.id)
+      : undefined;
 
   const renderBreadcrumb = (category: EntryCategory, at?: Origin) => {
     const first = at;

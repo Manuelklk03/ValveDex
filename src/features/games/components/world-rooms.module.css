@@ -330,3 +330,57 @@
     translate: 0 1.5rem;
   }
 }
+
+/* Salas claras (Portal): paneles blancos de una cámara de pruebas de Aperture. Cada apartado usa su color en una
+   versión oscurecida para leerse sobre el panel */
+.world-rooms--light {
+  --room-paper: #eef1f4;
+  --room-ink: #12161a;
+  --room-muted: #4a555e;
+}
+
+.world-rooms--light .world-room--lore {
+  --room-color: #6b6254;
+}
+
+.world-rooms--light .world-room--maps {
+  --room-color: #266a2d;
+}
+
+.world-rooms--light .world-room--weapons {
+  --room-color: #b3302b;
+}
+
+.world-rooms--light .world-room--characters {
+  --room-color: #2a62b8;
+}
+
+.world-rooms--light .world-room--enemies {
+  --room-color: #9a470a;
+}
+
+.world-rooms--light .world-room--trivia {
+  --room-color: #7a45a8;
+}
+
+.world-rooms--light .world-room--easter-eggs {
+  --room-color: #735200;
+}
+
+/* Cuadrícula fina del panel en lugar del rayado de las salas oscuras */
+.world-rooms--light .world-room__scene {
+  background:
+    radial-gradient(
+      ellipse at 80% 40%,
+      color-mix(in srgb, var(--room-color) 18%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(90deg, rgb(18 22 26 / 0.06) 1px, transparent 1px) 0 0 /
+      2.5rem 2.5rem,
+    linear-gradient(0deg, rgb(18 22 26 / 0.06) 1px, transparent 1px) 0 0 /
+      2.5rem 2.5rem;
+}
+
+.world-rooms--light .world-room__render {
+  filter: drop-shadow(0 1.25rem 1.5rem rgb(18 22 26 / 0.3));
+}
