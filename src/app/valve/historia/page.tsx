@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { Timeline } from "@/components/ui/timeline";
 import { getValveMilestones } from "@/features/valve/get-valve-milestones";
+import { HistoryLine } from "@/features/valve/components/history-line";
 import { ValveHero } from "@/features/valve/components/valve-hero";
-import styles from "../valve-page.module.css";
 
 export const metadata: Metadata = {
   title: "Historia de Valve",
@@ -20,7 +19,8 @@ export default function ValveHistoryPage() {
           <Breadcrumb
             items={[
               { label: "Inicio", href: "/" },
-              { label: "Historia de Valve" },
+              { label: "Valve", href: "/valve" },
+              { label: "Historia" },
             ]}
           />
         }
@@ -28,9 +28,7 @@ export default function ValveHistoryPage() {
         title="Historia de Valve"
         intro="Los momentos clave de Valve, desde su fundación en 1996"
       />
-      <div className={styles["valve-page"]}>
-        <Timeline milestones={milestones} />
-      </div>
+      <HistoryLine milestones={milestones} />
     </main>
   );
 }

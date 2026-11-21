@@ -1,0 +1,198 @@
+/* Historia de Valve como línea de producción vertical. Fondo siempre oscuro con texto claro: el contraste no depende
+   del tema de la página */
+.history-line {
+  --line-ink: #f3efe6;
+  --line-muted: #c7c0b2;
+  --line-color: #f39a2e;
+  --line-bg: #14110d;
+  position: relative;
+  isolation: isolate;
+  padding: clamp(2.5rem, 6vw, 4.5rem) 1rem clamp(4rem, 8vw, 6rem);
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0 1.25rem,
+      rgb(243 154 46 / 0.04) 1.25rem 2.5rem
+    ),
+    var(--line-bg);
+  color: var(--line-ink);
+}
+
+/* La tubería: una línea de fondo y, encima, el fluido que la llena al bajar por la página */
+.history-line__pipe {
+  position: absolute;
+  inset-block: 0;
+  left: 1.5rem;
+  z-index: -1;
+  width: 6px;
+  background: rgb(243 154 46 / 0.2);
+}
+
+.history-line__pipe::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--line-color);
+  transform-origin: top;
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .history-line__pipe::after {
+      animation: history-fill linear both;
+      animation-timeline: view();
+      animation-range: cover 15% cover 85%;
+    }
+  }
+}
+
+@keyframes history-fill {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+.history-line__eras,
+.history-line__stations {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.history-line__eras {
+  gap: clamp(2.5rem, 6vw, 4rem);
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+/* Década: queda a la vista mientras se recorren sus estaciones */
+.history-line__decade {
+  position: sticky;
+  top: 5rem;
+  z-index: 2;
+  width: fit-content;
+  margin: 0 0 1.5rem 3rem;
+  padding: 0.25rem 0.875rem;
+  background: var(--line-color);
+  color: #14110d;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.history-line__stations {
+  gap: 1.5rem;
+}
+
+.history-line__station {
+  position: relative;
+  padding-left: 3rem;
+}
+
+/* Válvula: el nodo de cada estación sobre la tubería */
+.history-line__valve {
+  position: absolute;
+  top: 1.25rem;
+  left: -0.0625rem;
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 3px solid var(--line-color);
+  border-radius: 50%;
+  background: var(--line-bg);
+}
+
+.history-line__plate {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgb(243 154 46 / 0.35);
+  background: rgb(255 255 255 / 0.04);
+}
+
+.history-line__when {
+  margin: 0;
+  color: var(--line-color);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+}
+
+.history-line__title {
+  margin: 0;
+  font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+  line-height: 1.2;
+}
+
+.history-line__text {
+  margin: 0;
+  color: var(--line-muted);
+  line-height: 1.65;
+}
+
+.history-line__sources {
+  margin: 0;
+  color: var(--line-muted);
+  font-size: 0.8125rem;
+}
+
+.history-line__source-link {
+  color: var(--line-ink);
+  text-decoration: underline;
+}
+
+.history-line__source-link:focus-visible {
+  outline: 3px solid var(--line-color);
+  outline-offset: 2px;
+}
+
+/* En escritorio la tubería pasa al centro y las estaciones alternan de lado */
+@media (min-width: 56rem) {
+  .history-line__pipe {
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  .history-line__decade {
+    margin-inline: auto;
+  }
+
+  .history-line__station {
+    width: 50%;
+    padding: 0 2.5rem 0 0;
+  }
+
+  .history-line__station:nth-child(even) {
+    margin-left: 50%;
+    padding: 0 0 0 2.5rem;
+  }
+
+  .history-line__valve {
+    left: auto;
+    right: -0.5625rem;
+  }
+
+  .history-line__station:nth-child(even) .history-line__valve {
+    right: auto;
+    left: -0.5625rem;
+  }
+}
+
+/* Las estaciones aparecen al llegar a ellas (solo con scroll-driven animations y sin «reducir movimiento») */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .history-line__plate {
+      animation: history-plate-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+  }
+}
+
+@keyframes history-plate-in {
+  from {
+    opacity: 0;
+    translate: 0 1.75rem;
+  }
+}
