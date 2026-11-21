@@ -1,5 +1,7 @@
 "use client";
 
+import dynamic from "next/dynamic";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -9,48 +11,77 @@ import {
   type CSSProperties,
   type MouseEvent,
   type PointerEvent,
+  type ReactNode,
 } from "react";
 import styles from "./universe-galaxy.module.css";
+
+// El modelo 3D (Three.js) solo se descarga la primera vez que se acerca el cursor a un mundo
+const ModelSpinner = dynamic(() => import("@/components/ui/model-spinner"), {
+  ssr: false,
+});
 
 export type GalaxyWorld = {
   id: string;
   slug: string;
   name: string;
+  // Primera frase de la descripción: lo que se lee al acercarse
+  tagline: string;
   description: string;
   accent: string;
   // Emblema de un trazo, teñido con el color de la saga
   emblem: string;
+  // Captura del juego que se ve (y se mueve) dentro del mundo
+  backdrop?: string;
+  model?: string;
+  modelTilt?: number;
   games: string[];
   available: boolean;
 };
 
 type UniverseGalaxyProps = {
   worlds: GalaxyWorld[];
+  // Título de la página, sobre el mapa
+  children?: ReactNode;
 };
 
-// Posición de cada mundo en la galaxia (en %): el primero en el centro y el resto en una elipse a su alrededor
+// Posición de cada mundo en el mapa (en %): el primero, en el centro, y los siguientes en una constelación a mano que
+// deja libre la esquina del título (hasta cuatro; si hay más, una elipse alrededor del centro)
+const constellation = [
+  { x: 50, y: 52 },
+  { x: 67, y: 22 },
+  { x: 88, y: 54 },
+  { x: 68, y: 84 },
+  { x: 14, y: 68 },
+];
+
 function position(index: number, total: number) {
-  if (index === 0) return { x: 50, y: 50 };
+  const fixed = constellation[index];
+  if (fixed) return fixed;
   const angle =
     -Math.PI / 2 + ((index - 1) / Math.max(total - 1, 1)) * Math.PI * 2;
   return {
-    x: 50 + Math.cos(angle) * 36,
-    y: 50 + Math.sin(angle) * 34,
+    x: 50 + Math.cos(angle) * 40,
+    y: 52 + Math.sin(angle) * 36,
   };
 }
-
-// Mapa estelar de las sagas: cada una es un mundo con su emblema y su luz. El cursor mueve el campo con profundidad,
-// al acercarse un mundo se enciende (y el fondo toma su color) y al elegirlo, un círculo de su color se abre desde él
-// antes de entrar. Sin JavaScript o con «reducir movimiento», son enlaces normales
-export function UniverseGalaxy({ worlds }: UniverseGalaxyProps) {
+// Mapa de mundos: cada saga es un universo con su captura en movimiento, su luz y sus juegos como lunas. El cursor
+// mueve el campo con profundidad, el mundo cercano se enciende (su modelo 3D gira y el fondo toma su captura) y al
+// elegirlo se abre un círculo de su color antes de entrar. Sin JavaScript o con «reducir movimiento», son enlaces
+export function UniverseGalaxy({ worlds, children }: UniverseGalaxyProps) {
   const router = useRouter();
   const field = useRef<HTMLDivElement>(null);
+  const timer = useRef<number | undefined>(undefined);
   const [activeId, setActiveId] = useState<string | undefined>();
+  const [warmed, setWarmed] = useState<string[]>([]);
   const [entering, setEntering] = useState<
     { accent: string; x: number; y: number } | undefined
   >();
   const active = worlds.find((world) => world.id === activeId);
-  const timer = useRef<number | undefined>(undefined);
+
+  function activate(id: string | undefined) {
+    setActiveId(id);
+    if (id) setWarmed((ids) => (ids.includes(id) ? ids : [...ids, id]));
+  }
 
   // La navegación diferida se cancela si otra la adelanta (Atrás, buscador, otro enlace) y la página se desmonta, y el
   // círculo se retira al volver a esta página desde la caché del navegador
@@ -144,18 +175,87 @@ export function UniverseGalaxy({ worlds }: UniverseGalaxyProps) {
       }
       data-active={active?.id}
     >
+      {/* Fondo: la captura del mundo activo, desenfocada, y una nebulosa de su color */}
+      <div className={styles["galaxy__scenery"]} aria-hidden="true">
+        {worlds.map(
+          (world) =>
+            world.backdrop && (
+              <Image
+                key={world.id}
+                src={world.backdrop}
+                alt=""
+                fill
+                sizes="100vw"
+                className={
+                  world.id === activeId
+                    ? `${styles["galaxy__scene"]} ${styles["galaxy__scene--active"]}`
+                    : styles["galaxy__scene"]
+                }
+              />
+            ),
+        )}
+        <div className={styles["galaxy__nebula"]} />
+        <div className={styles["galaxy__stars"]} />
+      </div>
+
       <div
         ref={field}
         className={styles["galaxy__field"]}
         onPointerMove={handleMove}
       >
-        <div className={styles["galaxy__stars"]} aria-hidden="true" />
-        <div className={styles["galaxy__glow"]} aria-hidden="true" />
+        {/* Órbitas del mapa y coordenadas, decorativas */}
+        <div
+          className={`${styles["galaxy__ring"]} ${styles["galaxy__ring--near"]}`}
+          aria-hidden="true"
+        />
+        <div
+          className={`${styles["galaxy__ring"]} ${styles["galaxy__ring--far"]}`}
+          aria-hidden="true"
+        />
+        <p className={styles["galaxy__coords"]} aria-hidden="true">
+          Sistema Valve · {worlds.length} mundos
+        </p>
+
+        <div className={styles["galaxy__heading"]}>{children}</div>
 
         <ul className={styles["galaxy__worlds"]}>
           {worlds.map((world, index) => {
             const { x, y } = position(index, worlds.length);
             const isActive = world.id === activeId;
+
+            const emblemStyle = {
+              maskImage: `url(${world.emblem})`,
+              WebkitMaskImage: `url(${world.emblem})`,
+            } satisfies CSSProperties;
+
+            const orb = (
+              <>
+                {world.backdrop && (
+                  <Image
+                    src={world.backdrop}
+                    alt=""
+                    fill
+                    sizes="(min-width: 64rem) 16rem, 40vw"
+                    className={styles["galaxy__preview"]}
+                  />
+                )}
+                <span className={styles["galaxy__tint"]} aria-hidden="true" />
+                {world.model && warmed.includes(world.id) && (
+                  <span className={styles["galaxy__model"]} aria-hidden="true">
+                    <ModelSpinner
+                      src={world.model}
+                      tilt={world.modelTilt}
+                      active={isActive}
+                    />
+                  </span>
+                )}
+                <span
+                  className={styles["galaxy__emblem"]}
+                  style={emblemStyle}
+                  aria-hidden="true"
+                />
+              </>
+            );
 
             return (
               <li
@@ -166,63 +266,88 @@ export function UniverseGalaxy({ worlds }: UniverseGalaxyProps) {
                     : styles["galaxy__world"]
                 }
                 data-side={x > 50 ? "left" : "right"}
-                data-vert={y > 60 ? "up" : "down"}
                 style={
                   {
                     "--wx": `${x}%`,
                     "--wy": `${y}%`,
-                    "--depth": index === 0 ? 1.6 : 0.8 + (index % 3) * 0.4,
+                    "--depth": index === 0 ? 1.7 : 0.8 + (index % 3) * 0.45,
                     "--world-accent": world.accent,
+                    "--float-delay": `${index * -2.3}s`,
                   } as CSSProperties
                 }
-                onPointerEnter={() => setActiveId(world.id)}
-                onPointerLeave={() => setActiveId(undefined)}
-                onFocus={() => setActiveId(world.id)}
-                onBlur={() => setActiveId(undefined)}
+                onPointerEnter={() => activate(world.id)}
+                onPointerLeave={() => activate(undefined)}
+                onFocus={() => activate(world.id)}
+                onBlur={() => activate(undefined)}
               >
                 <div className={styles["galaxy__drift"]}>
-                  {world.available ? (
-                    <Link
-                      href={`/universos/${world.slug}`}
-                      className={styles["galaxy__orb"]}
-                      aria-label={`Entrar al universo ${world.name}. ${world.description} Juegos: ${world.games.join(", ")}.`}
-                      onClick={(event) => handleEnter(event, world)}
-                    >
-                      <span
-                        className={styles["galaxy__emblem"]}
-                        style={{
-                          maskImage: `url(${world.emblem})`,
-                          WebkitMaskImage: `url(${world.emblem})`,
-                        }}
+                  <div className={styles["galaxy__body"]}>
+                    {/* Anillo de órbita y lunas: los juegos de la saga, que aparecen al acercarse */}
+                    <span
+                      className={styles["galaxy__halo"]}
+                      aria-hidden="true"
+                    />
+                    {world.available && (
+                      <ul
+                        className={styles["galaxy__moons"]}
                         aria-hidden="true"
-                      />
-                    </Link>
-                  ) : (
-                    <span className={styles["galaxy__orb"]} aria-hidden="true">
-                      <span
-                        className={styles["galaxy__emblem"]}
-                        style={{
-                          maskImage: `url(${world.emblem})`,
-                          WebkitMaskImage: `url(${world.emblem})`,
-                        }}
-                      />
-                    </span>
-                  )}
-                  <p className={styles["galaxy__name"]}>{world.name}</p>
-                  <div className={styles["galaxy__card"]} aria-hidden="true">
-                    <p className={styles["galaxy__description"]}>
-                      {world.description}
-                    </p>
-                    {world.available ? (
-                      <ul className={styles["galaxy__games"]}>
-                        {world.games.map((game) => (
-                          <li key={game}>{game}</li>
+                      >
+                        {world.games.map((game, gameIndex) => (
+                          <li
+                            key={game}
+                            className={styles["galaxy__moon"]}
+                            data-flip={
+                              Math.cos(
+                                (((360 / world.games.length) * gameIndex - 90) *
+                                  Math.PI) /
+                                  180,
+                              ) < -0.01
+                            }
+                            style={
+                              {
+                                "--a": `${(360 / world.games.length) * gameIndex - 90}deg`,
+                                "--i": gameIndex,
+                              } as CSSProperties
+                            }
+                          >
+                            <span className={styles["galaxy__moon-label"]}>
+                              {game}
+                            </span>
+                          </li>
                         ))}
                       </ul>
+                    )}
+
+                    {world.available ? (
+                      <Link
+                        href={`/universos/${world.slug}`}
+                        className={styles["galaxy__orb"]}
+                        aria-label={`Entrar al universo ${world.name}. ${world.description} Juegos: ${world.games.join(", ")}.`}
+                        onClick={(event) => handleEnter(event, world)}
+                      >
+                        {orb}
+                      </Link>
                     ) : (
-                      <p className={styles["galaxy__pending"]}>Próximamente</p>
+                      <span
+                        className={`${styles["galaxy__orb"]} ${styles["galaxy__orb--pending"]}`}
+                        aria-hidden="true"
+                      >
+                        {orb}
+                      </span>
                     )}
                   </div>
+
+                  <p className={styles["galaxy__name"]}>{world.name}</p>
+                  <p className={styles["galaxy__tagline"]} aria-hidden="true">
+                    {world.available ? world.tagline : "Próximamente"}
+                  </p>
+                  {world.available && (
+                    <ul className={styles["galaxy__chips"]}>
+                      {world.games.map((game) => (
+                        <li key={game}>{game}</li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </li>
             );

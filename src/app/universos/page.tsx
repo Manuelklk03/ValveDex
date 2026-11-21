@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
-import { universeArt } from "@/data/universe-art";
-import { SagaBackdrop } from "@/features/universes/components/saga-backdrop";
+import { universeArt, lineIcons } from "@/data/universe-art";
 import { UniverseGalaxy } from "@/features/universes/components/universe-galaxy";
-import { UniverseGate } from "@/features/universes/components/universe-gate";
-import { lineIcons } from "@/data/universe-art";
 import {
   getUniverses,
   getOfficialGamesByUniverse,
@@ -18,63 +15,28 @@ export const metadata: Metadata = {
 export default function UniversesPage() {
   const universes = getUniverses();
   const available = universes.filter((u) => u.status === "available");
-  const comingSoon = universes.filter((u) => u.status !== "available");
-
-  const gate = (universe: (typeof universes)[number], featured = false) => (
-    <li
-      key={universe.id}
-      className={
-        featured
-          ? `${styles["universes-page__item"]} ${styles["universes-page__item--wide"]}`
-          : styles["universes-page__item"]
-      }
-    >
-      <UniverseGate
-        universe={universe}
-        art={universeArt[universe.id]}
-        gameNames={getOfficialGamesByUniverse(universe.id).map(
-          (game) => game.name,
-        )}
-        featured={featured}
-      />
-    </li>
-  );
 
   return (
     <main className={styles["universes-page"]}>
-      {/* El fondo de la página cambia con la saga que se tiene delante */}
-      <SagaBackdrop
-        layers={universes.map((universe) => ({
-          id: universe.id,
-          accent: universeArt[universe.id].accent,
-          image: universeArt[universe.id].backdrop,
-        }))}
-      />
-
-      <header className={styles["universes-page__header"]}>
-        <p className={styles["universes-page__eyebrow"]}>
-          {available.length} de {universes.length} sagas abiertas
-        </p>
-        <h1 className={styles["universes-page__title"]}>Universos</h1>
-        <p className={styles["universes-page__intro"]}>
-          Las sagas de Valve y sus juegos. Empezamos por Half-Life; el resto
-          llegará más adelante.
-        </p>
-      </header>
-
       <UniverseGalaxy
         worlds={universes.flatMap((universe) => {
           const emblem =
             lineIcons[`emblem-${universe.id}` as keyof typeof lineIcons];
+          const art = universeArt[universe.id];
+
           return emblem
             ? [
                 {
                   id: universe.id,
                   slug: universe.slug,
                   name: universe.name,
+                  tagline: universe.description.split(/(?<=\.)\s/)[0],
                   description: universe.description,
-                  accent: universeArt[universe.id].accent,
+                  accent: art.accent,
                   emblem: emblem.src,
+                  backdrop: art.backdrop,
+                  model: art.model,
+                  modelTilt: art.modelTilt,
                   games: getOfficialGamesByUniverse(universe.id).map(
                     (game) => game.name,
                   ),
@@ -83,22 +45,16 @@ export default function UniversesPage() {
               ]
             : [];
         })}
-      />
-
-      <ul className={styles["universes-page__gates"]}>
-        {available.map((universe, index) => gate(universe, index === 0))}
-      </ul>
-
-      {comingSoon.length > 0 && (
-        <section aria-labelledby="pending-title">
-          <h2 id="pending-title" className={styles["universes-page__subtitle"]}>
-            Por llegar
-          </h2>
-          <ul className={styles["universes-page__gates"]}>
-            {comingSoon.map((universe) => gate(universe))}
-          </ul>
-        </section>
-      )}
+      >
+        <p className={styles["universes-page__eyebrow"]}>
+          {available.length} de {universes.length} sagas abiertas
+        </p>
+        <h1 className={styles["universes-page__title"]}>Universos</h1>
+        <p className={styles["universes-page__intro"]}>
+          Cada saga de Valve es un mundo. Acércate a uno para ver sus juegos y
+          entra.
+        </p>
+      </UniverseGalaxy>
     </main>
   );
 }
