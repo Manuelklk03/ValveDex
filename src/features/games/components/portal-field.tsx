@@ -13,10 +13,12 @@ export function PortalField() {
     const field = root.current;
     const dossier = field?.closest("article");
     if (!field || !dossier) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // La preferencia puede cambiar con la página abierta: se consulta en cada movimiento
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     function move(event: PointerEvent) {
       if (!field || !dossier || event.pointerType !== "mouse") return;
+      if (reduce.matches) return;
       const box = dossier.getBoundingClientRect();
       const x = event.clientX - box.left;
       const y = event.clientY - box.top;

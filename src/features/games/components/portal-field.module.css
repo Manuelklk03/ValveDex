@@ -1,11 +1,11 @@
-/* Dos portales enlazados sobre el dossier de Portal. Solo anillos con brillo: el interior queda transparente para no
-   restar contraste al texto que haya debajo */
+/* Dos portales enlazados sobre el dossier de Portal. Van por debajo del texto y de los apartados (z-index 1): los anillos
+   y su brillo no cruzan las letras ni restan contraste */
 .portal-field {
   --portal-orange: #ff9a1f;
   --portal-blue: #3fa9f5;
   position: absolute;
   inset: 0;
-  z-index: 3;
+  z-index: 1;
   overflow: clip;
   border-radius: inherit;
   pointer-events: none;
