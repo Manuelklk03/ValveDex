@@ -11,6 +11,7 @@ import { StatStrip } from "@/features/games/components/stat-strip";
 import { WorldHero } from "@/features/games/components/world-hero";
 import { WorldRooms } from "@/features/games/components/world-rooms";
 import { getDossierLook } from "@/features/games/dossier-looks";
+import { isWorldUniverse } from "@/features/games/world-universes";
 import { transitionByLook } from "@/features/games/dossier-transitions";
 import {
   getChapterShots,
@@ -83,8 +84,9 @@ export default async function GamePage({
   const availableCount = statuses.filter((status) => status.isAvailable).length;
 
   // Los juegos de Half-Life con dossier continúan su mundo dentro: cabecera con su material y apartados como salas
-  const look =
-    universe.slug === "half-life" ? getDossierLook(game.id) : undefined;
+  const look = isWorldUniverse(universe.slug)
+    ? getDossierLook(game.id)
+    : undefined;
   const hubHref = `/universos/${universe.slug}/${game.slug}`;
   const transitionName = look ? transitionByLook[look.variant] : undefined;
 
@@ -168,6 +170,7 @@ export default async function GamePage({
           statuses={statuses}
           previews={previews}
           fallbackScene={dossierArt[game.id]?.backdrop}
+          light={look.variant === "portal"}
           transition={
             transitionName
               ? { name: transitionName, title: game.name, label: look.label }
