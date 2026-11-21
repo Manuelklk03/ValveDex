@@ -114,3 +114,20 @@
 .world-theme--still::after {
   content: none;
 }
+
+/* Portal: la luz de cada juego. Es la de las superficies oscuras de la página (lore, piezas, ambiente): el naranja de
+   los portales y, en Portal 2, el azul de los geles. Las salas claras de Portal usan colores propios más oscuros */
+.world-theme[data-variant="portal"] {
+  --world-light: #ff9a1f;
+  --world-floor: linear-gradient(90deg, #ff9a1f 0 50%, #3fa9f5 50% 100%);
+}
+
+.world-theme[data-variant="portal-2"] {
+  --world-light: #56c8ff;
+  --world-floor: linear-gradient(
+    90deg,
+    #56c8ff 0 33%,
+    #ff9a1f 33% 66%,
+    #7dd35a 66% 100%
+  );
+}
