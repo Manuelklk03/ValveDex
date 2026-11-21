@@ -11,6 +11,7 @@ import type { DossierLook } from "./dossier-looks";
 // - Episode Two: energía vortigaunt que sube desde el suelo.
 // - Alyx: barrido de rejilla de la realidad virtual.
 // - Portal y Portal 2: un portal se abre desde el centro.
+// - Team Fortress Classic y 2: puertas de reaparición, RED y BLU.
 export const transitionByLook: Partial<
   Record<DossierLook["variant"], DossierTransition>
 > = {
@@ -22,6 +23,9 @@ export const transitionByLook: Partial<
   "half-life-2-episode-one": "flash",
   "half-life-2-episode-two": "rise",
   "half-life-alyx": "scan",
+  // Team Fortress: las puertas de la sala de reaparición
+  "team-fortress-classic": "respawn",
+  "team-fortress-2": "respawn",
   // Portal: un portal se abre y te atraviesa
   portal: "portal",
   "portal-2": "portal",

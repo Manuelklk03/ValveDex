@@ -1,12 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { dossierArt } from "@/data/dossier-art";
+import { getGameTeams } from "@/data/game-teams";
 import type { Game } from "@/domain/game";
 import type { DossierLook } from "../dossier-looks";
 import { transitionByLook } from "../dossier-transitions";
 import { getSectionPreviews } from "../get-game-overview";
 import { getGameYearLabel } from "../get-game-year-label";
+import { getTf2Classes } from "../get-tf2-classes";
 import { getSectionStatuses } from "../get-section-statuses";
+import { ClassPicker } from "./class-picker";
 import { DossierArt } from "./dossier-art";
 import { PortalField } from "./portal-field";
 import styles from "./game-dossier.module.css";
@@ -38,9 +41,14 @@ export function GameDossier({
   const previews = corridor ? getSectionPreviews(game.id, statuses) : {};
   // Portal tiene su gesto: dos portales que siguen el cursor por el dossier
   const portals = universeSlug === "portal";
+  // Team Fortress: entrada por las puertas de reaparición y, en TF2, el selector de clase
+  const respawn = universeSlug === "team-fortress";
+  const tf2Classes = game.id === "team-fortress-2" ? getTf2Classes() : [];
   // Entrada animada propia del juego: la usan el enlace principal y cada puerta
   const transition =
-    (corridor || portals) && look ? transitionByLook[look.variant] : undefined;
+    (corridor || portals || respawn) && look
+      ? transitionByLook[look.variant]
+      : undefined;
   const transitionProps = transition
     ? {
         "data-elevator": transition,
@@ -126,6 +134,15 @@ export function GameDossier({
           </div>
         </dl>
       </header>
+
+      {tf2Classes.length > 0 && (
+        <ClassPicker
+          gameId={game.id}
+          classes={tf2Classes}
+          elevator={transitionProps}
+          teams={getGameTeams(game.id).filter((team) => team.id !== "gray")}
+        />
+      )}
 
       <ul
         className={styles["game-dossier__sectors"]}

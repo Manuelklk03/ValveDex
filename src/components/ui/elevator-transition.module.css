@@ -109,7 +109,12 @@
   inset: 0 0 auto;
 }
 
-.elevator:not([data-variant="doors"], [data-variant="gate"]) .elevator__door {
+.elevator:not(
+    [data-variant="doors"],
+    [data-variant="gate"],
+    [data-variant="respawn"]
+  )
+  .elevator__door {
   display: none;
 }
 
@@ -121,7 +126,11 @@
   opacity: 0;
 }
 
-.elevator:not([data-variant="doors"], [data-variant="gate"])
+.elevator:not(
+    [data-variant="doors"],
+    [data-variant="gate"],
+    [data-variant="respawn"]
+  )
   .elevator__curtain {
   display: block;
 }
@@ -239,4 +248,35 @@
 
 .elevator[data-variant="flash"] .elevator__plate-title {
   text-shadow: none;
+}
+
+/* Team Fortress: puertas de reaparición, RED a la izquierda y BLU a la derecha, con la luz de sala en el borde */
+.elevator[data-variant="respawn"] .elevator__door {
+  border-right: 2px solid #1a0a09;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 6rem,
+      rgb(0 0 0 / 0.25) 6rem calc(6rem + 2px)
+    ),
+    linear-gradient(180deg, #a8332b, #5a1a16);
+  box-shadow: inset -0.5rem 0 1.5rem rgb(0 0 0 / 0.45);
+}
+
+.elevator[data-variant="respawn"] .elevator__door--right {
+  border-right: 0;
+  border-left: 2px solid #0a121c;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 6rem,
+      rgb(0 0 0 / 0.25) 6rem calc(6rem + 2px)
+    ),
+    linear-gradient(180deg, #3d6fae, #1b3354);
+  box-shadow: inset 0.5rem 0 1.5rem rgb(0 0 0 / 0.45);
+}
+
+.elevator[data-variant="respawn"] .elevator__door::after {
+  background: #f6e7b0;
+  box-shadow: 0 0 1.25rem #f6e7b0;
 }
