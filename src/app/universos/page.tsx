@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { universeArt } from "@/data/universe-art";
 import { SagaBackdrop } from "@/features/universes/components/saga-backdrop";
+import { UniverseGalaxy } from "@/features/universes/components/universe-galaxy";
 import { UniverseGate } from "@/features/universes/components/universe-gate";
+import { lineIcons } from "@/data/universe-art";
 import {
   getUniverses,
   getOfficialGamesByUniverse,
@@ -59,6 +61,29 @@ export default function UniversesPage() {
           llegará más adelante.
         </p>
       </header>
+
+      <UniverseGalaxy
+        worlds={universes.flatMap((universe) => {
+          const emblem =
+            lineIcons[`emblem-${universe.id}` as keyof typeof lineIcons];
+          return emblem
+            ? [
+                {
+                  id: universe.id,
+                  slug: universe.slug,
+                  name: universe.name,
+                  description: universe.description,
+                  accent: universeArt[universe.id].accent,
+                  emblem: emblem.src,
+                  games: getOfficialGamesByUniverse(universe.id).map(
+                    (game) => game.name,
+                  ),
+                  available: universe.status === "available",
+                },
+              ]
+            : [];
+        })}
+      />
 
       <ul className={styles["universes-page__gates"]}>
         {available.map((universe, index) => gate(universe, index === 0))}
