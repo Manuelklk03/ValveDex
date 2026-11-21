@@ -175,6 +175,13 @@
     linear-gradient(0deg, #2c7533, #10231a 70%);
 }
 
+/* Portal: energía del portal, naranja y azul, con un núcleo oscuro donde va la placa */
+.elevator[data-variant="portal"] .elevator__curtain {
+  background:
+    radial-gradient(ellipse at 50% 50%, #0b1520 0 52%, transparent 53%),
+    linear-gradient(90deg, #f39a2e 0 38%, #3fa9f5 62% 100%);
+}
+
 /* Alyx: rejilla de realidad virtual */
 .elevator[data-variant="scan"] .elevator__curtain {
   background:
