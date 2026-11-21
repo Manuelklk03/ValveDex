@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  useEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -49,6 +50,10 @@ export function UniverseGalaxy({ worlds }: UniverseGalaxyProps) {
     { accent: string; x: number; y: number } | undefined
   >();
   const active = worlds.find((world) => world.id === activeId);
+  const timer = useRef<number | undefined>(undefined);
+
+  // Si la página se desmonta a mitad de la transición, no queda una navegación pendiente
+  useEffect(() => () => window.clearTimeout(timer.current), []);
 
   function handleMove(event: PointerEvent<HTMLDivElement>) {
     const el = field.current;
@@ -73,7 +78,6 @@ export function UniverseGalaxy({ worlds }: UniverseGalaxyProps) {
     ).matches;
     if (
       reduce ||
-      entering ||
       event.button !== 0 ||
       event.metaKey ||
       event.ctrlKey ||
@@ -82,7 +86,9 @@ export function UniverseGalaxy({ worlds }: UniverseGalaxyProps) {
     )
       return;
 
+    // Un segundo clic durante la transición no cambia el destino
     event.preventDefault();
+    if (entering) return;
     const box = event.currentTarget.getBoundingClientRect();
     setEntering({
       accent: world.accent,
@@ -90,7 +96,10 @@ export function UniverseGalaxy({ worlds }: UniverseGalaxyProps) {
       y: box.top + box.height / 2,
     });
     // La navegación espera a que el círculo cubra la pantalla
-    window.setTimeout(() => router.push(`/universos/${world.slug}`), 650);
+    timer.current = window.setTimeout(
+      () => router.push(`/universos/${world.slug}`),
+      650,
+    );
   }
 
   return (
@@ -126,6 +135,7 @@ export function UniverseGalaxy({ worlds }: UniverseGalaxyProps) {
                     : styles["galaxy__world"]
                 }
                 data-side={x > 50 ? "left" : "right"}
+                data-vert={y > 60 ? "up" : "down"}
                 style={
                   {
                     "--wx": `${x}%`,
@@ -144,7 +154,7 @@ export function UniverseGalaxy({ worlds }: UniverseGalaxyProps) {
                     <Link
                       href={`/universos/${world.slug}`}
                       className={styles["galaxy__orb"]}
-                      aria-label={`Entrar al universo ${world.name}`}
+                      aria-label={`Entrar al universo ${world.name}. ${world.description} Juegos: ${world.games.join(", ")}.`}
                       onClick={(event) => handleEnter(event, world)}
                     >
                       <span
@@ -168,7 +178,7 @@ export function UniverseGalaxy({ worlds }: UniverseGalaxyProps) {
                     </span>
                   )}
                   <p className={styles["galaxy__name"]}>{world.name}</p>
-                  <div className={styles["galaxy__card"]}>
+                  <div className={styles["galaxy__card"]} aria-hidden="true">
                     <p className={styles["galaxy__description"]}>
                       {world.description}
                     </p>

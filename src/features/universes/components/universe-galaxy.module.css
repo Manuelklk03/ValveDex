@@ -164,6 +164,12 @@
   translate: 0.5rem 0;
 }
 
+/* Los mundos de la parte baja abren la ficha hacia arriba, para que overflow: clip no la corte */
+.galaxy__world[data-vert="up"] .galaxy__card {
+  top: auto;
+  bottom: 0;
+}
+
 .galaxy__world--active .galaxy__card {
   opacity: 1;
   translate: 0 0;
