@@ -74,6 +74,18 @@ export function UniverseGalaxy({ worlds }: UniverseGalaxyProps) {
     };
   }, []);
 
+  // Mientras se abre el círculo, ningún clic (ratón o Intro sobre un enlace) llega a la página: el clip-path del círculo
+  // también recorta la zona que recibe clics, así que no basta con el elemento
+  useEffect(() => {
+    if (!entering) return;
+    function block(event: Event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    document.addEventListener("click", block, true);
+    return () => document.removeEventListener("click", block, true);
+  }, [entering]);
+
   function handleMove(event: PointerEvent<HTMLDivElement>) {
     const el = field.current;
     if (!el || event.pointerType !== "mouse") return;
