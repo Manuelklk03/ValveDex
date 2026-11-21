@@ -384,3 +384,59 @@
 .world-rooms--light .world-room__render {
   filter: drop-shadow(0 1.25rem 1.5rem rgb(18 22 26 / 0.3));
 }
+
+/* Salas de cartel (Team Fortress 2): papel crema con medios tonos, como un cartel de Mann Co. Los colores de apartado
+   son los de las salas claras, oscurecidos para leerse sobre el papel */
+.world-rooms--poster {
+  --room-paper: #f2e8d0;
+  --room-ink: #1d1a15;
+  --room-muted: #5f5748;
+}
+
+.world-rooms--poster .world-room--lore {
+  --room-color: #5f5748;
+}
+
+.world-rooms--poster .world-room--maps {
+  --room-color: #266a2d;
+}
+
+.world-rooms--poster .world-room--weapons {
+  --room-color: #a8271f;
+}
+
+.world-rooms--poster .world-room--characters {
+  --room-color: #2a58a8;
+}
+
+.world-rooms--poster .world-room--enemies {
+  --room-color: #8f4309;
+}
+
+.world-rooms--poster .world-room--trivia {
+  --room-color: #74409e;
+}
+
+.world-rooms--poster .world-room--easter-eggs {
+  --room-color: #6b4d00;
+}
+
+/* Medios tonos del cartel en lugar del rayado de las salas oscuras */
+.world-rooms--poster .world-room__scene {
+  background:
+    radial-gradient(
+      ellipse at 80% 40%,
+      color-mix(in srgb, var(--room-color) 18%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+        circle at 1px 1px,
+        color-mix(in srgb, var(--room-color) 22%, transparent) 1px,
+        transparent 1.5px
+      )
+      0 0 / 6px 6px;
+}
+
+.world-rooms--poster .world-room__render {
+  filter: drop-shadow(0 1.25rem 1.25rem rgb(29 26 21 / 0.35));
+}
