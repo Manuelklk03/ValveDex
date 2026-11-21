@@ -1,0 +1,265 @@
+/* Mapa estelar de las sagas. Fondo siempre oscuro con texto claro: el contraste no depende del tema. El acento de la
+   saga activa tiñe el fondo con una transición (propiedad registrada, para que el color se pueda animar) */
+@property --galaxy-accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #3a342b;
+}
+
+.galaxy {
+  --galaxy-ink: #f3efe6;
+  --galaxy-muted: #c7c0b2;
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(34rem, 82vh, 54rem);
+  overflow: clip;
+  background: #0b0a09;
+  color: var(--galaxy-ink);
+  transition: --galaxy-accent 0.6s var(--ease-out, ease-out);
+}
+
+.galaxy__field {
+  position: absolute;
+  inset: 0;
+}
+
+/* Estrellas: dos mosaicos de puntos que se desplazan con el cursor a distinta profundidad */
+.galaxy__stars {
+  position: absolute;
+  inset: -4rem;
+  z-index: -2;
+  background-image:
+    radial-gradient(circle, rgb(255 255 255 / 0.7) 0 1px, transparent 1.5px),
+    radial-gradient(circle, rgb(255 255 255 / 0.4) 0 1px, transparent 1.5px);
+  background-size:
+    11rem 9rem,
+    17rem 13rem;
+  background-position:
+    0 0,
+    5rem 4rem;
+  translate: calc(var(--gx, 0) * -1.5rem) calc(var(--gy, 0) * -1.5rem);
+  opacity: 0.55;
+}
+
+/* La luz de la saga activa llena la galaxia */
+.galaxy__glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse 70% 70% at 50% 50%,
+    color-mix(in srgb, var(--galaxy-accent) 32%, transparent),
+    transparent 70%
+  );
+}
+
+.galaxy__worlds {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.galaxy__world {
+  --orb: 6.5rem;
+  position: absolute;
+  top: var(--wy);
+  left: var(--wx);
+  transform: translate(-50%, -50%);
+}
+
+.galaxy__world:first-child {
+  --orb: 9.5rem;
+}
+
+.galaxy__world--active {
+  z-index: 5;
+}
+
+/* El mundo se desplaza con el cursor según su profundidad */
+.galaxy__drift {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  translate: calc(var(--gx, 0) * var(--depth, 1) * -2.75rem)
+    calc(var(--gy, 0) * var(--depth, 1) * -2.75rem);
+}
+
+.galaxy__orb {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--orb);
+  height: var(--orb);
+  border: 1px solid color-mix(in srgb, var(--world-accent) 60%, transparent);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    color-mix(in srgb, var(--world-accent) 26%, #14110d),
+    #0b0a09 75%
+  );
+  box-shadow: 0 0 2.5rem
+    color-mix(in srgb, var(--world-accent) 22%, transparent);
+  transition:
+    scale 0.3s var(--ease-out, ease-out),
+    box-shadow 0.3s var(--ease-out, ease-out),
+    border-color 0.3s var(--ease-out, ease-out);
+}
+
+.galaxy__emblem {
+  width: 62%;
+  height: 62%;
+  background: var(--world-accent);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+
+.galaxy__orb:focus-visible {
+  outline: 3px solid var(--galaxy-ink);
+  outline-offset: 5px;
+}
+
+.galaxy__world--active .galaxy__orb {
+  scale: 1.14;
+  border-color: var(--world-accent);
+  box-shadow: 0 0 4.5rem
+    color-mix(in srgb, var(--world-accent) 55%, transparent);
+}
+
+.galaxy__name {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-shadow: 0 1px 10px #000;
+}
+
+/* Ficha del mundo: aparece al acercarse o enfocar, sin capturar el ratón */
+.galaxy__card {
+  position: absolute;
+  top: 0;
+  left: calc(100% + 1rem);
+  width: min(17rem, 70vw);
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--world-accent);
+  background: rgb(10 9 8 / 0.94);
+  opacity: 0;
+  pointer-events: none;
+  translate: -0.5rem 0;
+  transition:
+    opacity 0.2s var(--ease-out, ease-out),
+    translate 0.2s var(--ease-out, ease-out);
+}
+
+/* Los mundos de la mitad derecha abren su ficha hacia la izquierda, para no salirse de la galaxia */
+.galaxy__world[data-side="left"] .galaxy__card {
+  right: calc(100% + 1rem);
+  left: auto;
+  translate: 0.5rem 0;
+}
+
+.galaxy__world--active .galaxy__card {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.galaxy__description {
+  margin: 0 0 0.5rem;
+  color: var(--galaxy-muted);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.galaxy__games {
+  display: grid;
+  gap: 0.125rem;
+  margin: 0;
+  padding: 0;
+  color: var(--galaxy-ink);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  list-style: none;
+}
+
+.galaxy__pending {
+  margin: 0;
+  color: var(--galaxy-muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+}
+
+/* Entrada: un círculo del color de la saga se abre desde su mundo y cubre la pantalla */
+.galaxy__portal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--portal-color);
+  clip-path: circle(0 at var(--portal-x) var(--portal-y));
+  animation: galaxy-portal 0.65s var(--ease-in-out, ease-in-out) forwards;
+  pointer-events: none;
+}
+
+@keyframes galaxy-portal {
+  to {
+    clip-path: circle(150vmax at var(--portal-x) var(--portal-y));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .galaxy,
+  .galaxy__orb,
+  .galaxy__card {
+    transition: none;
+  }
+
+  .galaxy__stars,
+  .galaxy__drift {
+    translate: none;
+  }
+}
+
+/* En pantallas estrechas no hay constelación: los mundos van en cuadrícula, con su nombre */
+@media (max-width: 47.99rem) {
+  .galaxy {
+    min-height: 0;
+    padding: 2.5rem 1rem;
+  }
+
+  .galaxy__field {
+    position: relative;
+    inset: auto;
+  }
+
+  .galaxy__worlds {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem 1rem;
+  }
+
+  .galaxy__world,
+  .galaxy__world:first-child {
+    --orb: 6rem;
+    position: static;
+    transform: none;
+  }
+
+  .galaxy__world:first-child {
+    grid-column: 1 / -1;
+    --orb: 8rem;
+  }
+
+  .galaxy__drift {
+    translate: none;
+  }
+
+  .galaxy__card {
+    display: none;
+  }
+}
