@@ -122,6 +122,13 @@ const plans: Record<DossierTransition, Plan> = {
       ms: 640,
     },
   },
+  // Team Fortress: las puertas de la sala de reaparición, RED a un lado y BLU al otro
+  respawn: {
+    layer: "doors",
+    axis: "x",
+    close: { keyframes: [], ms: 440 },
+    open: { keyframes: [], ms: 600 },
+  },
   // Portal: se abre un portal desde el centro y te atraviesa; al llegar, se cierra detrás
   portal: {
     layer: "curtain",
