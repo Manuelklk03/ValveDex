@@ -2185,3 +2185,17 @@
     #7dd35a 66% 100%
   );
 }
+
+/* --- Team Fortress como mundo: TF2 es un cartel de papel crema con medios tonos y RED contra BLU; Classic, lona oliva --- */
+.game-dossier--corridor.game-dossier--team-fortress-2 {
+  --corridor-tint: #b8312b;
+  --plate-ink: #ffffff;
+  --art-backdrop-opacity: 0.5;
+  --art-backdrop-blend: multiply;
+  --art-backdrop-filter: grayscale(0.7) contrast(1.05);
+  --floor: linear-gradient(90deg, #b8312b 0 50%, #3d6fae 50% 100%);
+}
+
+.game-dossier--corridor.game-dossier--team-fortress-classic {
+  --floor: linear-gradient(90deg, #f68f87 0 50%, #8fb4ee 50% 100%);
+}

@@ -131,3 +131,14 @@
     #7dd35a 66% 100%
   );
 }
+
+/* Team Fortress: la luz es el rojo del equipo sobre las superficies oscuras de la página; el suelo, RED contra BLU */
+.world-theme[data-variant="team-fortress-2"] {
+  --world-light: #e8665f;
+  --world-floor: linear-gradient(90deg, #b8312b 0 50%, #3d6fae 50% 100%);
+}
+
+.world-theme[data-variant="team-fortress-classic"] {
+  --world-light: #f68f87;
+  --world-floor: linear-gradient(90deg, #f68f87 0 50%, #8fb4ee 50% 100%);
+}
