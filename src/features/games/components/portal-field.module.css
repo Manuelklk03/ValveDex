@@ -1,0 +1,55 @@
+/* Dos portales enlazados sobre el dossier de Portal. Solo anillos con brillo: el interior queda transparente para no
+   restar contraste al texto que haya debajo */
+.portal-field {
+  --portal-orange: #ff9a1f;
+  --portal-blue: #3fa9f5;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: clip;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.portal-field__ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4.5rem;
+  height: 7.25rem;
+  margin: -3.625rem 0 0 -2.25rem;
+  border: 0.3125rem solid var(--ring);
+  border-radius: 50%;
+  box-shadow:
+    0 0 1.5rem var(--ring),
+    inset 0 0 1.25rem color-mix(in srgb, var(--ring) 60%, transparent);
+  opacity: 0;
+  scale: 0;
+  transition:
+    scale 0.35s var(--ease-out, ease-out),
+    opacity 0.25s var(--ease-out, ease-out),
+    translate 0.14s ease-out;
+}
+
+.portal-field__ring--orange {
+  --ring: var(--portal-orange);
+  translate: var(--ox, 50%) var(--oy, 50%);
+  rotate: -14deg;
+}
+
+.portal-field__ring--blue {
+  --ring: var(--portal-blue);
+  translate: var(--bx, 50%) var(--by, 50%);
+  rotate: 14deg;
+}
+
+.portal-field[data-open="true"] .portal-field__ring {
+  opacity: 1;
+  scale: 1;
+}
+
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .portal-field {
+    display: none;
+  }
+}
