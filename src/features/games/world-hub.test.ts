@@ -90,6 +90,30 @@ describe("hub de Half-Life: salas", () => {
     ).toBeGreaterThanOrEqual(4.5);
   });
 
+  // Portal (salas claras): paneles blancos de Aperture con los colores de cada apartado oscurecidos
+  const lightPaper = hex(roomsCss, ".world-rooms--light", "room-paper")!;
+  const lightInk = hex(roomsCss, ".world-rooms--light", "room-ink")!;
+  const lightMuted = hex(roomsCss, ".world-rooms--light", "room-muted")!;
+
+  it("las salas claras de Portal se leen: tinta y atenuado sobre el panel", () => {
+    expect(contrast(lightInk, lightPaper)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(lightMuted, lightPaper)).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it.each(sections)("la sala clara de «%s» se lee con su color", (section) => {
+    const color = hex(
+      roomsCss,
+      `.world-rooms--light .world-room--${section}`,
+      "room-color",
+    );
+
+    expect(color, section).toBeDefined();
+    expect(
+      contrast(color!, roomBackground(lightPaper, color!)),
+      section,
+    ).toBeGreaterThanOrEqual(4.5);
+  });
+
   it.each(variants)("la luz de «%s» se lee sobre las salas", (variant) => {
     const light =
       hex(pageCss, `.world-theme[data-variant="${variant}"]`, "world-light") ??
