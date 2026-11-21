@@ -23,7 +23,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 - La lore de los juegos de Half-Life es un expediente: párrafos numerados como un informe, con la luz del juego, que se desvelan al bajar, y el resto de la historia tras un sello de material clasificado que se abre al pulsarlo.
 - Valve tiene portada propia en /valve: cuatro salas (Historia, Steam, Hardware y Gente) con su material y su color, y un índice de personas en /valve/personas. El menú Valve y el buscador las incluyen.
 - La historia de Valve es una línea de producción vertical: hitos agrupados por década, una tubería central que se llena al bajar y estaciones que alternan de lado, sobre fondo industrial.
-- /universos abre con un mapa estelar: cada saga es un mundo con su emblema y su luz, el cursor mueve el campo con profundidad, el mundo activo tiñe el fondo con su color y al entrar se abre un círculo de ese color. Las tarjetas de acceso quedan debajo.
+- `/universos` es un mapa de mundos a pantalla completa, sin tarjetas: cada saga es un universo con su captura en movimiento, su luz y su anillo de órbita; al acercarse crece, gira su modelo 3D, el fondo toma su color y sus juegos aparecen como lunas, y al entrar se abre un círculo de su color.
 
 ## [0.5.0] — 2026-11-16
 

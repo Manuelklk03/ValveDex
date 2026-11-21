@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   useEffect,
+  useId,
   useRef,
   useState,
   type CSSProperties,
@@ -72,7 +73,11 @@ export function UniverseGalaxy({ worlds, children }: UniverseGalaxyProps) {
   const field = useRef<HTMLDivElement>(null);
   const timer = useRef<number | undefined>(undefined);
   const [activeId, setActiveId] = useState<string | undefined>();
-  const [warmed, setWarmed] = useState<string[]>([]);
+  // Mundos ya visitados (sus capturas de fondo se montan entonces) y el último con modelo 3D activado: solo ese tiene
+  // lienzo WebGL, así que nunca hay más de uno a la vez
+  const [visited, setVisited] = useState<string[]>([]);
+  const [modelId, setModelId] = useState<string | undefined>();
+  const baseId = useId();
   const [entering, setEntering] = useState<
     { accent: string; x: number; y: number } | undefined
   >();
@@ -80,7 +85,9 @@ export function UniverseGalaxy({ worlds, children }: UniverseGalaxyProps) {
 
   function activate(id: string | undefined) {
     setActiveId(id);
-    if (id) setWarmed((ids) => (ids.includes(id) ? ids : [...ids, id]));
+    if (!id) return;
+    setVisited((ids) => (ids.includes(id) ? ids : [...ids, id]));
+    setModelId(id);
   }
 
   // La navegación diferida se cancela si otra la adelanta (Atrás, buscador, otro enlace) y la página se desmonta, y el
@@ -179,7 +186,8 @@ export function UniverseGalaxy({ worlds, children }: UniverseGalaxyProps) {
       <div className={styles["galaxy__scenery"]} aria-hidden="true">
         {worlds.map(
           (world) =>
-            world.backdrop && (
+            world.backdrop &&
+            visited.includes(world.id) && (
               <Image
                 key={world.id}
                 src={world.backdrop}
@@ -240,7 +248,7 @@ export function UniverseGalaxy({ worlds, children }: UniverseGalaxyProps) {
                   />
                 )}
                 <span className={styles["galaxy__tint"]} aria-hidden="true" />
-                {world.model && warmed.includes(world.id) && (
+                {world.model && modelId === world.id && (
                   <span className={styles["galaxy__model"]} aria-hidden="true">
                     <ModelSpinner
                       src={world.model}
@@ -322,7 +330,8 @@ export function UniverseGalaxy({ worlds, children }: UniverseGalaxyProps) {
                       <Link
                         href={`/universos/${world.slug}`}
                         className={styles["galaxy__orb"]}
-                        aria-label={`Entrar al universo ${world.name}. ${world.description} Juegos: ${world.games.join(", ")}.`}
+                        aria-label={`Entrar al universo ${world.name}`}
+                        aria-describedby={`${baseId}-${world.id}`}
                         onClick={(event) => handleEnter(event, world)}
                       >
                         {orb}
@@ -337,6 +346,9 @@ export function UniverseGalaxy({ worlds, children }: UniverseGalaxyProps) {
                     )}
                   </div>
 
+                  <span id={`${baseId}-${world.id}`} className="sr-only">
+                    {world.description} Juegos: {world.games.join(", ")}.
+                  </span>
                   <p className={styles["galaxy__name"]}>{world.name}</p>
                   <p className={styles["galaxy__tagline"]} aria-hidden="true">
                     {world.available ? world.tagline : "Próximamente"}
