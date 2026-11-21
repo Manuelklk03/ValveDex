@@ -1,0 +1,543 @@
+/* Mapa de mundos de las sagas, a pantalla completa y sin tarjetas. Fondo siempre oscuro con texto claro: el contraste
+   no depende del tema. El acento del mundo activo tiñe la nebulosa con una transición (propiedad registrada, para que
+   el color se pueda animar) */
+@property --galaxy-accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #3a342b;
+}
+
+.galaxy {
+  --galaxy-ink: #f3efe6;
+  --galaxy-muted: #c7c0b2;
+  position: relative;
+  isolation: isolate;
+  min-height: max(46rem, calc(100svh - 4.75rem));
+  overflow: clip;
+  background: #070606;
+  color: var(--galaxy-ink);
+  transition: --galaxy-accent 0.6s var(--ease-out, ease-out);
+}
+
+/* --- Fondo: captura del mundo activo desenfocada, nebulosa de su color y estrellas --- */
+.galaxy__scenery {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.galaxy__scene {
+  object-fit: cover;
+  opacity: 0;
+  filter: blur(26px) saturate(1.1);
+  scale: 1.12;
+  transition: opacity 0.7s var(--ease-out, ease-out);
+}
+
+.galaxy__scene--active {
+  opacity: 0.4;
+}
+
+.galaxy__nebula {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 55% 55% at 50% 52%,
+      color-mix(in srgb, var(--galaxy-accent) 30%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 40% 40% at 85% 15%,
+      color-mix(in srgb, var(--galaxy-accent) 14%, transparent),
+      transparent 70%
+    );
+}
+
+.galaxy__stars {
+  position: absolute;
+  inset: -4rem;
+  background-image:
+    radial-gradient(circle, rgb(255 255 255 / 0.75) 0 1px, transparent 1.5px),
+    radial-gradient(circle, rgb(255 255 255 / 0.4) 0 1px, transparent 1.5px);
+  background-size:
+    11rem 9rem,
+    17rem 13rem;
+  background-position:
+    0 0,
+    5rem 4rem;
+  translate: calc(var(--gx, 0) * -1.5rem) calc(var(--gy, 0) * -1.5rem);
+  opacity: 0.5;
+}
+
+.galaxy__field {
+  position: absolute;
+  inset: 0;
+}
+
+/* --- Mapa: órbitas y coordenadas decorativas --- */
+.galaxy__ring {
+  position: absolute;
+  border: 1px dashed rgb(255 255 255 / 0.09);
+  border-radius: 50%;
+  animation: galaxy-spin 240s linear infinite;
+}
+
+.galaxy__ring--near {
+  inset: 16% 21%;
+}
+
+.galaxy__ring--far {
+  inset: 3% 7%;
+  animation-direction: reverse;
+}
+
+@keyframes galaxy-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.galaxy__coords {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1rem;
+  margin: 0;
+  color: rgb(243 239 230 / 0.55);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.galaxy__heading {
+  position: absolute;
+  top: clamp(1.25rem, 3vw, 2.25rem);
+  left: max(1rem, calc((100% - 72rem) / 2));
+  z-index: 6;
+  max-width: 26rem;
+  pointer-events: none;
+}
+
+/* --- Mundos --- */
+.galaxy__worlds {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.galaxy__world {
+  --orb: clamp(7rem, 11vw, 10rem);
+  position: absolute;
+  top: var(--wy);
+  /* Con margen mínimo respecto a los bordes: en anchos intermedios, sus etiquetas no se salen del mapa */
+  left: clamp(9rem, var(--wx), calc(100% - 9rem));
+  transform: translate(-50%, -50%);
+}
+
+.galaxy__world:first-child {
+  --orb: clamp(9.5rem, 15vw, 14rem);
+}
+
+.galaxy__world--active {
+  z-index: 5;
+}
+
+/* El mundo se desplaza con el cursor según su profundidad; los demás se atenúan al activar uno */
+.galaxy__drift {
+  display: grid;
+  justify-items: center;
+  translate: calc(var(--gx, 0) * var(--depth, 1) * -2.75rem)
+    calc(var(--gy, 0) * var(--depth, 1) * -2.75rem);
+  transition: opacity 0.35s var(--ease-out, ease-out);
+}
+
+.galaxy__worlds:has(.galaxy__world--active)
+  .galaxy__world:not(.galaxy__world--active)
+  .galaxy__drift {
+  opacity: 0.4;
+}
+
+/* El cuerpo flota despacio, cada mundo a su ritmo */
+.galaxy__body {
+  position: relative;
+  width: var(--orb);
+  height: var(--orb);
+  animation: galaxy-float 9s ease-in-out var(--float-delay, 0s) infinite;
+}
+
+@keyframes galaxy-float {
+  50% {
+    transform: translateY(-0.625rem);
+  }
+}
+
+/* Anillo de órbita del mundo */
+.galaxy__halo {
+  position: absolute;
+  inset: -20%;
+  border: 1px dashed color-mix(in srgb, var(--world-accent) 40%, transparent);
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: galaxy-spin 50s linear infinite;
+  transition:
+    inset 0.5s var(--ease-out, ease-out),
+    opacity 0.4s var(--ease-out, ease-out);
+}
+
+.galaxy__world--active .galaxy__halo {
+  inset: -34%;
+  border-style: solid;
+  opacity: 1;
+}
+
+/* La esfera: captura del juego que se mueve dentro, tinte de la saga, modelo 3D al acercarse y el emblema */
+.galaxy__orb {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--world-accent) 65%, transparent);
+  border-radius: 50%;
+  background: #0b0a09;
+  box-shadow:
+    0 0 2.5rem color-mix(in srgb, var(--world-accent) 28%, transparent),
+    inset 0 0 2rem rgb(0 0 0 / 0.65);
+  isolation: isolate;
+  transition:
+    scale 0.45s var(--ease-out, ease-out),
+    box-shadow 0.45s var(--ease-out, ease-out),
+    border-color 0.3s var(--ease-out, ease-out);
+}
+
+.galaxy__preview {
+  object-fit: cover;
+  filter: brightness(0.62) saturate(0.95);
+  animation: galaxy-pan 26s ease-in-out var(--float-delay, 0s) infinite
+    alternate;
+  transition: filter 0.45s var(--ease-out, ease-out);
+}
+
+@keyframes galaxy-pan {
+  from {
+    scale: 1.12;
+    translate: -4% -2%;
+  }
+
+  to {
+    scale: 1.38;
+    translate: 4% 3%;
+  }
+}
+
+.galaxy__tint {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 32% 26%,
+      color-mix(in srgb, var(--world-accent) 32%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(circle at 50% 50%, transparent 55%, rgb(0 0 0 / 0.55));
+}
+
+.galaxy__model {
+  position: absolute;
+  inset: 8%;
+  z-index: 2;
+  opacity: 0;
+  scale: 0.85;
+  transition:
+    opacity 0.4s var(--ease-out, ease-out),
+    scale 0.45s var(--ease-out, ease-out);
+}
+
+.galaxy__emblem {
+  position: absolute;
+  inset: 27%;
+  z-index: 1;
+  background: var(--world-accent);
+  filter: drop-shadow(0 0 0.75rem rgb(0 0 0 / 0.7));
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  transition:
+    opacity 0.35s var(--ease-out, ease-out),
+    scale 0.45s var(--ease-out, ease-out);
+}
+
+.galaxy__orb:focus-visible {
+  outline: 3px solid var(--galaxy-ink);
+  outline-offset: 6px;
+}
+
+.galaxy__world--active .galaxy__orb {
+  scale: 1.28;
+  border-color: var(--world-accent);
+  box-shadow:
+    0 0 5rem color-mix(in srgb, var(--world-accent) 60%, transparent),
+    inset 0 0 1.5rem rgb(0 0 0 / 0.45);
+}
+
+.galaxy__world--active .galaxy__preview {
+  filter: brightness(1) saturate(1.1);
+}
+
+.galaxy__world--active .galaxy__model {
+  opacity: 1;
+  scale: 1;
+}
+
+.galaxy__world--active .galaxy__emblem {
+  opacity: 0.35;
+  scale: 0.8;
+}
+
+.galaxy__orb--pending {
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+
+/* Lunas: los juegos de la saga aparecen en su órbita al acercarse, uno tras otro */
+.galaxy__moons {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.galaxy__moon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin: -0.375rem;
+  border-radius: 50%;
+  background: var(--world-accent);
+  box-shadow: 0 0 0.875rem var(--world-accent);
+  opacity: 0;
+  transform: rotate(var(--a)) translateX(calc(var(--orb) * 0.78 + 0.5rem))
+    rotate(calc(var(--a) * -1)) scale(0.3);
+  transition:
+    opacity 0.3s var(--ease-out, ease-out),
+    transform 0.45s var(--ease-out, ease-out);
+}
+
+.galaxy__world--active .galaxy__moon {
+  opacity: 1;
+  transform: rotate(var(--a)) translateX(calc(var(--orb) * 0.78 + 0.5rem))
+    rotate(calc(var(--a) * -1)) scale(1);
+  transition-delay: calc(var(--i) * 70ms);
+}
+
+.galaxy__moon-label {
+  position: absolute;
+  top: 50%;
+  left: 1.125rem;
+  padding: 0.1875rem 0.5rem;
+  background: rgb(8 7 6 / 0.82);
+  color: var(--galaxy-ink);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  translate: 0 -50%;
+}
+
+/* Las lunas de la mitad izquierda del anillo llevan la etiqueta hacia la izquierda */
+.galaxy__moon[data-flip="true"] .galaxy__moon-label {
+  right: 1.125rem;
+  left: auto;
+}
+
+.galaxy__name {
+  margin: calc(var(--orb) * 0.3 + 1.25rem) 0 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-align: center;
+  text-shadow: 0 1px 12px #000;
+}
+
+.galaxy__world:first-child .galaxy__name {
+  font-size: 1.75rem;
+}
+
+.galaxy__tagline {
+  min-height: 2.6em;
+  max-width: 15rem;
+  margin: 0.25rem 0 0;
+  color: var(--galaxy-muted);
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  text-align: center;
+  text-shadow: 0 1px 8px #000;
+  opacity: 0;
+  translate: 0 -0.25rem;
+  transition:
+    opacity 0.3s var(--ease-out, ease-out),
+    translate 0.3s var(--ease-out, ease-out);
+}
+
+.galaxy__world--active .galaxy__tagline {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.galaxy__chips {
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.375rem;
+  max-width: 16rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  color: var(--galaxy-muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  list-style: none;
+}
+
+.galaxy__chips li {
+  padding: 0.125rem 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--world-accent) 45%, transparent);
+  border-radius: 999px;
+}
+
+/* En anchos intermedios las etiquetas de las lunas se saldrían del mapa: las lunas quedan como puntos y los juegos
+   van en etiquetas bajo el nombre del mundo activo */
+@media (min-width: 48rem) and (max-width: 79.99rem) {
+  .galaxy__moon-label,
+  .galaxy__tagline {
+    display: none;
+  }
+
+  .galaxy__chips {
+    display: flex;
+    opacity: 0;
+    translate: 0 -0.25rem;
+    transition:
+      opacity 0.3s var(--ease-out, ease-out),
+      translate 0.3s var(--ease-out, ease-out);
+  }
+
+  .galaxy__world--active .galaxy__chips {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* --- Entrada: un círculo del color de la saga se abre desde su mundo y cubre la pantalla --- */
+.galaxy__portal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--portal-color);
+  clip-path: circle(0 at var(--portal-x) var(--portal-y));
+  animation: galaxy-portal 0.65s var(--ease-in-out, ease-in-out) forwards;
+  /* Los clics los bloquea el componente a nivel de documento: el clip-path también recorta el área que los recibe */
+  pointer-events: none;
+}
+
+@keyframes galaxy-portal {
+  to {
+    clip-path: circle(150vmax at var(--portal-x) var(--portal-y));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .galaxy,
+  .galaxy__scene,
+  .galaxy__orb,
+  .galaxy__model,
+  .galaxy__emblem,
+  .galaxy__moon,
+  .galaxy__tagline,
+  .galaxy__halo,
+  .galaxy__drift {
+    transition: none;
+  }
+
+  .galaxy__body,
+  .galaxy__halo,
+  .galaxy__ring,
+  .galaxy__preview {
+    animation: none;
+  }
+
+  .galaxy__stars,
+  .galaxy__drift {
+    translate: none;
+  }
+}
+
+/* --- Pantallas estrechas: no hay constelación; los mundos van en cuadrícula con sus juegos a la vista --- */
+@media (max-width: 47.99rem) {
+  .galaxy {
+    min-height: 0;
+    padding-bottom: 3rem;
+  }
+
+  .galaxy__field {
+    position: relative;
+    inset: auto;
+  }
+
+  .galaxy__ring,
+  .galaxy__coords {
+    display: none;
+  }
+
+  .galaxy__heading {
+    position: static;
+    max-width: none;
+    padding: 1.5rem 1rem 0.5rem;
+  }
+
+  .galaxy__worlds {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem 1rem;
+    padding: 2.5rem 1rem 0;
+  }
+
+  .galaxy__world,
+  .galaxy__world:first-child {
+    --orb: 7rem;
+    position: static;
+    justify-self: center;
+    transform: none;
+  }
+
+  .galaxy__world:first-child {
+    --orb: 9.5rem;
+    grid-column: 1 / -1;
+  }
+
+  .galaxy__drift {
+    translate: none;
+  }
+
+  .galaxy__moons,
+  .galaxy__tagline {
+    display: none;
+  }
+
+  .galaxy__world--active .galaxy__orb {
+    scale: 1.08;
+  }
+
+  .galaxy__chips {
+    display: flex;
+  }
+}

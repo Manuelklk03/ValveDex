@@ -15,8 +15,8 @@
   align-items: center;
 }
 
-/* Separador entre pasos: decorativo, por eso va en CSS y no en el texto */
-.breadcrumb__item + .breadcrumb__item::before {
+/* Separador entre pasos: decorativo, por eso va en CSS y no en el texto. Va al final de cada paso (no al principio del siguiente) para que, al saltar de línea, ninguna ruta empiece con la barra */
+.breadcrumb__item:not(:last-child)::after {
   content: "/" / "";
   padding-inline: 0.625rem;
   color: var(--muted);

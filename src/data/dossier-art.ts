@@ -94,7 +94,7 @@ export const dossierArt: Record<string, DossierArt> = {
     iconsOpacity: 0.4,
     // El dispositivo viene de pie: tumbado gira como una pieza de museo
     model: "/models/universes/portal-gun.glb",
-    modelTilt: Math.PI / 2,
+    modelTilt: -Math.PI / 2,
   },
   "portal-2": {
     icons: [lineIcons.glados, lineIcons.wheatley],
