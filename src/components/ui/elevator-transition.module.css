@@ -112,7 +112,8 @@
 .elevator:not(
     [data-variant="doors"],
     [data-variant="gate"],
-    [data-variant="respawn"]
+    [data-variant="respawn"],
+    [data-variant="safehouse"]
   )
   .elevator__door {
   display: none;
@@ -129,7 +130,8 @@
 .elevator:not(
     [data-variant="doors"],
     [data-variant="gate"],
-    [data-variant="respawn"]
+    [data-variant="respawn"],
+    [data-variant="safehouse"]
   )
   .elevator__curtain {
   display: block;
@@ -279,4 +281,30 @@
 .elevator[data-variant="respawn"] .elevator__door::after {
   background: #f6e7b0;
   box-shadow: 0 0 1.25rem #f6e7b0;
+}
+
+/* Left 4 Dead: puerta de seguridad del refugio, acero verdoso con remaches, luz de alarma roja en el borde */
+.elevator[data-variant="safehouse"] .elevator__door {
+  border-right: 3px solid #060905;
+  background:
+    radial-gradient(circle at 1.25rem 1.25rem, #5b6a52 3px, transparent 4px) 0
+      0 / 100% 6rem repeat-y,
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 5rem,
+      rgb(0 0 0 / 0.35) 5rem calc(5rem + 3px)
+    ),
+    linear-gradient(180deg, #2c3627, #151b12);
+  box-shadow: inset -0.5rem 0 1.5rem rgb(0 0 0 / 0.6);
+}
+
+.elevator[data-variant="safehouse"] .elevator__door--right {
+  border-right: 0;
+  border-left: 3px solid #060905;
+  box-shadow: inset 0.5rem 0 1.5rem rgb(0 0 0 / 0.6);
+}
+
+.elevator[data-variant="safehouse"] .elevator__door::after {
+  background: #d8362a;
+  box-shadow: 0 0 1.5rem #d8362a;
 }
