@@ -99,7 +99,8 @@ function Glow({
 }) {
   return (
     <Billboard>
-      <mesh>
+      {/* Solo decora: sin raycast, para no tapar los clics de lo que tiene detrás */}
+      <mesh raycast={() => null}>
         <planeGeometry args={[size, size]} />
         <meshBasicMaterial
           map={texture}
@@ -140,7 +141,7 @@ function Wheel({
 
   return (
     <group>
-      <mesh position={[-1.6, 0, -9]}>
+      <mesh position={[-1.6, 0, -9]} raycast={() => null}>
         <planeGeometry args={[34, 19]} />
         <meshBasicMaterial
           map={backdrop}
