@@ -142,3 +142,22 @@
   --world-light: #f68f87;
   --world-floor: linear-gradient(90deg, #f68f87 0 50%, #8fb4ee 50% 100%);
 }
+
+/* Left 4 Dead: la luz es el verde del infectado (en la secuela, más amarillento) y el suelo, cinta de cuarentena */
+.world-theme[data-variant="left-4-dead"] {
+  --world-light: #9cc24a;
+  --world-floor: repeating-linear-gradient(
+    -45deg,
+    #e8a817 0 0.9rem,
+    #14170f 0.9rem 1.8rem
+  );
+}
+
+.world-theme[data-variant="left-4-dead-2"] {
+  --world-light: #b6d44f;
+  --world-floor: repeating-linear-gradient(
+    -45deg,
+    #e0a63a 0 0.9rem,
+    #1c1810 0.9rem 1.8rem
+  );
+}
