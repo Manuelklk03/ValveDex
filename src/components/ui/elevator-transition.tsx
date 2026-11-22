@@ -129,6 +129,13 @@ const plans: Record<DossierTransition, Plan> = {
     close: { keyframes: [], ms: 440 },
     open: { keyframes: [], ms: 600 },
   },
+  // Left 4 Dead: la puerta de seguridad del refugio, dos hojas de acero con luz roja que se abren de golpe
+  safehouse: {
+    layer: "doors",
+    axis: "x",
+    close: { keyframes: [], ms: 360 },
+    open: { keyframes: [], ms: 520 },
+  },
   // Portal: se abre un portal desde el centro y te atraviesa; al llegar, se cierra detrás
   portal: {
     layer: "curtain",

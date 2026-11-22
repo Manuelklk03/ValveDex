@@ -10,6 +10,7 @@ export const dossierTransitions = [
   "scan",
   "portal",
   "respawn",
+  "safehouse",
 ] as const;
 
 export type DossierTransition = (typeof dossierTransitions)[number];
