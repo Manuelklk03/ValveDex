@@ -24,6 +24,8 @@ const variants = [
   "portal-2",
   "team-fortress-classic",
   "team-fortress-2",
+  "left-4-dead",
+  "left-4-dead-2",
 ] as const;
 const sections = [
   "lore",
