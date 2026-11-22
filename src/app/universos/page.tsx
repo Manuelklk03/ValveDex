@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { universeArt, lineIcons } from "@/data/universe-art";
-import { UniverseGalaxy } from "@/features/universes/components/universe-galaxy";
+import { UniverseExplorer } from "@/features/universes/components/universe-explorer";
 import {
   getUniverses,
   getOfficialGamesByUniverse,
@@ -18,11 +18,12 @@ export default function UniversesPage() {
 
   return (
     <main className={styles["universes-page"]}>
-      <UniverseGalaxy
+      <UniverseExplorer
         worlds={universes.flatMap((universe) => {
           const emblem =
             lineIcons[`emblem-${universe.id}` as keyof typeof lineIcons];
           const art = universeArt[universe.id];
+          const games = getOfficialGamesByUniverse(universe.id);
 
           return emblem
             ? [
@@ -37,9 +38,8 @@ export default function UniversesPage() {
                   backdrop: art.backdrop,
                   model: art.model,
                   modelTilt: art.modelTilt,
-                  games: getOfficialGamesByUniverse(universe.id).map(
-                    (game) => game.name,
-                  ),
+                  games: games.map((game) => game.name),
+                  gameCount: games.length,
                   available: universe.status === "available",
                 },
               ]
@@ -51,10 +51,10 @@ export default function UniversesPage() {
         </p>
         <h1 className={styles["universes-page__title"]}>Universos</h1>
         <p className={styles["universes-page__intro"]}>
-          Cada saga de Valve es un mundo. Acércate a uno para ver sus juegos y
+          Cada saga de Valve es un mundo. Desplázate para viajar de uno a otro y
           entra.
         </p>
-      </UniverseGalaxy>
+      </UniverseExplorer>
     </main>
   );
 }
