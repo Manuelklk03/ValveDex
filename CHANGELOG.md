@@ -8,6 +8,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Corregido
 
+- Las migas de pan ya no se parten en las cabeceras con columna estrecha (la barra quedaba al final de línea): miden lo que miden sus pasos y solo saltan de línea en pantallas pequeñas.
 - Las migas de pan ya no empiezan una línea con la barra separadora, las de Hardware y Steam cuelgan de Valve y la pistola de portales del dossier y de la tarjeta de Portal ya no sale al revés.
 
 ### Seguridad
@@ -16,6 +17,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ### Añadido
 
+- La portada es la entrada del espacio de ValveDex: una estación de Valve en 3D a pantalla completa que se recorre con el scroll. Una rueda de acero rojo delante de Black Mesa abre el viaje; siguen las cuatro salas (Historia como tubería con un anillo por hito, Steam como núcleo azul con anillos, Hardware como plano de laboratorio y Gente como pared de credenciales que flotan) y, al fondo, las cinco sagas. Cada sala se puede pulsar o abrir con su botón y entra con su propia animación; las sagas llevan a su universo. Sin WebGL o con «reducir movimiento» el recorrido sigue funcionando sin vuelo.
 - `/universos` es un viaje por el espacio en 3D a pantalla completa: un campo de estrellas profundo y un mundo por saga (esfera con su captura, atmósfera, nebulosa, anillo con una luna por juego y su modelo 3D o emblema) por el que la cámara avanza al hacer scroll, con suavizado y paralaje del cursor. El mundo activo se presenta con su nombre, sus juegos y un botón «Entrar al universo»: la cámara se lanza hacia el mundo mientras se cierra la entrada animada de su saga (puertas, portal, respawn, refugio o destello), que se abre ya en el destino. Se navega también con puntos y con las flechas izquierda y derecha; con «reducir movimiento» la cámara salta de mundo en mundo sin viaje.
 - El hub de cada juego de Half-Life continúa el mundo del dossier: la cabecera es la misma escena a todo el ancho, con el material del juego, el cartel de techo, el suelo, los detalles y el protagonista, y sus apartados dejan de ser tarjetas para ser salas: franjas a todo el ancho con la foto real de sus fichas, un número gigante, los nombres de las primeras fichas y una entrada que usa la animación del juego. Las salas alternan de lado, se encienden al acercarse y aparecen al hacer scroll, y al bajar por la página la luz del juego se apaga y el fondo se oscurece, del exterior al interior.
 - Las páginas de apartado de Half-Life (armas, mapas, personajes, enemigos…) son un pasillo de piezas: la cabecera es el mundo del juego con el título del apartado y cada ficha deja de ser una tarjeta; el objeto flota sobre la luz del juego con su sombra en el suelo, los mapas se asoman por un arco como las puertas, y al acercarse la luz se intensifica, la pieza se levanta y el objeto gira en 3D.
