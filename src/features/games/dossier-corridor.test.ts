@@ -112,3 +112,18 @@ describe("entradas animadas de los dossieres", () => {
     }
   });
 });
+
+// Las demás sagas con mundo tienen su propia entrada, la misma para todos sus juegos
+describe("entradas de las demás sagas", () => {
+  it.each([
+    ["portal", "portal"],
+    ["portal-2", "portal"],
+    ["team-fortress-classic", "respawn"],
+    ["team-fortress-2", "respawn"],
+    ["left-4-dead", "safehouse"],
+    ["left-4-dead-2", "safehouse"],
+  ] as const)("«%s» entra con «%s»", (variant, transition) => {
+    expect(transitionByLook[variant]).toBe(transition);
+    expect(dossierTransitions).toContain(transition);
+  });
+});
