@@ -170,7 +170,13 @@ export default async function GamePage({
           statuses={statuses}
           previews={previews}
           fallbackScene={dossierArt[game.id]?.backdrop}
-          light={look.variant === "portal"}
+          tone={
+            look.variant === "portal"
+              ? "light"
+              : look.variant === "team-fortress-2"
+                ? "poster"
+                : undefined
+          }
           transition={
             transitionName
               ? { name: transitionName, title: game.name, label: look.label }

@@ -22,6 +22,8 @@ const variants = [
   "half-life-alyx",
   "portal",
   "portal-2",
+  "team-fortress-classic",
+  "team-fortress-2",
 ] as const;
 const sections = [
   "lore",
@@ -92,30 +94,34 @@ describe("hub de Half-Life: salas", () => {
     ).toBeGreaterThanOrEqual(4.5);
   });
 
-  // Portal (salas claras): paneles blancos de Aperture con los colores de cada apartado oscurecidos
-  const lightPaper = hex(roomsCss, ".world-rooms--light", "room-paper")!;
-  const lightInk = hex(roomsCss, ".world-rooms--light", "room-ink")!;
-  const lightMuted = hex(roomsCss, ".world-rooms--light", "room-muted")!;
+  // Salas claras (Portal) y de cartel (Team Fortress 2): el papel claro con los colores de apartado oscurecidos
+  describe.each([".world-rooms--light", ".world-rooms--poster"])(
+    "salas con papel claro %s",
+    (tone) => {
+      const lightPaper = hex(roomsCss, tone, "room-paper")!;
+      const lightInk = hex(roomsCss, tone, "room-ink")!;
+      const lightMuted = hex(roomsCss, tone, "room-muted")!;
 
-  it("las salas claras de Portal se leen: tinta y atenuado sobre el panel", () => {
-    expect(contrast(lightInk, lightPaper)).toBeGreaterThanOrEqual(4.5);
-    expect(contrast(lightMuted, lightPaper)).toBeGreaterThanOrEqual(4.5);
-  });
+      it("la tinta y el atenuado se leen sobre el papel", () => {
+        expect(contrast(lightInk, lightPaper)).toBeGreaterThanOrEqual(4.5);
+        expect(contrast(lightMuted, lightPaper)).toBeGreaterThanOrEqual(4.5);
+      });
 
-  it.each(sections)("la sala clara de «%s» se lee con su color", (section) => {
-    const color = hex(
-      roomsCss,
-      `.world-rooms--light .world-room--${section}`,
-      "room-color",
-    );
+      it.each(sections)("la sala de «%s» se lee con su color", (section) => {
+        const color = hex(
+          roomsCss,
+          `${tone} .world-room--${section}`,
+          "room-color",
+        );
 
-    expect(color, section).toBeDefined();
-    expect(
-      contrast(color!, roomBackground(lightPaper, color!)),
-      section,
-    ).toBeGreaterThanOrEqual(4.5);
-  });
-
+        expect(color, section).toBeDefined();
+        expect(
+          contrast(color!, roomBackground(lightPaper, color!)),
+          section,
+        ).toBeGreaterThanOrEqual(4.5);
+      });
+    },
+  );
   it.each(variants)("la luz de «%s» se lee sobre las salas", (variant) => {
     const light =
       hex(pageCss, `.world-theme[data-variant="${variant}"]`, "world-light") ??

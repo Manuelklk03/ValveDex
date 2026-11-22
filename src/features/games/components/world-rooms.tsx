@@ -16,8 +16,9 @@ type WorldRoomsProps = {
   previews: Record<string, SectionPreview>;
   // Escena del juego para las salas sin foto propia (el lore)
   fallbackScene?: string;
-  // Salas claras (paneles blancos de Aperture) en lugar de las salas oscuras de Half-Life
-  light?: boolean;
+  // Tono de las salas: claras (paneles blancos de Aperture), de cartel (papel crema de Mann Co.) o, sin indicar, las
+  // oscuras de Half-Life
+  tone?: "light" | "poster";
   // Entrada animada del juego: la misma del dossier, ahora al cruzar a cada sala
   transition?: {
     name: DossierTransition;
@@ -34,7 +35,7 @@ export function WorldRooms({
   statuses,
   previews,
   fallbackScene,
-  light = false,
+  tone,
   transition,
 }: WorldRoomsProps) {
   const transitionProps = transition
@@ -48,8 +49,8 @@ export function WorldRooms({
   return (
     <ol
       className={
-        light
-          ? `${styles["world-rooms"]} ${styles["world-rooms--light"]}`
+        tone
+          ? `${styles["world-rooms"]} ${styles[`world-rooms--${tone}`]}`
           : styles["world-rooms"]
       }
       aria-label={`Apartados de ${gameName}`}
