@@ -1,7 +1,7 @@
 "use client";
 
 import { Billboard, useTexture } from "@react-three/drei";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import * as THREE from "three";
 
 // Piezas 3D compartidas por las escenas del espacio de ValveDex (portada y universos)
@@ -50,6 +50,8 @@ export function Stars({ count }: { count: number }) {
     return buffer;
   }, [count]);
 
+  useEffect(() => () => geometry.dispose(), [geometry]);
+
   return (
     <points geometry={geometry}>
       <pointsMaterial
@@ -69,10 +71,13 @@ export function Emblem({
   src,
   color,
   size,
+  depthTest = false,
 }: {
   src: string;
   color: string;
   size: number;
+  // Por defecto se dibuja por encima de todo (sobre su esfera); con true queda tapado por lo que tenga delante
+  depthTest?: boolean;
 }) {
   const map = useTexture(src);
   const uniforms = useMemo(
@@ -86,7 +91,7 @@ export function Emblem({
         <planeGeometry args={[size, size]} />
         <shaderMaterial
           transparent
-          depthTest={false}
+          depthTest={depthTest}
           uniforms={uniforms}
           vertexShader="varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }"
           fragmentShader="uniform sampler2D map; uniform vec3 color; varying vec2 vUv; void main(){ float a = texture2D(map, vUv).a; gl_FragColor = vec4(color, a * 0.92); }"

@@ -76,10 +76,9 @@ export function useScrollTravel(count: number) {
       const field = el?.closest(
         "input, textarea, select, dialog, [role='combobox']",
       );
+      // Solo mientras el escenario está fijo en pantalla: leyendo el resto de la página las flechas son del navegador
       const rect = stage.getBoundingClientRect();
-      const visible =
-        rect.top < window.innerHeight / 2 &&
-        rect.bottom > window.innerHeight / 2;
+      const visible = rect.top <= 1 && rect.bottom >= window.innerHeight - 1;
       if (
         !free ||
         field ||
@@ -110,7 +109,10 @@ export function useScrollTravel(count: number) {
     };
   }, []);
 
-  const startEntering = useCallback(() => {
+  // Se usa como onClick del enlace: solo lanza la cámara si la entrada animada ha tomado el clic (lo marca con
+  // preventDefault); un clic con modificador o un segundo clic no la activan
+  const startEntering = useCallback((event?: { defaultPrevented: boolean }) => {
+    if (event && !event.defaultPrevented) return;
     entering.current = true;
     window.clearTimeout(resetTimer.current);
     resetTimer.current = window.setTimeout(() => {
