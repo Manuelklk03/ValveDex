@@ -1,0 +1,50 @@
+/* Intro de Valve: vídeo a pantalla completa sobre negro, por encima de todo */
+.valve-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: #000;
+  animation: valve-intro-in 0.5s var(--ease-out, ease-out) both;
+}
+
+@keyframes valve-intro-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.valve-intro__video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.valve-intro__skip {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  border: 1px solid rgb(243 239 230 / 0.6);
+  background: rgb(0 0 0 / 0.6);
+  color: #f3efe6;
+  font: inherit;
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.valve-intro__skip:focus-visible {
+  outline: 3px solid #f3efe6;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .valve-intro {
+    animation: none;
+  }
+}

@@ -17,6 +17,10 @@
   transition: --station-accent 0.7s var(--ease-out, ease-out);
 }
 
+.station:focus {
+  outline: none;
+}
+
 .station__stage {
   position: sticky;
   top: 0;

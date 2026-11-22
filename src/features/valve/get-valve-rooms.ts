@@ -17,13 +17,13 @@ export function getValveRooms(): ValveRoom[] {
       href: "/valve/historia",
     },
     {
-      id: "steam",
-      kicker: "Sala 02 · La plataforma",
-      title: "Steam",
+      id: "people",
+      kicker: "Sala 02 · Credenciales",
+      title: "Gente",
       summary:
-        "Cómo una herramienta de actualizaciones se convirtió en la mayor tienda de juegos de PC, en sus tres épocas.",
-      meta: `${getSteamEras().length} épocas`,
-      href: "/valve/steam",
+        "Fundadores, guionistas y diseñadores: las personas clave de Valve y lo que hicieron.",
+      meta: `${getValvePeople().length} personas`,
+      href: "/valve/personas",
     },
     {
       id: "hardware",
@@ -35,13 +35,13 @@ export function getValveRooms(): ValveRoom[] {
       href: "/valve/hardware",
     },
     {
-      id: "people",
-      kicker: "Sala 04 · Credenciales",
-      title: "Gente",
+      id: "steam",
+      kicker: "Sala 04 · La plataforma",
+      title: "Steam",
       summary:
-        "Fundadores, guionistas y diseñadores: las personas clave de Valve y lo que hicieron.",
-      meta: `${getValvePeople().length} personas`,
-      href: "/valve/personas",
+        "Cómo una herramienta de actualizaciones se convirtió en la mayor tienda de juegos de PC, en sus tres épocas.",
+      meta: `${getSteamEras().length} épocas`,
+      href: "/valve/steam",
     },
   ];
 }

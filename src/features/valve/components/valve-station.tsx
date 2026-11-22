@@ -2,10 +2,12 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useCallback, type CSSProperties } from "react";
+import { useCallback, useState, type CSSProperties } from "react";
 import { SceneBoundary } from "@/components/ui/scene-boundary";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useScrollTravel } from "@/components/ui/use-scroll-travel";
 import type { DossierTransition } from "@/domain/dossier-transition";
+import { ValveIntro } from "./valve-intro";
 import type { StationCounts, StationSaga } from "./valve-station-scene";
 import type { ValveRoom } from "./valve-rooms";
 import styles from "./valve-station.module.css";
@@ -13,7 +15,12 @@ import styles from "./valve-station.module.css";
 // Three.js solo se descarga en el navegador
 const StationScene = dynamic(() => import("./valve-station-scene"), {
   ssr: false,
+  // Mientras llega Three.js, el escenario es un esqueleto
+  loading: () => <Skeleton width="100%" height="100%" />,
 });
+
+// La intro solo se ve la primera vez de cada sesión
+const INTRO_SEEN_KEY = "valvedex-intro-seen";
 
 export type StationUniverse = StationSaga & {
   slug: string;
@@ -36,13 +43,13 @@ const roomEntry: Record<ValveRoom["id"], DossierTransition> = {
   people: "gate",
 };
 
-// Color de cada parada: la rueda, las cuatro salas y las sagas
+// Color de cada parada: la pared, las cuatro salas (Historia, Personal, Hardware y Steam) y las sagas
 const accents = [
   "#e5513c",
   "#f39a2e",
-  "#4aa3ff",
-  "#35d0e8",
   "#e9e4d6",
+  "#35d0e8",
+  "#4aa3ff",
   "#f3efe6",
 ];
 
@@ -60,11 +67,38 @@ export function ValveStation({
     useScrollTravel(stopCount);
   const room = active >= 1 && active <= rooms.length ? rooms[active - 1] : null;
   const names = ["Valve", ...rooms.map((item) => item.title), "Universos"];
+  const [intro, setIntro] = useState(false);
+
+  // Entrar al mundo: la primera vez de la sesión suena la intro; después (o con movimiento reducido) se entra directo
+  const begin = useCallback(() => {
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem(INTRO_SEEN_KEY) === "1";
+    } catch {
+      // sin almacenamiento: se muestra
+    }
+    if (seen || reduced) goTo(1);
+    else setIntro(true);
+  }, [goTo, reduced]);
+
+  const finishIntro = useCallback(() => {
+    try {
+      sessionStorage.setItem(INTRO_SEEN_KEY, "1");
+    } catch {
+      // sin almacenamiento: se volverá a mostrar
+    }
+    setIntro(false);
+    goTo(1);
+    // El botón que abrió la intro desaparece al avanzar: el foco pasa a la sección
+    section.current?.focus({ preventScroll: true });
+  }, [goTo, section]);
 
   // Clic en un objeto de la escena: si es la parada activa se entra, si no la cámara viaja hasta ella
   const select = useCallback(
     (stop: number) => {
-      if (stop === active && stop >= 1 && stop <= rooms.length) {
+      if (stop === 0 && active === 0) {
+        begin();
+      } else if (stop === active && stop >= 1 && stop <= rooms.length) {
         document.getElementById("station-enter")?.click();
       } else if (stop === active && stop === stopCount - 1) {
         document.getElementById("station-universes")?.click();
@@ -72,7 +106,7 @@ export function ValveStation({
         goTo(stop);
       }
     },
-    [active, goTo, rooms.length, stopCount],
+    [active, begin, goTo, rooms.length, stopCount],
   );
 
   return (
@@ -80,6 +114,7 @@ export function ValveStation({
       ref={section}
       className={styles["station"]}
       aria-label="Entrada a ValveDex"
+      tabIndex={-1}
       style={
         {
           "--station-accent": accents[active] ?? accents[0],
@@ -98,6 +133,7 @@ export function ValveStation({
               entering={entering}
               reduced={reduced}
               onSelect={select}
+              onStart={begin}
             />
           </SceneBoundary>
         </div>
@@ -118,7 +154,8 @@ export function ValveStation({
                 </p>
                 <p className={styles["station__summary"]}>
                   Juegos, personajes, armas, mapas y lore de las sagas de Valve.
-                  Avanza por la estación: cuatro salas y cinco universos.
+                  Entra al mundo de Valve: su historia, su gente, su hardware,
+                  Steam y cinco universos.
                 </p>
                 <dl className={styles["station__stats"]}>
                   {stats.map((stat) => (
@@ -174,9 +211,10 @@ export function ValveStation({
               <button
                 type="button"
                 className={styles["station__button"]}
-                onClick={() => goTo(1)}
+                id="station-start"
+                onClick={begin}
               >
-                Entrar a la estación
+                Entrar al mundo
                 <span aria-hidden="true">↓</span>
               </button>
               <Link href="/explorar" className={styles["station__link"]}>
@@ -238,6 +276,7 @@ export function ValveStation({
           Desplaza para avanzar · ← →
         </p>
       </div>
+      {intro && <ValveIntro onDone={finishIntro} />}
     </section>
   );
 }
