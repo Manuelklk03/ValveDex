@@ -453,6 +453,7 @@ export default async function EntryPage({
               <EntryMedia
                 appearance={first.appearance}
                 entryName={entry.name}
+                hero
               />
             ) : undefined
           }
@@ -480,6 +481,7 @@ export default async function EntryPage({
                 entryName={entry.name}
                 start3d
                 hideCredit
+                hero
               />
             ) : (
               gameIcon && (

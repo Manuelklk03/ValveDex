@@ -29,6 +29,7 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 - El dossier de Team Fortress 2 es una pantalla de selección de clase: las nueve clases en fila con un interruptor RED y BLU que se recuerda, y la clase elegida se adelanta con el brillo de su equipo. Team Fortress Classic y 2 se entran por las puertas de la sala de reaparición, RED a un lado y BLU al otro.
 - El hub, los apartados y las fichas de Team Fortress son un mundo: Team Fortress 2 es un cartel de Mann Co. con salas de papel crema, medios tonos y suelo RED contra BLU; Classic conserva sus salas oscuras.
 - El dossier de Left 4 Dead es una linterna: un haz de luz verdosa sigue al cursor por el refugio y se apaga al salir, y Left 4 Dead y 2 se entran por la puerta de seguridad del refugio, dos hojas de acero con luz de alarma roja.
+- El hub, los apartados y las fichas de Left 4 Dead son un mundo de refugio oscuro: cabecera con cinta de cuarentena en el suelo, salas oscuras con la luz verde del infectado y piezas con visor y capas. La imagen alta de una ficha ya no se sale de la cabecera.
 
 ## [0.5.0] — 2026-11-16
 

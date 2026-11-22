@@ -2199,3 +2199,20 @@
 .game-dossier--corridor.game-dossier--team-fortress-classic {
   --floor: linear-gradient(90deg, #f68f87 0 50%, #8fb4ee 50% 100%);
 }
+
+/* --- Left 4 Dead como mundo: refugio oscuro con cinta de cuarentena en el suelo y el verde enfermizo del infectado --- */
+.game-dossier--corridor.game-dossier--left-4-dead {
+  --floor: repeating-linear-gradient(
+    -45deg,
+    #e8a817 0 0.9rem,
+    #14170f 0.9rem 1.8rem
+  );
+}
+
+.game-dossier--corridor.game-dossier--left-4-dead-2 {
+  --floor: repeating-linear-gradient(
+    -45deg,
+    #e0a63a 0 0.9rem,
+    #1c1810 0.9rem 1.8rem
+  );
+}

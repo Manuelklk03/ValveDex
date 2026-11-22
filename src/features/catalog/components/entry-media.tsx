@@ -10,6 +10,8 @@ type EntryMediaProps = {
   start3d?: boolean;
   // Sin pie de crédito: en la cabecera de la ficha, los créditos van en la capa «Fuentes»
   hideCredit?: boolean;
+  // Es la imagen de la cabecera de la ficha: con alto máximo para que una figura alta no se salga del marco
+  hero?: boolean;
 };
 
 // Imagen de una aparición con su crédito: comparador original/HD, visor 3D o imagen sola
@@ -18,6 +20,7 @@ export function EntryMedia({
   entryName,
   start3d = false,
   hideCredit = false,
+  hero = false,
 }: EntryMediaProps) {
   const original = appearance.images?.original;
   const hd = appearance.images?.hd;
@@ -28,7 +31,13 @@ export function EntryMedia({
   if (!single) return null;
 
   return (
-    <figure className={styles["entry-media"]}>
+    <figure
+      className={
+        hero
+          ? `${styles["entry-media"]} ${styles["entry-media--hero"]}`
+          : styles["entry-media"]
+      }
+    >
       {original && hd ? (
         <ImageCompare
           before={original}
