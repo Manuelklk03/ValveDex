@@ -4,19 +4,22 @@
   margin: 0;
 }
 
-/* Alto máximo: una imagen alta (un infectado, un personaje de pie) no debe salirse de la cabecera de la ficha */
 .entry-media__image {
-  width: auto;
-  max-width: 100%;
+  width: 100%;
   height: auto;
-  max-height: min(28rem, 70svh);
-  margin-inline: auto;
-  object-fit: contain;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: color-mix(in srgb, var(--accent) 8%, var(--surface));
 }
 
+/* En la cabecera de la ficha, la imagen alta (un infectado, un personaje de pie) no debe salirse del marco */
+.entry-media--hero .entry-media__image {
+  width: auto;
+  max-width: 100%;
+  max-height: min(28rem, 70svh);
+  margin-inline: auto;
+  object-fit: contain;
+}
 .entry-media__credit {
   color: var(--muted);
   font-size: 0.8125rem;
