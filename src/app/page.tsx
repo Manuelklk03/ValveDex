@@ -10,13 +10,16 @@ import {
 import { getValveMilestones } from "@/features/valve/get-valve-milestones";
 import { getValvePeople } from "@/features/valve/get-valve-people";
 import { GamesShowcase } from "@/features/universes/components/games-showcase";
-import { SagaEmblems } from "@/features/universes/components/saga-emblems";
 import { ProductionLine } from "@/features/valve/components/production-line";
 import { SteamErasTeaser } from "@/features/valve/components/steam-eras-teaser";
 import { HomeMotion } from "@/features/valve/components/home-motion";
-import { IndustrialBackdrop } from "@/components/ui/industrial-backdrop";
+import { ValveStation } from "@/features/valve/components/valve-station";
+import { getSteamEras } from "@/features/valve/get-steam-eras";
+import { getValveHardware } from "@/features/valve/get-valve-hardware";
+import { getValveRooms } from "@/features/valve/get-valve-rooms";
+import { getUniverseEntry } from "@/features/universes/universe-entries";
+import { lineIcons, universeArt } from "@/data/universe-art";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
-import { ValveWheel } from "@/components/ui/valve-wheel";
 
 // Datos del texto de la sección «Valve» (fuente: Valve Corporation, Wikipedia, en los hitos)
 const valveFacts = [
@@ -43,79 +46,32 @@ export default function HomePage() {
     <main className={styles["home-page"]}>
       <SmoothScroll />
       <HomeMotion />
-      <section
-        className={styles["home-page__hero"]}
-        aria-labelledby="home-title"
-      >
-        {/* Escena: captura propia de Black Mesa tratada (oscurecida y teñida) con la tubería y la válvula encima */}
-        <div className={styles["home-page__scene"]} aria-hidden="true">
-          <div className={styles["home-page__scene-frame"]} data-home-scene>
-            <Image
-              src="/images/entries/black-mesa-inbound-half-life.webp"
-              alt=""
-              fill
-              priority
-              sizes="100vw"
-              className={styles["home-page__scene-image"]}
-            />
-          </div>
-        </div>
-        <IndustrialBackdrop />
-        <p className={styles["home-page__scene-credit"]} aria-hidden="true">
-          Black Mesa · Half-Life · captura propia
-        </p>
-        <div className={styles["home-page__hero-inner"]}>
-          <div className={styles["home-page__hero-content"]}>
-            <p className={styles["home-page__eyebrow"]} data-hero-item>
-              Enciclopedia de fans
-            </p>
-            <h1
-              id="home-title"
-              className={styles["home-page__title"]}
-              data-hero-item
-            >
-              Valve, de Black Mesa a Steam
-            </h1>
-            <p className={styles["home-page__intro"]} data-hero-item>
-              Juegos, personajes, armas, mapas y lore de las sagas de Valve.
-              Empezamos por Half-Life.
-            </p>
-            <div className={styles["home-page__actions"]} data-hero-item>
-              <Link href="/universos" className={styles["home-page__button"]}>
-                Ver universos
-              </Link>
-              <Link href="/explorar" className={styles["home-page__link"]}>
-                Explorar fichas
-              </Link>
-            </div>
-            <div className={styles["home-page__sagas"]} data-hero-item>
-              <p className={styles["home-page__sagas-label"]}>
-                Entrar por una saga
-              </p>
-              <SagaEmblems />
-            </div>
-          </div>
-          <div className={styles["home-page__machine"]}>
-            <div className={styles["home-page__wheel"]} data-home-wheel>
-              <ValveWheel className={styles["home-page__wheel-svg"]} />
-            </div>
-          </div>
-        </div>
-
-        <dl className={styles["home-page__stats"]}>
-          {stats.map((stat) => (
-            <div key={stat.label} className={styles["home-page__stat"]}>
-              <dt className={styles["home-page__stat-label"]}>{stat.label}</dt>
-              <dd
-                className={styles["home-page__stat-value"]}
-                data-count={stat.value}
-              >
-                {stat.value}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </section>
+      <ValveStation
+        rooms={getValveRooms()}
+        universes={universes.flatMap((universe) => {
+          const emblem =
+            lineIcons[`emblem-${universe.id}` as keyof typeof lineIcons];
+          return emblem && universe.status === "available"
+            ? [
+                {
+                  id: universe.id,
+                  slug: universe.slug,
+                  name: universe.name,
+                  accent: universeArt[universe.id].accent,
+                  emblem: emblem.src,
+                  entry: getUniverseEntry(universe.slug),
+                },
+              ]
+            : [];
+        })}
+        counts={{
+          history: milestones.length,
+          steam: getSteamEras().length,
+          hardware: getValveHardware().length,
+          people: people.length,
+        }}
+        stats={stats}
+      />
 
       <div className={styles["home-page__sections"]}>
         <section

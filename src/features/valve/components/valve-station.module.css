@@ -1,0 +1,346 @@
+/* Portada: la estación de Valve. Sección alta con un escenario fijo cuya cámara pasa de parada en parada. Fondo oscuro
+   siempre con texto claro; el color de la parada activa tiñe los detalles con una transición (propiedad registrada) */
+@property --station-accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #e5513c;
+}
+
+.station {
+  --ink: #f3efe6;
+  --muted: #c7c0b2;
+  position: relative;
+  /* Un tramo de scroll por parada */
+  height: calc(var(--station-count) * 75svh);
+  background: #05060a;
+  color: var(--ink);
+  transition: --station-accent 0.7s var(--ease-out, ease-out);
+}
+
+.station__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+}
+
+.station__canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.station__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgb(5 6 10 / 0.86) 0,
+      rgb(5 6 10 / 0.58) 36%,
+      transparent 64%
+    ),
+    radial-gradient(
+      ellipse 80% 60% at 70% 45%,
+      color-mix(in srgb, var(--station-accent) 16%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.6));
+}
+
+.station__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.station__info {
+  position: absolute;
+  bottom: clamp(3rem, 10vh, 6rem);
+  left: max(1rem, calc((100% - 72rem) / 2));
+  z-index: 3;
+  display: grid;
+  gap: 1.25rem;
+  max-width: min(34rem, calc(100% - 2rem));
+}
+
+.station__text {
+  display: grid;
+  gap: 0.75rem;
+  animation: station-in 0.6s var(--ease-out, ease-out) both;
+}
+
+@keyframes station-in {
+  from {
+    opacity: 0;
+    translate: -1.5rem 0;
+  }
+}
+
+.station__kicker {
+  margin: 0;
+  color: var(--station-accent);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.station__title {
+  margin: 0;
+  font-size: clamp(2.75rem, 7vw, 5.75rem);
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 24px #000;
+}
+
+.station__title--hero {
+  max-width: 11ch;
+  font-size: clamp(2.5rem, 5.6vw, 4.75rem);
+}
+
+.station__summary {
+  max-width: 38ch;
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  text-shadow: 0 1px 12px #000;
+}
+
+.station__meta {
+  width: fit-content;
+  margin: 0;
+  padding: 0.1875rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--station-accent) 60%, transparent);
+  border-radius: 999px;
+  background: rgb(5 6 10 / 0.55);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.8125rem;
+}
+
+.station__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+  margin: 0.25rem 0 0;
+}
+
+.station__stats div {
+  display: grid;
+  gap: 0.125rem;
+}
+
+.station__stats dt {
+  color: var(--muted);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.station__stats dd {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.station__sagas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.station__sagas a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border: 1px solid var(--dot);
+  border-radius: 999px;
+  background: rgb(5 6 10 / 0.6);
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.25s var(--ease-out, ease-out);
+}
+
+.station__sagas a:focus-visible,
+.station__button:focus-visible,
+.station__link:focus-visible,
+.station__dot:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.station__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.station__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: fit-content;
+  min-height: 2.75rem;
+  padding: 0.875rem 1.5rem;
+  border: 2px solid var(--station-accent);
+  background: color-mix(in srgb, var(--station-accent) 18%, rgb(5 6 10 / 0.7));
+  color: var(--ink);
+  font: inherit;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 0.25s var(--ease-out, ease-out),
+    translate 0.25s var(--ease-out, ease-out);
+}
+
+.station__link {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .station__button:hover {
+    background: color-mix(
+      in srgb,
+      var(--station-accent) 38%,
+      rgb(5 6 10 / 0.7)
+    );
+    translate: 0.25rem 0;
+  }
+
+  .station__sagas a:hover {
+    background: color-mix(in srgb, var(--dot) 30%, rgb(5 6 10 / 0.6));
+  }
+}
+
+.station__dots {
+  position: absolute;
+  top: 50%;
+  right: clamp(0.75rem, 2.5vw, 2rem);
+  z-index: 3;
+  translate: 0 -50%;
+}
+
+.station__dots ul {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.station__dot {
+  position: relative;
+  display: block;
+  width: 2.75rem;
+  height: 1.75rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.station__dot::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 0.625rem;
+  height: 0.625rem;
+  border: 2px solid var(--dot);
+  rotate: 45deg;
+  translate: 0 -50%;
+  transition:
+    scale 0.3s var(--ease-out, ease-out),
+    background-color 0.3s var(--ease-out, ease-out);
+}
+
+.station__dot--on::before {
+  background: var(--dot);
+  scale: 1.5;
+}
+
+.station__hint {
+  position: absolute;
+  right: clamp(0.75rem, 2.5vw, 2rem);
+  bottom: 1.25rem;
+  z-index: 3;
+  margin: 0;
+  color: rgb(243 239 230 / 0.6);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .station {
+    transition: none;
+  }
+
+  .station__text {
+    animation: none;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .station__vignette {
+    background:
+      linear-gradient(
+        0deg,
+        rgb(5 6 10 / 0.92) 0,
+        rgb(5 6 10 / 0.62) 45%,
+        transparent 70%
+      ),
+      radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.5));
+  }
+
+  .station__info {
+    bottom: 3rem;
+  }
+
+  .station__hint {
+    display: none;
+  }
+
+  .station__dots {
+    top: auto;
+    right: 50%;
+    bottom: 0.25rem;
+    translate: 50% 0;
+  }
+
+  .station__dots ul {
+    display: flex;
+    gap: 0;
+  }
+
+  .station__dot {
+    width: 1.75rem;
+    height: 2.75rem;
+  }
+
+  .station__dot::before {
+    right: 50%;
+    translate: 50% -50%;
+  }
+}

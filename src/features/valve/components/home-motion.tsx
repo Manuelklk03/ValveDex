@@ -6,79 +6,13 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-// Movimiento de la portada: entrada, cifras que cuentan, la válvula que gira con el scroll,
-// secciones que aparecen y la historia fijada en pantalla mientras la tubería avanza.
+// Movimiento de las secciones de la portada bajo la estación: aparecen al llegar a ellas y la historia se fija en\n// pantalla mientras la tubería avanza.
 // Todo va dentro de matchMedia: con «reducir movimiento» la página se queda tal cual está.
 export function HomeMotion() {
   useGSAP(() => {
     const mm = gsap.matchMedia();
 
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      // Entrada de la cabecera
-      gsap.from("[data-hero-item]", {
-        y: 28,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        stagger: 0.1,
-      });
-
-      // Las cifras suben desde cero
-      const counters = gsap.utils.toArray<HTMLElement>("[data-count]");
-      counters.forEach((element) => {
-        const target = Number(element.dataset.count);
-        const counter = { value: 0 };
-
-        gsap.to(counter, {
-          value: target,
-          duration: 1.4,
-          ease: "power2.out",
-          onUpdate: () => {
-            element.textContent = String(Math.round(counter.value));
-          },
-          onComplete: () => {
-            element.textContent = String(target);
-          },
-        });
-      });
-
-      // La válvula gira con el scroll de toda la página: es el hilo conductor
-      gsap.to("[data-home-wheel]", {
-        rotation: 300,
-        ease: "none",
-        scrollTrigger: {
-          trigger: "main",
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 0.6,
-        },
-      });
-
-      // La escena de Black Mesa se acerca despacio mientras se baja: profundidad de cine
-      gsap.to("[data-home-scene]", {
-        scale: 1.12,
-        yPercent: 8,
-        ease: "none",
-        scrollTrigger: {
-          trigger: "main",
-          start: "top top",
-          end: "+=900",
-          scrub: true,
-        },
-      });
-
-      // El fondo industrial se mueve más despacio que el contenido
-      gsap.to("[data-parallax-backdrop]", {
-        yPercent: 12,
-        ease: "none",
-        scrollTrigger: {
-          trigger: "main",
-          start: "top top",
-          end: "+=900",
-          scrub: true,
-        },
-      });
-
       // Secciones: aparecen al llegar a ellas
       gsap.utils.toArray<HTMLElement>("[data-home-reveal]").forEach((body) => {
         gsap.from(body, {
@@ -89,13 +23,6 @@ export function HomeMotion() {
           scrollTrigger: { trigger: body, start: "top 85%", once: true },
         });
       });
-
-      // Si se activa «reducir movimiento» a mitad de la cuenta, las cifras vuelven a su valor real
-      return () => {
-        counters.forEach((element) => {
-          element.textContent = element.dataset.count ?? "";
-        });
-      };
     });
 
     // Historia fijada: solo en pantallas anchas y altas (las estaciones deben caber en la ventana).
