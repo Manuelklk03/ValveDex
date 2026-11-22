@@ -1,6 +1,6 @@
 "use client";
 
-import { Billboard, useTexture } from "@react-three/drei";
+import { Billboard } from "@react-three/drei";
 import {
   Canvas,
   useFrame,
@@ -18,6 +18,8 @@ import {
 } from "react";
 import * as THREE from "three";
 import { Emblem, Stars, makeGlowTexture } from "@/components/ui/space-parts";
+import { ValveCorridor } from "./valve-corridor";
+import { ValveWall } from "./valve-wall";
 
 export type StationSaga = { id: string; accent: string; emblem: string };
 
@@ -36,15 +38,19 @@ type SceneProps = {
   entering: MutableRefObject<boolean>;
   reduced: boolean;
   onSelect: (stop: number) => void;
+  // Pulsar la válvula de la pared: entrar al mundo
+  onStart: () => void;
 };
 
-// Paradas del viaje: 0 rueda de Valve, 1 a 4 las salas, 5 las sagas
+// Paradas del viaje: 0 pared con la válvula, 1 Historia, 2 Personal, 3 Hardware, 4 Steam y 5 las sagas
 const STOP_COUNT = 6;
 const GAP = 15;
+// Las salas están en un pasillo que arranca a la izquierda de la pared de la portada: desplazamiento en x desde la parada 1
+const SHIFT = -14;
 
 function stopPosition(index: number, portrait: boolean) {
   return new THREE.Vector3(
-    portrait ? 0 : index === 5 ? 4.3 : 2.4,
+    (portrait ? 0 : index === 5 ? 4.3 : 2.4) + (index >= 1 ? SHIFT : 0),
     portrait ? 1 : Math.sin(index * 1.9) * 0.3,
     -index * GAP,
   );
@@ -112,103 +118,6 @@ function Glow({
         />
       </mesh>
     </Billboard>
-  );
-}
-
-// Parada 0: la rueda de Valve, de acero rojo, delante de la captura de Black Mesa oscurecida
-function Wheel({
-  glow,
-  target,
-  reduced,
-}: {
-  glow: THREE.Texture;
-  target: MutableRefObject<number>;
-  reduced: boolean;
-}) {
-  const wheel = useRef<THREE.Group>(null);
-  const backdrop = useTexture(
-    "/images/entries/black-mesa-inbound-half-life.webp",
-  );
-  const spokes = [0, 1, 2, 3, 4, 5];
-  const knobs = [0, 1, 2, 3, 4, 5];
-
-  useFrame((_, delta) => {
-    if (!wheel.current || reduced) return;
-    // Gira despacio y se deja llevar por el viaje: avanzar es abrir una válvula
-    wheel.current.rotation.z += delta * 0.12;
-    wheel.current.rotation.x = Math.sin(target.current * 0.9) * 0.25;
-  });
-
-  return (
-    <group>
-      <mesh position={[-1.6, 0, -9]} raycast={() => null}>
-        <planeGeometry args={[34, 19]} />
-        <meshBasicMaterial
-          map={backdrop}
-          color="#6a5750"
-          transparent
-          opacity={0.6}
-          depthWrite={false}
-          fog={false}
-        />
-      </mesh>
-      <group position={[0, 0, -2]}>
-        <Glow texture={glow} color="#e5513c" size={12} opacity={0.55} />
-      </group>
-      <pointLight
-        position={[0, 0, 4]}
-        intensity={45}
-        distance={16}
-        color="#ff6a4a"
-      />
-      <group ref={wheel} scale={0.88}>
-        <mesh>
-          <torusGeometry args={[2.1, 0.2, 28, 120]} />
-          <meshStandardMaterial
-            color="#b3261a"
-            metalness={0.78}
-            roughness={0.34}
-            emissive="#4a0d08"
-            emissiveIntensity={0.6}
-          />
-        </mesh>
-        <mesh rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.55, 0.55, 0.5, 40]} />
-          <meshStandardMaterial
-            color="#3b3b40"
-            metalness={0.9}
-            roughness={0.3}
-          />
-        </mesh>
-        {spokes.map((i) => (
-          <mesh key={i} rotation={[0, 0, (i / 6) * Math.PI]}>
-            <boxGeometry args={[0.16, 4.2, 0.16]} />
-            <meshStandardMaterial
-              color="#8d1f15"
-              metalness={0.8}
-              roughness={0.4}
-            />
-          </mesh>
-        ))}
-        {knobs.map((i) => (
-          <mesh
-            key={i}
-            position={[
-              Math.cos((i / 6) * Math.PI * 2) * 2.1,
-              Math.sin((i / 6) * Math.PI * 2) * 2.1,
-              0,
-            ]}
-          >
-            <sphereGeometry args={[0.28, 24, 24]} />
-            <meshStandardMaterial
-              color="#d8d2c4"
-              metalness={0.6}
-              roughness={0.35}
-            />
-          </mesh>
-        ))}
-      </group>
-    </group>
   );
 }
 
@@ -443,45 +352,6 @@ function SagasModule({
   );
 }
 
-// La línea de producción: una tubería que atraviesa todas las paradas, con destellos que corren por ella
-function Pipeline({ reduced }: { reduced: boolean }) {
-  const pulses = useRef<THREE.Group>(null);
-  const length = GAP * (STOP_COUNT - 1) + 14;
-
-  useFrame((state) => {
-    if (!pulses.current || reduced) return;
-    pulses.current.children.forEach((pulse, i) => {
-      const progress =
-        (state.clock.elapsedTime * 0.06 + i / pulses.current!.children.length) %
-        1;
-      pulse.position.z = 4 - progress * length;
-    });
-  });
-
-  return (
-    <group position={[0, -2.6, 0]}>
-      <mesh position={[0, 0, 4 - length / 2]} rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[0.07, 0.07, length, 12]} />
-        <meshStandardMaterial
-          color="#3a2b28"
-          emissive="#e5513c"
-          emissiveIntensity={0.25}
-          metalness={0.8}
-          roughness={0.4}
-        />
-      </mesh>
-      <group ref={pulses}>
-        {Array.from({ length: 14 }, (_, i) => (
-          <mesh key={i}>
-            <sphereGeometry args={[0.12, 12, 12]} />
-            <meshBasicMaterial color="#ff8a5c" />
-          </mesh>
-        ))}
-      </group>
-    </group>
-  );
-}
-
 // Cámara: avanza de una parada a otra con suavizado, se inclina con el cursor y, al entrar en una sala, se lanza hacia ella
 function Rig({
   target,
@@ -522,12 +392,35 @@ function Rig({
     const px = reduced ? 0 : state.pointer.x;
     const py = reduced ? 0 : state.pointer.y;
     const lift = dolly.current * dolly.current * (3 - 2 * dolly.current);
+
+    // De la pared al pasillo la cámara dobla la esquina: primero se desplaza a la izquierda y después avanza de frente
+    const c = current.current;
+    const startX = portrait ? 0 : -0.2;
+    const hallX = SHIFT + startX;
+    let camX = hallX;
+    let camZ = focus.z + 7.4;
+    if (c < 1) {
+      const u = c * c * (3 - 2 * c);
+      const v = 1 - u;
+      camX = startX * v * v + hallX * (1 - v * v);
+      camZ =
+        stopPosition(0, portrait).z * (1 - u * u) +
+        stopPosition(1, portrait).z * u * u +
+        7.4;
+    }
+    // La mirada se queda algo por delante del objeto para dejar sitio al texto
+    const lookX = (stop: number) => {
+      const x = stopPosition(stop, portrait).x;
+      const base = stop >= 1 ? SHIFT : 0;
+      return portrait ? x : base + (x - base) * 0.6;
+    };
+
     camera.position.set(
-      portrait ? px * 0.4 : px * 0.7 - 0.2,
+      camX + (portrait ? px * 0.4 : px * 0.7),
       focus.y * 0.4 + (portrait ? 1.3 : 0.3) + py * 0.35,
-      focus.z + 7.4 - lift * 5.6,
+      camZ - lift * 5.6,
     );
-    look.set(portrait ? focus.x : focus.x * 0.6, focus.y, focus.z);
+    look.set(lookX(i) + (lookX(next) - lookX(i)) * eased, focus.y, focus.z);
     camera.lookAt(look);
     camera.fov = 48 + lift * 34;
     camera.updateProjectionMatrix();
@@ -550,6 +443,7 @@ function Scene({
   entering,
   reduced,
   onSelect,
+  onStart,
 }: SceneProps) {
   const size = useThree((state) => state.size);
   const portrait = size.width / size.height < 1;
@@ -575,14 +469,16 @@ function Scene({
         reduced={reduced}
         onNear={setNear}
       />
-      <Pipeline reduced={reduced} />
+      <ValveCorridor glow={glow} reduced={reduced} />
 
-      {show(0) && (
-        <group position={at(0)}>
-          <Hit stop={0} onSelect={onSelect}>
-            <Wheel glow={glow} target={target} reduced={reduced} />
-          </Hit>
-        </group>
+      {near <= 1 && (
+        <ValveWall
+          glow={glow}
+          target={target}
+          reduced={reduced}
+          portrait={portrait}
+          onStart={onStart}
+        />
       )}
       {show(1) && (
         <group position={at(1)}>
@@ -594,7 +490,7 @@ function Scene({
       {show(2) && (
         <group position={at(2)}>
           <Hit stop={2} onSelect={onSelect}>
-            <SteamModule glow={glow} reduced={reduced} />
+            <PeopleModule count={counts.people} reduced={reduced} />
           </Hit>
         </group>
       )}
@@ -608,7 +504,7 @@ function Scene({
       {show(4) && (
         <group position={at(4)}>
           <Hit stop={4} onSelect={onSelect}>
-            <PeopleModule count={counts.people} reduced={reduced} />
+            <SteamModule glow={glow} reduced={reduced} />
           </Hit>
         </group>
       )}
