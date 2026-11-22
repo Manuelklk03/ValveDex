@@ -11,6 +11,7 @@ import { getTf2Classes } from "../get-tf2-classes";
 import { getSectionStatuses } from "../get-section-statuses";
 import { ClassPicker } from "./class-picker";
 import { DossierArt } from "./dossier-art";
+import { FlashlightField } from "./flashlight-field";
 import { PortalField } from "./portal-field";
 import styles from "./game-dossier.module.css";
 
@@ -43,10 +44,12 @@ export function GameDossier({
   const portals = universeSlug === "portal";
   // Team Fortress: entrada por las puertas de reaparición y, en TF2, el selector de clase
   const respawn = universeSlug === "team-fortress";
+  // Left 4 Dead: el cursor es una linterna y se entra por la puerta del refugio
+  const safehouse = universeSlug === "left-4-dead";
   const tf2Classes = game.id === "team-fortress-2" ? getTf2Classes() : [];
   // Entrada animada propia del juego: la usan el enlace principal y cada puerta
   const transition =
-    (corridor || portals || respawn) && look
+    (corridor || portals || respawn || safehouse) && look
       ? transitionByLook[look.variant]
       : undefined;
   const transitionProps = transition
@@ -76,6 +79,7 @@ export function GameDossier({
 
       {art && <DossierArt art={art} corridor={corridor} />}
       {portals && <PortalField />}
+      {safehouse && <FlashlightField />}
 
       <span className={styles["game-dossier__tab"]} aria-hidden="true">
         {universeName}
