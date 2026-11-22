@@ -81,6 +81,8 @@ export function UniverseExplorer({ worlds, children }: UniverseExplorerProps) {
       const progress =
         travel > 0 ? -el.getBoundingClientRect().top / travel : 0;
       target.current = Math.min(Math.max(progress, 0), 1) * lastIndex;
+      // El mundo activo sale del scroll, no de la escena: así el HUD y la navegación funcionan sin WebGL
+      setActive(Math.round(target.current));
     }
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -171,7 +173,6 @@ export function UniverseExplorer({ worlds, children }: UniverseExplorerProps) {
               target={target}
               entering={entering}
               reduced={reduced}
-              onActive={setActive}
               onSelect={select}
             />
           </SceneBoundary>

@@ -34,7 +34,7 @@ type SceneProps = {
   // 0 a 1: la cámara se lanza hacia el mundo activo al entrar
   entering: MutableRefObject<boolean>;
   reduced: boolean;
-  onActive: (index: number) => void;
+  onActive?: (index: number) => void;
   onSelect: (index: number) => void;
 };
 
@@ -388,7 +388,7 @@ function Rig({
     const index = Math.round(current.current);
     if (index !== last.current) {
       last.current = index;
-      onActive(index);
+      onActive?.(index);
     }
   });
 
@@ -409,7 +409,7 @@ function Scene({
   const [focus, setFocus] = useState(0);
   const handleActive = (index: number) => {
     setFocus(index);
-    onActive(index);
+    onActive?.(index);
   };
 
   useEffect(() => () => glow.dispose(), [glow]);
