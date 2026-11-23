@@ -1,6 +1,8 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { getGameYear } from "@/domain/game";
+import { dossierArt } from "@/data/dossier-art";
+import { getChapterShots } from "@/features/games/get-game-overview";
 import { lineIcons, universeArt } from "@/data/universe-art";
 import { getEntries } from "@/features/catalog/get-entries";
 import { getGameSections } from "@/features/games/get-game-sections";
@@ -29,6 +31,18 @@ const PORTRAIT_FILES = [
 
 // La portada es el propio mundo de Valve (ver docs/world-journey-plan.md): una sola escena que se recorre con el scroll
 // y, al llegar al final, la página termina; no hay contenido debajo
+// Hasta siete capturas de mapas del universo, repartidas entre sus juegos oficiales
+function pickMaps(universeId: string) {
+  const shots = getOfficialGamesByUniverse(universeId).flatMap((game) =>
+    getChapterShots(game.id),
+  );
+  const count = Math.min(7, shots.length);
+  return Array.from({ length: count }, (_, i) => {
+    const shot = shots[Math.floor((i * shots.length) / count)];
+    return { name: shot.entry.name, src: shot.image.src };
+  });
+}
+
 export default function HomePage() {
   const universes = getUniverses();
   const portraitFile = PORTRAIT_FILES.find((name) =>
@@ -89,8 +103,10 @@ export default function HomePage() {
                     (game) => ({
                       name: game.name,
                       year: getGameYear(game),
+                      icon: dossierArt[game.id]?.icons[0],
                     }),
                   ),
+                  maps: pickMaps(universe.id),
                   entry: getUniverseEntry(universe.slug),
                 },
               ]

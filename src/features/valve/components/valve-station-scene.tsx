@@ -21,7 +21,12 @@ import { ValveCorridor } from "./valve-corridor";
 import { HardwareStop } from "./valve-hardware-stop";
 import { PeopleStop, type StationPerson } from "./valve-people-stop";
 import { HistoryScroll, type HistoryLine } from "./valve-history-scroll";
-import { SagasStop, type SagaWorldData } from "./valve-sagas-stop";
+import {
+  SagasStop,
+  mapFocus,
+  mapLayout,
+  type SagaWorldData,
+} from "./valve-sagas-stop";
 import { SteamStop } from "./valve-steam-stop";
 import { ValveWall } from "./valve-wall";
 
@@ -118,6 +123,7 @@ function Rig({
   const current = useRef(0);
   const dolly = useRef(0);
   const look = useMemo(() => new THREE.Vector3(), []);
+  const camPos = useMemo(() => new THREE.Vector3(), []);
   const near = useRef(-1);
 
   useFrame((state, delta) => {
@@ -167,12 +173,39 @@ function Rig({
       return portrait ? x : base + (x - base) * 0.6;
     };
 
-    camera.position.set(
+    camPos.set(
       camX + (portrait ? px * 0.4 : px * 0.7),
       focus.y * 0.4 + (portrait ? 1.3 : 0.3) + py * 0.35,
       camZ - lift * 5.6,
     );
     look.set(lookX(i) + (lookX(next) - lookX(i)) * eased, focus.y, focus.z);
+
+    // Al llegar a la parada de los universos la cámara sube sobre la mesa-mapa y mira hacia abajo; con un territorio
+    // activo se acerca a él
+    const mapK =
+      c > 4 ? Math.min(c - 4, 1) ** 2 * (3 - 2 * Math.min(c - 4, 1)) : 0;
+    mapFocus.k +=
+      (mapFocus.target - mapFocus.k) * (reduced ? 1 : 1 - Math.exp(-4 * delta));
+    if (mapK > 0) {
+      const layout = mapLayout(portrait);
+      const p5 = stopPosition(5, portrait);
+      const fk = mapFocus.k * mapK;
+      const lx =
+        p5.x + layout.look[0] + (mapFocus.x - layout.look[0]) * 0.55 * fk;
+      const lz =
+        p5.z + layout.look[2] + (mapFocus.z - layout.look[2]) * 0.55 * fk;
+      camPos.set(
+        camPos.x + (lx + px * 0.5 - camPos.x) * mapK,
+        camPos.y + (p5.y + layout.height * (1 - 0.25 * fk) - camPos.y) * mapK,
+        camPos.z + (lz + layout.back * (1 - 0.25 * fk) - camPos.z) * mapK,
+      );
+      look.set(
+        look.x + (lx - look.x) * mapK,
+        look.y + (p5.y + layout.look[1] - look.y) * mapK,
+        look.z + (lz - look.z) * mapK,
+      );
+    }
+    camera.position.copy(camPos);
     camera.lookAt(look);
     camera.fov = 48 + lift * 34;
     camera.updateProjectionMatrix();
