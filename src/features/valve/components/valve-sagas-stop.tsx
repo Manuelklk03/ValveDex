@@ -45,11 +45,11 @@ type Spot = { x: number; z: number; r: number };
 // Disposición de la mesa: Half-Life en el centro de atrás (es el hub de la saga), Portal y Team Fortress a sus lados y,
 // delante, Counter-Strike y Left 4 Dead. El hueco de la izquierda queda libre para el texto
 const DESKTOP_SPOTS: Record<string, Spot> = {
-  "half-life": { x: 3.5, z: -2.2, r: 1.8 },
-  portal: { x: 0.4, z: -2.3, r: 1.35 },
-  "team-fortress": { x: 6.7, z: -2.3, r: 1.35 },
-  "counter-strike": { x: 1.9, z: 2.15, r: 1.35 },
-  "left-4-dead": { x: 5.2, z: 2.15, r: 1.35 },
+  "half-life": { x: 4, z: -3.4, r: 2.2 },
+  portal: { x: -2, z: -3.6, r: 1.9 },
+  "team-fortress": { x: 10, z: -3.6, r: 1.9 },
+  "counter-strike": { x: 0.6, z: 2.8, r: 1.9 },
+  "left-4-dead": { x: 7.4, z: 2.8, r: 1.9 },
 };
 const PORTRAIT_SPOTS: Record<string, Spot> = {
   "half-life": { x: 0, z: -3.3, r: 1.35 },
@@ -57,6 +57,22 @@ const PORTRAIT_SPOTS: Record<string, Spot> = {
   "team-fortress": { x: 1.45, z: -0.8, r: 1.0 },
   "counter-strike": { x: -1.45, z: 1.3, r: 1.0 },
   "left-4-dead": { x: 1.45, z: 1.3, r: 1.0 },
+};
+// Parcelas libres de la mesa para los universos que aún no existen
+const FUTURE_PLOTS: Record<"desktop" | "portrait", [number, number][]> = {
+  desktop: [
+    [-4.8, 2.8],
+    [12.6, 2.8],
+    [4, 8.6],
+    [-1.6, 8.6],
+    [9.6, 8.6],
+    [4, -9.6],
+  ],
+  portrait: [
+    [0, 3.2],
+    [-1.8, 4.9],
+    [1.8, 4.9],
+  ],
 };
 
 // Dónde se coloca la cámara sobre la mesa: el punto al que mira (locales de la parada), su altura y lo retrasada que va
@@ -69,9 +85,9 @@ export function mapLayout(portrait: boolean) {
         spots: PORTRAIT_SPOTS,
       }
     : {
-        look: [0.7, 0, -0.3] as const,
-        height: 10,
-        back: 8.2,
+        look: [4, 0, 0.4] as const,
+        height: 19,
+        back: 12,
         spots: DESKTOP_SPOTS,
       };
 }
@@ -1245,42 +1261,94 @@ function Territory({
   );
 }
 
+// Parcela vacía de la mesa: sitio reservado para un universo que todavía no existe
+function FuturePlot({
+  x,
+  z,
+  label,
+}: {
+  x: number;
+  z: number;
+  label: THREE.Texture;
+}) {
+  return (
+    <group position={[x, 0, z]}>
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, 0.02, 0]}
+        raycast={() => null}
+      >
+        <ringGeometry args={[1.5, 1.56, 56]} />
+        <meshBasicMaterial
+          color="#59606f"
+          transparent
+          opacity={0.45}
+          toneMapped={false}
+        />
+      </mesh>
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, 0.015, 0]}
+        raycast={() => null}
+      >
+        <circleGeometry args={[1.5, 40]} />
+        <meshBasicMaterial color="#0d1018" transparent opacity={0.6} />
+      </mesh>
+      <Billboard position={[0, 0.2, 1.9]}>
+        <mesh raycast={() => null}>
+          <planeGeometry args={[2.2, 0.34]} />
+          <meshBasicMaterial
+            map={label}
+            transparent
+            opacity={0.55}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      </Billboard>
+    </group>
+  );
+}
+
 export function SagasStop({
   sagas,
   glow,
   portrait,
   reduced,
+  focus,
+  onFocus,
   onOpen,
 }: {
   sagas: SagaWorldData[];
   glow: THREE.Texture;
   portrait: boolean;
   reduced: boolean;
+  // Universo al que apunta la cámara (lo elige el selector del HUD o un toque en el mapa); sin él se ve la mesa entera
+  focus: string | null;
+  onFocus: (slug: string | null) => void;
   onOpen: (slug: string) => void;
 }) {
   const layout = mapLayout(portrait);
   const tableMap = useMemo(() => makeTable(), []);
+  const futureLabel = useMemo(() => makeName("Próximamente", "#8a93a6"), []);
   useEffect(() => () => tableMap.dispose(), [tableMap]);
-  // Centro de la mesa: en vertical los territorios se reparten alrededor de x = 0
-  const tx = portrait ? 0 : 3.4;
-  const tz = portrait ? -0.9 : -0.3;
+  useEffect(() => () => futureLabel.dispose(), [futureLabel]);
+  // La mesa es enorme y la cámara la ve entera de lejos; su centro depende de la disposición
+  const tx = portrait ? 0 : 4;
+  const tz = portrait ? -0.4 : 0;
+  const tableR = portrait ? 6.2 : 15.4;
   const fallbackSpots = Object.values(layout.spots);
-  // En táctil no hay hover: un primer toque abre el territorio y el segundo entra a su universo
-  const [picked, setPicked] = useState<string | null>(null);
-  const [hovered, setHovered] = useState<string | null>(null);
+  // Un toque o clic en un territorio lleva allí la cámara; si ya está elegido, entra al universo
   const tap = (slug: string) => {
-    const touch = window.matchMedia("(pointer: coarse)").matches;
-    if (touch && picked !== slug) setPicked(slug);
-    else onOpen(slug);
+    if (focus === slug) onOpen(slug);
+    else onFocus(slug);
   };
-  // Territorio activo: el que está bajo el cursor o, en táctil, el elegido con el primer toque
-  const key = hovered ?? picked;
-  const active = sagas.find((s) => s.slug === key || s.id === key) ?? null;
+  const active = sagas.find((s) => s.slug === focus || s.id === focus) ?? null;
   const activeSpot = active
     ? (layout.spots[active.id] ?? fallbackSpots[sagas.indexOf(active)])
     : null;
 
-  // La cámara de la escena se acerca al territorio activo
+  // La cámara de la escena se acerca al territorio elegido
   const focusX = activeSpot?.x ?? 0;
   const focusZ = activeSpot?.z ?? 0;
   const hasActive = activeSpot !== null;
@@ -1308,31 +1376,38 @@ export function SagasStop({
       />
       {/* La mesa-mapa: tablero grabado con borde y grosor de metal */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[tx, -0.04, tz]}>
-        <circleGeometry args={[portrait ? 5.4 : 8.6, 96]} />
+        <circleGeometry args={[tableR, 128]} />
         <meshStandardMaterial map={tableMap} roughness={0.55} metalness={0.5} />
       </mesh>
       <mesh position={[tx, -0.34, tz]}>
-        <cylinderGeometry
-          args={[
-            (portrait ? 5.4 : 8.6) + 0.12,
-            (portrait ? 5.4 : 8.6) + 0.3,
-            0.6,
-            96,
-          ]}
-        />
+        <cylinderGeometry args={[tableR + 0.12, tableR + 0.4, 0.6, 128]} />
         <meshStandardMaterial color="#12141b" metalness={0.8} roughness={0.4} />
       </mesh>
       <mesh rotation={[Math.PI / 2, 0, 0]} position={[tx, -0.02, tz]}>
-        <torusGeometry args={[(portrait ? 5.4 : 8.6) + 0.1, 0.06, 10, 128]} />
+        <torusGeometry args={[tableR + 0.1, 0.08, 10, 160]} />
         <meshStandardMaterial color="#59606f" metalness={0.9} roughness={0.3} />
       </mesh>
-      {/* Luz cenital sobre la mesa */}
-      <pointLight
-        position={[tx, 7, tz + 1.3]}
-        intensity={80}
-        distance={24}
-        color="#dfe8ff"
-      />
+      {/* Luces cenitales sobre la mesa */}
+      {(portrait
+        ? [[0, -0.4]]
+        : [
+            [-2, -2],
+            [10, -2],
+            [4, 5],
+            [4, 10],
+          ]
+      ).map(([lx, lz]) => (
+        <pointLight
+          key={`${lx}${lz}`}
+          position={[lx, 8, lz]}
+          intensity={portrait ? 90 : 70}
+          distance={portrait ? 24 : 18}
+          color="#dfe8ff"
+        />
+      ))}
+      {FUTURE_PLOTS[portrait ? "portrait" : "desktop"].map(([fx, fz]) => (
+        <FuturePlot key={`${fx}${fz}`} x={fx} z={fz} label={futureLabel} />
+      ))}
       {sagas.map((saga, i) => (
         <Territory
           key={saga.id}
@@ -1342,10 +1417,10 @@ export function SagasStop({
             layout.spots[saga.id] ?? fallbackSpots[i % fallbackSpots.length]
           }
           reduced={reduced}
-          selected={picked === saga.id || picked === saga.slug}
+          selected={focus === saga.id || focus === saga.slug}
           dim={active !== null && active.id !== saga.id}
           onTap={tap}
-          onHover={setHovered}
+          onHover={() => {}}
         />
       ))}
       <Sparkles />

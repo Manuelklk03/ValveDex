@@ -201,7 +201,13 @@
   list-style: none;
 }
 
-.station__sagas a {
+.station__sagas button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.station__sagas a,
+.station__sagas button {
   display: inline-flex;
   align-items: center;
   min-height: 2.75rem;
@@ -216,11 +222,20 @@
 }
 
 .station__sagas a:focus-visible,
+.station__sagas button:focus-visible,
 .station__button:focus-visible,
 .station__link:focus-visible,
 .station__dot:focus-visible {
   outline: 3px solid var(--ink);
   outline-offset: 3px;
+}
+
+.station__sagas button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--dot) 40%, rgb(5 6 10 / 0.6));
+}
+
+.station__sagas .station__sagas-reset {
+  --dot: var(--ink);
 }
 
 .station__actions {
@@ -268,6 +283,7 @@
     translate: 0.25rem 0;
   }
 
+  .station__sagas button:hover,
   .station__sagas a:hover {
     background: color-mix(in srgb, var(--dot) 30%, rgb(5 6 10 / 0.6));
   }

@@ -93,6 +93,8 @@ export function ValveStation({
 }: ValveStationProps) {
   const router = useRouter();
   const [steamEra, setSteamEra] = useState(0);
+  // Universo elegido en la mesa-mapa (el selector o un toque en el mapa): la cámara se acerca a su escena
+  const [focus, setFocus] = useState<string | null>(null);
   const steamPicked = useRef(0);
   const pickEra = useCallback((index: number) => {
     steamPicked.current = performance.now();
@@ -220,6 +222,8 @@ export function ValveStation({
               onSaga={(slug) =>
                 document.getElementById(`station-saga-${slug}`)?.click()
               }
+              focus={focus}
+              onFocus={setFocus}
               onPerson={(slug) => router.push(`/valve/personas/${slug}`)}
               onHistoryLine={onHistoryLine}
             />
@@ -373,23 +377,56 @@ export function ValveStation({
                   Counter-Strike: cada saga es un mundo con sus juegos,
                   personajes y mapas.
                 </p>
-                <ul className={styles["station__sagas"]}>
+                <div
+                  className={styles["station__sagas"]}
+                  role="group"
+                  aria-label="Elegir universo"
+                >
                   {universes.map((universe) => (
-                    <li key={universe.id}>
-                      <Link
-                        id={`station-saga-${universe.slug}`}
-                        href={`/universos/${universe.slug}`}
-                        data-elevator={universe.entry}
-                        data-elevator-title={universe.name}
-                        data-elevator-label="Universo"
-                        onClick={startEntering}
-                        style={{ "--dot": universe.accent } as CSSProperties}
-                      >
-                        {universe.name}
-                      </Link>
-                    </li>
+                    <button
+                      key={universe.id}
+                      type="button"
+                      aria-pressed={focus === universe.slug}
+                      onClick={() =>
+                        setFocus(focus === universe.slug ? null : universe.slug)
+                      }
+                      style={{ "--dot": universe.accent } as CSSProperties}
+                    >
+                      {universe.name}
+                    </button>
                   ))}
-                </ul>
+                  {focus && (
+                    <button
+                      type="button"
+                      className={styles["station__sagas-reset"]}
+                      onClick={() => setFocus(null)}
+                    >
+                      Ver el mapa entero
+                    </button>
+                  )}
+                </div>
+                <p className={styles["station__sr"]} role="status">
+                  {universes.find((universe) => universe.slug === focus)
+                    ? `Mapa centrado en ${universes.find((universe) => universe.slug === focus)?.name}`
+                    : "Mapa completo"}
+                </p>
+                {universes.map((universe) => (
+                  <Link
+                    key={universe.id}
+                    id={`station-saga-${universe.slug}`}
+                    href={`/universos/${universe.slug}`}
+                    hidden={focus !== universe.slug}
+                    className={styles["station__button"]}
+                    data-elevator={universe.entry}
+                    data-elevator-title={universe.name}
+                    data-elevator-label="Universo"
+                    onClick={startEntering}
+                    style={{ "--dot": universe.accent } as CSSProperties}
+                  >
+                    Entrar a {universe.name}
+                    <span aria-hidden="true">→</span>
+                  </Link>
+                ))}
               </>
             )}
           </div>

@@ -57,6 +57,9 @@ type SceneProps = {
   onSteamPick: (index: number) => void;
   // Abre el universo de una saga
   onSaga: (slug: string) => void;
+  // Universo al que apunta la cámara de la mesa-mapa (null: se ve entera)
+  focus: string | null;
+  onFocus: (slug: string | null) => void;
 };
 
 // Paradas del viaje: 0 pared con la válvula, 1 Historia, 2 Personal, 3 Hardware, 4 Steam y 5 las sagas
@@ -190,14 +193,12 @@ function Rig({
       const layout = mapLayout(portrait);
       const p5 = stopPosition(5, portrait);
       const fk = mapFocus.k * mapK;
-      const lx =
-        p5.x + layout.look[0] + (mapFocus.x - layout.look[0]) * 0.85 * fk;
-      const lz =
-        p5.z + layout.look[2] + (mapFocus.z - layout.look[2]) * 0.85 * fk;
+      const lx = p5.x + layout.look[0] + (mapFocus.x - layout.look[0]) * fk;
+      const lz = p5.z + layout.look[2] + (mapFocus.z - layout.look[2]) * fk;
       camPos.set(
         camPos.x + (lx + px * 0.5 - camPos.x) * mapK,
-        camPos.y + (p5.y + layout.height * (1 - 0.42 * fk) - camPos.y) * mapK,
-        camPos.z + (lz + layout.back * (1 - 0.42 * fk) - camPos.z) * mapK,
+        camPos.y + (p5.y + layout.height * (1 - 0.72 * fk) - camPos.y) * mapK,
+        camPos.z + (lz + layout.back * (1 - 0.6 * fk) - camPos.z) * mapK,
       );
       look.set(
         look.x + (lx - look.x) * mapK,
@@ -238,6 +239,8 @@ function Scene({
   onSteamAuto,
   onSteamPick,
   onSaga,
+  focus,
+  onFocus,
 }: SceneProps) {
   const size = useThree((state) => state.size);
   const portrait = size.width / size.height < 1;
@@ -326,6 +329,8 @@ function Scene({
               glow={glow}
               portrait={portrait}
               reduced={reduced}
+              focus={focus}
+              onFocus={onFocus}
               onOpen={onSaga}
             />
           </Hit>
