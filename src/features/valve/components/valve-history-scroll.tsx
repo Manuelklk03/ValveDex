@@ -245,19 +245,19 @@ export function HistoryScroll({
 
   return (
     <group rotation={[0, 0.12, 0]}>
-      {/* Pergamino con sus dos varas */}
-      <mesh raycast={() => null}>
+      {/* Pergamino con sus dos varas: lo único pulsable de la parada (el clic sube a la zona de la parada) */}
+      <mesh>
         <planeGeometry args={[2.4, 3.6]} />
         <meshStandardMaterial map={sheet.texture} roughness={0.95} />
       </mesh>
       {[1.85, -1.85].map((y) => (
         <group key={y} position={[0, y, 0.02]}>
-          <mesh rotation={[0, 0, Math.PI / 2]} raycast={() => null}>
+          <mesh rotation={[0, 0, Math.PI / 2]}>
             <cylinderGeometry args={[0.1, 0.1, 2.7, 20]} />
             <meshStandardMaterial color="#5a3b22" roughness={0.7} />
           </mesh>
           {[-1.38, 1.38].map((x) => (
-            <mesh key={x} position={[x, 0, 0]} raycast={() => null}>
+            <mesh key={x} position={[x, 0, 0]}>
               <sphereGeometry args={[0.15, 16, 16]} />
               <meshStandardMaterial
                 color="#c9a75a"
