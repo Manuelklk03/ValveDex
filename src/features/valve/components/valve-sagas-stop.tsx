@@ -247,6 +247,142 @@ function Theme({
   );
 }
 
+const FLOOR_Y = -2.7;
+const STAR_COUNT = 900;
+
+// Cielo: degradado oscuro en una esfera que rodea la parada (se ve por dentro) para que no se asome el pasillo
+function makeSky() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 8;
+  canvas.height = 256;
+  const g = canvas.getContext("2d");
+  if (g) {
+    const grad = g.createLinearGradient(0, 0, 0, 256);
+    grad.addColorStop(0, "#04050a");
+    grad.addColorStop(0.45, "#0a0c15");
+    grad.addColorStop(0.55, "#0e1220");
+    grad.addColorStop(1, "#06070c");
+    g.fillStyle = grad;
+    g.fillRect(0, 0, 8, 256);
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+const NEBULAS: {
+  pos: [number, number, number];
+  scale: number;
+  base: string;
+}[] = [
+  { pos: [-5, 2.5, -7], scale: 16, base: "#243a78" },
+  { pos: [6, -1, -8], scale: 18, base: "#4a2468" },
+  { pos: [1, 4, -9], scale: 14, base: "#1f4f66" },
+];
+
+// Fondo vivo de la parada: cielo, estrellas con paralaje y tres nebulosas que toman el color de la saga que se mira
+function Cosmos({
+  glow,
+  accent,
+  reduced,
+}: {
+  glow: THREE.Texture;
+  accent: string | null;
+  reduced: boolean;
+}) {
+  const sky = useMemo(() => makeSky(), []);
+  const stars = useRef<THREE.Group>(null);
+  const mats = useRef<(THREE.SpriteMaterial | null)[]>([]);
+  const positions = useMemo(() => {
+    const arr = new Float32Array(STAR_COUNT * 3);
+    for (let i = 0; i < STAR_COUNT; i += 1) {
+      arr[i * 3] = (hashN(i * 3 + 1) - 0.5) * 34;
+      arr[i * 3 + 1] = (hashN(i * 3 + 2) - 0.5) * 18;
+      arr[i * 3 + 2] = -3 - hashN(i * 3 + 3) * 10;
+    }
+    return arr;
+  }, []);
+  const colors = useMemo(
+    () => ({
+      bases: NEBULAS.map((n) => new THREE.Color(n.base)),
+      target: new THREE.Color(),
+    }),
+    [],
+  );
+  useEffect(() => () => sky.dispose(), [sky]);
+
+  useFrame((state, delta) => {
+    const k = 1 - Math.exp(-(reduced ? 60 : 3) * delta);
+    NEBULAS.forEach((_, i) => {
+      const m = mats.current[i];
+      if (!m) return;
+      // Con una saga elegida, las nebulosas se tiñen de su color (mezclado con el suyo para no perder profundidad)
+      colors.target.copy(colors.bases[i]);
+      if (accent) colors.target.lerp(new THREE.Color(accent), 0.6);
+      m.color.lerp(colors.target, k);
+      m.opacity += ((accent ? 0.55 : 0.35) - m.opacity) * k;
+    });
+    const s = stars.current;
+    if (s && !reduced) {
+      s.position.x += (state.pointer.x * -0.6 - s.position.x) * k;
+      s.position.y += (state.pointer.y * -0.35 - s.position.y) * k;
+      s.rotation.z = state.clock.elapsedTime * 0.004;
+    }
+  });
+
+  return (
+    <group>
+      <mesh raycast={() => null} renderOrder={-10}>
+        <sphereGeometry args={[17, 32, 16]} />
+        <meshBasicMaterial map={sky} side={THREE.BackSide} toneMapped={false} />
+      </mesh>
+      {NEBULAS.map((n, i) => (
+        <sprite
+          key={i}
+          position={n.pos}
+          scale={[n.scale, n.scale, 1]}
+          raycast={() => null}
+        >
+          <spriteMaterial
+            ref={(m) => {
+              mats.current[i] = m;
+            }}
+            map={glow}
+            color={n.base}
+            transparent
+            opacity={0.35}
+            depthWrite={false}
+          />
+        </sprite>
+      ))}
+      <group ref={stars}>
+        <points raycast={() => null}>
+          <bufferGeometry>
+            <bufferAttribute
+              attach="attributes-position"
+              args={[positions, 3]}
+            />
+          </bufferGeometry>
+          <pointsMaterial
+            size={0.055}
+            color="#cfd6ff"
+            transparent
+            opacity={0.85}
+            sizeAttenuation
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </points>
+      </group>
+    </group>
+  );
+}
+
+function hashN(n: number) {
+  const x = Math.sin(n * 127.1 + 311.7) * 43758.5453;
+  return x - Math.floor(x);
+}
+
 function SagaWorld({
   saga,
   glow,
@@ -255,7 +391,9 @@ function SagaWorld({
   size,
   grow,
   selected,
+  dim,
   onTap,
+  onHover,
 }: {
   saga: SagaWorldData;
   glow: THREE.Texture;
@@ -266,8 +404,15 @@ function SagaWorld({
   grow: number;
   // Elegida con un toque: en táctil abre las placas sin entrar todavía
   selected: boolean;
+  // Otra saga está elegida: este mundo baja su brillo para que destaque la activa
+  dim: boolean;
   onTap: (slug: string) => void;
+  onHover: (slug: string | null) => void;
 }) {
+  const glowMat = useRef<THREE.SpriteMaterial>(null);
+  const ringMat = useRef<THREE.MeshBasicMaterial>(null);
+  const beamMat = useRef<THREE.MeshBasicMaterial>(null);
+  const pedestal = useRef<THREE.Group>(null);
   const root = useRef<THREE.Group>(null);
   const orbit = useRef<THREE.Group>(null);
   const planet = useRef<THREE.Group>(null);
@@ -303,6 +448,21 @@ function SagaWorld({
         });
       }
     }
+    const fade = 1 - Math.exp(-6 * delta);
+    if (glowMat.current)
+      glowMat.current.opacity +=
+        ((dim ? 0.22 : 0.5) + h * 0.25 - glowMat.current.opacity) * fade;
+    if (ringMat.current)
+      ringMat.current.opacity +=
+        ((dim ? 0.15 : 0.4) + h * 0.5 - ringMat.current.opacity) * fade;
+    if (beamMat.current)
+      beamMat.current.opacity +=
+        ((dim ? 0.05 : 0.12) + h * 0.3 - beamMat.current.opacity) * fade;
+    // La onda del pedestal se abre y se apaga en bucle
+    if (pedestal.current && !reduced) {
+      const p = (t * 0.5 + position[0]) % 1;
+      pedestal.current.scale.setScalar(1 + p * 0.9);
+    }
     if (orbit.current && !reduced)
       orbit.current.rotation.y += delta * (0.35 + h * 1.2);
     if (planet.current && !reduced) {
@@ -316,9 +476,11 @@ function SagaWorld({
       position={position}
       onPointerOver={() => {
         target.current = 1;
+        onHover(saga.slug);
       }}
       onPointerOut={() => {
         target.current = 0;
+        onHover(null);
       }}
       onClick={(event) => {
         event.stopPropagation();
@@ -330,9 +492,53 @@ function SagaWorld({
         <circleGeometry args={[size * 1.55, 24]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
+      {/* Pedestal sobre la mesa-mapa: aro con onda y un haz de luz hasta el mundo, que flota en vertical sobre él */}
+      <group position={[0, FLOOR_Y - position[1], 0]}>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} raycast={() => null}>
+          <ringGeometry args={[size * 1.2, size * 1.3, 48]} />
+          <meshBasicMaterial
+            ref={ringMat}
+            color={saga.accent}
+            transparent
+            opacity={0.4}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+        <group ref={pedestal} rotation={[-Math.PI / 2, 0, 0]}>
+          <mesh raycast={() => null}>
+            <ringGeometry args={[size * 1.2, size * 1.23, 48]} />
+            <meshBasicMaterial
+              color={saga.accent}
+              transparent
+              opacity={0.25}
+              depthWrite={false}
+              toneMapped={false}
+            />
+          </mesh>
+        </group>
+        <mesh
+          position={[0, (position[1] - FLOOR_Y) / 2, 0]}
+          raycast={() => null}
+        >
+          <cylinderGeometry
+            args={[0.012, size * 0.28, position[1] - FLOOR_Y, 16, 1, true]}
+          />
+          <meshBasicMaterial
+            ref={beamMat}
+            color={saga.accent}
+            transparent
+            opacity={0.12}
+            depthWrite={false}
+            side={THREE.DoubleSide}
+            toneMapped={false}
+          />
+        </mesh>
+      </group>
       <group ref={root}>
         <sprite scale={[3.6, 3.6, 1]} raycast={() => null}>
           <spriteMaterial
+            ref={glowMat}
             map={glow}
             color={saga.accent}
             transparent
@@ -462,34 +668,49 @@ export function SagasStop({
       ];
   // En táctil no hay hover: un primer toque abre las placas de la saga y el segundo entra a su universo
   const [picked, setPicked] = useState<string | null>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
   const tap = (slug: string) => {
     const touch = window.matchMedia("(pointer: coarse)").matches;
     if (touch && picked !== slug) setPicked(slug);
     else onOpen(slug);
   };
+  // Saga activa: la que está bajo el cursor o, en táctil, la elegida con el primer toque
+  const activeIndex = sagas.findIndex(
+    (s) => s.slug === (hovered ?? picked) || s.id === (hovered ?? picked),
+  );
+  const active = activeIndex >= 0 ? sagas[activeIndex] : null;
 
   return (
     <group>
+      {/* Cielo, estrellas y nebulosas: el fondo de la mesa-mapa, teñido por la saga activa */}
+      <Cosmos
+        glow={glow}
+        accent={active ? active.accent : null}
+        reduced={reduced}
+      />
       {/* Suelo negro con una cuadrícula tenue: el «mapa» sobre el que está cada mundo */}
       <gridHelper
         args={[26, 52, "#2a2d36", "#14161c"]}
-        position={[0, -2.7, 0]}
+        position={[0, FLOOR_Y, 0]}
       />
-      {/* Constelación: hilos tenues que unen los mundos vecinos */}
-      {LINKS.map(([from, to]) => (
-        <Line
-          key={`${from}-${to}`}
-          points={[
-            [spots[from][0], spots[from][1], 0.2],
-            [spots[to][0], spots[to][1], 0.2],
-          ]}
-          color="#59606f"
-          lineWidth={1}
-          transparent
-          opacity={0.35}
-          raycast={() => null}
-        />
-      ))}
+      {/* Constelación: hilos que unen los mundos vecinos y se encienden con el de la saga activa */}
+      {LINKS.map(([from, to]) => {
+        const lit = active && (from === activeIndex || to === activeIndex);
+        return (
+          <Line
+            key={`${from}-${to}`}
+            points={[
+              [spots[from][0], spots[from][1], 0.2],
+              [spots[to][0], spots[to][1], 0.2],
+            ]}
+            color={lit && active ? active.accent : "#59606f"}
+            lineWidth={lit ? 2 : 1}
+            transparent
+            opacity={lit ? 0.9 : 0.3}
+            raycast={() => null}
+          />
+        );
+      })}
       {sagas.map((saga, i) => {
         const [sx, sy] = spots[i % spots.length];
         return (
@@ -501,7 +722,9 @@ export function SagasStop({
             size={portrait ? 0.34 : 0.52}
             grow={portrait ? 1.1 : 0.6}
             selected={picked === saga.id || picked === saga.slug}
+            dim={active !== null && active.id !== saga.id}
             onTap={tap}
+            onHover={setHovered}
             position={[sx, sy, 0.6]}
           />
         );

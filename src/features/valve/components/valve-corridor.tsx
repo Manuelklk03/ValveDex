@@ -21,13 +21,14 @@ export const OPPOSITE_X = -22;
 const FLOOR_Y = -4.4;
 const CEILING_Y = 5.4;
 const START_Z = WALL_Z; // donde empieza el lado del bloque
-const END_Z = -100;
+// El pasillo acaba antes de la parada de los universos: esa parada queda «fuera de la estación», en el espacio abierto
+const END_Z = -66;
 const LENGTH = START_Z - END_Z;
 const PIPE_X = CORNER_X - 0.25;
 const PIPE_HEIGHTS = [2.6, -2.5];
 const FLANGE_STEP = 9;
 // Bocas reventadas de la tubería alta a lo largo del pasillo
-const LEAK_Z = [-27, -52, -78];
+const LEAK_Z = [-27, -52];
 
 type CorridorProps = {
   reduced: boolean;
@@ -106,7 +107,7 @@ export function ValveCorridor({ reduced }: CorridorProps) {
     }
   });
 
-  const lamps = Array.from({ length: 8 }, (_, i) => START_Z - 10 - i * 12);
+  const lamps = Array.from({ length: 5 }, (_, i) => START_Z - 10 - i * 12);
   const centerZ = (START_Z + END_Z) / 2;
 
   return (
