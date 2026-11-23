@@ -3,7 +3,8 @@
 import { writeFileSync } from "node:fs";
 import sharp from "sharp";
 
-export async function writeGlb(output, groups, generator) {
+// extras: datos propios que se guardan en el nodo (three.js los deja en userData); morphs: objetivos de morfado por grupo
+export async function writeGlb(output, groups, generator, extras) {
   const chunks = [];
   let byteLength = 0;
   const bufferViews = [],
@@ -73,7 +74,11 @@ export async function writeGlb(output, groups, generator) {
       material.pbrMetallicRoughness.baseColorFactor = [0.6, 0.6, 0.6, 1];
     }
     materials.push(material);
+    const targets = (g.morphs ?? []).map((morph) => ({
+      POSITION: addAccessor(morph, "VEC3", 5126, 34962, true),
+    }));
     primitives.push({
+      ...(targets.length && { targets }),
       attributes: {
         POSITION: addAccessor(g.pos, "VEC3", 5126, 34962, true),
         NORMAL: addAccessor(g.nrm, "VEC3", 5126, 34962),
@@ -87,8 +92,15 @@ export async function writeGlb(output, groups, generator) {
     asset: { version: "2.0", generator },
     scene: 0,
     scenes: [{ nodes: [0] }],
-    nodes: [{ mesh: 0 }],
-    meshes: [{ primitives }],
+    nodes: [{ mesh: 0, ...(extras && { extras }) }],
+    meshes: [
+      {
+        primitives,
+        ...(groups[0]?.morphs && {
+          weights: groups[0].morphs.map(() => 0),
+        }),
+      },
+    ],
     materials,
     textures: images.map((_, source) => ({
       source,

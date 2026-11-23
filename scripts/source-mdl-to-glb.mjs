@@ -7,6 +7,7 @@
 import { openMount } from "./lib/vpk.mjs";
 import { decodeVtf } from "./lib/vtf.mjs";
 import { writeGlb } from "./lib/glb.mjs";
+import { createAnimator } from "./lib/mdl-anim.mjs";
 
 const [root, mod, modelPath, output, bodiesArg, skinArg, armsArg] =
   process.argv.slice(2);
@@ -245,18 +246,18 @@ const apply = (m, v, isNormal) =>
       row[0] * v[0] + row[1] * v[1] + row[2] * v[2] + (isNormal ? 0 : row[3]),
   );
 
-const vertexAt = (i) => {
+const vertexAt = (i, matrices = skinMatrices) => {
   const o = vertexStart + vertexIndexes[i] * 48;
   let pos = [0, 1, 2].map((k) => vvd.readFloatLE(o + 16 + k * 4));
   let nrm = [0, 1, 2].map((k) => vvd.readFloatLE(o + 28 + k * 4));
-  if (skinMatrices) {
+  if (matrices) {
     const [sp, sn] = [
       [0, 0, 0],
       [0, 0, 0],
     ];
     for (let k = 0; k < vvd[o + 15]; k++) {
       const weight = vvd.readFloatLE(o + k * 4);
-      const m = skinMatrices[vvd[o + 12 + k]];
+      const m = matrices[vvd[o + 12 + k]];
       apply(m, pos, false).forEach((x, a) => (sp[a] += x * weight));
       apply(m, nrm, true).forEach((x, a) => (sn[a] += x * weight));
     }
@@ -392,6 +393,66 @@ for (let p = 0; p < bodyPartCount; p++) {
   }
 }
 
+// Animaciones (ANIM="nombre=Secuencia@mezcla:fotogramas[:loop],..."): cada clip se hornea en N poses que se guardan como
+// objetivos de morfado (diferencia de posición de cada vértice respecto a la pose base). Los fotogramas se reparten a lo largo
+// de la secuencia; con «loop» no se repite el último, para que el ciclo cierre sin salto.
+const clipInfo = {};
+if (process.env.ANIM) {
+  const folders = MOUNTS[mod].map((folder) => `${root}/${folder}`);
+  const animator = createAnimator(vpk, modelPath, folders);
+  const qmat = (q, p) => {
+    const [x, y, z, w] = q;
+    return [
+      [1 - 2 * (y * y + z * z), 2 * (x * y - z * w), 2 * (x * z + y * w), p[0]],
+      [2 * (x * y + z * w), 1 - 2 * (x * x + z * z), 2 * (y * z - x * w), p[1]],
+      [2 * (x * z - y * w), 2 * (y * z + x * w), 1 - 2 * (x * x + y * y), p[2]],
+    ];
+  };
+  const bakeFrame = (poses) => {
+    const world = [];
+    animator.bones.forEach((bone, b) => {
+      const pose = poses[b] ?? { pos: bone.pos, quat: bone.quat };
+      const local = qmat(pose.quat, pose.pos);
+      world[b] = bone.parent < 0 ? local : mul34(world[bone.parent], local);
+    });
+    return bones.map((bone, b) => mul34(world[b], bone.poseToBone));
+  };
+  let start = 0;
+  for (const spec of process.env.ANIM.split(",")) {
+    const [clip, rest] = spec.split("=");
+    const [seqPart, countPart, mode] = rest.split(":");
+    const [seqName, blendPart] = seqPart.split("@");
+    const found = animator.find(seqName);
+    if (!found) throw new Error(`secuencia no encontrada: ${seqName}`);
+    const info = animator.describe(
+      found,
+      blendPart === undefined ? undefined : Number(blendPart),
+    );
+    const count = Number(countPart) || 1;
+    const loop = mode === "loop";
+    for (let k = 0; k < count; k++) {
+      const frame = loop
+        ? Math.floor((k * info.frames) / count)
+        : count === 1
+          ? 0
+          : Math.round((k * (info.frames - 1)) / (count - 1));
+      const matrices = bakeFrame(animator.sample(info, frame));
+      for (const g of groups.values()) {
+        const morph = new Array(g.pos.length).fill(0);
+        for (const [global, index] of g.remap) {
+          const v = vertexAt(global, matrices).pos;
+          morph[index * 3] = v[0] - g.pos[index * 3];
+          morph[index * 3 + 1] = v[2] - g.pos[index * 3 + 1];
+          morph[index * 3 + 2] = -v[1] - g.pos[index * 3 + 2];
+        }
+        (g.morphs ??= []).push(morph);
+      }
+    }
+    clipInfo[clip] = { start, count, fps: Math.round(info.fps), loop };
+    start += count;
+  }
+}
+
 // Materiales: .mdl -> nombre y carpetas -> .vmt -> $basetexture -> .vtf
 const textureName = (i) => {
   const o = i32(mdl, 208) + i * 64;
@@ -434,7 +495,13 @@ for (const [texIndex, g] of groups) {
   const name = textureName(texIndex);
   // El difuminado de las aspas lo anima el juego (proxy HeliBlade) y en reposo no se ve
   if (/blur/i.test(name)) continue;
-  const out = { pos: g.pos, nrm: g.nrm, uv: g.uv, idx: g.idx };
+  const out = {
+    pos: g.pos,
+    nrm: g.nrm,
+    uv: g.uv,
+    idx: g.idx,
+    morphs: g.morphs,
+  };
   const material = findMaterial(name);
   // Un material aditivo (el cristal de las gafas de Kleiner) solo suma luz en el juego: glTF no lo puede imitar
   if (material?.["$additive"] === "1") continue;
@@ -495,6 +562,7 @@ const { triangles, kilobytes } = await writeGlb(
   output,
   output_groups,
   "ValveDex source-mdl-to-glb",
+  Object.keys(clipInfo).length ? { clips: clipInfo } : undefined,
 );
 console.log(
   `${output}: ${output_groups.length} texturas, ${triangles} triángulos, ${kilobytes} KB` +
