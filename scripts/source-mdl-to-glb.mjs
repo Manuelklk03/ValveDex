@@ -418,16 +418,22 @@ if (process.env.ANIM) {
     return bones.map((bone, b) => mul34(world[b], bone.poseToBone));
   };
   let start = 0;
+  let baseSet = false;
   for (const spec of process.env.ANIM.split(",")) {
     const [clip, rest] = spec.split("=");
     const [seqPart, countPart, mode] = rest.split(":");
     const [seqName, blendPart] = seqPart.split("@");
     const found = animator.find(seqName);
     if (!found) throw new Error(`secuencia no encontrada: ${seqName}`);
-    const info = animator.describe(
-      found,
-      blendPart === undefined ? undefined : Number(blendPart),
-    );
+    let blend = blendPart === undefined ? undefined : Number(blendPart);
+    if (blendPart === "auto") {
+      const best = animator.bestBlend(found);
+      blend = best.blend;
+      console.error(
+        `  ${clip}: mezcla ${best.blend} (movimiento ${best.score.toFixed(2)})`,
+      );
+    }
+    const info = animator.describe(found, blend);
     const count = Number(countPart) || 1;
     const loop = mode === "loop";
     for (let k = 0; k < count; k++) {
@@ -437,18 +443,35 @@ if (process.env.ANIM) {
           ? 0
           : Math.round((k * (info.frames - 1)) / (count - 1));
       const matrices = bakeFrame(animator.sample(info, frame));
+      // La pose base es el primer fotograma del primer clip: así el modelo sale ya de pie y no en la pose de referencia
+      const first = !baseSet;
       for (const g of groups.values()) {
         const morph = new Array(g.pos.length).fill(0);
         for (const [global, index] of g.remap) {
-          const v = vertexAt(global, matrices).pos;
-          morph[index * 3] = v[0] - g.pos[index * 3];
-          morph[index * 3 + 1] = v[2] - g.pos[index * 3 + 1];
-          morph[index * 3 + 2] = -v[1] - g.pos[index * 3 + 2];
+          const v = vertexAt(global, matrices);
+          const at = index * 3;
+          if (first) {
+            g.pos[at] = v.pos[0];
+            g.pos[at + 1] = v.pos[2];
+            g.pos[at + 2] = -v.pos[1];
+            g.nrm[at] = v.nrm[0];
+            g.nrm[at + 1] = v.nrm[2];
+            g.nrm[at + 2] = -v.nrm[1];
+          }
+          morph[at] = v.pos[0] - g.pos[at];
+          morph[at + 1] = v.pos[2] - g.pos[at + 1];
+          morph[at + 2] = -v.pos[1] - g.pos[at + 2];
         }
         (g.morphs ??= []).push(morph);
       }
+      baseSet = true;
     }
-    clipInfo[clip] = { start, count, fps: Math.round(info.fps), loop };
+    clipInfo[clip] = {
+      start,
+      count,
+      loop,
+      seconds: Number((info.frames / info.fps).toFixed(2)),
+    };
     start += count;
   }
 }

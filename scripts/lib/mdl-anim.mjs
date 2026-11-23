@@ -300,8 +300,48 @@ export function createAnimator(vpk, modelPath, folders = []) {
     return out;
   }
 
+  // Cuánto se mueve una animación entre el primer fotograma y el tercio de su duración (para elegir la mezcla que corre)
+  function motion(anim) {
+    const a = sample(anim, 0);
+    const b = sample(anim, Math.floor(anim.frames / 3));
+    let total = 0;
+    let n = 0;
+    a.forEach((x, i) => {
+      const y = b[i];
+      if (!x || !y) return;
+      const dot = x.quat.reduce((sum, v, k) => sum + v * y.quat[k], 0);
+      total +=
+        Math.hypot(
+          x.pos[0] - y.pos[0],
+          x.pos[1] - y.pos[1],
+          x.pos[2] - y.pos[2],
+        ) +
+        (1 - Math.abs(dot)) * 50;
+      n++;
+    });
+    return n ? total / n : 0;
+  }
+
+  // La mezcla de una secuencia que más se mueve: en las de 9 direcciones la central suele ser una pose quieta
+  function bestBlend(ref) {
+    const blends = ref.ctx.mdl.readInt32LE(ref.seq + 56);
+    let best = 0;
+    let score = -1;
+    for (let b = 0; b < blends; b++) {
+      const info = describe(ref, b);
+      if (info.frames < 8) continue;
+      const m = motion(info);
+      if (m > score) {
+        score = m;
+        best = b;
+      }
+    }
+    return { blend: best, score };
+  }
+
   return {
     bones: target.bones,
+    bestBlend,
     find: (name) => findIn(target, name),
     describe,
     sample,
