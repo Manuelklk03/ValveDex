@@ -19,21 +19,14 @@ import {
 import * as THREE from "three";
 import { Emblem, Stars, makeGlowTexture } from "@/components/ui/space-parts";
 import { ValveCorridor } from "./valve-corridor";
+import { PeopleStop, type StationPerson } from "./valve-people-stop";
 import { HistoryScroll, type HistoryLine } from "./valve-history-scroll";
 import { ValveWall } from "./valve-wall";
 
 export type StationSaga = { id: string; accent: string; emblem: string };
 
-export type StationCounts = {
-  history: number;
-  steam: number;
-  hardware: number;
-  people: number;
-};
-
 type SceneProps = {
   sagas: StationSaga[];
-  counts: StationCounts;
   // Posición de la cámara como índice fraccionario de parada: la fija el scroll
   target: MutableRefObject<number>;
   entering: MutableRefObject<boolean>;
@@ -44,6 +37,10 @@ type SceneProps = {
   // El pergamino de la parada Historia: los párrafos que se escriben y el aviso de cuál va
   historyLines: HistoryLine[];
   onHistoryLine: (index: number) => void;
+  // El personal de Valve de la parada Personal
+  people: StationPerson[];
+  // Imagen real del retablo de la parada Personal, si está en public/
+  portraitSrc?: string;
 };
 
 // Paradas del viaje: 0 pared con la válvula, 1 Historia, 2 Personal, 3 Hardware, 4 Steam y 5 las sagas
@@ -229,55 +226,6 @@ function HardwareModule({ reduced }: { reduced: boolean }) {
   );
 }
 
-// Sala 04 · Gente: una pared de credenciales que flotan
-function PeopleModule({ count, reduced }: { count: number; reduced: boolean }) {
-  const group = useRef<THREE.Group>(null);
-  const plates = Array.from(
-    { length: Math.min(Math.max(count, 6), 12) },
-    (_, i) => i,
-  );
-
-  useFrame((state) => {
-    if (!group.current || reduced) return;
-    group.current.children.forEach((plate, i) => {
-      plate.position.y =
-        (Math.floor(i / 4) - 1) * 1.15 +
-        Math.sin(state.clock.elapsedTime * 0.8 + i * 1.3) * 0.08;
-    });
-  });
-
-  return (
-    <group rotation={[0, -0.35, 0]}>
-      <group ref={group}>
-        {plates.map((i) => (
-          <group
-            key={i}
-            position={[
-              ((i % 4) - 1.5) * 0.95,
-              (Math.floor(i / 4) - 1) * 1.15,
-              0,
-            ]}
-            rotation={[0, 0, ((i % 3) - 1) * 0.04]}
-          >
-            <mesh>
-              <boxGeometry args={[0.72, 0.96, 0.04]} />
-              <meshStandardMaterial color="#e9e4d6" roughness={0.7} />
-            </mesh>
-            <mesh position={[0, 0.38, 0.03]}>
-              <boxGeometry args={[0.72, 0.16, 0.03]} />
-              <meshStandardMaterial color="#e5513c" />
-            </mesh>
-            <mesh position={[0, 0.02, 0.03]}>
-              <circleGeometry args={[0.2, 24]} />
-              <meshStandardMaterial color="#3b3b40" />
-            </mesh>
-          </group>
-        ))}
-      </group>
-    </group>
-  );
-}
-
 // Parada 5: las sagas, en arco, cada una con su emblema y su luz
 function SagasModule({
   sagas,
@@ -397,7 +345,6 @@ function Rig({
 
 function Scene({
   sagas,
-  counts,
   target,
   entering,
   reduced,
@@ -405,6 +352,8 @@ function Scene({
   onStart,
   historyLines,
   onHistoryLine,
+  people,
+  portraitSrc,
 }: SceneProps) {
   const size = useThree((state) => state.size);
   const portrait = size.width / size.height < 1;
@@ -453,10 +402,14 @@ function Scene({
           </Hit>
         </group>
       )}
-      {show(2) && (
+      {near >= 2 && near <= 3 && (
         <group position={at(2)}>
           <Hit stop={2} onSelect={onSelect}>
-            <PeopleModule count={counts.people} reduced={reduced} />
+            <PeopleStop
+              people={people}
+              portraitSrc={portraitSrc}
+              reduced={reduced}
+            />
           </Hit>
         </group>
       )}
