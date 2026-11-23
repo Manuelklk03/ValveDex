@@ -232,12 +232,14 @@ export function ValveStation({
         <div className={styles["station__info"]}>
           {active === 2 && (
             <ul
-              className={styles["station__sr"]}
-              aria-label="Personal de Valve"
+              className={styles["station__people"]}
+              aria-label="Personal de Valve: abrir su ficha"
             >
               {people.map((person) => (
                 <li key={person.name}>
-                  {person.name}: {person.role}
+                  <Link href={`/valve/personas/${person.slug}`}>
+                    {person.name}: {person.role}
+                  </Link>
                 </li>
               ))}
             </ul>
