@@ -289,11 +289,19 @@ export function HistoryScroll({
           <Crowbar length={1.8} />
         </group>
         <group
-          position={[3.0, 2.1, 0.5]}
-          rotation={[0.25, -0.5, 0.15]}
-          scale={0.85}
+          position={[2.3, 2.45, 0.8]}
+          rotation={[0.12, 0, 0.08]}
+          scale={0.95}
         >
-          <VrHeadset />
+          <group rotation={[0, -0.75, 0]}>
+            <VrHeadset />
+          </group>
+          <pointLight
+            position={[-0.5, 0.8, 1.5]}
+            intensity={5}
+            distance={4}
+            color="#bfe8ff"
+          />
         </group>
         <group position={[1.9, -1.95, 0.6]}>
           <ValveBadge />

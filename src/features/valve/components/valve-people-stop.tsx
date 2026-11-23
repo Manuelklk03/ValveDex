@@ -695,7 +695,7 @@ function Frame({ width, height }: { width: number; height: number }) {
 const DRAWN_W = 3.2;
 const DRAWN_H = (DRAWN_W * H) / W;
 // Ancho del retablo cuando es la imagen real (apaisada)
-const IMAGE_W = 3.3;
+const IMAGE_W = 3.4;
 
 // Retablo de respaldo, dibujado por código, mientras no esté la imagen real del «rey de Steam»
 function DrawnPortrait({ reduced }: { reduced: boolean }) {
@@ -728,13 +728,21 @@ function DrawnPortrait({ reduced }: { reduced: boolean }) {
   );
 }
 
-// El «rey de Steam» recortado (sin cielo ni marco), flotando en 3D sobre la pared: se mece y se inclina hacia el cursor
+// El «rey de Steam» recortado (sin cielo ni marco): una malla subdividida con un mapa de relieve (cúpula suave a partir de su
+// silueta) para que tenga volumen real; respira, se mece, se inclina hacia el cursor y una luz cálida le da vueltas
 function ImagePortrait({ src, reduced }: { src: string; reduced: boolean }) {
-  const map = useTexture(src, (texture) => {
-    texture.colorSpace = THREE.SRGBColorSpace;
-    texture.anisotropy = 8;
-  });
+  const [map, depth] = useTexture(
+    [src, src.replace("-body", "-depth")],
+    (textures) => {
+      const [color, relief] = [textures].flat();
+      color.colorSpace = THREE.SRGBColorSpace;
+      color.anisotropy = 8;
+      relief.anisotropy = 4;
+    },
+  );
   const group = useRef<THREE.Group>(null);
+  const body = useRef<THREE.Group>(null);
+  const light = useRef<THREE.PointLight>(null);
   // En pantallas estrechas el retablo se reduce y sube, para caber y dejar sitio al texto
   const narrow = useThree((state) => state.size.width / state.size.height < 1);
   const image = map.image as { width: number; height: number };
@@ -744,31 +752,56 @@ function ImagePortrait({ src, reduced }: { src: string; reduced: boolean }) {
     if (!group.current) return;
     const t = reduced ? 0 : state.clock.elapsedTime;
     const k = 1 - Math.exp(-4 * delta);
-    const turn = reduced ? 0 : state.pointer.x * 0.22;
-    const tilt = reduced ? 0 : -state.pointer.y * 0.14;
-    group.current.rotation.y += (turn - group.current.rotation.y) * k;
+    const turn = reduced ? 0 : state.pointer.x * 0.35;
+    const tilt = reduced ? 0 : -state.pointer.y * 0.18;
+    group.current.rotation.y +=
+      (turn + Math.sin(t * 0.5) * 0.08 - group.current.rotation.y) * k;
     group.current.rotation.x += (tilt - group.current.rotation.x) * k;
     group.current.position.y =
-      (narrow ? 0.95 : -0.05) + Math.sin(t * 0.8) * 0.06;
+      (narrow ? 0.95 : -0.05) + Math.sin(t * 0.8) * 0.08;
+    // Respiración: el pecho sube y baja un pelo
+    if (body.current)
+      body.current.scale.set(
+        1 + Math.sin(t * 1.3) * 0.006,
+        1 + Math.sin(t * 1.3) * 0.012,
+        1,
+      );
+    if (light.current) {
+      light.current.position.set(
+        Math.cos(t * 0.7) * 2.2,
+        0.8 + Math.sin(t * 0.9) * 0.6,
+        1.6,
+      );
+    }
   });
 
   return (
     <group ref={group} scale={narrow ? 0.55 : 1}>
       {/* Pulsable: el clic sube a la zona de la parada */}
-      <mesh position={[0, 0, -0.5]}>
-        <planeGeometry args={[IMAGE_W, height]} />
-        <meshBasicMaterial
-          map={map}
-          toneMapped={false}
-          transparent
-          alphaTest={0.05}
-        />
-      </mesh>
+      <group ref={body}>
+        <mesh position={[0, 0, -0.4]}>
+          <planeGeometry args={[IMAGE_W, height, 72, 84]} />
+          <meshStandardMaterial
+            map={map}
+            emissiveMap={map}
+            emissive="#ffffff"
+            emissiveIntensity={0.3}
+            displacementMap={depth}
+            displacementScale={0.2}
+            displacementBias={-0.1}
+            roughness={0.7}
+            transparent
+            alphaTest={0.08}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
+      </group>
+      <pointLight ref={light} intensity={10} distance={7} color="#ffd98a" />
       <pointLight
-        position={[0, 0, 1.4]}
-        intensity={6}
+        position={[-2.4, 1.6, 0.8]}
+        intensity={4}
         distance={6}
-        color="#ffe2a0"
+        color="#7fd6ff"
       />
     </group>
   );
@@ -783,12 +816,9 @@ export function PeopleStop({ people, portraitSrc, reduced }: PeopleStopProps) {
 
   useEffect(() => () => wallMap.dispose(), [wallMap]);
 
-  // Los que tienen foto, primero
+  // Solo los expedientes de quien tiene foto
   const shown = useMemo(
-    () =>
-      [...people]
-        .sort((a, b) => Number(!!b.photo) - Number(!!a.photo))
-        .slice(0, 10),
+    () => people.filter((person) => person.photo).slice(0, 10),
     [people],
   );
   const placements = useMemo(
@@ -849,11 +879,63 @@ export function PeopleStop({ people, portraitSrc, reduced }: PeopleStopProps) {
 
   return (
     <group>
-      {/* Pared industrial al fondo, con vapor */}
-      <mesh position={[0, 0, -1.2]} raycast={() => null}>
-        <planeGeometry args={[12, 6.5]} />
-        <meshStandardMaterial map={wallMap} roughness={0.92} metalness={0.15} />
-      </mesh>
+      {/* Tablero colgado: panel industrial con marco de acero, escuadras y cadenas, sin bordes de pared */}
+      <group position={[0, -0.35, -1.2]}>
+        <mesh raycast={() => null}>
+          <planeGeometry args={[9.4, 5.9]} />
+          <meshStandardMaterial map={wallMap} roughness={0.9} metalness={0.2} />
+        </mesh>
+        {[
+          [0, 3.0, 9.8, 0.22],
+          [0, -3.0, 9.8, 0.22],
+          [-4.8, 0, 0.22, 6.2],
+          [4.8, 0, 0.22, 6.2],
+        ].map(([x, y, w, h]) => (
+          <mesh key={`${x}${y}`} position={[x, y, 0.08]} raycast={() => null}>
+            <boxGeometry args={[w, h, 0.26]} />
+            <meshStandardMaterial
+              color="#2a2d33"
+              metalness={0.85}
+              roughness={0.35}
+            />
+          </mesh>
+        ))}
+        {[
+          [-4.8, 3.0],
+          [4.8, 3.0],
+          [-4.8, -3.0],
+          [4.8, -3.0],
+        ].map(([x, y]) => (
+          <mesh
+            key={`b${x}${y}`}
+            position={[x, y, 0.24]}
+            rotation={[Math.PI / 2, 0, 0]}
+            raycast={() => null}
+          >
+            <cylinderGeometry args={[0.14, 0.14, 0.1, 6]} />
+            <meshStandardMaterial
+              color="#c9a75a"
+              metalness={0.8}
+              roughness={0.35}
+            />
+          </mesh>
+        ))}
+        {[-3.6, 3.6].map((x) => (
+          <mesh key={`c${x}`} position={[x, 5.2, 0.08]} raycast={() => null}>
+            <cylinderGeometry args={[0.04, 0.04, 4.6, 8]} />
+            <meshStandardMaterial
+              color="#555b66"
+              metalness={0.9}
+              roughness={0.4}
+            />
+          </mesh>
+        ))}
+        {/* Franja de luz tenue por dentro del marco */}
+        <mesh position={[0, 2.8, 0.05]} raycast={() => null}>
+          <boxGeometry args={[9.2, 0.03, 0.02]} />
+          <meshBasicMaterial color="#f39a2e" />
+        </mesh>
+      </group>
       <Steam vents={vents} reduced={reduced} />
 
       {portraitSrc ? (

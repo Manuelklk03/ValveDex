@@ -409,63 +409,121 @@ export function Crowbar({ length = 2.4 }: { length?: number }) {
   );
 }
 
-// Gafas de realidad virtual (estilo Valve Index): visor con frontal negro y dos cámaras, juntas de goma, lentes y la
-// diadema con su arco superior
+// Gafas de realidad virtual de Valve (como el Steam Frame): visor ancho de cristal negro brillante con cámaras, cuerpos
+// laterales con botones, almohadilla de tela gris detrás, diadema por encima y un cable que cuelga
 export function VrHeadset() {
-  const strap = useDisposable(
-    () => new THREE.TorusGeometry(0.62, 0.05, 12, 40, Math.PI),
-  );
   const visor = useDisposable(
     () =>
-      new THREE.ExtrudeGeometry(roundedRect(1.5, 0.78, 0.22), {
-        depth: 0.4,
+      new THREE.ExtrudeGeometry(roundedRect(1.9, 0.82, 0.38), {
+        depth: 0.5,
         bevelEnabled: true,
-        bevelThickness: 0.05,
-        bevelSize: 0.05,
-        bevelSegments: 3,
+        bevelThickness: 0.14,
+        bevelSize: 0.14,
+        bevelSegments: 8,
+        curveSegments: 16,
       }),
   );
+  const strap = useDisposable(
+    () => new THREE.TorusGeometry(0.78, 0.07, 14, 40, Math.PI),
+  );
+  const cable = useDisposable(
+    () => new THREE.TorusGeometry(0.4, 0.018, 8, 32, Math.PI * 1.2),
+  );
+  const black = { color: "#0b0c0f", metalness: 0.55, roughness: 0.14 };
   return (
     <group>
-      <mesh geometry={visor} position={[0, 0, -0.2]} raycast={() => null}>
-        <meshStandardMaterial
-          color="#17191f"
-          roughness={0.35}
-          metalness={0.4}
+      {/* Cuerpo del visor, brillante */}
+      <mesh geometry={visor} position={[0, 0, -0.25]} raycast={() => null}>
+        <meshPhysicalMaterial
+          {...black}
+          clearcoat={1}
+          clearcoatRoughness={0.05}
         />
       </mesh>
-      {/* Frontal: franja clara y las dos cámaras */}
-      <mesh position={[0, 0, 0.27]} raycast={() => null}>
-        <boxGeometry args={[1.3, 0.3, 0.02]} />
-        <meshStandardMaterial color="#2c3038" roughness={0.3} metalness={0.6} />
+      {/* Cristal frontal, algo más oscuro y con reflejo */}
+      <mesh position={[0, 0.02, 0.4]} raycast={() => null}>
+        <planeGeometry args={[1.85, 0.8]} />
+        <meshPhysicalMaterial
+          color="#020203"
+          metalness={0.9}
+          roughness={0.04}
+          clearcoat={1}
+        />
       </mesh>
-      {[-0.42, 0.42].map((x) => (
-        <mesh
-          key={x}
-          position={[x, 0, 0.29]}
-          rotation={[Math.PI / 2, 0, 0]}
-          raycast={() => null}
-        >
-          <cylinderGeometry args={[0.09, 0.09, 0.03, 24]} />
+      {/* Cámaras de seguimiento (puntos cian apagados) */}
+      {[
+        [-0.7, 0.2],
+        [0.7, 0.2],
+        [-0.25, -0.22],
+        [0.25, -0.22],
+      ].map(([x, y]) => (
+        <mesh key={`${x}${y}`} position={[x, y, 0.405]} raycast={() => null}>
+          <circleGeometry args={[0.035, 16]} />
           <meshStandardMaterial
-            color="#35d0e8"
+            color="#1a2a33"
             emissive="#35d0e8"
-            emissiveIntensity={0.6}
+            emissiveIntensity={0.35}
           />
         </mesh>
       ))}
-      {/* Arco de la diadema por encima y por detrás */}
+      {/* Cuerpos laterales con su botón y el piloto */}
+      {[-1, 1].map((side) => (
+        <group key={side} position={[side * 1.0, 0, -0.1]}>
+          <mesh rotation={[Math.PI / 2, 0, 0]} raycast={() => null}>
+            <cylinderGeometry args={[0.25, 0.28, 0.7, 28]} />
+            <meshStandardMaterial
+              color="#26282e"
+              metalness={0.5}
+              roughness={0.35}
+            />
+          </mesh>
+          <mesh position={[side * 0.2, 0.08, 0.2]} raycast={() => null}>
+            <boxGeometry args={[0.04, 0.16, 0.04]} />
+            <meshStandardMaterial color="#111" />
+          </mesh>
+          <mesh position={[side * 0.2, -0.08, 0.2]} raycast={() => null}>
+            <sphereGeometry args={[0.025, 10, 10]} />
+            <meshBasicMaterial color="#ffffff" />
+          </mesh>
+        </group>
+      ))}
+      {/* Juntas de la cara */}
+      <mesh position={[0, -0.05, -0.55]} raycast={() => null}>
+        <boxGeometry args={[1.7, 0.7, 0.18]} />
+        <meshStandardMaterial color="#2b2d31" roughness={1} />
+      </mesh>
+      {/* Almohadilla trasera de tela gris con su rótulo */}
+      <mesh position={[0, -0.1, -1.0]} raycast={() => null}>
+        <boxGeometry args={[1.35, 0.55, 0.3]} />
+        <meshStandardMaterial color="#4a4d53" roughness={1} />
+      </mesh>
+      {/* Diadema: arco por encima de la cabeza y brazos laterales */}
       <mesh
         geometry={strap}
-        position={[0, 0.3, -0.2]}
-        rotation={[0, 0, 0]}
+        position={[0, 0.0, -0.7]}
+        rotation={[0, Math.PI / 2, 0]}
         raycast={() => null}
       >
-        <meshStandardMaterial color="#17191f" roughness={0.6} />
+        <meshStandardMaterial color="#17181c" roughness={0.6} metalness={0.2} />
       </mesh>
-      <mesh position={[0, 0, -0.75]} raycast={() => null}>
-        <boxGeometry args={[1.0, 0.3, 0.12]} />
-        <meshStandardMaterial color="#222" roughness={0.7} />
+      {[-1, 1].map((side) => (
+        <mesh
+          key={`s${side}`}
+          position={[side * 0.95, -0.05, -0.8]}
+          raycast={() => null}
+        >
+          <boxGeometry args={[0.1, 0.2, 0.9]} />
+          <meshStandardMaterial color="#17181c" roughness={0.6} />
+        </mesh>
+      ))}
+      {/* Cable que cuelga de un lado */}
+      <mesh
+        geometry={cable}
+        position={[-1.1, -0.1, -1.0]}
+        rotation={[0, 0, Math.PI * 0.7]}
+        raycast={() => null}
+      >
+        <meshStandardMaterial color="#0a0a0c" roughness={0.8} />
       </mesh>
     </group>
   );
