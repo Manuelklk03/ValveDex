@@ -139,8 +139,7 @@ function Floating({
   return (
     <group
       ref={ref}
-      onPointerOver={(event) => {
-        event.stopPropagation();
+      onPointerOver={() => {
         target.current = 1;
       }}
       onPointerOut={() => {
@@ -338,6 +337,11 @@ export function HardwareStop({ reduced }: { reduced: boolean }) {
       <group ref={logo} scale={2.4}>
         <ValveBadge />
       </group>
+      {/* Zona pulsable del logo: sus mallas no reciben clics, así que el clic entra a la sala desde aquí */}
+      <mesh position={[0, 0, 0]}>
+        <circleGeometry args={[1.2, 32]} />
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+      </mesh>
       <Bills reduced={reduced} />
       <Floating
         position={[-1.7, 2.05, 0.6]}
