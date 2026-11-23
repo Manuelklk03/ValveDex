@@ -28,8 +28,8 @@ type Rush = {
   // Altura del salto (el Hunter y el Jockey saltan sobre la multitud)
   jump?: number;
   scale?: number;
-  // false: este modelo no tiene clip de caída
-  fall?: boolean;
+  // Su caída es una pose flácida (sin animación propia): además se vuelca el cuerpo entero
+  topple?: boolean;
 };
 
 // Un infectado: sale del borde en una dirección al azar, corre hacia el centro y cae muerto antes de llegar; al rato vuelve
@@ -63,13 +63,13 @@ function rusher(c: Rush): Actor {
         yaw: Math.atan2(-x, -z),
         y: arc,
         // Corre con su ciclo (vueltas enteras) y, al morir, hace su caída de una sola vez
-        clip: alive ? "run" : c.fall === false ? "run" : "fall",
+        clip: alive ? "run" : "fall",
         phase: alive
           ? u * 0.95 + c.seed * 0.37
           : Math.min(1, (p - kill) / 0.12),
         scale: scale * (c.scale ?? 1),
         // Sin clip de caída (algunos especiales) se vuelca el cuerpo entero
-        fall: !alive && c.fall === false ? Math.min(1, (p - kill) / 0.07) : 0,
+        fall: !alive && c.topple ? Math.min(1, (p - kill) / 0.07) : 0,
       };
     },
   };
@@ -250,7 +250,7 @@ export const l4dScenes: Scene[] = [
         r0: 0.98,
         r1: 0.15,
         seed: 201,
-        fall: false,
+        topple: true,
         lean: 0.35,
       },
       {
@@ -261,7 +261,7 @@ export const l4dScenes: Scene[] = [
         r0: 0.98,
         r1: 0.2,
         seed: 202,
-        fall: false,
+        topple: true,
         lean: 0.3,
         jump: 0.1,
       },
@@ -273,7 +273,7 @@ export const l4dScenes: Scene[] = [
         r0: 0.98,
         r1: 0.45,
         seed: 203,
-        fall: false,
+        topple: true,
         lean: 0.1,
       },
       {
@@ -284,7 +284,7 @@ export const l4dScenes: Scene[] = [
         r0: 0.98,
         r1: 0.2,
         seed: 204,
-        fall: false,
+        topple: true,
         lean: 0.5,
         jump: 0.14,
       },

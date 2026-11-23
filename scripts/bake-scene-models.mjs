@@ -110,13 +110,13 @@ const jobs = {
       attach: `models/w_models/weapons/${weapon}.mdl`,
     })),
     ...[
-      ["hunter", "run=Run_Upper_KNIFE@auto:8:loop"],
+      ["hunter", "run=Run_Upper_KNIFE@auto:8:loop,fall=ragdoll:1"],
       ["smoker", "run=Run_Upper_KNIFE@auto:8:loop,fall=deathpose_front:4"],
       ["boomer", "run=Run_Upper_KNIFE@auto:8:loop,fall=deathpose_front:4"],
       ["hulk", "run=Run_1@auto:8:loop,fall=deathpose_front:4"],
-      ["charger", "run=Charger_Run@auto:8:loop"],
-      ["jockey", "run=Run@auto:8:loop"],
-      ["spitter", "run=Run@auto:8:loop"],
+      ["charger", "run=Charger_Run@auto:8:loop,fall=ragdoll:1"],
+      ["jockey", "run=Run@auto:8:loop,fall=ragdoll:1"],
+      ["spitter", "run=Run@auto:8:loop,fall=ragdoll:1"],
     ].map(([name, anim]) => ({
       out: `l4d2-${name}`,
       game: "Left 4 Dead 2",
