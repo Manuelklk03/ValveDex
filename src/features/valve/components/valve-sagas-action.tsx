@@ -24,6 +24,9 @@ export type Model = {
   hue?: number;
   // No intenta ponerlo de pie solo (criaturas agachadas como el Hunter)
   keep?: boolean;
+  // Altura real del modelo en unidades del juego: escala fija igual para todos los personajes (sin ajustar a su caja, que
+  // cambia con la pose y los hacía más bajos o más altos)
+  units?: number;
   // Arma que lleva en la mano (glb en las unidades del juego): se coloca con las matrices que el conversor guardó en cada clip
   weapon?: string;
   // Normaliza por la dimensión mayor (armas) en vez de por la altura (personajes)
@@ -452,14 +455,16 @@ export function Mini({ model }: { model: Model }) {
     inner.add(clone);
     wrapper.add(inner);
     wrapper.updateMatrixWorld(true);
-    let box = new THREE.Box3().setFromObject(wrapper);
+    // «precise»: la caja se saca de la pose base. Sin eso se contaban también los objetivos de morfado (brazos levantados al
+    // recargar, cuerpo caído) y los modelos salían más pequeños y con los pies fuera del suelo
+    let box = new THREE.Box3().setFromObject(wrapper, true);
     let size = box.getSize(new THREE.Vector3());
     // Un personaje que sigue tumbado (su eje largo no es el vertical) se pone de pie solo
     if (!model.max && !model.keep && size.y < Math.max(size.x, size.z) * 0.8) {
       if (size.z >= size.x) inner.rotation.x = (model.roll ?? 0) + Math.PI / 2;
       else inner.rotation.z = (model.tilt ?? 0) + Math.PI / 2;
       wrapper.updateMatrixWorld(true);
-      box = new THREE.Box3().setFromObject(wrapper);
+      box = new THREE.Box3().setFromObject(wrapper, true);
       size = box.getSize(new THREE.Vector3());
     }
     const center = box.getCenter(new THREE.Vector3());
@@ -468,7 +473,8 @@ export function Mini({ model }: { model: Model }) {
       model.max ? -center.y : -box.min.y,
       -center.z,
     );
-    const base = model.max ? Math.max(size.x, size.y, size.z) : size.y;
+    const base =
+      model.units ?? (model.max ? Math.max(size.x, size.y, size.z) : size.y);
     return { object: wrapper, scale: model.size / (base || 1), root: clone };
   }, [scene, model]);
 
