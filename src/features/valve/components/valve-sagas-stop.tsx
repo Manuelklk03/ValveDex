@@ -292,7 +292,7 @@ function SagaWorld({
             const index = count > 6 ? Math.floor(i / 2) : i;
             const ang =
               (index / ring) * Math.PI * 2 + (outer ? Math.PI / ring : 0);
-            const radius = outer ? 2.5 : 1.85;
+            const radius = outer ? 2.3 : 1.8;
             return (
               <GameLabel
                 key={game.name}
@@ -333,22 +333,30 @@ export function SagasStop({
         position={[0, -2.7, 0]}
       />
       {sagas.map((saga, i) => {
-        // Dos filas, desplazadas a la derecha para dejar libre el texto de la izquierda
-        const top = i < 3;
-        const col = top ? i : i - 3;
-        const x = portrait
-          ? (col - 1) * 1.7
-          : (top ? -0.95 : -0.15) + col * 1.4;
-        const y = portrait ? (top ? 1.5 : -1.2) : top ? 1.35 : -1.4;
+        // Cinco mundos al tresbolillo, lo bastante separados para que las órbitas de uno no entren en el vecino; el hueco
+        // de la izquierda queda libre para el texto
+        const spots: [number, number][] = [
+          [-0.1, 1.7],
+          [3.1, 1.7],
+          [1.5, -0.1],
+          [-0.1, -1.9],
+          [3.1, -1.9],
+        ];
+        const [sx, sy] = spots[i % spots.length];
+        const k = portrait ? 0.6 : 1;
         return (
           <SagaWorld
             key={saga.id}
             saga={saga}
             glow={glow}
             reduced={reduced}
-            size={portrait ? 0.5 : 0.7}
+            size={portrait ? 0.34 : 0.52}
             onOpen={onOpen}
-            position={[x, y, 0.6]}
+            position={[
+              sx * k - (portrait ? 1.4 : 0),
+              sy * (portrait ? 1.1 : 1),
+              0.6,
+            ]}
           />
         );
       })}
