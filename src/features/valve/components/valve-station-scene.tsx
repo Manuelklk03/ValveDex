@@ -19,6 +19,7 @@ import {
 import * as THREE from "three";
 import { Emblem, Stars, makeGlowTexture } from "@/components/ui/space-parts";
 import { ValveCorridor } from "./valve-corridor";
+import { HistoryScroll, type HistoryLine } from "./valve-history-scroll";
 import { ValveWall } from "./valve-wall";
 
 export type StationSaga = { id: string; accent: string; emblem: string };
@@ -40,6 +41,9 @@ type SceneProps = {
   onSelect: (stop: number) => void;
   // Pulsar la válvula de la pared: entrar al mundo
   onStart: () => void;
+  // El pergamino de la parada Historia: los párrafos que se escriben y el aviso de cuál va
+  historyLines: HistoryLine[];
+  onHistoryLine: (index: number) => void;
 };
 
 // Paradas del viaje: 0 pared con la válvula, 1 Historia, 2 Personal, 3 Hardware, 4 Steam y 5 las sagas
@@ -118,51 +122,6 @@ function Glow({
         />
       </mesh>
     </Billboard>
-  );
-}
-
-// Sala 01 · Historia: la línea de producción, una tubería con un anillo por hito
-function HistoryModule({
-  count,
-  reduced,
-}: {
-  count: number;
-  reduced: boolean;
-}) {
-  const group = useRef<THREE.Group>(null);
-  const rings = Array.from({ length: Math.min(count, 16) }, (_, i) => i);
-
-  useFrame((_, delta) => {
-    if (group.current && !reduced) group.current.rotation.x += delta * 0.3;
-  });
-
-  return (
-    <group rotation={[0, -0.5, 0.15]}>
-      <group ref={group}>
-        <mesh rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[0.42, 0.42, 7, 32]} />
-          <meshStandardMaterial
-            color="#4b4036"
-            metalness={0.85}
-            roughness={0.4}
-          />
-        </mesh>
-        {rings.map((i) => (
-          <mesh
-            key={i}
-            position={[(i / Math.max(rings.length - 1, 1) - 0.5) * 6.4, 0, 0]}
-            rotation={[0, Math.PI / 2, 0]}
-          >
-            <torusGeometry args={[0.66, 0.06, 12, 48]} />
-            <meshStandardMaterial
-              color="#f39a2e"
-              emissive="#f39a2e"
-              emissiveIntensity={i % 3 === 0 ? 1.4 : 0.55}
-            />
-          </mesh>
-        ))}
-      </group>
-    </group>
   );
 }
 
@@ -444,6 +403,8 @@ function Scene({
   reduced,
   onSelect,
   onStart,
+  historyLines,
+  onHistoryLine,
 }: SceneProps) {
   const size = useThree((state) => state.size);
   const portrait = size.width / size.height < 1;
@@ -479,10 +440,16 @@ function Scene({
           onStart={onStart}
         />
       )}
-      {show(1) && (
+      {near >= 1 && near <= 2 && (
         <group position={at(1)}>
           <Hit stop={1} onSelect={onSelect}>
-            <HistoryModule count={counts.history} reduced={reduced} />
+            <HistoryScroll
+              lines={historyLines}
+              active={near === 1}
+              reduced={reduced}
+              onLine={onHistoryLine}
+              lambdaSrc={sagas.find((saga) => saga.id === "half-life")?.emblem}
+            />
           </Hit>
         </group>
       )}
