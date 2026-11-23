@@ -1035,7 +1035,16 @@ const smooth = (a: number, b: number, v: number) => {
   return t * t * (3 - 2 * t);
 };
 
-type Zone = { x: number; z: number; w: number; d: number };
+type Zone = { x: number; z: number; w: number; d: number; tint?: string };
+
+// Color del terreno alrededor de cada universo
+const BIOME: Record<string, string> = {
+  "half-life": "#34363c",
+  portal: "#9aa3ad",
+  "team-fortress": "#7a5238",
+  "left-4-dead": "#2a3328",
+  "counter-strike": "#8a7650",
+};
 
 // Altura del terreno: colinas y montañas entre los lugares, llano bajo cada zona y en el borde del mapa
 function heightAt(
@@ -1084,6 +1093,7 @@ function MapTerrain({
     const pos = geo.attributes.position;
     const colors = new Float32Array(pos.count * 3);
     const tint = new THREE.Color();
+    const biome = new THREE.Color();
     for (let i = 0; i < pos.count; i += 1) {
       const x = pos.getX(i);
       const z = pos.getZ(i);
@@ -1093,6 +1103,21 @@ function MapTerrain({
       if (t < 0.25) tint.copy(LOW).lerp(MID, t / 0.25);
       else if (t < 0.6) tint.copy(MID).lerp(HIGH, (t - 0.25) / 0.35);
       else tint.copy(HIGH).lerp(PEAK, Math.min(1, (t - 0.6) / 0.4));
+      // El suelo cercano a una zona toma el color de su universo y se funde con el resto del mapa
+      let near: Zone | null = null;
+      let nearDist = 99;
+      for (const zone of zones) {
+        if (!zone.tint) continue;
+        const dx = Math.max(Math.abs(x - zone.x) - zone.w / 2, 0);
+        const dz = Math.max(Math.abs(z - zone.z) - zone.d / 2, 0);
+        const dist = Math.hypot(dx, dz);
+        if (dist < nearDist) {
+          nearDist = dist;
+          near = zone;
+        }
+      }
+      if (near?.tint)
+        tint.lerp(biome.set(near.tint), 0.85 * (1 - smooth(1.5, 9, nearDist)));
       tint.multiplyScalar(0.85 + valueNoise(x * 1.7, z * 1.7) * 0.3);
       colors.set([tint.r, tint.g, tint.b], i * 3);
     }
@@ -1143,6 +1168,300 @@ function MapTerrain({
           raycast={() => null}
         />
       ))}
+    </group>
+  );
+}
+
+// Decorado de cada zona: construcciones de su universo en los bordes y las esquinas, para no tapar la escena del centro.
+// Medidas para una zona de 8,2 x 7,2 (la escena ocupa un círculo de unos 2,8 de radio); el grupo se escala con el radio
+type V3 = [number, number, number];
+function Prop({
+  p,
+  s: size,
+  color,
+  shape = "box",
+  glow = false,
+  rot = 0,
+  opacity = 1,
+}: {
+  p: V3;
+  s: V3;
+  color: string;
+  shape?: "box" | "cyl" | "cone" | "sphere";
+  glow?: boolean;
+  rot?: number;
+  opacity?: number;
+}) {
+  const Material = glow ? (
+    <meshBasicMaterial
+      color={color}
+      toneMapped={false}
+      transparent={opacity < 1}
+      opacity={opacity}
+    />
+  ) : (
+    <meshStandardMaterial
+      color={color}
+      roughness={0.75}
+      metalness={0.25}
+      transparent={opacity < 1}
+      opacity={opacity}
+    />
+  );
+  return (
+    <mesh
+      position={[p[0], p[1] + size[1] / 2, p[2]]}
+      rotation={[0, rot, 0]}
+      raycast={() => null}
+    >
+      {shape === "box" && <boxGeometry args={size} />}
+      {shape === "cyl" && (
+        <cylinderGeometry args={[size[0] / 2, size[0] / 2, size[1], 18]} />
+      )}
+      {shape === "cone" && <coneGeometry args={[size[0] / 2, size[1], 18]} />}
+      {shape === "sphere" && <sphereGeometry args={[size[0] / 2, 14, 10]} />}
+      {Material}
+    </mesh>
+  );
+}
+
+function ZoneDecor({ id }: { id: string }) {
+  if (id === "half-life") {
+    // Complejo de Black Mesa: torre de refrigeración, búnkeres, antena con luz roja, vía y parabólica
+    return (
+      <group>
+        <Prop
+          p={[-3.3, 0, -2.8]}
+          s={[1.3, 1.5, 1.3]}
+          color="#3a3d45"
+          shape="cyl"
+        />
+        <Prop
+          p={[-3.3, 1.5, -2.8]}
+          s={[0.9, 0.5, 0.9]}
+          color="#555963"
+          shape="cone"
+        />
+        <Prop p={[3.2, 0, -2.9]} s={[1.5, 0.8, 1]} color="#2b2d33" />
+        <Prop p={[3.2, 0.8, -2.9]} s={[1.6, 0.08, 1.1]} color="#f39a2e" glow />
+        <Prop p={[3.45, 0, 2.7]} s={[1.2, 0.7, 0.9]} color="#34363d" />
+        <Prop p={[-3.5, 0, 2.7]} s={[0.7, 1.9, 0.12]} color="#8b8f99" />
+        <Prop
+          p={[-3.5, 1.9, 2.7]}
+          s={[0.22, 0.22, 0.22]}
+          color="#ff3a2a"
+          shape="sphere"
+          glow
+        />
+        <Prop p={[0, 0, -3.4]} s={[7, 0.06, 0.16]} color="#6a6d75" />
+        <Prop p={[0, 0, -3.1]} s={[7, 0.06, 0.16]} color="#6a6d75" />
+        <Prop
+          p={[1.6, 0, -2.2]}
+          s={[0.12, 1.1, 0.12]}
+          color="#8b8f99"
+          shape="cyl"
+        />
+        <Prop
+          p={[1.6, 1.1, -2.2]}
+          s={[0.9, 0.18, 0.9]}
+          color="#b4b8c2"
+          shape="cone"
+          rot={0.4}
+        />
+      </group>
+    );
+  }
+  if (id === "portal") {
+    // Centro de Aperture: muros blancos con portales, ventanal de observación y paneles de luz
+    return (
+      <group>
+        <Prop p={[0, 0, -3.5]} s={[7.4, 1.5, 0.14]} color="#e6ebf0" />
+        <Prop p={[-3.7, 0, -0.3]} s={[0.14, 1.5, 6.6]} color="#dde3e9" />
+        <Prop
+          p={[-1.8, 0.25, -3.4]}
+          s={[1.6, 0.7, 0.05]}
+          color="#9fd8ff"
+          opacity={0.45}
+        />
+        <Prop
+          p={[1.7, 0.2, -3.42]}
+          s={[0.9, 1.1, 0.05]}
+          color="#ff9a1f"
+          glow
+          opacity={0.85}
+        />
+        <Prop
+          p={[-3.62, 0.2, 1.6]}
+          s={[0.05, 1.1, 0.9]}
+          color="#56c8ff"
+          glow
+          opacity={0.85}
+        />
+        <Prop
+          p={[3.4, 0, -2.4]}
+          s={[0.5, 1.9, 0.5]}
+          color="#c9ced6"
+          shape="cyl"
+        />
+        <Prop
+          p={[3.4, 1.9, -2.4]}
+          s={[0.55, 0.06, 0.55]}
+          color="#ffffff"
+          glow
+        />
+        <Prop p={[3.3, 0, 2.7]} s={[0.9, 0.05, 0.9]} color="#e8ecf0" />
+        <Prop p={[3.3, 0.05, 2.7]} s={[0.5, 0.04, 0.5]} color="#56c8ff" glow />
+        <Prop
+          p={[-3.2, 0, 3]}
+          s={[0.55, 0.5, 0.55]}
+          color="#c9ced6"
+          rot={0.5}
+        />
+      </group>
+    );
+  }
+  if (id === "team-fortress") {
+    // Cañón: base RED a un lado, base BLU al otro, con banderas, vallas y rocas
+    return (
+      <group>
+        <Prop p={[-3.1, 0, -0.2]} s={[1.5, 1.2, 2.2]} color="#b8312b" />
+        <Prop p={[-3.1, 1.2, -0.2]} s={[1.7, 0.12, 2.4]} color="#7a2420" />
+        <Prop
+          p={[-3.1, 1.3, -1.4]}
+          s={[0.05, 1.1, 0.05]}
+          color="#d8d2c4"
+          shape="cyl"
+        />
+        <Prop p={[-2.9, 2.0, -1.4]} s={[0.5, 0.3, 0.03]} color="#e8665f" glow />
+        <Prop p={[3.1, 0, -0.2]} s={[1.5, 1.2, 2.2]} color="#3b6fb5" />
+        <Prop p={[3.1, 1.2, -0.2]} s={[1.7, 0.12, 2.4]} color="#244c80" />
+        <Prop
+          p={[3.1, 1.3, -1.4]}
+          s={[0.05, 1.1, 0.05]}
+          color="#d8d2c4"
+          shape="cyl"
+        />
+        <Prop p={[3.3, 2.0, -1.4]} s={[0.5, 0.3, 0.03]} color="#5b8fcb" glow />
+        <Prop
+          p={[-1.2, 0, -3.3]}
+          s={[1.4, 1.3, 0.8]}
+          color="#6e5a46"
+          rot={0.2}
+        />
+        <Prop
+          p={[0.9, 0, -3.4]}
+          s={[1.9, 0.9, 0.7]}
+          color="#7b6650"
+          rot={-0.15}
+        />
+        <Prop p={[0, 0, 3.1]} s={[5.4, 0.4, 0.1]} color="#5a4a3a" />
+        <Prop
+          p={[-3.2, 0, 3.1]}
+          s={[0.9, 0.7, 0.9]}
+          color="#6e5a46"
+          rot={0.3}
+        />
+        <Prop p={[3.3, 0, 3]} s={[0.8, 0.6, 0.8]} color="#6e5a46" rot={-0.4} />
+      </group>
+    );
+  }
+  if (id === "left-4-dead") {
+    // Refugio: edificio con puerta de seguridad, vallas, coches abandonados, farola y sacos de arena
+    return (
+      <group>
+        <Prop p={[0, 0, -3.1]} s={[2.8, 1.4, 1.2]} color="#3a4538" />
+        <Prop p={[0, 1.4, -3.1]} s={[3, 0.12, 1.4]} color="#2b3329" />
+        <Prop p={[0, 0, -2.5]} s={[0.55, 0.95, 0.05]} color="#b3261a" />
+        <Prop
+          p={[-3.3, 0, 0.6]}
+          s={[1.5, 0.6, 0.8]}
+          color="#6b3e32"
+          rot={0.5}
+        />
+        <Prop
+          p={[-3.3, 0.6, 0.6]}
+          s={[0.8, 0.3, 0.7]}
+          color="#4d3a33"
+          rot={0.5}
+        />
+        <Prop
+          p={[3.3, 0, 1.4]}
+          s={[1.5, 0.6, 0.8]}
+          color="#40505a"
+          rot={-0.4}
+        />
+        <Prop
+          p={[3.3, 0.6, 1.4]}
+          s={[0.8, 0.3, 0.7]}
+          color="#34424a"
+          rot={-0.4}
+        />
+        <Prop
+          p={[3.4, 0, -2.4]}
+          s={[0.1, 2.2, 0.1]}
+          color="#4b4f4b"
+          shape="cyl"
+        />
+        <Prop
+          p={[3.4, 2.2, -2.4]}
+          s={[0.35, 0.18, 0.35]}
+          color="#ffd9a0"
+          glow
+        />
+        <Prop p={[-3.2, 0, 3]} s={[0.9, 0.35, 0.45]} color="#8a7c5a" />
+        <Prop p={[-2.7, 0, 3.05]} s={[0.7, 0.3, 0.45]} color="#8a7c5a" />
+        <Prop
+          p={[0, 0, 3.4]}
+          s={[7, 0.8, 0.05]}
+          color="#555a55"
+          opacity={0.6}
+        />
+        <Prop
+          p={[-3.9, 0, 0]}
+          s={[0.05, 0.8, 5.6]}
+          color="#555a55"
+          opacity={0.6}
+        />
+      </group>
+    );
+  }
+  // Counter-Strike: Dust, con muros de adobe, arcos, cajas y las zonas de bomba
+  return (
+    <group>
+      <Prop p={[0, 0, -3.4]} s={[7.2, 1.1, 0.35]} color="#9a8660" />
+      <Prop p={[-3.8, 0, 0]} s={[0.35, 1.1, 6.4]} color="#8e7a56" />
+      <Prop p={[-1.2, 0, -3.3]} s={[1.1, 1.6, 0.4]} color="#a89268" />
+      <Prop
+        p={[-1.2, 1.6, -3.3]}
+        s={[0.55, 0.4, 0.4]}
+        color="#a89268"
+        shape="cyl"
+        rot={Math.PI / 2}
+      />
+      <Prop p={[3.3, 0, -2.6]} s={[0.8, 0.8, 0.8]} color="#7a6446" />
+      <Prop
+        p={[3.3, 0.8, -2.6]}
+        s={[0.7, 0.7, 0.7]}
+        color="#8a7452"
+        rot={0.4}
+      />
+      <Prop p={[3.5, 0, 2.5]} s={[0.8, 0.8, 0.8]} color="#7a6446" rot={0.3} />
+      <Prop p={[-3.2, 0, 3]} s={[0.9, 0.55, 0.9]} color="#7a6446" />
+      <Prop
+        p={[3.3, 0, 0.2]}
+        s={[0.9, 0.04, 0.9]}
+        color="#cf8a3c"
+        glow
+        opacity={0.9}
+      />
+      <Prop
+        p={[-3.2, 0, -1.4]}
+        s={[0.9, 0.04, 0.9]}
+        color="#cf8a3c"
+        glow
+        opacity={0.9}
+      />
+      <Prop p={[0.2, 0, 3.3]} s={[1.6, 0.7, 0.3]} color="#6f5c40" />
     </group>
   );
 }
@@ -1333,6 +1652,9 @@ function Territory({
             toneMapped={false}
           />
         </mesh>
+        <group position={[0, 0.062, 0]} scale={R / 3}>
+          <ZoneDecor id={saga.id} />
+        </group>
         {/* Escaramuza en miniatura en la parte delantera del territorio */}
         <group
           position={[0, 0.062, scenes ? 0 : 0.3 * (R / 1.45)]}
@@ -1467,11 +1789,14 @@ export function SagasStop({
   const zones = useMemo<Zone[]>(
     () =>
       [
-        ...Object.values(layout.spots),
-        ...FUTURE_PLOTS[portrait ? "portrait" : "desktop"],
-      ].map((spot) => {
+        ...Object.entries(layout.spots).map(([id, spot]) => ({ id, spot })),
+        ...FUTURE_PLOTS[portrait ? "portrait" : "desktop"].map((spot) => ({
+          id: "",
+          spot,
+        })),
+      ].map(({ id, spot }) => {
         const [w, d] = zoneSize(spot.r);
-        return { x: spot.x, z: spot.z, w, d };
+        return { x: spot.x, z: spot.z, w, d, tint: BIOME[id] };
       }),
     [layout, portrait],
   );
