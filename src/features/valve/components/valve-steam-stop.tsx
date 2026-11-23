@@ -1,7 +1,7 @@
 "use client";
 
 import { useFrame } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, type MutableRefObject } from "react";
 import * as THREE from "three";
 import { Sparkles, STEAM_PATH } from "./valve-props";
 
@@ -200,32 +200,32 @@ function EraBadge({
 
 export function SteamStop({
   reduced,
-  onEra,
+  era,
+  lastPick,
+  onAuto,
+  onPick,
 }: {
   reduced: boolean;
-  onEra: (index: number) => void;
+  // Época al frente: la lleva el texto de la portada, que también tiene botones para elegirla
+  era: number;
+  // Instante de la última elección manual, para no cambiar sola justo después
+  lastPick: MutableRefObject<number>;
+  onAuto: (index: number) => void;
+  onPick: (index: number) => void;
 }) {
-  const [era, setEra] = useState(0);
-  const lastPick = useRef(0);
   const panel = useRef<THREE.MeshBasicMaterial>(null);
   const light = useRef<THREE.PointLight>(null);
   const hatch = useMemo(() => makeHatch(), []);
   useEffect(() => () => hatch.dispose(), [hatch]);
 
-  // Avisa al texto de qué época está al frente
-  useEffect(() => {
-    onEra(era);
-  }, [era, onEra]);
-
   // Cambio automático cada pocos segundos, salvo justo después de elegir una a mano
   useEffect(() => {
     if (reduced) return;
     const id = window.setInterval(() => {
-      if (performance.now() - lastPick.current > 7000)
-        setEra((value) => (value + 1) % 3);
+      if (performance.now() - lastPick.current > 7000) onAuto((era + 1) % 3);
     }, 4200);
     return () => window.clearInterval(id);
-  }, [reduced]);
+  }, [reduced, era, lastPick, onAuto]);
 
   const colors = useMemo(
     () =>
@@ -265,10 +265,7 @@ export function SteamStop({
           index={i}
           era={era}
           reduced={reduced}
-          onPick={(index) => {
-            lastPick.current = performance.now();
-            setEra(index);
-          }}
+          onPick={onPick}
         />
       ))}
       <Sparkles />

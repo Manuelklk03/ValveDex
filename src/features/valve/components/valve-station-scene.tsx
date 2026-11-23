@@ -45,8 +45,11 @@ type SceneProps = {
   portraitSrc?: string;
   // Abre la ficha de una persona
   onPerson: (slug: string) => void;
-  // Época de Steam que está al frente en la parada Steam
-  onSteamEra: (index: number) => void;
+  // Época de Steam al frente, cuándo se eligió por última vez y cómo cambiarla
+  steamEra: number;
+  steamPicked: MutableRefObject<number>;
+  onSteamAuto: (index: number) => void;
+  onSteamPick: (index: number) => void;
 };
 
 // Paradas del viaje: 0 pared con la válvula, 1 Historia, 2 Personal, 3 Hardware, 4 Steam y 5 las sagas
@@ -257,7 +260,10 @@ function Scene({
   people,
   portraitSrc,
   onPerson,
-  onSteamEra,
+  steamEra,
+  steamPicked,
+  onSteamAuto,
+  onSteamPick,
 }: SceneProps) {
   const size = useThree((state) => state.size);
   const portrait = size.width / size.height < 1;
@@ -328,7 +334,13 @@ function Scene({
       {show(4) && (
         <group position={at(4)}>
           <Hit stop={4} onSelect={onSelect}>
-            <SteamStop reduced={reduced} onEra={onSteamEra} />
+            <SteamStop
+              reduced={reduced}
+              era={steamEra}
+              lastPick={steamPicked}
+              onAuto={onSteamAuto}
+              onPick={onSteamPick}
+            />
           </Hit>
         </group>
       )}

@@ -3,7 +3,13 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo, useState, type CSSProperties } from "react";
+import {
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import { SceneBoundary } from "@/components/ui/scene-boundary";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useScrollTravel } from "@/components/ui/use-scroll-travel";
@@ -87,6 +93,11 @@ export function ValveStation({
 }: ValveStationProps) {
   const router = useRouter();
   const [steamEra, setSteamEra] = useState(0);
+  const steamPicked = useRef(0);
+  const pickEra = useCallback((index: number) => {
+    steamPicked.current = performance.now();
+    setSteamEra(index);
+  }, []);
   const stopCount = rooms.length + 2;
   const { section, target, entering, active, reduced, goTo, startEntering } =
     useScrollTravel(stopCount);
@@ -202,7 +213,10 @@ export function ValveStation({
               historyLines={historyLines}
               people={people}
               portraitSrc={portraitSrc}
-              onSteamEra={setSteamEra}
+              steamEra={steamEra}
+              steamPicked={steamPicked}
+              onSteamAuto={setSteamEra}
+              onSteamPick={pickEra}
               onPerson={(slug) => router.push(`/valve/personas/${slug}`)}
               onHistoryLine={onHistoryLine}
             />
