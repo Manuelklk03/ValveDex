@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ChromeSync } from "@/components/ui/chrome-sync";
 import styles from "./game-theme.module.css";
 
 type GameThemeProps = {
@@ -13,5 +14,10 @@ export function GameTheme({ gameId, children }: GameThemeProps) {
     ? `${styles["game-theme"]} ${themeClass}`
     : styles["game-theme"];
 
-  return <div className={className}>{children}</div>;
+  return (
+    <div className={className} data-chrome-theme>
+      <ChromeSync />
+      {children}
+    </div>
+  );
 }

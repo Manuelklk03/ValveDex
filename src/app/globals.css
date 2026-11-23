@@ -40,6 +40,13 @@
   --steam-unified-muted: #97a3b0;
   --steam-unified-accent: #1a9fff;
   --steam-unified-border: #26323f;
+  /* Colores que heredan la cabecera y el pie: por defecto los de Valve; cada tema los sustituye (ChromeSync) */
+  --chrome-background: var(--background);
+  --chrome-foreground: var(--foreground);
+  --chrome-surface: var(--surface);
+  --chrome-border: var(--border);
+  --chrome-muted: var(--muted);
+  --chrome-accent: var(--accent);
   color-scheme: dark;
 }
 
@@ -53,6 +60,11 @@
   --color-valve-red: var(--valve-red);
   --font-sans: var(--font-archivo);
   --font-mono: var(--font-plex-mono);
+}
+
+/* Las anclas (#época, #sección) no quedan bajo la cabecera fija */
+html {
+  scroll-padding-top: 5rem;
 }
 
 body {
