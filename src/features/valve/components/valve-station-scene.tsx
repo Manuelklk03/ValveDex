@@ -1,6 +1,5 @@
 "use client";
 
-import { Billboard } from "@react-three/drei";
 import {
   Canvas,
   useFrame,
@@ -17,15 +16,16 @@ import {
   type ReactNode,
 } from "react";
 import * as THREE from "three";
-import { Emblem, Stars, makeGlowTexture } from "@/components/ui/space-parts";
+import { Stars, makeGlowTexture } from "@/components/ui/space-parts";
 import { ValveCorridor } from "./valve-corridor";
 import { HardwareStop } from "./valve-hardware-stop";
 import { PeopleStop, type StationPerson } from "./valve-people-stop";
 import { HistoryScroll, type HistoryLine } from "./valve-history-scroll";
+import { SagasStop, type SagaWorldData } from "./valve-sagas-stop";
 import { SteamStop } from "./valve-steam-stop";
 import { ValveWall } from "./valve-wall";
 
-export type StationSaga = { id: string; accent: string; emblem: string };
+export type StationSaga = SagaWorldData;
 
 type SceneProps = {
   sagas: StationSaga[];
@@ -50,6 +50,8 @@ type SceneProps = {
   steamPicked: MutableRefObject<number>;
   onSteamAuto: (index: number) => void;
   onSteamPick: (index: number) => void;
+  // Abre el universo de una saga
+  onSaga: (slug: string) => void;
 };
 
 // Paradas del viaje: 0 pared con la válvula, 1 Historia, 2 Personal, 3 Hardware, 4 Steam y 5 las sagas
@@ -98,68 +100,6 @@ function Hit({
       }}
     >
       {children}
-    </group>
-  );
-}
-
-function Glow({
-  texture,
-  color,
-  size,
-  opacity = 0.5,
-}: {
-  texture: THREE.Texture;
-  color: string;
-  size: number;
-  opacity?: number;
-}) {
-  return (
-    <Billboard>
-      {/* Solo decora: sin raycast, para no tapar los clics de lo que tiene detrás */}
-      <mesh raycast={() => null}>
-        <planeGeometry args={[size, size]} />
-        <meshBasicMaterial
-          map={texture}
-          color={color}
-          transparent
-          opacity={opacity}
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
-      </mesh>
-    </Billboard>
-  );
-}
-
-// Parada 5: las sagas, en arco, cada una con su emblema y su luz
-function SagasModule({
-  sagas,
-  glow,
-  portrait,
-}: {
-  sagas: StationSaga[];
-  glow: THREE.Texture;
-  portrait: boolean;
-}) {
-  return (
-    <group>
-      {sagas.map((saga, i) => {
-        const t = sagas.length > 1 ? i / (sagas.length - 1) - 0.5 : 0;
-        const angle = t * (portrait ? 1.7 : 1.5);
-        return (
-          <group
-            key={saga.id}
-            position={[
-              Math.sin(angle) * (portrait ? 2.2 : 3.1),
-              (portrait ? 0.4 : 0) + Math.cos(angle * 2) * 0.5 - 0.3,
-              -Math.cos(angle) * 1.4 + 1.4,
-            ]}
-          >
-            <Glow texture={glow} color={saga.accent} size={3.2} opacity={0.7} />
-            <Emblem src={saga.emblem} color="#ffffff" size={1.3} depthTest />
-          </group>
-        );
-      })}
     </group>
   );
 }
@@ -264,6 +204,7 @@ function Scene({
   steamPicked,
   onSteamAuto,
   onSteamPick,
+  onSaga,
 }: SceneProps) {
   const size = useThree((state) => state.size);
   const portrait = size.width / size.height < 1;
@@ -347,7 +288,13 @@ function Scene({
       {show(5) && (
         <group position={at(5)}>
           <Hit stop={5} onSelect={onSelect}>
-            <SagasModule sagas={sagas} glow={glow} portrait={portrait} />
+            <SagasStop
+              sagas={sagas}
+              glow={glow}
+              portrait={portrait}
+              reduced={reduced}
+              onOpen={onSaga}
+            />
           </Hit>
         </group>
       )}

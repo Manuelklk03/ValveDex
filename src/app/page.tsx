@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
+import { getGameYear } from "@/domain/game";
 import { lineIcons, universeArt } from "@/data/universe-art";
 import { getEntries } from "@/features/catalog/get-entries";
 import { getGameSections } from "@/features/games/get-game-sections";
@@ -84,6 +85,12 @@ export default function HomePage() {
                   name: universe.name,
                   accent: universeArt[universe.id].accent,
                   emblem: emblem.src,
+                  games: getOfficialGamesByUniverse(universe.id).map(
+                    (game) => ({
+                      name: game.name,
+                      year: getGameYear(game),
+                    }),
+                  ),
                   entry: getUniverseEntry(universe.slug),
                 },
               ]

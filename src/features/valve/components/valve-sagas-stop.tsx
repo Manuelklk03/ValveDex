@@ -1,0 +1,339 @@
+"use client";
+
+import { useFrame } from "@react-three/fiber";
+import { Billboard } from "@react-three/drei";
+import { useEffect, useMemo, useRef } from "react";
+import * as THREE from "three";
+import { Emblem } from "@/components/ui/space-parts";
+import { Sparkles } from "./valve-props";
+
+// Parada 5 · Universos: cada saga es un pequeño mundo sobre fondo negro. Su emblema flota en el centro, sus juegos giran
+// alrededor como placas con el nombre y el año, y un elemento propio de su temática reacciona al cursor (anillos de portal,
+// equipos RED y BLU, garras de infectado, mira de francotirador o el anillo de seguridad de Black Mesa)
+
+export type SagaGame = { name: string; year: number };
+export type SagaWorldData = {
+  id: string;
+  slug: string;
+  name: string;
+  accent: string;
+  emblem: string;
+  games: SagaGame[];
+};
+
+function makeLabel(text: string, accent: string) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 384;
+  canvas.height = 84;
+  const g = canvas.getContext("2d");
+  if (g) {
+    g.fillStyle = "rgba(8,9,12,0.88)";
+    g.beginPath();
+    g.roundRect(4, 4, 376, 76, 14);
+    g.fill();
+    g.strokeStyle = accent;
+    g.lineWidth = 3;
+    g.stroke();
+    g.fillStyle = "#f3efe6";
+    g.font = "bold 30px system-ui, sans-serif";
+    g.textAlign = "center";
+    const label = text.length > 22 ? `${text.slice(0, 21)}…` : text;
+    g.fillText(label, 192, 52);
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+function GameLabel({
+  game,
+  accent,
+  position,
+}: {
+  game: SagaGame;
+  accent: string;
+  position: [number, number, number];
+}) {
+  const map = useMemo(
+    () => makeLabel(`${game.name} · ${game.year}`, accent),
+    [game, accent],
+  );
+  useEffect(() => () => map.dispose(), [map]);
+  return (
+    <group position={position}>
+      <Billboard>
+        <mesh raycast={() => null}>
+          <planeGeometry args={[1.3, 0.285]} />
+          <meshBasicMaterial map={map} transparent toneMapped={false} />
+        </mesh>
+      </Billboard>
+    </group>
+  );
+}
+
+// Elemento de la temática de cada saga; `hover` va de 0 a 1 y los acelera o los abre
+function Theme({
+  id,
+  accent,
+  hover,
+}: {
+  id: string;
+  accent: string;
+  hover: React.MutableRefObject<number>;
+}) {
+  const a = useRef<THREE.Group>(null);
+  const b = useRef<THREE.Group>(null);
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    const h = hover.current;
+    if (id === "portal") {
+      if (a.current)
+        a.current.scale.setScalar(1 + h * 0.35 + Math.sin(t * 2) * 0.05);
+      if (b.current)
+        b.current.scale.setScalar(1 + h * 0.35 + Math.sin(t * 2 + 2) * 0.05);
+    } else if (id === "team-fortress") {
+      if (a.current) a.current.rotation.set(t * (0.5 + h * 2), 0.4, 0);
+      if (b.current) b.current.rotation.set(0.4, t * (0.5 + h * 2), 0);
+    } else if (id === "left-4-dead") {
+      if (a.current)
+        a.current.scale.setScalar(
+          1 + Math.max(0, Math.sin(t * 3)) * 0.12 + h * 0.3,
+        );
+    } else if (id === "counter-strike") {
+      if (a.current) a.current.rotation.z = t * (0.3 + h * 1.5);
+    } else if (a.current) {
+      a.current.rotation.z = t * (0.35 + h * 1.4);
+    }
+  });
+
+  const ring = (r: number, color: string, tube = 0.03) => (
+    <mesh raycast={() => null}>
+      <torusGeometry args={[r, tube, 12, 64]} />
+      <meshBasicMaterial color={color} toneMapped={false} />
+    </mesh>
+  );
+
+  if (id === "portal") {
+    return (
+      <group>
+        <group ref={a} position={[-1.05, 0.65, 0]} rotation={[0, 0.5, 0]}>
+          {ring(0.34, "#ff9a1f", 0.05)}
+        </group>
+        <group ref={b} position={[1.05, -0.65, 0]} rotation={[0, -0.5, 0]}>
+          {ring(0.34, "#56c8ff", 0.05)}
+        </group>
+      </group>
+    );
+  }
+  if (id === "team-fortress") {
+    return (
+      <group>
+        <group ref={a}>{ring(1.0, "#e8665f", 0.04)}</group>
+        <group ref={b}>{ring(1.12, "#5b8fcb", 0.04)}</group>
+      </group>
+    );
+  }
+  if (id === "left-4-dead") {
+    return (
+      <group ref={a}>
+        {Array.from({ length: 10 }, (_, i) => {
+          const ang = (i / 10) * Math.PI * 2;
+          return (
+            <mesh
+              key={i}
+              position={[Math.cos(ang) * 0.95, Math.sin(ang) * 0.95, 0]}
+              rotation={[0, 0, ang - Math.PI / 2]}
+              raycast={() => null}
+            >
+              <coneGeometry args={[0.07, 0.34, 6]} />
+              <meshBasicMaterial
+                color={i % 2 ? "#8db03c" : "#b3261a"}
+                toneMapped={false}
+              />
+            </mesh>
+          );
+        })}
+      </group>
+    );
+  }
+  if (id === "counter-strike") {
+    return (
+      <group ref={a}>
+        {ring(0.95, accent, 0.012)}
+        {[0, 1, 2, 3].map((i) => (
+          <mesh
+            key={i}
+            position={[
+              Math.cos((i * Math.PI) / 2) * 1.15,
+              Math.sin((i * Math.PI) / 2) * 1.15,
+              0,
+            ]}
+            rotation={[0, 0, (i * Math.PI) / 2]}
+            raycast={() => null}
+          >
+            <boxGeometry args={[0.36, 0.02, 0.02]} />
+            <meshBasicMaterial color={accent} toneMapped={false} />
+          </mesh>
+        ))}
+      </group>
+    );
+  }
+  // Half-Life: anillo de seguridad con marcas de calibración
+  return (
+    <group ref={a}>
+      {ring(1.0, accent, 0.02)}
+      {Array.from({ length: 16 }, (_, i) => {
+        const ang = (i / 16) * Math.PI * 2;
+        return (
+          <mesh
+            key={i}
+            position={[Math.cos(ang) * 1.12, Math.sin(ang) * 1.12, 0]}
+            rotation={[0, 0, ang]}
+            raycast={() => null}
+          >
+            <boxGeometry args={[i % 4 === 0 ? 0.22 : 0.1, 0.03, 0.03]} />
+            <meshBasicMaterial color={accent} toneMapped={false} />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+}
+
+function SagaWorld({
+  saga,
+  glow,
+  position,
+  reduced,
+  size,
+  onOpen,
+}: {
+  saga: SagaWorldData;
+  glow: THREE.Texture;
+  position: [number, number, number];
+  reduced: boolean;
+  size: number;
+  onOpen: (slug: string) => void;
+}) {
+  const root = useRef<THREE.Group>(null);
+  const orbit = useRef<THREE.Group>(null);
+  const hover = useRef(0);
+  const target = useRef(0);
+  const count = saga.games.length;
+
+  useEffect(() => {
+    return () => {
+      document.body.style.cursor = "";
+    };
+  }, []);
+
+  useFrame((state, delta) => {
+    hover.current +=
+      (target.current - hover.current) * (1 - Math.exp(-8 * delta));
+    const h = hover.current;
+    const t = reduced ? 0 : state.clock.elapsedTime;
+    if (root.current) {
+      root.current.position.y =
+        position[1] + Math.sin(t * 0.8 + position[0]) * 0.1;
+      root.current.scale.setScalar(size * (1 + h * 0.18));
+    }
+    if (orbit.current && !reduced)
+      orbit.current.rotation.y += delta * (0.35 + h * 1.2);
+  });
+
+  return (
+    <group
+      ref={root}
+      position={position}
+      onPointerOver={() => {
+        target.current = 1;
+      }}
+      onPointerOut={() => {
+        target.current = 0;
+      }}
+      onClick={(event) => {
+        event.stopPropagation();
+        onOpen(saga.slug);
+      }}
+    >
+      {/* Zona de cursor */}
+      <mesh position={[0, 0, 0.1]}>
+        <circleGeometry args={[1.5, 24]} />
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+      </mesh>
+      <sprite scale={[3.6, 3.6, 1]} raycast={() => null}>
+        <spriteMaterial
+          map={glow}
+          color={saga.accent}
+          transparent
+          opacity={0.55}
+          depthWrite={false}
+        />
+      </sprite>
+      <Theme id={saga.id} accent={saga.accent} hover={hover} />
+      <Emblem src={saga.emblem} color="#ffffff" size={1.35} depthTest />
+      {/* Los juegos de la saga, en una órbita inclinada */}
+      <group rotation={[0.45, 0, 0.1]}>
+        <group ref={orbit}>
+          {saga.games.slice(0, 6).map((game, i) => {
+            const ang = (i / Math.min(count, 6)) * Math.PI * 2;
+            return (
+              <GameLabel
+                key={game.name}
+                game={game}
+                accent={saga.accent}
+                position={[Math.cos(ang) * 1.85, 0, Math.sin(ang) * 1.85]}
+              />
+            );
+          })}
+        </group>
+      </group>
+    </group>
+  );
+}
+
+export function SagasStop({
+  sagas,
+  glow,
+  portrait,
+  reduced,
+  onOpen,
+}: {
+  sagas: SagaWorldData[];
+  glow: THREE.Texture;
+  portrait: boolean;
+  reduced: boolean;
+  onOpen: (slug: string) => void;
+}) {
+  return (
+    <group>
+      {/* Suelo negro con una cuadrícula tenue: el «mapa» sobre el que está cada mundo */}
+      <gridHelper
+        args={[26, 52, "#2a2d36", "#14161c"]}
+        position={[0, -2.7, 0]}
+      />
+      {sagas.map((saga, i) => {
+        // Dos filas, desplazadas a la derecha para dejar libre el texto de la izquierda
+        const top = i < 3;
+        const col = top ? i : i - 3;
+        const x = portrait
+          ? (col - 1) * 1.7
+          : (top ? -0.95 : -0.15) + col * 1.4;
+        const y = portrait ? (top ? 1.5 : -1.2) : top ? 1.35 : -1.4;
+        return (
+          <SagaWorld
+            key={saga.id}
+            saga={saga}
+            glow={glow}
+            reduced={reduced}
+            size={portrait ? 0.5 : 0.7}
+            onOpen={onOpen}
+            position={[x, y, 0.6]}
+          />
+        );
+      })}
+      <Sparkles />
+    </group>
+  );
+}

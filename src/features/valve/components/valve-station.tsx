@@ -217,6 +217,9 @@ export function ValveStation({
               steamPicked={steamPicked}
               onSteamAuto={setSteamEra}
               onSteamPick={pickEra}
+              onSaga={(slug) =>
+                document.getElementById(`station-saga-${slug}`)?.click()
+              }
               onPerson={(slug) => router.push(`/valve/personas/${slug}`)}
               onHistoryLine={onHistoryLine}
             />
@@ -374,6 +377,7 @@ export function ValveStation({
                   {universes.map((universe) => (
                     <li key={universe.id}>
                       <Link
+                        id={`station-saga-${universe.slug}`}
                         href={`/universos/${universe.slug}`}
                         data-elevator={universe.entry}
                         data-elevator-title={universe.name}
