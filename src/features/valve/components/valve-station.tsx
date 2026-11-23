@@ -258,11 +258,15 @@ export function ValveStation({
           <aside
             className={`${styles["station__era"]} ${styles[`station__era--${eras[steamEra].id}`]}`}
           >
+            {/* Región viva estable (no se remonta): anuncia la época nueva a los lectores de pantalla */}
+            <p className={styles["station__sr"]} role="status">
+              {eras[steamEra].name}, {eras[steamEra].years}.{" "}
+              {eras[steamEra].summary}
+            </p>
             {/* El texto se remonta al cambiar de época para animarse; los botones no, para no perder el foco */}
             <div
               key={eras[steamEra].id}
               className={styles["station__era-body"]}
-              aria-live="polite"
             >
               <p className={styles["station__era-years"]}>
                 {eras[steamEra].years}
