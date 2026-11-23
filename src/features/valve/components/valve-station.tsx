@@ -2,11 +2,12 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useCallback, useState, type CSSProperties } from "react";
+import { useCallback, useMemo, useState, type CSSProperties } from "react";
 import { SceneBoundary } from "@/components/ui/scene-boundary";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useScrollTravel } from "@/components/ui/use-scroll-travel";
 import type { DossierTransition } from "@/domain/dossier-transition";
+import type { Mention } from "../valve-mentions";
 import { ValveIntro } from "./valve-intro";
 import type { StationCounts, StationSaga } from "./valve-station-scene";
 import type { ValveRoom } from "./valve-rooms";
@@ -28,8 +29,16 @@ export type StationUniverse = StationSaga & {
   entry?: DossierTransition;
 };
 
+// Un párrafo de la historia con los nombres que menciona (los saca el servidor)
+export type StationHistory = {
+  year: string;
+  text: string;
+  mentions: Mention[];
+};
+
 type ValveStationProps = {
   rooms: ValveRoom[];
+  history: StationHistory[];
   universes: StationUniverse[];
   counts: StationCounts;
   stats: { label: string; value: number }[];
@@ -58,6 +67,7 @@ const accents = [
 // sala o a una saga lanza la cámara hacia ella mientras se cierra la entrada animada
 export function ValveStation({
   rooms,
+  history,
   universes,
   counts,
   stats,
@@ -68,6 +78,46 @@ export function ValveStation({
   const room = active >= 1 && active <= rooms.length ? rooms[active - 1] : null;
   const names = ["Valve", ...rooms.map((item) => item.title), "Universos"];
   const [intro, setIntro] = useState(false);
+  const historyLines = useMemo(
+    () => history.map(({ year, text }) => ({ year, text })),
+    [history],
+  );
+  // Tarjetas de los nombres del pergamino: aparecen según se escribe (las tres últimas); con movimiento reducido ya está
+  // todo escrito y salen las tres primeras
+  const [written, setWritten] = useState<Mention[]>([]);
+  const firstMentions = useMemo(() => {
+    const seen = new Map<string, Mention>();
+    for (const line of history) {
+      for (const mention of line.mentions) {
+        seen.set(mention.href + mention.label, mention);
+      }
+    }
+    return [...seen.values()].slice(0, 3);
+  }, [history]);
+  const cards = reduced ? firstMentions : written;
+  const onHistoryLine = useCallback(
+    (index: number) => {
+      if (index < 0) {
+        setWritten([]);
+        return;
+      }
+      const found = history[index]?.mentions ?? [];
+      if (found.length === 0) return;
+      // El primer párrafo empieza una pasada nueva: se parte de cero aunque la anterior no se limpiara
+      setWritten((previous) =>
+        [
+          ...found,
+          ...(index === 0 ? [] : previous).filter(
+            (card) =>
+              !found.some(
+                (item) => item.href === card.href && item.label === card.label,
+              ),
+          ),
+        ].slice(0, 3),
+      );
+    },
+    [history],
+  );
 
   // Entrar al mundo: la primera vez de la sesión suena la intro; después (o con movimiento reducido) se entra directo
   const begin = useCallback(() => {
@@ -135,12 +185,56 @@ export function ValveStation({
               reduced={reduced}
               onSelect={select}
               onStart={begin}
+              historyLines={historyLines}
+              onHistoryLine={onHistoryLine}
             />
           </SceneBoundary>
         </div>
         <div className={styles["station__vignette"]} aria-hidden="true" />
 
+        {active === 1 && cards.length > 0 && (
+          <ul
+            className={styles["station__cards"]}
+            aria-label="Menciones de la historia"
+          >
+            {cards.map((card, index) => (
+              <li
+                key={card.href + card.label}
+                className={styles["station__card-item"]}
+                style={{ "--i": index } as CSSProperties}
+              >
+                <Link href={card.href} className={styles["station__card"]}>
+                  <span className={styles["station__card-kind"]}>
+                    {card.kind}
+                  </span>
+                  <span className={styles["station__card-name"]}>
+                    {card.label}
+                  </span>
+                  <span
+                    className={styles["station__card-go"]}
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+
         <div className={styles["station__info"]}>
+          {active === 1 && (
+            <ol
+              className={styles["station__sr"]}
+              aria-label="Historia de Valve, año a año"
+            >
+              {history.map((line) => (
+                <li key={line.year + line.text}>
+                  {line.year}: {line.text}
+                </li>
+              ))}
+            </ol>
+          )}
           <div className={styles["station__text"]} key={active}>
             {active === 0 && (
               <>

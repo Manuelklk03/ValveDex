@@ -348,3 +348,117 @@
     translate: 50% -50%;
   }
 }
+
+/* Tarjetas flotantes de lo que menciona el pergamino de la historia: cada una enlaza a su página. Entran con un rebote
+   suave, escalonadas, y después flotan */
+.station__cards {
+  position: absolute;
+  top: 24%;
+  right: clamp(4.5rem, 9vw, 9rem);
+  z-index: 3;
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.station__card-item {
+  animation:
+    station-card-in 0.7s var(--ease-out, ease-out) both,
+    station-card-float 5s ease-in-out calc(var(--i) * 0.6s + 0.7s) infinite;
+}
+
+@keyframes station-card-in {
+  from {
+    opacity: 0;
+    translate: 3rem 0;
+    scale: 0.9;
+  }
+}
+
+@keyframes station-card-float {
+  50% {
+    translate: 0 -0.4rem;
+  }
+}
+
+.station__card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.125rem 1rem;
+  align-items: center;
+  min-width: 14rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--station-accent) 55%, transparent);
+  background: rgb(10 8 5 / 0.82);
+  color: var(--ink);
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  transition:
+    background-color 0.25s var(--ease-out, ease-out),
+    border-color 0.25s var(--ease-out, ease-out);
+}
+
+.station__card:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.station__card-kind {
+  grid-column: 1;
+  color: var(--station-accent);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.station__card-name {
+  grid-column: 1;
+  font-weight: 800;
+}
+
+.station__card-go {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  transition: translate 0.25s var(--ease-out, ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .station__card:hover {
+    background: color-mix(
+      in srgb,
+      var(--station-accent) 22%,
+      rgb(10 8 5 / 0.9)
+    );
+    border-color: var(--station-accent);
+  }
+
+  .station__card:hover .station__card-go {
+    translate: 0.25rem 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .station__card-item {
+    animation: none;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .station__cards {
+    top: 5.5rem;
+    right: 0.75rem;
+    left: auto;
+  }
+
+  .station__card {
+    min-width: 0;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .station__card-item:nth-child(n + 3) {
+    display: none;
+  }
+}
