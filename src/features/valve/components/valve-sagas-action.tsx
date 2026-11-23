@@ -1,6 +1,6 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
+import { createPortal, useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
@@ -11,7 +11,7 @@ import { hash } from "./valve-parts";
 // Fortress, los Jockeys contra la Witch junto a una bomba de tubo en Left 4 Dead y un duelo de AK-47 y AWP con granadas en
 // Counter-Strike. Todo se anima en useFrame; con movimiento reducido las piezas se quedan quietas
 
-type Model = {
+export type Model = {
   url: string;
   // Tamaño final en unidades del territorio (el modelo se normaliza)
   size: number;
@@ -22,6 +22,13 @@ type Model = {
   yaw?: number;
   // Cambio de tono de la textura en grados (el Heavy BLU sale del RED)
   hue?: number;
+  // No intenta ponerlo de pie solo (criaturas agachadas como el Hunter)
+  keep?: boolean;
+  // Altura real del modelo en unidades del juego: escala fija igual para todos los personajes (sin ajustar a su caja, que
+  // cambia con la pose y los hacía más bajos o más altos)
+  units?: number;
+  // Arma que lleva en la mano (glb en las unidades del juego): se coloca con las matrices que el conversor guardó en cada clip
+  weapon?: string;
   // Normaliza por la dimensión mayor (armas) en vez de por la altura (personajes)
   max?: boolean;
 };
@@ -404,9 +411,21 @@ function config(id: string): Actor[] {
 }
 
 // Un modelo normalizado a su tamaño, con los pies sobre el suelo y centrado
-function Mini({ model }: { model: Model }) {
+// El arma en la mano: vive dentro del modelo del personaje (en sus unidades) y el motor de escenas le pone cada fotograma la
+// matriz de su mano; hasta entonces queda oculta
+function HeldWeapon({ url }: { url: string }) {
+  const { scene } = useGLTF(url);
+  const copy = useMemo(() => scene.clone(true), [scene]);
+  return (
+    <group name="__held" matrixAutoUpdate={false} visible={false}>
+      <primitive object={copy} />
+    </group>
+  );
+}
+
+export function Mini({ model }: { model: Model }) {
   const { scene } = useGLTF(model.url);
-  const { object, scale } = useMemo(() => {
+  const { object, scale, root } = useMemo(() => {
     const clone = scene.clone(true);
     clone.traverse((child) => {
       if (!(child instanceof THREE.Mesh)) return;
@@ -436,14 +455,16 @@ function Mini({ model }: { model: Model }) {
     inner.add(clone);
     wrapper.add(inner);
     wrapper.updateMatrixWorld(true);
-    let box = new THREE.Box3().setFromObject(wrapper);
+    // «precise»: la caja se saca de la pose base. Sin eso se contaban también los objetivos de morfado (brazos levantados al
+    // recargar, cuerpo caído) y los modelos salían más pequeños y con los pies fuera del suelo
+    let box = new THREE.Box3().setFromObject(wrapper, true);
     let size = box.getSize(new THREE.Vector3());
     // Un personaje que sigue tumbado (su eje largo no es el vertical) se pone de pie solo
-    if (!model.max && size.y < Math.max(size.x, size.z) * 0.8) {
+    if (!model.max && !model.keep && size.y < Math.max(size.x, size.z) * 0.8) {
       if (size.z >= size.x) inner.rotation.x = (model.roll ?? 0) + Math.PI / 2;
       else inner.rotation.z = (model.tilt ?? 0) + Math.PI / 2;
       wrapper.updateMatrixWorld(true);
-      box = new THREE.Box3().setFromObject(wrapper);
+      box = new THREE.Box3().setFromObject(wrapper, true);
       size = box.getSize(new THREE.Vector3());
     }
     const center = box.getCenter(new THREE.Vector3());
@@ -452,8 +473,9 @@ function Mini({ model }: { model: Model }) {
       model.max ? -center.y : -box.min.y,
       -center.z,
     );
-    const base = model.max ? Math.max(size.x, size.y, size.z) : size.y;
-    return { object: wrapper, scale: model.size / (base || 1) };
+    const base =
+      model.units ?? (model.max ? Math.max(size.x, size.y, size.z) : size.y);
+    return { object: wrapper, scale: model.size / (base || 1), root: clone };
   }, [scene, model]);
 
   useEffect(
@@ -472,6 +494,7 @@ function Mini({ model }: { model: Model }) {
   return (
     <group scale={scale} rotation={[0, model.yaw ?? 0, 0]}>
       <primitive object={object} />
+      {model.weapon && createPortal(<HeldWeapon url={model.weapon} />, root)}
     </group>
   );
 }

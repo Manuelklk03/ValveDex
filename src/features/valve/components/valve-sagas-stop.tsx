@@ -1,7 +1,7 @@
 "use client";
 
 import { useFrame } from "@react-three/fiber";
-import { Billboard } from "@react-three/drei";
+import { Billboard, Line } from "@react-three/drei";
 import {
   useEffect,
   useMemo,
@@ -12,6 +12,7 @@ import {
 import * as THREE from "three";
 import { Emblem } from "@/components/ui/space-parts";
 import { Action } from "./valve-sagas-action";
+import { SCENES, SceneAction } from "./valve-scenes";
 import { Sparkles } from "./valve-props";
 
 // Parada 5 · Universos: una mesa-mapa vista desde arriba. Cada saga es un territorio con el suelo y el decorado de su
@@ -44,33 +45,45 @@ type Spot = { x: number; z: number; r: number };
 // Disposición de la mesa: Half-Life en el centro de atrás (es el hub de la saga), Portal y Team Fortress a sus lados y,
 // delante, Counter-Strike y Left 4 Dead. El hueco de la izquierda queda libre para el texto
 const DESKTOP_SPOTS: Record<string, Spot> = {
-  "half-life": { x: 3.5, z: -2.2, r: 1.8 },
-  portal: { x: 0.4, z: -2.3, r: 1.35 },
-  "team-fortress": { x: 6.7, z: -2.3, r: 1.35 },
-  "counter-strike": { x: 1.9, z: 2.15, r: 1.35 },
-  "left-4-dead": { x: 5.2, z: 2.15, r: 1.35 },
+  "half-life": { x: 0, z: -0.5, r: 3 },
+  portal: { x: -13.5, z: -5.5, r: 3 },
+  "team-fortress": { x: 14, z: -5.8, r: 3 },
+  "counter-strike": { x: -10.5, z: 6.6, r: 3 },
+  "left-4-dead": { x: 11, z: 7, r: 3 },
 };
 const PORTRAIT_SPOTS: Record<string, Spot> = {
-  "half-life": { x: 0, z: -3.3, r: 1.35 },
-  portal: { x: -1.45, z: -0.8, r: 1.0 },
-  "team-fortress": { x: 1.45, z: -0.8, r: 1.0 },
-  "counter-strike": { x: -1.45, z: 1.3, r: 1.0 },
-  "left-4-dead": { x: 1.45, z: 1.3, r: 1.0 },
+  "half-life": { x: 2.4, z: -3.4, r: 1.25 },
+  portal: { x: -2.6, z: -7.4, r: 1.25 },
+  "team-fortress": { x: -2.6, z: 0.8, r: 1.25 },
+  "counter-strike": { x: 2.6, z: 4.6, r: 1.25 },
+  "left-4-dead": { x: -2.4, z: 8.4, r: 1.25 },
+};
+// Cada zona es un rectángulo: su tamaño sale del radio de la escena que lleva dentro
+const zoneSize = (r: number): [number, number] => [r * 2.73, r * 2.4];
+// Lugares libres del mapa para los universos que aún no existen
+const FUTURE_PLOTS: Record<"desktop" | "portrait", Spot[]> = {
+  desktop: [
+    { x: 0, z: 9.2, r: 3 },
+    { x: -1, z: -10.2, r: 3 },
+    { x: 20.5, z: 3, r: 3 },
+    { x: -20.5, z: -0.5, r: 3 },
+  ],
+  portrait: [{ x: 2.6, z: 11.6, r: 1.25 }],
 };
 
 // Dónde se coloca la cámara sobre la mesa: el punto al que mira (locales de la parada), su altura y lo retrasada que va
 export function mapLayout(portrait: boolean) {
   return portrait
     ? {
-        look: [0, 0, -0.9] as const,
-        height: 12.5,
-        back: 6,
+        look: [0, 0, 1.2] as const,
+        height: 34,
+        back: 9,
         spots: PORTRAIT_SPOTS,
       }
     : {
-        look: [0.7, 0, -0.3] as const,
-        height: 10,
-        back: 8.2,
+        look: [-3, 0, 0] as const,
+        height: 40,
+        back: 14,
         spots: DESKTOP_SPOTS,
       };
 }
@@ -219,9 +232,7 @@ function makeGround(id: string, accent: string) {
     g.strokeStyle =
       id === "left-4-dead" ? "#d8b52a" : id === "portal" ? "#9aa5b2" : accent;
     if (id === "half-life" || id === "left-4-dead") g.setLineDash([28, 28]);
-    g.beginPath();
-    g.arc(S / 2, S / 2, 228, 0, Math.PI * 2);
-    g.stroke();
+    g.strokeRect(34, 34, S - 68, S - 68);
   }
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
@@ -231,52 +242,56 @@ function makeGround(id: string, accent: string) {
 
 // Superficie de la mesa: círculos concéntricos grabados, marcas de graduación y puntos cardinales, como un mapa de mando
 function makeTable() {
-  const S = 1024;
+  const W = 2048;
+  const H = 940;
   const canvas = document.createElement("canvas");
-  canvas.width = canvas.height = S;
+  canvas.width = W;
+  canvas.height = H;
   const g = canvas.getContext("2d");
   if (g) {
-    const c = S / 2;
-    const base = g.createRadialGradient(c, c, 40, c, c, c);
-    base.addColorStop(0, "#161a24");
-    base.addColorStop(1, "#090b11");
+    const base = g.createLinearGradient(0, 0, 0, H);
+    base.addColorStop(0, "#10141d");
+    base.addColorStop(1, "#080a10");
     g.fillStyle = base;
-    g.fillRect(0, 0, S, S);
-    g.strokeStyle = "rgba(160,175,200,0.22)";
-    for (const [r, w] of [
-      [500, 4],
-      [452, 1.5],
-      [330, 1.5],
-      [210, 1.5],
-      [90, 1.5],
-    ] as const) {
-      g.lineWidth = w;
+    g.fillRect(0, 0, W, H);
+    for (let x = 0; x <= W; x += 64) {
+      g.strokeStyle =
+        x % 256 === 0 ? "rgba(160,175,200,0.2)" : "rgba(160,175,200,0.07)";
+      g.lineWidth = x % 256 === 0 ? 2 : 1;
       g.beginPath();
-      g.arc(c, c, r, 0, Math.PI * 2);
+      g.moveTo(x, 0);
+      g.lineTo(x, H);
       g.stroke();
     }
-    for (let i = 0; i < 120; i += 1) {
-      const a = (i / 120) * Math.PI * 2;
-      const long = i % 10 === 0;
-      const r1 = long ? 452 : 470;
-      g.lineWidth = long ? 3 : 1.5;
-      g.strokeStyle = long ? "rgba(200,210,230,0.55)" : "rgba(160,175,200,0.3)";
+    for (let y = 0; y <= H; y += 64) {
+      g.strokeStyle =
+        y % 256 === 0 ? "rgba(160,175,200,0.2)" : "rgba(160,175,200,0.07)";
+      g.lineWidth = y % 256 === 0 ? 2 : 1;
       g.beginPath();
-      g.moveTo(c + Math.cos(a) * r1, c + Math.sin(a) * r1);
-      g.lineTo(c + Math.cos(a) * 498, c + Math.sin(a) * 498);
+      g.moveTo(0, y);
+      g.lineTo(W, y);
       g.stroke();
     }
-    g.fillStyle = "rgba(200,210,230,0.6)";
-    g.font = "bold 34px monospace";
-    g.textAlign = "center";
-    g.textBaseline = "middle";
-    for (const [label, a] of [
-      ["N", -Math.PI / 2],
-      ["E", 0],
-      ["S", Math.PI / 2],
-      ["O", Math.PI],
-    ] as const) {
-      g.fillText(label, c + Math.cos(a) * 418, c + Math.sin(a) * 418);
+    // Marcas de graduación en los bordes, como un plano de mando
+    g.strokeStyle = "rgba(200,210,230,0.45)";
+    g.lineWidth = 2;
+    for (let x = 0; x <= W; x += 32) {
+      const len = x % 128 === 0 ? 26 : 12;
+      g.beginPath();
+      g.moveTo(x, 0);
+      g.lineTo(x, len);
+      g.moveTo(x, H);
+      g.lineTo(x, H - len);
+      g.stroke();
+    }
+    for (let y = 0; y <= H; y += 32) {
+      const len = y % 128 === 0 ? 26 : 12;
+      g.beginPath();
+      g.moveTo(0, y);
+      g.lineTo(len, y);
+      g.moveTo(W, y);
+      g.lineTo(W - len, y);
+      g.stroke();
     }
   }
   const texture = new THREE.CanvasTexture(canvas);
@@ -371,7 +386,7 @@ function Cosmos({
   });
 
   return (
-    <group>
+    <group scale={5}>
       <mesh raycast={() => null} renderOrder={-10}>
         <sphereGeometry args={[17, 32, 16]} />
         <meshBasicMaterial map={sky} side={THREE.BackSide} toneMapped={false} />
@@ -865,22 +880,6 @@ function useStageMaps(id: string, maps: { name: string; src: string }[]) {
   return loaded;
 }
 
-// Máscara circular para recortar el terreno cuadrado
-function makeCircleMask() {
-  const canvas = document.createElement("canvas");
-  canvas.width = canvas.height = 128;
-  const g = canvas.getContext("2d");
-  if (g) {
-    g.fillStyle = "#000";
-    g.fillRect(0, 0, 128, 128);
-    g.fillStyle = "#fff";
-    g.beginPath();
-    g.arc(64, 64, 62, 0, Math.PI * 2);
-    g.fill();
-  }
-  return new THREE.CanvasTexture(canvas);
-}
-
 // Rótulo con el nombre del mapa que se está viendo
 function makeMapName(name: string, accent: string) {
   const canvas = document.createElement("canvas");
@@ -912,6 +911,7 @@ function MapStage({
   accent,
   hover,
   reduced,
+  stage,
 }: {
   id: string;
   maps: { name: string; src: string }[];
@@ -919,6 +919,8 @@ function MapStage({
   accent: string;
   hover: MutableRefObject<number>;
   reduced: boolean;
+  // Mapa que fija la escena en curso; sin él, el escenario cambia solo
+  stage?: number;
 }) {
   const loaded = useStageMaps(id, maps);
   const [index, setIndex] = useState(0);
@@ -930,13 +932,11 @@ function MapStage({
     factor: 1,
     step: "idle" as "idle" | "down" | "up",
   });
-  const mask = useMemo(() => makeCircleMask(), []);
   const cur = loaded[index % Math.max(loaded.length, 1)];
   const nameTexture = useMemo(
     () => (cur ? makeMapName(cur.name, accent) : null),
     [cur, accent],
   );
-  useEffect(() => () => mask.dispose(), [mask]);
   useEffect(() => () => nameTexture?.dispose(), [nameTexture]);
 
   useFrame((state, delta) => {
@@ -944,12 +944,16 @@ function MapStage({
     if (!m || !mesh.current) return;
     const t = state.clock.elapsedTime;
     const s = phase.current;
+    const goal =
+      stage === undefined ? null : stage % Math.max(loaded.length, 1);
+    if (reduced && goal !== null && goal !== index) setIndex(goal);
     if (!reduced && loaded.length > 1) {
-      if (s.step === "idle" && t - s.t0 > 6.5) s.step = "down";
+      if (s.step === "idle" && goal === null && t - s.t0 > 6.5) s.step = "down";
+      if (s.step === "idle" && goal !== null && goal !== index) s.step = "down";
       if (s.step === "down") {
         s.factor = Math.max(0, s.factor - delta * 2.2);
         if (s.factor === 0) {
-          setIndex((value) => (value + 1) % loaded.length);
+          setIndex((value) => goal ?? (value + 1) % loaded.length);
           s.step = "up";
         }
       } else if (s.step === "up") {
@@ -961,8 +965,6 @@ function MapStage({
       }
     }
     m.displacementScale = (0.02 + 0.11 * s.factor) * (1 + hover.current * 0.7);
-    if (!reduced)
-      mesh.current.rotation.z += delta * (0.12 + hover.current * 0.4);
   });
 
   if (!cur) return null;
@@ -981,8 +983,6 @@ function MapStage({
           displacementMap={cur.depth}
           displacementScale={0.13}
           displacementBias={-0.01}
-          alphaMap={mask}
-          alphaTest={0.5}
           roughness={0.85}
           metalness={0.1}
         />
@@ -1002,6 +1002,467 @@ function MapStage({
         </Billboard>
       )}
     </>
+  );
+}
+
+// Ruido de valores con tres octavas: da las colinas del mapa
+function valueNoise(x: number, z: number) {
+  const xi = Math.floor(x);
+  const zi = Math.floor(z);
+  const xf = x - xi;
+  const zf = z - zi;
+  const ease = (t: number) => t * t * (3 - 2 * t);
+  const at = (a: number, b: number) => hashN(a * 57 + b * 131);
+  const [a, b, c, d] = [
+    at(xi, zi),
+    at(xi + 1, zi),
+    at(xi, zi + 1),
+    at(xi + 1, zi + 1),
+  ];
+  return (
+    a +
+    (b - a) * ease(xf) +
+    (c - a) * ease(zf) +
+    (a - b - c + d) * ease(xf) * ease(zf)
+  );
+}
+const fbm = (x: number, z: number) =>
+  valueNoise(x * 0.11, z * 0.11) * 0.6 +
+  valueNoise(x * 0.28, z * 0.28) * 0.3 +
+  valueNoise(x * 0.7, z * 0.7) * 0.1;
+const smooth = (a: number, b: number, v: number) => {
+  const t = Math.min(1, Math.max(0, (v - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+};
+
+type Zone = { x: number; z: number; w: number; d: number; tint?: string };
+
+// Color del terreno alrededor de cada universo
+const BIOME: Record<string, string> = {
+  "half-life": "#34363c",
+  portal: "#9aa3ad",
+  "team-fortress": "#7a5238",
+  "left-4-dead": "#2a3328",
+  "counter-strike": "#8a7650",
+};
+
+// Altura del terreno: colinas y montañas entre los lugares, llano bajo cada zona y en el borde del mapa
+function heightAt(
+  x: number,
+  z: number,
+  zones: Zone[],
+  halfW: number,
+  halfD: number,
+) {
+  const base = Math.max(0, fbm(x, z) - 0.38) * 7;
+  let mask = 1;
+  for (const zone of zones) {
+    const dx = Math.max(Math.abs(x - zone.x) - zone.w / 2, 0);
+    const dz = Math.max(Math.abs(z - zone.z) - zone.d / 2, 0);
+    mask = Math.min(mask, smooth(0.5, 5, Math.hypot(dx, dz)));
+  }
+  const edge = Math.min(
+    smooth(0, 2.5, halfW - Math.abs(x)),
+    smooth(0, 2.5, halfD - Math.abs(z)),
+  );
+  return base * mask * edge;
+}
+
+const LOW = new THREE.Color("#233a2c");
+const MID = new THREE.Color("#42593a");
+const HIGH = new THREE.Color("#6f6a5a");
+const PEAK = new THREE.Color("#b0b0a6");
+
+// El mapa: una pieza de terreno en relieve sobre la mesa, con llanos para cada zona y caminos que las unen
+function MapTerrain({
+  width,
+  depth,
+  zones,
+  roads,
+}: {
+  width: number;
+  depth: number;
+  zones: Zone[];
+  roads: [Zone, Zone][];
+}) {
+  const geometry = useMemo(() => {
+    const segW = Math.round(width * 3.4);
+    const segD = Math.round(depth * 3.4);
+    const geo = new THREE.PlaneGeometry(width, depth, segW, segD);
+    geo.rotateX(-Math.PI / 2);
+    const pos = geo.attributes.position;
+    const colors = new Float32Array(pos.count * 3);
+    const tint = new THREE.Color();
+    const biome = new THREE.Color();
+    for (let i = 0; i < pos.count; i += 1) {
+      const x = pos.getX(i);
+      const z = pos.getZ(i);
+      const h = heightAt(x, z, zones, width / 2, depth / 2);
+      pos.setY(i, h);
+      const t = h / 4;
+      if (t < 0.25) tint.copy(LOW).lerp(MID, t / 0.25);
+      else if (t < 0.6) tint.copy(MID).lerp(HIGH, (t - 0.25) / 0.35);
+      else tint.copy(HIGH).lerp(PEAK, Math.min(1, (t - 0.6) / 0.4));
+      // El suelo cercano a una zona toma el color de su universo y se funde con el resto del mapa
+      let near: Zone | null = null;
+      let nearDist = 99;
+      for (const zone of zones) {
+        if (!zone.tint) continue;
+        const dx = Math.max(Math.abs(x - zone.x) - zone.w / 2, 0);
+        const dz = Math.max(Math.abs(z - zone.z) - zone.d / 2, 0);
+        const dist = Math.hypot(dx, dz);
+        if (dist < nearDist) {
+          nearDist = dist;
+          near = zone;
+        }
+      }
+      if (near?.tint)
+        tint.lerp(biome.set(near.tint), 0.85 * (1 - smooth(1.5, 9, nearDist)));
+      tint.multiplyScalar(0.85 + valueNoise(x * 1.7, z * 1.7) * 0.3);
+      colors.set([tint.r, tint.g, tint.b], i * 3);
+    }
+    geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    geo.computeVertexNormals();
+    return geo;
+  }, [width, depth, zones]);
+  useEffect(() => () => geometry.dispose(), [geometry]);
+
+  // Caminos: una curva suave de zona a zona, pegada al terreno
+  const paths = useMemo(
+    () =>
+      roads.map(([a, b]) => {
+        const mx = (a.x + b.x) / 2 + (b.z - a.z) * 0.12;
+        const mz = (a.z + b.z) / 2 - (b.x - a.x) * 0.12;
+        const curve = new THREE.QuadraticBezierCurve3(
+          new THREE.Vector3(a.x, 0, a.z),
+          new THREE.Vector3(mx, 0, mz),
+          new THREE.Vector3(b.x, 0, b.z),
+        );
+        return curve
+          .getPoints(40)
+          .map((point): [number, number, number] => [
+            point.x,
+            heightAt(point.x, point.z, zones, width / 2, depth / 2) + 0.07,
+            point.z,
+          ]);
+      }),
+    [roads, zones, width, depth],
+  );
+
+  return (
+    <group>
+      <mesh geometry={geometry} raycast={() => null}>
+        <meshStandardMaterial vertexColors roughness={0.95} metalness={0.05} />
+      </mesh>
+      {paths.map((points, i) => (
+        <Line
+          key={i}
+          points={points}
+          color="#d9c27a"
+          lineWidth={2}
+          dashed
+          dashSize={0.5}
+          gapSize={0.4}
+          transparent
+          opacity={0.7}
+          raycast={() => null}
+        />
+      ))}
+    </group>
+  );
+}
+
+// Decorado de cada zona: construcciones de su universo en los bordes y las esquinas, para no tapar la escena del centro.
+// Medidas para una zona de 8,2 x 7,2 (la escena ocupa un círculo de unos 2,8 de radio); el grupo se escala con el radio
+type V3 = [number, number, number];
+function Prop({
+  p,
+  s: size,
+  color,
+  shape = "box",
+  glow = false,
+  rot = 0,
+  opacity = 1,
+}: {
+  p: V3;
+  s: V3;
+  color: string;
+  shape?: "box" | "cyl" | "cone" | "sphere";
+  glow?: boolean;
+  rot?: number;
+  opacity?: number;
+}) {
+  const Material = glow ? (
+    <meshBasicMaterial
+      color={color}
+      toneMapped={false}
+      transparent={opacity < 1}
+      opacity={opacity}
+    />
+  ) : (
+    <meshStandardMaterial
+      color={color}
+      roughness={0.75}
+      metalness={0.25}
+      transparent={opacity < 1}
+      opacity={opacity}
+    />
+  );
+  return (
+    <mesh
+      position={[p[0], p[1] + size[1] / 2, p[2]]}
+      rotation={[0, rot, 0]}
+      raycast={() => null}
+    >
+      {shape === "box" && <boxGeometry args={size} />}
+      {shape === "cyl" && (
+        <cylinderGeometry args={[size[0] / 2, size[0] / 2, size[1], 18]} />
+      )}
+      {shape === "cone" && <coneGeometry args={[size[0] / 2, size[1], 18]} />}
+      {shape === "sphere" && <sphereGeometry args={[size[0] / 2, 14, 10]} />}
+      {Material}
+    </mesh>
+  );
+}
+
+function ZoneDecor({ id }: { id: string }) {
+  if (id === "half-life") {
+    // Complejo de Black Mesa: torre de refrigeración, búnkeres, antena con luz roja, vía y parabólica
+    return (
+      <group>
+        <Prop
+          p={[-3.3, 0, -2.8]}
+          s={[1.3, 1.5, 1.3]}
+          color="#3a3d45"
+          shape="cyl"
+        />
+        <Prop
+          p={[-3.3, 1.5, -2.8]}
+          s={[0.9, 0.5, 0.9]}
+          color="#555963"
+          shape="cone"
+        />
+        <Prop p={[3.2, 0, -2.9]} s={[1.5, 0.8, 1]} color="#2b2d33" />
+        <Prop p={[3.2, 0.8, -2.9]} s={[1.6, 0.08, 1.1]} color="#f39a2e" glow />
+        <Prop p={[3.45, 0, 2.7]} s={[1.2, 0.7, 0.9]} color="#34363d" />
+        <Prop p={[-3.5, 0, 2.7]} s={[0.7, 1.9, 0.12]} color="#8b8f99" />
+        <Prop
+          p={[-3.5, 1.9, 2.7]}
+          s={[0.22, 0.22, 0.22]}
+          color="#ff3a2a"
+          shape="sphere"
+          glow
+        />
+        <Prop p={[0, 0, -3.4]} s={[7, 0.06, 0.16]} color="#6a6d75" />
+        <Prop p={[0, 0, -3.1]} s={[7, 0.06, 0.16]} color="#6a6d75" />
+        <Prop
+          p={[1.6, 0, -2.2]}
+          s={[0.12, 1.1, 0.12]}
+          color="#8b8f99"
+          shape="cyl"
+        />
+        <Prop
+          p={[1.6, 1.1, -2.2]}
+          s={[0.9, 0.18, 0.9]}
+          color="#b4b8c2"
+          shape="cone"
+          rot={0.4}
+        />
+      </group>
+    );
+  }
+  if (id === "portal") {
+    // Centro de Aperture: muros blancos con portales, ventanal de observación y paneles de luz
+    return (
+      <group>
+        <Prop p={[0, 0, -3.5]} s={[7.4, 1.5, 0.14]} color="#e6ebf0" />
+        <Prop p={[-3.7, 0, -0.3]} s={[0.14, 1.5, 6.6]} color="#dde3e9" />
+        <Prop
+          p={[-1.8, 0.25, -3.4]}
+          s={[1.6, 0.7, 0.05]}
+          color="#9fd8ff"
+          opacity={0.45}
+        />
+        <Prop
+          p={[1.7, 0.2, -3.42]}
+          s={[0.9, 1.1, 0.05]}
+          color="#ff9a1f"
+          glow
+          opacity={0.85}
+        />
+        <Prop
+          p={[-3.62, 0.2, 1.6]}
+          s={[0.05, 1.1, 0.9]}
+          color="#56c8ff"
+          glow
+          opacity={0.85}
+        />
+        <Prop
+          p={[3.4, 0, -2.4]}
+          s={[0.5, 1.9, 0.5]}
+          color="#c9ced6"
+          shape="cyl"
+        />
+        <Prop
+          p={[3.4, 1.9, -2.4]}
+          s={[0.55, 0.06, 0.55]}
+          color="#ffffff"
+          glow
+        />
+        <Prop p={[3.3, 0, 2.7]} s={[0.9, 0.05, 0.9]} color="#e8ecf0" />
+        <Prop p={[3.3, 0.05, 2.7]} s={[0.5, 0.04, 0.5]} color="#56c8ff" glow />
+        <Prop
+          p={[-3.2, 0, 3]}
+          s={[0.55, 0.5, 0.55]}
+          color="#c9ced6"
+          rot={0.5}
+        />
+      </group>
+    );
+  }
+  if (id === "team-fortress") {
+    // Cañón: base RED a un lado, base BLU al otro, con banderas, vallas y rocas
+    return (
+      <group>
+        <Prop p={[-3.1, 0, -0.2]} s={[1.5, 1.2, 2.2]} color="#b8312b" />
+        <Prop p={[-3.1, 1.2, -0.2]} s={[1.7, 0.12, 2.4]} color="#7a2420" />
+        <Prop
+          p={[-3.1, 1.3, -1.4]}
+          s={[0.05, 1.1, 0.05]}
+          color="#d8d2c4"
+          shape="cyl"
+        />
+        <Prop p={[-2.9, 2.0, -1.4]} s={[0.5, 0.3, 0.03]} color="#e8665f" glow />
+        <Prop p={[3.1, 0, -0.2]} s={[1.5, 1.2, 2.2]} color="#3b6fb5" />
+        <Prop p={[3.1, 1.2, -0.2]} s={[1.7, 0.12, 2.4]} color="#244c80" />
+        <Prop
+          p={[3.1, 1.3, -1.4]}
+          s={[0.05, 1.1, 0.05]}
+          color="#d8d2c4"
+          shape="cyl"
+        />
+        <Prop p={[3.3, 2.0, -1.4]} s={[0.5, 0.3, 0.03]} color="#5b8fcb" glow />
+        <Prop
+          p={[-1.2, 0, -3.3]}
+          s={[1.4, 1.3, 0.8]}
+          color="#6e5a46"
+          rot={0.2}
+        />
+        <Prop
+          p={[0.9, 0, -3.4]}
+          s={[1.9, 0.9, 0.7]}
+          color="#7b6650"
+          rot={-0.15}
+        />
+        <Prop p={[0, 0, 3.1]} s={[5.4, 0.4, 0.1]} color="#5a4a3a" />
+        <Prop
+          p={[-3.2, 0, 3.1]}
+          s={[0.9, 0.7, 0.9]}
+          color="#6e5a46"
+          rot={0.3}
+        />
+        <Prop p={[3.3, 0, 3]} s={[0.8, 0.6, 0.8]} color="#6e5a46" rot={-0.4} />
+      </group>
+    );
+  }
+  if (id === "left-4-dead") {
+    // Refugio: edificio con puerta de seguridad, vallas, coches abandonados, farola y sacos de arena
+    return (
+      <group>
+        <Prop p={[0, 0, -3.1]} s={[2.8, 1.4, 1.2]} color="#3a4538" />
+        <Prop p={[0, 1.4, -3.1]} s={[3, 0.12, 1.4]} color="#2b3329" />
+        <Prop p={[0, 0, -2.5]} s={[0.55, 0.95, 0.05]} color="#b3261a" />
+        <Prop
+          p={[-3.3, 0, 0.6]}
+          s={[1.5, 0.6, 0.8]}
+          color="#6b3e32"
+          rot={0.5}
+        />
+        <Prop
+          p={[-3.3, 0.6, 0.6]}
+          s={[0.8, 0.3, 0.7]}
+          color="#4d3a33"
+          rot={0.5}
+        />
+        <Prop
+          p={[3.3, 0, 1.4]}
+          s={[1.5, 0.6, 0.8]}
+          color="#40505a"
+          rot={-0.4}
+        />
+        <Prop
+          p={[3.3, 0.6, 1.4]}
+          s={[0.8, 0.3, 0.7]}
+          color="#34424a"
+          rot={-0.4}
+        />
+        <Prop
+          p={[3.4, 0, -2.4]}
+          s={[0.1, 2.2, 0.1]}
+          color="#4b4f4b"
+          shape="cyl"
+        />
+        <Prop
+          p={[3.4, 2.2, -2.4]}
+          s={[0.35, 0.18, 0.35]}
+          color="#ffd9a0"
+          glow
+        />
+        <Prop p={[-3.2, 0, 3]} s={[0.9, 0.35, 0.45]} color="#8a7c5a" />
+        <Prop p={[-2.7, 0, 3.05]} s={[0.7, 0.3, 0.45]} color="#8a7c5a" />
+        <Prop
+          p={[0, 0, 3.4]}
+          s={[7, 0.8, 0.05]}
+          color="#555a55"
+          opacity={0.6}
+        />
+        <Prop
+          p={[-3.9, 0, 0]}
+          s={[0.05, 0.8, 5.6]}
+          color="#555a55"
+          opacity={0.6}
+        />
+      </group>
+    );
+  }
+  // Counter-Strike: Dust, con muros de adobe, arcos, cajas y las zonas de bomba
+  return (
+    <group>
+      <Prop p={[0, 0, -3.4]} s={[7.2, 1.1, 0.35]} color="#9a8660" />
+      <Prop p={[-3.8, 0, 0]} s={[0.35, 1.1, 6.4]} color="#8e7a56" />
+      <Prop p={[-1.2, 0, -3.3]} s={[1.1, 1.6, 0.4]} color="#a89268" />
+      <Prop
+        p={[-1.2, 1.6, -3.3]}
+        s={[0.55, 0.4, 0.4]}
+        color="#a89268"
+        shape="cyl"
+        rot={Math.PI / 2}
+      />
+      <Prop p={[3.3, 0, -2.6]} s={[0.8, 0.8, 0.8]} color="#7a6446" />
+      <Prop
+        p={[3.3, 0.8, -2.6]}
+        s={[0.7, 0.7, 0.7]}
+        color="#8a7452"
+        rot={0.4}
+      />
+      <Prop p={[3.5, 0, 2.5]} s={[0.8, 0.8, 0.8]} color="#7a6446" rot={0.3} />
+      <Prop p={[-3.2, 0, 3]} s={[0.9, 0.55, 0.9]} color="#7a6446" />
+      <Prop
+        p={[3.3, 0, 0.2]}
+        s={[0.9, 0.04, 0.9]}
+        color="#cf8a3c"
+        glow
+        opacity={0.9}
+      />
+      <Prop
+        p={[-3.2, 0, -1.4]}
+        s={[0.9, 0.04, 0.9]}
+        color="#cf8a3c"
+        glow
+        opacity={0.9}
+      />
+      <Prop p={[0.2, 0, 3.3]} s={[1.6, 0.7, 0.3]} color="#6f5c40" />
+    </group>
   );
 }
 
@@ -1027,12 +1488,44 @@ function Territory({
   onHover: (slug: string | null) => void;
 }) {
   const R = spot.r;
+  const [W, D] = zoneSize(R);
+  const outline = useMemo(() => {
+    const w = W / 2;
+    const d = D / 2;
+    const t = 0.1;
+    const shape = new THREE.Shape();
+    shape.moveTo(-w, -d);
+    shape.lineTo(w, -d);
+    shape.lineTo(w, d);
+    shape.lineTo(-w, d);
+    shape.closePath();
+    const hole = new THREE.Path();
+    hole.moveTo(-w + t, -d + t);
+    hole.lineTo(-w + t, d - t);
+    hole.lineTo(w - t, d - t);
+    hole.lineTo(w - t, -d + t);
+    hole.closePath();
+    shape.holes.push(hole);
+    return new THREE.ShapeGeometry(shape);
+  }, [W, D]);
+  useEffect(() => () => outline.dispose(), [outline]);
   const inner = useRef<THREE.Group>(null);
   const ringMat = useRef<THREE.MeshBasicMaterial>(null);
   const glowMat = useRef<THREE.MeshBasicMaterial>(null);
   const hover = useRef(0);
   const target = useRef(0);
   const vis = useRef(1);
+  // Escenas guionizadas del universo (si las tiene): cada una dura lo suyo y se pasa a la siguiente en bucle
+  const scenes = SCENES[saga.id];
+  const [sceneIndex, setSceneIndex] = useState(0);
+  useEffect(() => {
+    if (!scenes || reduced) return;
+    const id = window.setTimeout(
+      () => setSceneIndex((value) => (value + 1) % scenes.length),
+      scenes[sceneIndex % scenes.length].duration * 1000,
+    );
+    return () => window.clearTimeout(id);
+  }, [scenes, sceneIndex, reduced]);
   const frame = useRef(0);
   const ground = useMemo(
     () => makeGround(saga.id, saga.accent),
@@ -1104,7 +1597,7 @@ function Territory({
     >
       {/* Zona de cursor fija: no se mueve con el territorio */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.1, 0]}>
-        <circleGeometry args={[R * 1.12, 40]} />
+        <planeGeometry args={[W, D]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
       {/* Resplandor del color de la saga sobre la mesa */}
@@ -1113,7 +1606,7 @@ function Territory({
         position={[0, 0.01, 0]}
         raycast={() => null}
       >
-        <planeGeometry args={[R * 3.6, R * 3.6]} />
+        <planeGeometry args={[W * 1.5, D * 1.5]} />
         <meshBasicMaterial
           ref={glowMat}
           map={glow}
@@ -1126,7 +1619,7 @@ function Territory({
       </mesh>
       <group ref={inner}>
         <mesh position={[0, 0.03, 0]}>
-          <cylinderGeometry args={[R, R * 1.04, 0.06, 56]} />
+          <boxGeometry args={[W, 0.06, D]} />
           <meshStandardMaterial
             color="#14161c"
             metalness={0.6}
@@ -1134,7 +1627,7 @@ function Territory({
           />
         </mesh>
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.062, 0]}>
-          <circleGeometry args={[R * 0.985, 56]} />
+          <planeGeometry args={[W * 0.985, D * 0.985]} />
           <meshStandardMaterial map={ground} roughness={0.85} />
         </mesh>
         <MapStage
@@ -1144,9 +1637,13 @@ function Territory({
           accent={saga.accent}
           hover={hover}
           reduced={reduced}
+          stage={scenes?.[sceneIndex % scenes.length].stage}
         />
-        <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0.065, 0]}>
-          <torusGeometry args={[R, 0.03, 8, 80]} />
+        <mesh
+          rotation={[-Math.PI / 2, 0, 0]}
+          position={[0, 0.068, 0]}
+          geometry={outline}
+        >
           <meshBasicMaterial
             ref={ringMat}
             color={saga.accent}
@@ -1155,12 +1652,19 @@ function Territory({
             toneMapped={false}
           />
         </mesh>
+        <group position={[0, 0.062, 0]} scale={R / 3}>
+          <ZoneDecor id={saga.id} />
+        </group>
         {/* Escaramuza en miniatura en la parte delantera del territorio */}
         <group
-          position={[0, 0.062, 0.3 * (R / 1.45)]}
-          scale={(R / 1.45) * 1.45}
+          position={[0, 0.062, scenes ? 0 : 0.3 * (R / 1.45)]}
+          scale={scenes ? R * 0.92 : (R / 1.45) * 1.45}
         >
-          <Action id={saga.id} reduced={reduced} />
+          {scenes ? (
+            <SceneAction scenes={scenes} index={sceneIndex} reduced={reduced} />
+          ) : (
+            <Action id={saga.id} reduced={reduced} />
+          )}
         </group>
         {/* Haz holográfico del emblema y luz de color sobre el territorio */}
         <mesh position={[0, 0.062 + R * 0.45, 0]} raycast={() => null}>
@@ -1176,12 +1680,12 @@ function Territory({
         </mesh>
         <pointLight
           position={[0, 1.3, 0.3]}
-          intensity={5}
+          intensity={1.6}
           distance={4}
           color={saga.accent}
         />
         {/* Emblema de la saga flotando sobre el centro */}
-        <Billboard position={[0, R * 0.95, 0]}>
+        <Billboard position={[0, R * 0.55, -R * 1.05]}>
           <Emblem src={saga.emblem} color="#ffffff" size={R * 0.7} depthTest />
         </Billboard>
         {saga.games.map((game, i) => {
@@ -1206,7 +1710,7 @@ function Territory({
         })}
       </group>
       {/* Rótulo fijo del territorio, en el borde delantero de la mesa */}
-      <Billboard position={[0, 0.16, R + 0.42]}>
+      <Billboard position={[0, 0.16, D / 2 - 0.3]}>
         <mesh raycast={() => null}>
           <planeGeometry args={[R * 1.9, R * 0.36]} />
           <meshBasicMaterial
@@ -1221,42 +1725,104 @@ function Territory({
   );
 }
 
+// Parcela vacía del mapa: sitio reservado para un universo que todavía no existe
+function FuturePlot({ spot, label }: { spot: Spot; label: THREE.Texture }) {
+  const [W, D] = zoneSize(spot.r);
+  return (
+    <group position={[spot.x, 0, spot.z]}>
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, 0.015, 0]}
+        raycast={() => null}
+      >
+        <planeGeometry args={[W, D]} />
+        <meshBasicMaterial color="#0d1018" transparent opacity={0.65} />
+      </mesh>
+      <lineSegments position={[0, 0.03, 0]} raycast={() => null}>
+        <edgesGeometry args={[new THREE.BoxGeometry(W, 0.001, D)]} />
+        <lineBasicMaterial color="#59606f" transparent opacity={0.6} />
+      </lineSegments>
+      <Billboard position={[0, 0.2, 0]}>
+        <mesh raycast={() => null}>
+          <planeGeometry args={[W * 0.5, 0.5]} />
+          <meshBasicMaterial
+            map={label}
+            transparent
+            opacity={0.6}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      </Billboard>
+    </group>
+  );
+}
+
 export function SagasStop({
   sagas,
   glow,
   portrait,
   reduced,
+  focus,
+  onFocus,
   onOpen,
 }: {
   sagas: SagaWorldData[];
   glow: THREE.Texture;
   portrait: boolean;
   reduced: boolean;
+  // Universo al que apunta la cámara (lo elige el selector del HUD o un toque en el mapa); sin él se ve la mesa entera
+  focus: string | null;
+  onFocus: (slug: string | null) => void;
   onOpen: (slug: string) => void;
 }) {
   const layout = mapLayout(portrait);
   const tableMap = useMemo(() => makeTable(), []);
+  const futureLabel = useMemo(() => makeName("Próximamente", "#8a93a6"), []);
   useEffect(() => () => tableMap.dispose(), [tableMap]);
-  // Centro de la mesa: en vertical los territorios se reparten alrededor de x = 0
-  const tx = portrait ? 0 : 3.4;
-  const tz = portrait ? -0.9 : -0.3;
+  useEffect(() => () => futureLabel.dispose(), [futureLabel]);
+  // La mesa es enorme y la cámara la ve entera de lejos; su centro depende de la disposición
+  const [mw, md] = portrait ? [11, 25] : [48, 27];
+  const tx = 0;
+  const tz = portrait ? 2 : 0;
+  const [tw, td] = portrait ? [14, 29] : [56, 33];
+  const zones = useMemo<Zone[]>(
+    () =>
+      [
+        ...Object.entries(layout.spots).map(([id, spot]) => ({ id, spot })),
+        ...FUTURE_PLOTS[portrait ? "portrait" : "desktop"].map((spot) => ({
+          id: "",
+          spot,
+        })),
+      ].map(({ id, spot }) => {
+        const [w, d] = zoneSize(spot.r);
+        return { x: spot.x, z: spot.z, w, d, tint: BIOME[id] };
+      }),
+    [layout, portrait],
+  );
+  const roads = useMemo<[Zone, Zone][]>(() => {
+    const spot = (id: string) => {
+      const sp = layout.spots[id];
+      const [w, d] = zoneSize(sp.r);
+      return { x: sp.x, z: sp.z, w, d };
+    };
+    const hl = spot("half-life");
+    return ["portal", "team-fortress", "counter-strike", "left-4-dead"].map(
+      (id) => [hl, spot(id)],
+    );
+  }, [layout]);
   const fallbackSpots = Object.values(layout.spots);
-  // En táctil no hay hover: un primer toque abre el territorio y el segundo entra a su universo
-  const [picked, setPicked] = useState<string | null>(null);
-  const [hovered, setHovered] = useState<string | null>(null);
+  // Un toque o clic en un territorio lleva allí la cámara; si ya está elegido, entra al universo
   const tap = (slug: string) => {
-    const touch = window.matchMedia("(pointer: coarse)").matches;
-    if (touch && picked !== slug) setPicked(slug);
-    else onOpen(slug);
+    if (focus === slug) onOpen(slug);
+    else onFocus(slug);
   };
-  // Territorio activo: el que está bajo el cursor o, en táctil, el elegido con el primer toque
-  const key = hovered ?? picked;
-  const active = sagas.find((s) => s.slug === key || s.id === key) ?? null;
+  const active = sagas.find((s) => s.slug === focus || s.id === focus) ?? null;
   const activeSpot = active
     ? (layout.spots[active.id] ?? fallbackSpots[sagas.indexOf(active)])
     : null;
 
-  // La cámara de la escena se acerca al territorio activo
+  // La cámara de la escena se acerca al territorio elegido
   const focusX = activeSpot?.x ?? 0;
   const focusZ = activeSpot?.z ?? 0;
   const hasActive = activeSpot !== null;
@@ -1282,33 +1848,69 @@ export function SagasStop({
         accent={active ? active.accent : null}
         reduced={reduced}
       />
-      {/* La mesa-mapa: tablero grabado con borde y grosor de metal */}
+      {/* La mesa-mapa: un tablero rectangular grabado, con grosor y bordes de metal */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[tx, -0.04, tz]}>
-        <circleGeometry args={[portrait ? 5.4 : 8.6, 96]} />
+        <planeGeometry args={[tw, td]} />
         <meshStandardMaterial map={tableMap} roughness={0.55} metalness={0.5} />
       </mesh>
-      <mesh position={[tx, -0.34, tz]}>
-        <cylinderGeometry
-          args={[
-            (portrait ? 5.4 : 8.6) + 0.12,
-            (portrait ? 5.4 : 8.6) + 0.3,
-            0.6,
-            96,
-          ]}
-        />
+      <mesh position={[tx, -0.36, tz]}>
+        <boxGeometry args={[tw + 0.5, 0.6, td + 0.5]} />
         <meshStandardMaterial color="#12141b" metalness={0.8} roughness={0.4} />
       </mesh>
-      <mesh rotation={[Math.PI / 2, 0, 0]} position={[tx, -0.02, tz]}>
-        <torusGeometry args={[(portrait ? 5.4 : 8.6) + 0.1, 0.06, 10, 128]} />
-        <meshStandardMaterial color="#59606f" metalness={0.9} roughness={0.3} />
-      </mesh>
-      {/* Luz cenital sobre la mesa */}
-      <pointLight
-        position={[tx, 7, tz + 1.3]}
-        intensity={80}
-        distance={24}
-        color="#dfe8ff"
-      />
+      {[-1, 1].map((side) => (
+        <group key={side}>
+          <mesh position={[tx, 0.05, tz + side * (td / 2 + 0.12)]}>
+            <boxGeometry args={[tw + 0.5, 0.2, 0.3]} />
+            <meshStandardMaterial
+              color="#59606f"
+              metalness={0.9}
+              roughness={0.3}
+            />
+          </mesh>
+          <mesh position={[tx + side * (tw / 2 + 0.12), 0.05, tz]}>
+            <boxGeometry args={[0.3, 0.2, td + 0.5]} />
+            <meshStandardMaterial
+              color="#59606f"
+              metalness={0.9}
+              roughness={0.3}
+            />
+          </mesh>
+        </group>
+      ))}
+      {/* El mapa en relieve, sobre la mesa */}
+      <group position={[tx, 0, tz]}>
+        <MapTerrain width={mw} depth={md} zones={zones} roads={roads} />
+      </group>
+      {/* Luces cenitales sobre el mapa */}
+      {(portrait
+        ? [
+            [0, -7],
+            [0, 2],
+            [0, 10],
+          ]
+        : [
+            [-14, -3],
+            [0, 0],
+            [14, -3],
+            [-10, 8],
+            [11, 8],
+          ]
+      ).map(([lx, lz]) => (
+        <pointLight
+          key={`${lx}${lz}`}
+          position={[lx, 9, lz]}
+          intensity={portrait ? 70 : 90}
+          distance={portrait ? 22 : 20}
+          color="#dfe8ff"
+        />
+      ))}
+      {FUTURE_PLOTS[portrait ? "portrait" : "desktop"].map((spot) => (
+        <FuturePlot
+          key={`${spot.x}${spot.z}`}
+          spot={spot}
+          label={futureLabel}
+        />
+      ))}
       {sagas.map((saga, i) => (
         <Territory
           key={saga.id}
@@ -1318,10 +1920,10 @@ export function SagasStop({
             layout.spots[saga.id] ?? fallbackSpots[i % fallbackSpots.length]
           }
           reduced={reduced}
-          selected={picked === saga.id || picked === saga.slug}
+          selected={focus === saga.id || focus === saga.slug}
           dim={active !== null && active.id !== saga.id}
           onTap={tap}
-          onHover={setHovered}
+          onHover={() => {}}
         />
       ))}
       <Sparkles />

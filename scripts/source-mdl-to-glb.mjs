@@ -7,6 +7,7 @@
 import { openMount } from "./lib/vpk.mjs";
 import { decodeVtf } from "./lib/vtf.mjs";
 import { writeGlb } from "./lib/glb.mjs";
+import { createAnimator } from "./lib/mdl-anim.mjs";
 
 const [root, mod, modelPath, output, bodiesArg, skinArg, armsArg] =
   process.argv.slice(2);
@@ -245,18 +246,18 @@ const apply = (m, v, isNormal) =>
       row[0] * v[0] + row[1] * v[1] + row[2] * v[2] + (isNormal ? 0 : row[3]),
   );
 
-const vertexAt = (i) => {
+const vertexAt = (i, matrices = skinMatrices) => {
   const o = vertexStart + vertexIndexes[i] * 48;
   let pos = [0, 1, 2].map((k) => vvd.readFloatLE(o + 16 + k * 4));
   let nrm = [0, 1, 2].map((k) => vvd.readFloatLE(o + 28 + k * 4));
-  if (skinMatrices) {
+  if (matrices) {
     const [sp, sn] = [
       [0, 0, 0],
       [0, 0, 0],
     ];
     for (let k = 0; k < vvd[o + 15]; k++) {
       const weight = vvd.readFloatLE(o + k * 4);
-      const m = skinMatrices[vvd[o + 12 + k]];
+      const m = matrices[vvd[o + 12 + k]];
       apply(m, pos, false).forEach((x, a) => (sp[a] += x * weight));
       apply(m, nrm, true).forEach((x, a) => (sn[a] += x * weight));
     }
@@ -392,6 +393,191 @@ for (let p = 0; p < bodyPartCount; p++) {
   }
 }
 
+// Animaciones (ANIM="nombre=Secuencia@mezcla:fotogramas[:loop],..."): cada clip se hornea en N poses que se guardan como
+// objetivos de morfado (diferencia de posición de cada vértice respecto a la pose base). Los fotogramas se reparten a lo largo
+// de la secuencia; con «loop» no se repite el último, para que el ciclo cierre sin salto.
+const clipInfo = {};
+const attach = {};
+if (process.env.ANIM) {
+  const folders = MOUNTS[mod].map((folder) => `${root}/${folder}`);
+  const animator = createAnimator(vpk, modelPath, folders);
+  const qmat = (q, p) => {
+    const [x, y, z, w] = q;
+    return [
+      [1 - 2 * (y * y + z * z), 2 * (x * y - z * w), 2 * (x * z + y * w), p[0]],
+      [2 * (x * y + z * w), 1 - 2 * (x * x + z * z), 2 * (y * z - x * w), p[1]],
+      [2 * (x * z - y * w), 2 * (y * z + x * w), 1 - 2 * (x * x + y * y), p[2]],
+    ];
+  };
+  const bakeFrame = (poses) => {
+    const world = [];
+    animator.bones.forEach((bone, b) => {
+      const pose = poses[b] ?? { pos: bone.pos, quat: bone.quat };
+      const local = qmat(pose.quat, pose.pos);
+      world[b] = bone.parent < 0 ? local : mul34(world[bone.parent], local);
+    });
+    return bones.map((bone, b) => mul34(world[b], bone.poseToBone));
+  };
+  const qmul = (a, b) => [
+    a[3] * b[0] + a[0] * b[3] + a[1] * b[2] - a[2] * b[1],
+    a[3] * b[1] - a[0] * b[2] + a[1] * b[3] + a[2] * b[0],
+    a[3] * b[2] + a[0] * b[1] - a[1] * b[0] + a[2] * b[3],
+    a[3] * b[3] - a[0] * b[0] - a[1] * b[1] - a[2] * b[2],
+  ];
+  // Una capa se pone sobre una pose base: los huesos que define la capa sustituyen a los de la base y, si es aditiva
+  // (delta), se suman a ellos
+  const compose = (layer, base, delta) =>
+    layer.map((pose, b) => {
+      if (!pose) return base[b];
+      if (!delta || !base[b]) return pose;
+      return {
+        pos: base[b].pos.map((v, k) => v + pose.pos[k]),
+        quat: qmul(base[b].quat, pose.quat),
+      };
+    });
+  // ATTACH="hueso|ruta del arma.mdl": en cada fotograma se guarda dónde queda el arma en la mano (hueso del personaje por la
+  // matriz de su hueso raíz), ya en el espacio de glTF, para que el motor la mueva con la animación
+  let attachBone = -1;
+  let weaponToBone = null;
+  if (process.env.ATTACH) {
+    const [boneName, weaponPath] = process.env.ATTACH.split("|");
+    attachBone = animator.bones.findIndex((b) => b.name === boneName);
+    const weapon = vpk.read(weaponPath);
+    if (attachBone < 0 || !weapon)
+      throw new Error("ATTACH: hueso o arma no encontrados");
+    const count = weapon.readInt32LE(156);
+    for (let b = 0; b < count; b++) {
+      const o = weapon.readInt32LE(160) + b * 216;
+      const name = weapon.toString(
+        "latin1",
+        o + weapon.readInt32LE(o),
+        weapon.indexOf(0, o + weapon.readInt32LE(o)),
+      );
+      if (name === boneName)
+        weaponToBone = [0, 1, 2].map((r) =>
+          [0, 1, 2, 3].map((c) => weapon.readFloatLE(o + 96 + (r * 4 + c) * 4)),
+        );
+    }
+    if (!weaponToBone) throw new Error("ATTACH: el arma no tiene ese hueso");
+  }
+  const attachMatrix = (poses) => {
+    const world = [];
+    animator.bones.forEach((bone, b) => {
+      const pose = poses[b] ?? { pos: bone.pos, quat: bone.quat };
+      const local = qmat(pose.quat, pose.pos);
+      world[b] = bone.parent < 0 ? local : mul34(world[bone.parent], local);
+    });
+    const m = mul34(world[attachBone], weaponToBone);
+    // Source (x, y, z) a glTF (x, z, -y), en columnas
+    const C = [
+      [1, 0, 0],
+      [0, 0, 1],
+      [0, -1, 0],
+    ];
+    const R = [0, 1, 2].map((r) => [0, 1, 2].map((c) => m[r][c]));
+    const CR = C.map((row) =>
+      [0, 1, 2].map(
+        (c) => row[0] * R[0][c] + row[1] * R[1][c] + row[2] * R[2][c],
+      ),
+    );
+    const out = CR.map((row) =>
+      [0, 1, 2].map(
+        (c) => row[0] * C[c][0] + row[1] * C[c][1] + row[2] * C[c][2],
+      ),
+    );
+    const t = C.map(
+      (row) => row[0] * m[0][3] + row[1] * m[1][3] + row[2] * m[2][3],
+    );
+    return [
+      out[0][0],
+      out[1][0],
+      out[2][0],
+      0,
+      out[0][1],
+      out[1][1],
+      out[2][1],
+      0,
+      out[0][2],
+      out[1][2],
+      out[2][2],
+      0,
+      t[0],
+      t[1],
+      t[2],
+      1,
+    ];
+  };
+  let start = 0;
+  let baseSet = false;
+  for (const spec of process.env.ANIM.split(",")) {
+    const [clip, rest] = spec.split("=");
+    const [seqPart, countPart, mode] = rest.split(":");
+    const [seqSpec, baseName] = seqPart.split("+");
+    const [seqName, blendPart] = seqSpec.split("@");
+    const found = animator.find(seqName);
+    const baseRef = baseName ? animator.find(baseName) : null;
+    if (baseName && !baseRef)
+      throw new Error(`secuencia base no encontrada: ${baseName}`);
+    const basePoses = baseRef
+      ? animator.sample(animator.describe(baseRef), 0)
+      : null;
+    const delta = animator.isDelta(found);
+    if (!found) throw new Error(`secuencia no encontrada: ${seqName}`);
+    let blend = blendPart === undefined ? undefined : Number(blendPart);
+    if (blendPart === "auto") {
+      const best = animator.bestBlend(found);
+      blend = best.blend;
+      console.error(
+        `  ${clip}: mezcla ${best.blend} (movimiento ${best.score.toFixed(2)})`,
+      );
+    }
+    const info = animator.describe(found, blend);
+    const count = Number(countPart) || 1;
+    const loop = mode === "loop";
+    for (let k = 0; k < count; k++) {
+      const frame = loop
+        ? Math.floor((k * info.frames) / count)
+        : count === 1
+          ? 0
+          : Math.round((k * (info.frames - 1)) / (count - 1));
+      let poses = animator.sample(info, frame);
+      if (basePoses) poses = compose(poses, basePoses, delta);
+      if (attachBone >= 0) (attach[clip] ??= []).push(attachMatrix(poses));
+      const matrices = bakeFrame(poses);
+      // La pose base es el primer fotograma del primer clip: así el modelo sale ya de pie y no en la pose de referencia
+      const first = !baseSet;
+      for (const g of groups.values()) {
+        const morph = new Array(g.pos.length).fill(0);
+        for (const [global, index] of g.remap) {
+          const v = vertexAt(global, matrices);
+          const at = index * 3;
+          if (first) {
+            g.pos[at] = v.pos[0];
+            g.pos[at + 1] = v.pos[2];
+            g.pos[at + 2] = -v.pos[1];
+            g.nrm[at] = v.nrm[0];
+            g.nrm[at + 1] = v.nrm[2];
+            g.nrm[at + 2] = -v.nrm[1];
+          }
+          morph[at] = v.pos[0] - g.pos[at];
+          morph[at + 1] = v.pos[2] - g.pos[at + 1];
+          morph[at + 2] = -v.pos[1] - g.pos[at + 2];
+        }
+        (g.morphs ??= []).push(morph);
+      }
+      baseSet = true;
+    }
+    clipInfo[clip] = {
+      ...(attach[clip] && { attach: attach[clip] }),
+      start,
+      count,
+      loop,
+      seconds: Number((info.frames / info.fps).toFixed(2)),
+    };
+    start += count;
+  }
+}
+
 // Materiales: .mdl -> nombre y carpetas -> .vmt -> $basetexture -> .vtf
 const textureName = (i) => {
   const o = i32(mdl, 208) + i * 64;
@@ -434,7 +620,13 @@ for (const [texIndex, g] of groups) {
   const name = textureName(texIndex);
   // El difuminado de las aspas lo anima el juego (proxy HeliBlade) y en reposo no se ve
   if (/blur/i.test(name)) continue;
-  const out = { pos: g.pos, nrm: g.nrm, uv: g.uv, idx: g.idx };
+  const out = {
+    pos: g.pos,
+    nrm: g.nrm,
+    uv: g.uv,
+    idx: g.idx,
+    morphs: g.morphs,
+  };
   const material = findMaterial(name);
   // Un material aditivo (el cristal de las gafas de Kleiner) solo suma luz en el juego: glTF no lo puede imitar
   if (material?.["$additive"] === "1") continue;
@@ -495,6 +687,7 @@ const { triangles, kilobytes } = await writeGlb(
   output,
   output_groups,
   "ValveDex source-mdl-to-glb",
+  Object.keys(clipInfo).length ? { clips: clipInfo } : undefined,
 );
 console.log(
   `${output}: ${output_groups.length} texturas, ${triangles} triángulos, ${kilobytes} KB` +

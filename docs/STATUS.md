@@ -307,6 +307,8 @@ Según Manuel, no comprobado por el agente: `npm run dev` funciona. El agente ha
 | V1–V5 | Valve y Steam: historia ampliada, portada con movimiento, Steam por épocas, personas y hardware       | Hecho (PR #111–#115 y #119)                                  |
 | —     | `v0.3.0`                                                                                              | Publicada 2026-11-05                                         |
 
+**Escenas animadas en la mesa-mapa de Universos (Claude, 2026-11-24, rama `feature/universe-scenes`, PR de Manuel):** mesa rectangular lejos del pasillo con mapa 3D en relieve, zonas separadas por universo (terreno, decorado y escena) y selector de universo con zoom. Left 4 Dead tiene su escena con modelos reales animados: supervivientes de L4D1 y L4D2 que disparan y recargan con su animación, horda corriendo y especiales de cada juego; el decodificador de `.mdl` y el horneado son nuevos (`scripts/lib/mdl-anim.mjs`, `scripts/bake-scene-models.mjs`). Comprobado: `npm run check` (244 pruebas) y capturas a 1440 px; sin medir en móvil. Límites: los comunes de L4D2 usan los de L4D1 (su textura es una paleta de degradados), los modelos de L4D pesan 37 MB, y faltan las escenas de Counter-Strike, Portal, Team Fortress y Half-Life (los de HL1 y TFC usan otro formato de modelo).
+
 ## Siguiente paso
 
 **Recomendado (Claude Code, 2026-11-06), por este orden; Manuel decide:**
