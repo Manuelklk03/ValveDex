@@ -469,11 +469,10 @@ function Scene({
         reduced={reduced}
         onNear={setNear}
       />
-      <ValveCorridor glow={glow} reduced={reduced} />
+      <ValveCorridor reduced={reduced} />
 
       {near <= 1 && (
         <ValveWall
-          glow={glow}
           target={target}
           reduced={reduced}
           portrait={portrait}

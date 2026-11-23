@@ -6,6 +6,7 @@ import * as THREE from "three";
 import {
   Bolts,
   PipeValve,
+  PipeLeak,
   Steam,
   makeWallTexture,
   ringBolts,
@@ -14,7 +15,6 @@ import {
 } from "./valve-parts";
 
 type WallProps = {
-  glow: THREE.Texture;
   target: MutableRefObject<number>;
   reduced: boolean;
   portrait: boolean;
@@ -30,6 +30,10 @@ const PIPE_Y = [2.6, -2.5];
 const FLANGE_X = [-4.2, -0.4, 3.4, 8.2, 11.8, 16];
 // Rotura de la tubería alta: un hueco por el que sale el vapor a presión
 const BREAK_X = 5.6;
+// Agujeros reventados: uno en la tubería baja y otro en la vertical
+const LEAK_LOW_X = 1.6;
+const LEAK_RISER_X = 7.4;
+const LEAK_RISER_Y = -0.8;
 const PIPE_Z = WALL_Z + 0.25;
 
 // Esfera del reloj medidor: marcas, números y una zona roja de presión
@@ -86,19 +90,17 @@ function makeGaugeFace() {
 // Pared de la zona industrial: tuberías con bridas atornilladas que sueltan vapor y una rotura, un reloj medidor y,
 // saliendo de él, la válvula roja de Valve. A la izquierda la pared gira en una esquina y las tuberías la siguen: por ahí
 // avanza el mundo
-export function ValveWall({
-  glow,
-  target,
-  reduced,
-  portrait,
-  onStart,
-}: WallProps) {
+export function ValveWall({ target, reduced, portrait, onStart }: WallProps) {
   const wallMap = useMemo(() => makeWallTexture(3, 2), []);
   const faceMap = useMemo(() => makeGaugeFace(), []);
   const needle = useRef<THREE.Group>(null);
   const wheel = useRef<THREE.Group>(null);
   const gx = portrait ? 0 : 2;
   const gy = portrait ? 1.7 : 0.2;
+  // El manómetro va aparte, en un ramal de la tubería de la válvula: abajo a la derecha del volante
+  const mx = gx + (portrait ? 1.5 : 2.7);
+  const my = gy - (portrait ? 1.6 : 1.35);
+  const mScale = portrait ? 0.4 : 0.5;
   const pipeX0 = CORNER_X - 0.25;
   const pipeLen = 40 - pipeX0;
 
@@ -129,15 +131,34 @@ export function ValveWall({
         count: 3,
         size: 0.9,
       })),
-      // La rotura de la tubería alta: sale a presión, más grande y más rápida
+      // La tubería alta partida: chorro a presión hacia la cámara
       {
-        p: [BREAK_X, PIPE_Y[0] + 0.3, PIPE_Z + 0.5],
-        d: [0.45, 0.9, 0.5],
-        count: 7,
-        size: 1.5,
-        speed: 1.4,
+        p: [BREAK_X, PIPE_Y[0], PIPE_Z + 0.3],
+        d: [0.35, 0.25, 0.9],
+        count: 12,
+        size: 1.1,
+        speed: 1.3,
+        jet: true,
       },
-      // Una fuga pequeña en el codo de la esquina
+      // Agujero reventado en la tubería baja
+      {
+        p: [LEAK_LOW_X, PIPE_Y[1] + 0.13, PIPE_Z + 0.23],
+        d: [0, 0.5, 0.87],
+        count: 10,
+        size: 0.9,
+        speed: 1.2,
+        jet: true,
+      },
+      // Agujero reventado en la tubería vertical
+      {
+        p: [LEAK_RISER_X - 0.1, LEAK_RISER_Y, WALL_Z + 0.4],
+        d: [-0.5, 0.1, 0.85],
+        count: 9,
+        size: 0.85,
+        speed: 1.1,
+        jet: true,
+      },
+      // Una fuga en el codo de la esquina
       {
         p: [CORNER_X - 0.4, PIPE_Y[1] + 0.3, PIPE_Z + 0.5],
         d: [-0.3, 1, 0.1],
@@ -147,7 +168,6 @@ export function ValveWall({
     ],
     [],
   );
-
   useFrame((state, delta) => {
     const t = reduced ? 0 : state.clock.elapsedTime;
 
@@ -306,10 +326,56 @@ export function ValveWall({
       <PipeValve position={[-2.2, PIPE_Y[0] + 0.27, PIPE_Z - 0.1]} axis="z" />
       <PipeValve position={[10, PIPE_Y[1] + 0.27, PIPE_Z - 0.1]} axis="z" />
 
-      <Steam vents={vents} glow={glow} reduced={reduced} />
+      <Steam vents={vents} reduced={reduced} />
 
-      {/* Reloj medidor */}
-      <group position={[gx, gy, WALL_Z + 0.1]}>
+      {/* Tubería de la válvula: sube detrás del volante, con su cuerpo, y de ella sale un ramal al manómetro */}
+      <mesh position={[gx, 0, WALL_Z + 0.2]} raycast={() => null}>
+        <cylinderGeometry args={[0.22, 0.22, 19, 20]} />
+        <meshStandardMaterial
+          color="#3d4a52"
+          metalness={0.7}
+          roughness={0.45}
+        />
+      </mesh>
+      <mesh
+        position={[gx, gy, WALL_Z + 0.35]}
+        rotation={[Math.PI / 2, 0, 0]}
+        raycast={() => null}
+      >
+        <cylinderGeometry args={[0.55, 0.6, 0.5, 28]} />
+        <meshStandardMaterial color="#6e5a4a" metalness={0.8} roughness={0.4} />
+      </mesh>
+      <mesh position={[gx, my, WALL_Z + 0.2]} raycast={() => null}>
+        <sphereGeometry args={[0.3, 20, 20]} />
+        <meshStandardMaterial color="#6e5a4a" metalness={0.8} roughness={0.4} />
+      </mesh>
+      <mesh
+        position={[(gx + mx) / 2, my, WALL_Z + 0.2]}
+        rotation={[0, 0, Math.PI / 2]}
+        raycast={() => null}
+      >
+        <cylinderGeometry args={[0.1, 0.1, Math.abs(mx - gx), 14]} />
+        <meshStandardMaterial
+          color="#8d8a82"
+          metalness={0.85}
+          roughness={0.35}
+        />
+      </mesh>
+
+      {/* Manómetro: la esfera, con su caja trasera, montada en el ramal */}
+      <group position={[mx, my, WALL_Z + 0.45]} scale={mScale}>
+        <mesh
+          position={[0, 0, -0.5]}
+          rotation={[Math.PI / 2, 0, 0]}
+          raycast={() => null}
+        >
+          <cylinderGeometry args={[2.25, 2.25, 0.7, 40]} />
+          <meshStandardMaterial
+            color="#3b3b40"
+            metalness={0.8}
+            roughness={0.4}
+          />
+        </mesh>
         <mesh raycast={() => null}>
           <torusGeometry args={[2.05, 0.18, 20, 80]} />
           <meshStandardMaterial
@@ -324,7 +390,7 @@ export function ValveWall({
         </mesh>
         <group ref={needle} position={[0, 0, 0.1]}>
           <mesh position={[0, 0.7, 0]} raycast={() => null}>
-            <boxGeometry args={[0.08, 1.6, 0.03]} />
+            <boxGeometry args={[0.1, 1.6, 0.04]} />
             <meshStandardMaterial
               color="#b3261a"
               emissive="#b3261a"
@@ -332,13 +398,23 @@ export function ValveWall({
             />
           </mesh>
           <mesh rotation={[Math.PI / 2, 0, 0]} raycast={() => null}>
-            <cylinderGeometry args={[0.14, 0.14, 0.06, 20]} />
+            <cylinderGeometry args={[0.16, 0.16, 0.08, 20]} />
             <meshStandardMaterial color="#1c1b19" />
           </mesh>
         </group>
       </group>
 
-      {/* Válvula roja: sale del reloj con su vástago */}
+      {/* Bocas reventadas de las tuberías */}
+      <PipeLeak
+        position={[LEAK_LOW_X, PIPE_Y[1] + 0.13, PIPE_Z + 0.225]}
+        normal={[0, 0.5, 0.87]}
+      />
+      <PipeLeak
+        position={[LEAK_RISER_X - 0.1, LEAK_RISER_Y, WALL_Z + 0.37]}
+        normal={[-0.5, 0, 0.87]}
+        size={0.8}
+      />
+      {/* Válvula roja: sale de su cuerpo con el vástago */}
       <group position={[gx, gy, WALL_Z + 0.1]}>
         <mesh
           position={[0, 0, 0.7]}

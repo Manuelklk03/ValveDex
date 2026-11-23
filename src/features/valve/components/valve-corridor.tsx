@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import {
   Bolts,
+  PipeLeak,
   PipeValve,
   Steam,
   makeWallTexture,
@@ -25,13 +26,14 @@ const LENGTH = START_Z - END_Z;
 const PIPE_X = CORNER_X - 0.25;
 const PIPE_HEIGHTS = [2.6, -2.5];
 const FLANGE_STEP = 9;
+// Bocas reventadas de la tubería alta a lo largo del pasillo
+const LEAK_Z = [-27, -52, -78];
 
 type CorridorProps = {
-  glow: THREE.Texture;
   reduced: boolean;
 };
 
-export function ValveCorridor({ glow, reduced }: CorridorProps) {
+export function ValveCorridor({ reduced }: CorridorProps) {
   const sideMap = useMemo(() => makeWallTexture(LENGTH / 13, 2), []);
   const farMap = useMemo(() => makeWallTexture(LENGTH / 13, 2), []);
   const travelingLight = useRef<THREE.PointLight>(null);
@@ -73,6 +75,15 @@ export function ValveCorridor({ glow, reduced }: CorridorProps) {
           count: 3,
           size: 1,
         })),
+      // Bocas reventadas: chorros a presión hacia el pasillo
+      ...LEAK_Z.map<Vent>((z) => ({
+        p: [PIPE_X - 0.5, PIPE_HEIGHTS[0] + 0.05, z],
+        d: [-1, 0.2, 0.05],
+        count: 11,
+        size: 1.2,
+        speed: 1.3,
+        jet: true,
+      })),
       // Rejillas del suelo: columnas de vapor que suben
       ...flangeZ
         .filter((_, i) => i % 3 === 1)
@@ -202,7 +213,15 @@ export function ValveCorridor({ glow, reduced }: CorridorProps) {
           />
         ))}
 
-      <Steam vents={vents} glow={glow} reduced={reduced} />
+      <Steam vents={vents} reduced={reduced} />
+      {LEAK_Z.map((z) => (
+        <PipeLeak
+          key={z}
+          position={[PIPE_X - 0.25, PIPE_HEIGHTS[0] + 0.05, z]}
+          normal={[-1, 0.1, 0]}
+          size={1.1}
+        />
+      ))}
 
       {/* Lámparas del techo */}
       {lamps.map((z) => (

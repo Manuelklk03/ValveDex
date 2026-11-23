@@ -1,7 +1,7 @@
 "use client";
 
 import { useFrame } from "@react-three/fiber";
-import { useLayoutEffect, useMemo, useRef } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 
 // Número pseudoaleatorio estable entre 0 y 1 (sin Math.random: la zona industrial es la misma en cada carga)
@@ -13,26 +13,60 @@ export function hash(n: number) {
 type Vec3 = [number, number, number];
 
 export type Vent = {
-  // Punto de salida y dirección hacia la que sube el vapor
+  // Punto de salida y dirección hacia la que sale el vapor
   p: Vec3;
   d: Vec3;
   // Bocanadas, tamaño y velocidad (una rotura suelta más, más grande y más deprisa que una brida)
   count?: number;
   size?: number;
   speed?: number;
+  // Chorro a presión: sale en línea recta, rápido y abriéndose en cono, en vez de subir como una nube
+  jet?: boolean;
 };
 
-// Vapor: bocanadas que salen de cada punto, suben en su dirección, se ensanchan y se disipan
-export function Steam({
-  vents,
-  glow,
-  reduced,
-}: {
-  vents: Vent[];
-  glow: THREE.Texture;
-  reduced: boolean;
-}) {
+// Nube de vapor: una mancha con volumen (varias manchas suaves superpuestas) que se desvanece en los bordes
+function makeCloudTexture() {
+  const size = 256;
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = size;
+  const g = canvas.getContext("2d");
+  if (g) {
+    for (let i = 0; i < 16; i += 1) {
+      const x = size / 2 + (hash(i + 3) - 0.5) * 120;
+      const y = size / 2 + (hash(i + 40) - 0.5) * 120;
+      const r = 34 + hash(i + 80) * 48;
+      const gradient = g.createRadialGradient(x, y, 0, x, y, r);
+      gradient.addColorStop(0, "rgba(255,255,255,0.4)");
+      gradient.addColorStop(0.6, "rgba(255,255,255,0.14)");
+      gradient.addColorStop(1, "rgba(255,255,255,0)");
+      g.fillStyle = gradient;
+      g.fillRect(0, 0, size, size);
+    }
+    // Borde suave: la nube no puede terminar en un corte recto
+    g.globalCompositeOperation = "destination-in";
+    const edge = g.createRadialGradient(
+      size / 2,
+      size / 2,
+      size * 0.18,
+      size / 2,
+      size / 2,
+      size / 2,
+    );
+    edge.addColorStop(0, "rgba(255,255,255,1)");
+    edge.addColorStop(1, "rgba(255,255,255,0)");
+    g.fillStyle = edge;
+    g.fillRect(0, 0, size, size);
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+// Vapor: bocanadas que salen de cada punto, se ensanchan girando y se disipan. Las bridas lo sueltan en nubes que suben;
+// las roturas, en chorros a presión que se abren en cono
+export function Steam({ vents, reduced }: { vents: Vent[]; reduced: boolean }) {
   const group = useRef<THREE.Group>(null);
+  const cloud = useMemo(() => makeCloudTexture(), []);
   const puffs = useMemo(
     () =>
       vents.flatMap((vent, vi) => {
@@ -46,6 +80,8 @@ export function Steam({
     [vents],
   );
 
+  useEffect(() => () => cloud.dispose(), [cloud]);
+
   useFrame((state) => {
     const t = reduced ? 0 : state.clock.elapsedTime;
     group.current?.children.forEach((child, i) => {
@@ -53,18 +89,32 @@ export function Steam({
       const { vent, phase, seed } = puffs[i];
       const speed = vent.speed ?? 1;
       const size = vent.size ?? 1;
+      const jet = vent.jet === true;
       const life = reduced
         ? 0.3 + phase * 0.4
-        : (t * 0.3 * speed + phase + hash(seed) * 0.4) % 1;
-      const fade = Math.min(life / 0.1, 1) * (1 - life);
-      const reach = 2.4 * speed * life;
+        : (t * 0.34 * speed + phase + hash(seed) * 0.3) % 1;
+      const fade =
+        Math.min(life / (jet ? 0.04 : 0.1), 1) * (1 - life) ** (jet ? 1.4 : 1);
+      const reach = (jet ? 6 : 2.6) * speed * life;
+      // El chorro se abre en cono; la nube se ladea con el aire
+      const spread = (jet ? 0.9 : 0.35) * life;
       puff.position.set(
-        vent.p[0] + vent.d[0] * reach + Math.sin(life * 5 + seed) * 0.3 * life,
-        vent.p[1] + vent.d[1] * reach,
-        vent.p[2] + vent.d[2] * reach + Math.cos(life * 4 + seed) * 0.3 * life,
+        vent.p[0] +
+          vent.d[0] * reach +
+          (hash(seed + 1) - 0.5) * spread * 2 +
+          (jet ? 0 : Math.sin(life * 5 + seed) * 0.3 * life),
+        vent.p[1] + vent.d[1] * reach + (hash(seed + 2) - 0.5) * spread * 2,
+        vent.p[2] +
+          vent.d[2] * reach +
+          (hash(seed + 3) - 0.5) * spread * 2 +
+          (jet ? 0 : Math.cos(life * 4 + seed) * 0.3 * life),
       );
-      puff.scale.setScalar((1 + life * 3.2) * size);
-      (puff.material as THREE.SpriteMaterial).opacity = fade * 0.7;
+      puff.scale.setScalar(
+        ((jet ? 0.45 : 1) + life * (jet ? 3.4 : 3.2)) * size,
+      );
+      const material = puff.material as THREE.SpriteMaterial;
+      material.opacity = fade * (jet ? 0.85 : 0.7);
+      material.rotation = seed + life * (hash(seed + 4) - 0.5) * 2.4;
     });
   });
 
@@ -73,8 +123,8 @@ export function Steam({
       {puffs.map((_, i) => (
         <sprite key={i} raycast={() => null}>
           <spriteMaterial
-            map={glow}
-            color="#eef3f8"
+            map={cloud}
+            color="#f1f5f9"
             transparent
             opacity={0.3}
             depthWrite={false}
@@ -85,6 +135,64 @@ export function Steam({
   );
 }
 
+// Agujero reventado en una tubería: boca oscura con el borde desgarrado hacia fuera y la chapa chamuscada alrededor.
+// `normal` es la dirección en la que mira el agujero (por donde sale el vapor)
+export function PipeLeak({
+  position,
+  normal,
+  size = 1,
+}: {
+  position: Vec3;
+  normal: Vec3;
+  size?: number;
+}) {
+  const [nx, ny, nz] = normal;
+  const quaternion = useMemo(
+    () =>
+      new THREE.Quaternion().setFromUnitVectors(
+        new THREE.Vector3(0, 0, 1),
+        new THREE.Vector3(nx, ny, nz).normalize(),
+      ),
+    [nx, ny, nz],
+  );
+  const petals = Array.from({ length: 8 }, (_, i) => i);
+
+  return (
+    <group position={position} quaternion={quaternion} scale={size}>
+      <mesh position={[0, 0, 0.004]} raycast={() => null}>
+        <ringGeometry args={[0.2, 0.55, 24]} />
+        <meshStandardMaterial color="#1a120d" roughness={1} />
+      </mesh>
+      <mesh position={[0, 0, 0.012]} raycast={() => null}>
+        <circleGeometry args={[0.22, 20]} />
+        <meshStandardMaterial color="#030303" roughness={1} />
+      </mesh>
+      {petals.map((i) => {
+        const a = (i / petals.length) * Math.PI * 2;
+        const length = 0.16 + hash(i + 11) * 0.14;
+        return (
+          <mesh
+            key={i}
+            position={[
+              Math.cos(a) * 0.24,
+              Math.sin(a) * 0.24,
+              0.05 + hash(i) * 0.04,
+            ]}
+            rotation={[Math.sin(a) * 0.6, -Math.cos(a) * 0.6, a]}
+            raycast={() => null}
+          >
+            <boxGeometry args={[length, 0.06, 0.025]} />
+            <meshStandardMaterial
+              color="#4a3a2e"
+              metalness={0.85}
+              roughness={0.5}
+            />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+}
 export type Bolt = { p: Vec3; axis: "x" | "z" };
 
 // Tornillos de una brida: n cabezas hexagonales en círculo sobre el disco, a una distancia `offset` de su centro
