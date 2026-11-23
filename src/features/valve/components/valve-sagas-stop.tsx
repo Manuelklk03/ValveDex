@@ -1237,6 +1237,9 @@ export function SagasStop({
   const layout = mapLayout(portrait);
   const tableMap = useMemo(() => makeTable(), []);
   useEffect(() => () => tableMap.dispose(), [tableMap]);
+  // Centro de la mesa: en vertical los territorios se reparten alrededor de x = 0
+  const tx = portrait ? 0 : 3.4;
+  const tz = portrait ? -0.9 : -0.3;
   const fallbackSpots = Object.values(layout.spots);
   // En táctil no hay hover: un primer toque abre el territorio y el segundo entra a su universo
   const [picked, setPicked] = useState<string | null>(null);
@@ -1280,11 +1283,11 @@ export function SagasStop({
         reduced={reduced}
       />
       {/* La mesa-mapa: tablero grabado con borde y grosor de metal */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[3.4, -0.04, -0.3]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[tx, -0.04, tz]}>
         <circleGeometry args={[portrait ? 5.4 : 8.6, 96]} />
         <meshStandardMaterial map={tableMap} roughness={0.55} metalness={0.5} />
       </mesh>
-      <mesh position={[3.4, -0.34, -0.3]}>
+      <mesh position={[tx, -0.34, tz]}>
         <cylinderGeometry
           args={[
             (portrait ? 5.4 : 8.6) + 0.12,
@@ -1295,13 +1298,13 @@ export function SagasStop({
         />
         <meshStandardMaterial color="#12141b" metalness={0.8} roughness={0.4} />
       </mesh>
-      <mesh rotation={[Math.PI / 2, 0, 0]} position={[3.4, -0.02, -0.3]}>
+      <mesh rotation={[Math.PI / 2, 0, 0]} position={[tx, -0.02, tz]}>
         <torusGeometry args={[(portrait ? 5.4 : 8.6) + 0.1, 0.06, 10, 128]} />
         <meshStandardMaterial color="#59606f" metalness={0.9} roughness={0.3} />
       </mesh>
       {/* Luz cenital sobre la mesa */}
       <pointLight
-        position={[3.4, 7, 1]}
+        position={[tx, 7, tz + 1.3]}
         intensity={80}
         distance={24}
         color="#dfe8ff"
