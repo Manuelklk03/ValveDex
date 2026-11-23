@@ -9,7 +9,8 @@ import { useScrollTravel } from "@/components/ui/use-scroll-travel";
 import type { DossierTransition } from "@/domain/dossier-transition";
 import type { Mention } from "../valve-mentions";
 import { ValveIntro } from "./valve-intro";
-import type { StationCounts, StationSaga } from "./valve-station-scene";
+import type { StationPerson } from "./valve-people-stop";
+import type { StationSaga } from "./valve-station-scene";
 import type { ValveRoom } from "./valve-rooms";
 import styles from "./valve-station.module.css";
 
@@ -39,8 +40,9 @@ export type StationHistory = {
 type ValveStationProps = {
   rooms: ValveRoom[];
   history: StationHistory[];
+  people: StationPerson[];
+  portraitSrc?: string;
   universes: StationUniverse[];
-  counts: StationCounts;
   stats: { label: string; value: number }[];
 };
 
@@ -68,8 +70,9 @@ const accents = [
 export function ValveStation({
   rooms,
   history,
+  people,
+  portraitSrc,
   universes,
-  counts,
   stats,
 }: ValveStationProps) {
   const stopCount = rooms.length + 2;
@@ -179,13 +182,14 @@ export function ValveStation({
           <SceneBoundary>
             <StationScene
               sagas={universes}
-              counts={counts}
               target={target}
               entering={entering}
               reduced={reduced}
               onSelect={select}
               onStart={begin}
               historyLines={historyLines}
+              people={people}
+              portraitSrc={portraitSrc}
               onHistoryLine={onHistoryLine}
             />
           </SceneBoundary>
@@ -223,6 +227,18 @@ export function ValveStation({
         )}
 
         <div className={styles["station__info"]}>
+          {active === 2 && (
+            <ul
+              className={styles["station__sr"]}
+              aria-label="Personal de Valve"
+            >
+              {people.map((person) => (
+                <li key={person.name}>
+                  {person.name}: {person.role}
+                </li>
+              ))}
+            </ul>
+          )}
           {active === 1 && (
             <ol
               className={styles["station__sr"]}

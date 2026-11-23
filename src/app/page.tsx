@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
 import { lineIcons, universeArt } from "@/data/universe-art";
 import { getEntries } from "@/features/catalog/get-entries";
 import { getGameSections } from "@/features/games/get-game-sections";
@@ -7,18 +9,28 @@ import {
   getUniverses,
 } from "@/features/universes/get-universes";
 import { ValveStation } from "@/features/valve/components/valve-station";
-import { getSteamEras } from "@/features/valve/get-steam-eras";
-import { getValveHardware } from "@/features/valve/get-valve-hardware";
 import { getValveMilestones } from "@/features/valve/get-valve-milestones";
 import { getValvePeople } from "@/features/valve/get-valve-people";
 import { getValveRooms } from "@/features/valve/get-valve-rooms";
 import { findMentions, getMentionTerms } from "@/features/valve/valve-mentions";
 import styles from "./page.module.css";
 
+// Imagen del retablo de la parada Personal: si el archivo está en public/images/people, se usa tal cual; si no, la escena
+// dibuja su propia versión
+const PORTRAIT_FILES = [
+  "lord-gaben.webp",
+  "lord-gaben.jpg",
+  "lord-gaben.jpeg",
+  "lord-gaben.png",
+];
+
 // La portada es el propio mundo de Valve (ver docs/world-journey-plan.md): una sola escena que se recorre con el scroll
 // y, al llegar al final, la página termina; no hay contenido debajo
 export default function HomePage() {
   const universes = getUniverses();
+  const portraitFile = PORTRAIT_FILES.find((name) =>
+    existsSync(path.join(process.cwd(), "public", "images", "people", name)),
+  );
   // El pergamino de la parada Historia: cada hito, con los nombres que menciona (saga, persona, hardware o Steam)
   const terms = getMentionTerms();
   const history = getValveMilestones().map((milestone) => {
@@ -44,6 +56,12 @@ export default function HomePage() {
       <ValveStation
         rooms={getValveRooms()}
         history={history}
+        portraitSrc={portraitFile && `/images/people/${portraitFile}`}
+        people={getValvePeople().map((person) => ({
+          name: person.name,
+          role: person.role,
+          photo: person.image?.src,
+        }))}
         universes={universes.flatMap((universe) => {
           const emblem =
             lineIcons[`emblem-${universe.id}` as keyof typeof lineIcons];
@@ -60,12 +78,6 @@ export default function HomePage() {
               ]
             : [];
         })}
-        counts={{
-          history: getValveMilestones().length,
-          steam: getSteamEras().length,
-          hardware: getValveHardware().length,
-          people: getValvePeople().length,
-        }}
         stats={stats}
       />
     </main>
