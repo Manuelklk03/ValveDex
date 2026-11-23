@@ -339,8 +339,12 @@ export function createAnimator(vpk, modelPath, folders = []) {
     return { blend: best, score };
   }
 
+  // ¿Es una animación aditiva (delta)? Se suma a otra en vez de sustituirla
+  const isDelta = (ref) => (ref.ctx.mdl.readInt32LE(ref.seq + 12) & 4) !== 0;
+
   return {
     bones: target.bones,
+    isDelta,
     bestBlend,
     find: (name) => findIn(target, name),
     describe,

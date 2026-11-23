@@ -9,19 +9,46 @@ const [universe, filter] = process.argv.slice(2);
 
 // Un infiernado común corre y cae; un superviviente apunta con el arma de su pose de reposo
 const COMMON = "run=Run_01@auto:8:loop,fall=Fall_01:8";
+// Un superviviente: apuntar (pose fija), disparar (aditiva sobre la pose de apuntar) y recargar (capa de brazos)
+const survivorClips = (idle, shoot, reload) =>
+  `aim=Idle_Standing_${idle}:1,` +
+  `shoot=Shoot_Standing_${shoot}+Idle_Standing_${idle}:6:loop,` +
+  `reload=Reload_Standing_${reload}+Idle_Standing_${idle}:10`;
 const jobs = {
   l4d: [
     ...[
-      ["bill", "survivor_namvet", "Idle_Standing_Rifle"],
-      ["zoey", "survivor_teenangst", "Idle_Standing_SMG"],
-      ["louis", "survivor_manager", "Idle_Standing_PumpShotgun"],
-      ["francis", "survivor_biker", "Idle_Standing_PumpShotgun"],
-    ].map(([name, model, pose]) => ({
+      [
+        "bill",
+        "survivor_namvet",
+        "w_rifle_m16a2",
+        "Rifle",
+        "Rifle",
+        "Rifle_layer",
+      ],
+      ["zoey", "survivor_teenangst", "w_smg_uzi", "SMG", "SMG", "SMG_layer"],
+      [
+        "louis",
+        "survivor_manager",
+        "w_autoshot_m4super",
+        "PumpShotgun",
+        "XM1014",
+        "PumpShotgun_start",
+      ],
+      [
+        "francis",
+        "survivor_biker",
+        "w_shotgun",
+        "PumpShotgun",
+        "PumpShotgun",
+        "PumpShotgun_start",
+      ],
+    ].map(([name, model, weapon, idle, shoot, reload]) => ({
       out: `l4d1-${name}`,
       game: "left 4 dead",
       mod: "l4d",
       model: `survivors/${model}`,
-      anim: `aim=${pose}:1`,
+      anim: survivorClips(idle, shoot, reload),
+      attach: `models/w_models/weapons/${weapon}.mdl`,
     })),
     ...[
       "common_male01",
@@ -49,16 +76,38 @@ const jobs = {
       anim,
     })),
     ...[
-      ["coach", "survivor_coach", "Idle_Standing_PumpShotgun"],
-      ["ellis", "survivor_mechanic", "Idle_Standing_Rifle"],
-      ["nick", "survivor_gambler", "Idle_Standing_Pistol"],
-      ["rochelle", "survivor_producer", "Idle_Standing_SMG"],
-    ].map(([name, model, pose]) => ({
+      [
+        "coach",
+        "survivor_coach",
+        "w_shotgun_spas",
+        "PumpShotgun",
+        "XM1014",
+        "PumpShotgun_start",
+      ],
+      [
+        "ellis",
+        "survivor_mechanic",
+        "w_rifle_ak47",
+        "Rifle",
+        "Rifle",
+        "Rifle_layer",
+      ],
+      [
+        "nick",
+        "survivor_gambler",
+        "w_pistol_a",
+        "Pistol",
+        "PISTOL",
+        "Pistol_layer",
+      ],
+      ["rochelle", "survivor_producer", "w_smg_uzi", "SMG", "SMG", "SMG_layer"],
+    ].map(([name, model, weapon, idle, shoot, reload]) => ({
       out: `l4d2-${name}`,
       game: "Left 4 Dead 2",
       mod: "l4d2",
       model: `survivors/${model}`,
-      anim: `aim=${pose}:1`,
+      anim: survivorClips(idle, shoot, reload),
+      attach: `models/w_models/weapons/${weapon}.mdl`,
     })),
     ...[
       ["hunter", "run=Run_Upper_KNIFE@auto:8:loop"],
@@ -100,6 +149,7 @@ for (const job of jobs[universe]) {
         env: {
           ...process.env,
           ANIM: job.anim,
+          ...(job.attach && { ATTACH: `ValveBiped.weapon_bone|${job.attach}` }),
           GLB_TEXTURE_MAX: String(job.texture ?? 512),
         },
         encoding: "utf8",
