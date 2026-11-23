@@ -2,7 +2,7 @@
 
 import { useFrame } from "@react-three/fiber";
 import { Billboard } from "@react-three/drei";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, type MutableRefObject } from "react";
 import * as THREE from "three";
 import { Emblem } from "@/components/ui/space-parts";
 import { Sparkles } from "./valve-props";
@@ -76,15 +76,19 @@ function Theme({
   id,
   accent,
   hover,
+  reduced,
 }: {
   id: string;
   accent: string;
-  hover: React.MutableRefObject<number>;
+  hover: MutableRefObject<number>;
+  reduced: boolean;
 }) {
   const a = useRef<THREE.Group>(null);
   const b = useRef<THREE.Group>(null);
 
   useFrame((state) => {
+    // Con movimiento reducido los elementos se quedan quietos
+    if (reduced) return;
     const t = state.clock.elapsedTime;
     const h = hover.current;
     if (id === "portal") {
@@ -271,19 +275,34 @@ function SagaWorld({
           depthWrite={false}
         />
       </sprite>
-      <Theme id={saga.id} accent={saga.accent} hover={hover} />
+      <Theme
+        id={saga.id}
+        accent={saga.accent}
+        hover={hover}
+        reduced={reduced}
+      />
       <Emblem src={saga.emblem} color="#ffffff" size={1.35} depthTest />
       {/* Los juegos de la saga, en una órbita inclinada */}
       <group rotation={[0.45, 0, 0.1]}>
         <group ref={orbit}>
-          {saga.games.slice(0, 6).map((game, i) => {
-            const ang = (i / Math.min(count, 6)) * Math.PI * 2;
+          {saga.games.map((game, i) => {
+            // Hasta 6 juegos en una órbita; con más, la mitad pasa a una segunda más ancha y más alta
+            const outer = count > 6 && i % 2 === 1;
+            const ring = count > 6 ? Math.ceil(count / 2) : count;
+            const index = count > 6 ? Math.floor(i / 2) : i;
+            const ang =
+              (index / ring) * Math.PI * 2 + (outer ? Math.PI / ring : 0);
+            const radius = outer ? 2.5 : 1.85;
             return (
               <GameLabel
                 key={game.name}
                 game={game}
                 accent={saga.accent}
-                position={[Math.cos(ang) * 1.85, 0, Math.sin(ang) * 1.85]}
+                position={[
+                  Math.cos(ang) * radius,
+                  outer ? 0.35 : 0,
+                  Math.sin(ang) * radius,
+                ]}
               />
             );
           })}
