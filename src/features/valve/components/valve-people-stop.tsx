@@ -5,7 +5,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { STEAM_PATH } from "./valve-props";
-import { Steam, hash, makeWallTexture, type Vent } from "./valve-parts";
+import { Steam, hash, type Vent } from "./valve-parts";
 
 // Una persona de Valve para los paneles: nombre, cargo y, si hay foto libre, su ruta
 export type StationPerson = { name: string; role: string; photo?: string };
@@ -809,8 +809,37 @@ function ImagePortrait({ src, reduced }: { src: string; reduced: boolean }) {
 
 // Sala 02 · Personal: el «rey de Steam» (Gabe Newell) en un retablo dorado que flota ante una pared industrial con vapor, y a
 // su alrededor los expedientes del personal con sus fotos, unidos al retablo con hilo rojo
+// Corcho del tablero: color cálido con motas, distinto del gris de la pared
+function makeCorkTexture() {
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = 256;
+  const g = canvas.getContext("2d");
+  if (g) {
+    g.fillStyle = "#8a6038";
+    g.fillRect(0, 0, 256, 256);
+    for (let i = 0; i < 1400; i += 1) {
+      const light = hash(i + 3) > 0.5;
+      g.fillStyle = light ? "rgba(214,165,110,0.35)" : "rgba(60,35,18,0.4)";
+      g.beginPath();
+      g.arc(
+        hash(i + 11) * 256,
+        hash(i + 29) * 256,
+        0.8 + hash(i + 47) * 2.2,
+        0,
+        Math.PI * 2,
+      );
+      g.fill();
+    }
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(4, 2.5);
+  return texture;
+}
+
 export function PeopleStop({ people, portraitSrc, reduced }: PeopleStopProps) {
-  const wallMap = useMemo(() => makeWallTexture(1.4, 1), []);
+  const wallMap = useMemo(() => makeCorkTexture(), []);
   const panels = useRef<THREE.Group>(null);
   const halfWidth = (portraitSrc ? IMAGE_W : DRAWN_W) / 2;
 
@@ -883,7 +912,7 @@ export function PeopleStop({ people, portraitSrc, reduced }: PeopleStopProps) {
       <group position={[0, -0.35, -1.2]}>
         <mesh raycast={() => null}>
           <planeGeometry args={[9.4, 5.9]} />
-          <meshStandardMaterial map={wallMap} roughness={0.9} metalness={0.2} />
+          <meshStandardMaterial map={wallMap} roughness={1} metalness={0} />
         </mesh>
         {[
           [0, 3.0, 9.8, 0.22],
