@@ -14,12 +14,6 @@ const m = (name: string, size: number, extra: Partial<Model> = {}): Model => ({
   yaw: FRONT,
   ...extra,
 });
-const gun = (name: string, size = 0.27): Model => ({
-  url: `${DIR}/${name}.glb`,
-  size,
-  max: true,
-  yaw: FRONT,
-});
 
 type Rush = {
   model: Model;
@@ -83,10 +77,12 @@ function rusher(c: Rush): Actor {
 
 const wrap = (a: number) => Math.atan2(Math.sin(a), Math.cos(a));
 
-// Un superviviente: en el centro, mirando hacia fuera según su cuadrante, y dispara al infectado vivo más cercano de ese cuadrante
+// Un superviviente: en el centro, mirando hacia fuera según su cuadrante. Dispara con su animación al infectado vivo más
+// cercano de ese cuadrante y, de vez en cuando, recarga (sin disparar mientras tanto)
+const SHOOT_TIME = 6;
+const RELOAD_TIME = 3;
 function survivor(
   model: Model,
-  weapon: Model,
   slot: number,
   horde: Actor[],
   rate: number,
@@ -94,16 +90,17 @@ function survivor(
   const face = (slot * Math.PI) / 2 + Math.PI / 4;
   const sx = Math.sin(face) * 0.16;
   const sz = Math.cos(face) * 0.16;
+  const cycle = SHOOT_TIME + RELOAD_TIME;
   return {
     model,
-    held: { model: weapon, pos: [0.04, 0.28, 0.13] },
     fire: { every: rate, color: "#ffe9a0", speed: 3.2, height: 0.3 },
     fn: (u): Pose => {
       let best: Pose | null = null;
       let near = 9;
       for (const h of horde) {
         const p = h.fn(u);
-        if ((p.fall ?? 0) > 0 || (p.scale ?? 1) < 0.5) continue;
+        if ((p.fall ?? 0) > 0 || (p.scale ?? 1) < 0.5 || p.clip === "fall")
+          continue;
         const rad = Math.hypot(p.x, p.z);
         if (
           Math.abs(wrap(Math.atan2(p.x, p.z) - face)) < Math.PI / 4 + 0.2 &&
@@ -113,13 +110,23 @@ function survivor(
           best = p;
         }
       }
+      const t = (u + slot * 2.3) % cycle;
+      const reloading = t >= SHOOT_TIME;
+      const yaw = best ? Math.atan2(best.x - sx, best.z - sz) : face;
+      const base = { x: sx, z: sz, yaw };
+      if (reloading)
+        return {
+          ...base,
+          clip: "reload",
+          phase: (t - SHOOT_TIME) / RELOAD_TIME,
+        };
+      if (!best) return { ...base, clip: "aim", phase: 0 };
       return {
-        x: sx,
-        z: sz,
-        yaw: best ? Math.atan2(best.x - sx, best.z - sz) : face,
-        clip: "aim",
-        phase: 0,
-        aim: best ? [best.x, best.z] : null,
+        ...base,
+        // Un ciclo de disparo por cada tiro
+        clip: "shoot",
+        phase: u / rate,
+        aim: [best.x, best.z],
       };
     },
   };
@@ -147,7 +154,12 @@ function build(
     ...specials.map(rusher),
   ];
   const team = crew.map(([who, weapon], i) =>
-    survivor(m(who, 0.48), gun(weapon), i, horde, i % 2 ? 0.22 : 0.3),
+    survivor(
+      m(who, 0.48, { weapon: `${DIR}/${weapon}.glb` }),
+      i,
+      horde,
+      i % 2 ? 0.5 : 0.62,
+    ),
   );
   return { name, duration: 22, stage, actors: [...horde, ...team] };
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
+import { createPortal, useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
@@ -24,6 +24,8 @@ export type Model = {
   hue?: number;
   // No intenta ponerlo de pie solo (criaturas agachadas como el Hunter)
   keep?: boolean;
+  // Arma que lleva en la mano (glb en las unidades del juego): se coloca con las matrices que el conversor guardó en cada clip
+  weapon?: string;
   // Normaliza por la dimensión mayor (armas) en vez de por la altura (personajes)
   max?: boolean;
 };
@@ -406,9 +408,21 @@ function config(id: string): Actor[] {
 }
 
 // Un modelo normalizado a su tamaño, con los pies sobre el suelo y centrado
+// El arma en la mano: vive dentro del modelo del personaje (en sus unidades) y el motor de escenas le pone cada fotograma la
+// matriz de su mano; hasta entonces queda oculta
+function HeldWeapon({ url }: { url: string }) {
+  const { scene } = useGLTF(url);
+  const copy = useMemo(() => scene.clone(true), [scene]);
+  return (
+    <group name="__held" matrixAutoUpdate={false} visible={false}>
+      <primitive object={copy} />
+    </group>
+  );
+}
+
 export function Mini({ model }: { model: Model }) {
   const { scene } = useGLTF(model.url);
-  const { object, scale } = useMemo(() => {
+  const { object, scale, root } = useMemo(() => {
     const clone = scene.clone(true);
     clone.traverse((child) => {
       if (!(child instanceof THREE.Mesh)) return;
@@ -455,7 +469,7 @@ export function Mini({ model }: { model: Model }) {
       -center.z,
     );
     const base = model.max ? Math.max(size.x, size.y, size.z) : size.y;
-    return { object: wrapper, scale: model.size / (base || 1) };
+    return { object: wrapper, scale: model.size / (base || 1), root: clone };
   }, [scene, model]);
 
   useEffect(
@@ -474,6 +488,7 @@ export function Mini({ model }: { model: Model }) {
   return (
     <group scale={scale} rotation={[0, model.yaw ?? 0, 0]}>
       <primitive object={object} />
+      {model.weapon && createPortal(<HeldWeapon url={model.weapon} />, root)}
     </group>
   );
 }

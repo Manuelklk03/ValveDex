@@ -32,7 +32,6 @@ export type Pose = {
 };
 export type Actor = {
   model: Model;
-  held?: { model: Model; pos: [number, number, number] };
   fn: (u: number) => Pose;
   fire?: { every: number; color: string; speed: number; height: number };
 };
@@ -51,20 +50,33 @@ export const SCENES: Record<string, Scene[]> = {
 const BULLETS = 20;
 const FLASHES = 28;
 
-type Clip = { start: number; count: number; loop: boolean; seconds: number };
-type Rig = { meshes: THREE.Mesh[]; clips: Record<string, Clip> };
+type Clip = {
+  start: number;
+  count: number;
+  loop: boolean;
+  seconds: number;
+  // Matriz del arma en cada fotograma (16 números, columnas)
+  attach?: number[][];
+};
+type Rig = {
+  meshes: THREE.Mesh[];
+  clips: Record<string, Clip>;
+  held: THREE.Object3D | null;
+};
 
 // Busca en un actor sus mallas animables y la tabla de clips que dejó el conversor en el nodo
 function findRig(group: THREE.Group): Rig | null {
   const meshes: THREE.Mesh[] = [];
   let clips: Record<string, Clip> | null = null;
+  let held: THREE.Object3D | null = null;
   group.traverse((object) => {
+    if (object.name === "__held") held = object;
     if (object instanceof THREE.Mesh && object.morphTargetInfluences)
       meshes.push(object);
     const found = object.userData?.clips as Record<string, Clip> | undefined;
     if (found) clips = found;
   });
-  return meshes.length > 0 && clips ? { meshes, clips } : null;
+  return meshes.length > 0 && clips ? { meshes, clips, held } : null;
 }
 
 // Coloca el actor en un instante de un clip: mezcla los dos fotogramas vecinos
@@ -82,6 +94,15 @@ function playClip(rig: Rig, name: string | undefined, phase: number) {
     w.fill(0);
     w[clip.start + a] = 1 - f;
     w[clip.start + b] += f;
+  }
+  // El arma sigue a la mano: se mezclan las matrices de los dos fotogramas
+  const from = clip.attach?.[a];
+  const to = clip.attach?.[b];
+  if (rig.held && from && to) {
+    const e = rig.held.matrix.elements;
+    for (let k = 0; k < 16; k++) e[k] = from[k] + (to[k] - from[k]) * f;
+    rig.held.visible = true;
+    rig.held.matrixWorldNeedsUpdate = true;
   }
 }
 
@@ -138,7 +159,7 @@ export function SceneAction({
     const next = scenes[(index + 1) % scenes.length];
     for (const a of next.actors) {
       useGLTF.preload(a.model.url);
-      if (a.held) useGLTF.preload(a.held.model.url);
+      if (a.model.weapon) useGLTF.preload(a.model.weapon);
     }
   }, [scenes, index]);
 
@@ -178,7 +199,8 @@ export function SceneAction({
       );
       const s = p.scale ?? 1;
       g.scale.setScalar(Math.max(s, 0.0001));
-      if (rigs.current[i] === undefined || rigs.current[i] === null) {
+      // El arma carga después del personaje: se sigue buscando hasta tenerla
+      if (!rigs.current[i] || (a.model.weapon && !rigs.current[i]?.held)) {
         rigs.current[i] = findRig(g);
       }
       const rig = rigs.current[i];
@@ -253,11 +275,6 @@ export function SceneAction({
               }}
             >
               <Mini model={a.model} />
-              {a.held && (
-                <group position={a.held.pos}>
-                  <Mini model={a.held.model} />
-                </group>
-              )}
             </group>
           ))}
         </group>
