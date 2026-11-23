@@ -1,7 +1,7 @@
 "use client";
 
 import { useFrame } from "@react-three/fiber";
-import { Billboard } from "@react-three/drei";
+import { Billboard, Line } from "@react-three/drei";
 import {
   useEffect,
   useMemo,
@@ -45,44 +45,45 @@ type Spot = { x: number; z: number; r: number };
 // Disposición de la mesa: Half-Life en el centro de atrás (es el hub de la saga), Portal y Team Fortress a sus lados y,
 // delante, Counter-Strike y Left 4 Dead. El hueco de la izquierda queda libre para el texto
 const DESKTOP_SPOTS: Record<string, Spot> = {
-  portal: { x: -4.2, z: -3.8, r: 3 },
-  "half-life": { x: 4.2, z: -3.8, r: 3 },
-  "team-fortress": { x: 12.6, z: -3.8, r: 3 },
-  "counter-strike": { x: -4.2, z: 3.8, r: 3 },
-  "left-4-dead": { x: 4.2, z: 3.8, r: 3 },
+  "half-life": { x: 0, z: -0.5, r: 3 },
+  portal: { x: -13.5, z: -5.5, r: 3 },
+  "team-fortress": { x: 14, z: -5.8, r: 3 },
+  "counter-strike": { x: -10.5, z: 6.6, r: 3 },
+  "left-4-dead": { x: 11, z: 7, r: 3 },
 };
 const PORTRAIT_SPOTS: Record<string, Spot> = {
-  portal: { x: -1.8, z: -3.2, r: 1.25 },
-  "half-life": { x: 1.8, z: -3.2, r: 1.25 },
-  "team-fortress": { x: -1.8, z: 0, r: 1.25 },
-  "counter-strike": { x: 1.8, z: 0, r: 1.25 },
-  "left-4-dead": { x: -1.8, z: 3.2, r: 1.25 },
+  "half-life": { x: 2.4, z: -3.4, r: 1.25 },
+  portal: { x: -2.6, z: -7.4, r: 1.25 },
+  "team-fortress": { x: -2.6, z: 0.8, r: 1.25 },
+  "counter-strike": { x: 2.6, z: 4.6, r: 1.25 },
+  "left-4-dead": { x: -2.4, z: 8.4, r: 1.25 },
 };
 // Cada zona es un rectángulo: su tamaño sale del radio de la escena que lleva dentro
 const zoneSize = (r: number): [number, number] => [r * 2.73, r * 2.4];
-// Parcelas libres del mapa para los universos que aún no existen
+// Lugares libres del mapa para los universos que aún no existen
 const FUTURE_PLOTS: Record<"desktop" | "portrait", Spot[]> = {
   desktop: [
-    { x: 12.6, z: 3.8, r: 3 },
-    { x: 21, z: -3.8, r: 3 },
-    { x: 21, z: 3.8, r: 3 },
+    { x: 0, z: 9.2, r: 3 },
+    { x: -1, z: -10.2, r: 3 },
+    { x: 20.5, z: 3, r: 3 },
+    { x: -20.5, z: -0.5, r: 3 },
   ],
-  portrait: [{ x: 1.8, z: 3.2, r: 1.25 }],
+  portrait: [{ x: 2.6, z: 11.6, r: 1.25 }],
 };
 
 // Dónde se coloca la cámara sobre la mesa: el punto al que mira (locales de la parada), su altura y lo retrasada que va
 export function mapLayout(portrait: boolean) {
   return portrait
     ? {
-        look: [0, 0, 0] as const,
-        height: 16,
-        back: 7.5,
+        look: [0, 0, 1.2] as const,
+        height: 34,
+        back: 9,
         spots: PORTRAIT_SPOTS,
       }
     : {
-        look: [6.4, 0, 0] as const,
-        height: 25,
-        back: 15,
+        look: [-3, 0, 0] as const,
+        height: 40,
+        back: 14,
         spots: DESKTOP_SPOTS,
       };
 }
@@ -385,7 +386,7 @@ function Cosmos({
   });
 
   return (
-    <group>
+    <group scale={5}>
       <mesh raycast={() => null} renderOrder={-10}>
         <sphereGeometry args={[17, 32, 16]} />
         <meshBasicMaterial map={sky} side={THREE.BackSide} toneMapped={false} />
@@ -1004,6 +1005,148 @@ function MapStage({
   );
 }
 
+// Ruido de valores con tres octavas: da las colinas del mapa
+function valueNoise(x: number, z: number) {
+  const xi = Math.floor(x);
+  const zi = Math.floor(z);
+  const xf = x - xi;
+  const zf = z - zi;
+  const ease = (t: number) => t * t * (3 - 2 * t);
+  const at = (a: number, b: number) => hashN(a * 57 + b * 131);
+  const [a, b, c, d] = [
+    at(xi, zi),
+    at(xi + 1, zi),
+    at(xi, zi + 1),
+    at(xi + 1, zi + 1),
+  ];
+  return (
+    a +
+    (b - a) * ease(xf) +
+    (c - a) * ease(zf) +
+    (a - b - c + d) * ease(xf) * ease(zf)
+  );
+}
+const fbm = (x: number, z: number) =>
+  valueNoise(x * 0.11, z * 0.11) * 0.6 +
+  valueNoise(x * 0.28, z * 0.28) * 0.3 +
+  valueNoise(x * 0.7, z * 0.7) * 0.1;
+const smooth = (a: number, b: number, v: number) => {
+  const t = Math.min(1, Math.max(0, (v - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+};
+
+type Zone = { x: number; z: number; w: number; d: number };
+
+// Altura del terreno: colinas y montañas entre los lugares, llano bajo cada zona y en el borde del mapa
+function heightAt(
+  x: number,
+  z: number,
+  zones: Zone[],
+  halfW: number,
+  halfD: number,
+) {
+  const base = Math.max(0, fbm(x, z) - 0.38) * 7;
+  let mask = 1;
+  for (const zone of zones) {
+    const dx = Math.max(Math.abs(x - zone.x) - zone.w / 2, 0);
+    const dz = Math.max(Math.abs(z - zone.z) - zone.d / 2, 0);
+    mask = Math.min(mask, smooth(0.5, 5, Math.hypot(dx, dz)));
+  }
+  const edge = Math.min(
+    smooth(0, 2.5, halfW - Math.abs(x)),
+    smooth(0, 2.5, halfD - Math.abs(z)),
+  );
+  return base * mask * edge;
+}
+
+const LOW = new THREE.Color("#233a2c");
+const MID = new THREE.Color("#42593a");
+const HIGH = new THREE.Color("#6f6a5a");
+const PEAK = new THREE.Color("#b0b0a6");
+
+// El mapa: una pieza de terreno en relieve sobre la mesa, con llanos para cada zona y caminos que las unen
+function MapTerrain({
+  width,
+  depth,
+  zones,
+  roads,
+}: {
+  width: number;
+  depth: number;
+  zones: Zone[];
+  roads: [Zone, Zone][];
+}) {
+  const geometry = useMemo(() => {
+    const segW = Math.round(width * 3.4);
+    const segD = Math.round(depth * 3.4);
+    const geo = new THREE.PlaneGeometry(width, depth, segW, segD);
+    geo.rotateX(-Math.PI / 2);
+    const pos = geo.attributes.position;
+    const colors = new Float32Array(pos.count * 3);
+    const tint = new THREE.Color();
+    for (let i = 0; i < pos.count; i += 1) {
+      const x = pos.getX(i);
+      const z = pos.getZ(i);
+      const h = heightAt(x, z, zones, width / 2, depth / 2);
+      pos.setY(i, h);
+      const t = h / 4;
+      if (t < 0.25) tint.copy(LOW).lerp(MID, t / 0.25);
+      else if (t < 0.6) tint.copy(MID).lerp(HIGH, (t - 0.25) / 0.35);
+      else tint.copy(HIGH).lerp(PEAK, Math.min(1, (t - 0.6) / 0.4));
+      tint.multiplyScalar(0.85 + valueNoise(x * 1.7, z * 1.7) * 0.3);
+      colors.set([tint.r, tint.g, tint.b], i * 3);
+    }
+    geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    geo.computeVertexNormals();
+    return geo;
+  }, [width, depth, zones]);
+  useEffect(() => () => geometry.dispose(), [geometry]);
+
+  // Caminos: una curva suave de zona a zona, pegada al terreno
+  const paths = useMemo(
+    () =>
+      roads.map(([a, b]) => {
+        const mx = (a.x + b.x) / 2 + (b.z - a.z) * 0.12;
+        const mz = (a.z + b.z) / 2 - (b.x - a.x) * 0.12;
+        const curve = new THREE.QuadraticBezierCurve3(
+          new THREE.Vector3(a.x, 0, a.z),
+          new THREE.Vector3(mx, 0, mz),
+          new THREE.Vector3(b.x, 0, b.z),
+        );
+        return curve
+          .getPoints(40)
+          .map((point): [number, number, number] => [
+            point.x,
+            heightAt(point.x, point.z, zones, width / 2, depth / 2) + 0.07,
+            point.z,
+          ]);
+      }),
+    [roads, zones, width, depth],
+  );
+
+  return (
+    <group>
+      <mesh geometry={geometry} raycast={() => null}>
+        <meshStandardMaterial vertexColors roughness={0.95} metalness={0.05} />
+      </mesh>
+      {paths.map((points, i) => (
+        <Line
+          key={i}
+          points={points}
+          color="#d9c27a"
+          lineWidth={2}
+          dashed
+          dashSize={0.5}
+          gapSize={0.4}
+          transparent
+          opacity={0.7}
+          raycast={() => null}
+        />
+      ))}
+    </group>
+  );
+}
+
 function Territory({
   saga,
   glow,
@@ -1317,9 +1460,32 @@ export function SagasStop({
   useEffect(() => () => tableMap.dispose(), [tableMap]);
   useEffect(() => () => futureLabel.dispose(), [futureLabel]);
   // La mesa es enorme y la cámara la ve entera de lejos; su centro depende de la disposición
-  const tx = portrait ? 0 : 8.4;
-  const tz = 0;
-  const [tw, td] = portrait ? [8.4, 11.2] : [35.4, 16.6];
+  const [mw, md] = portrait ? [11, 25] : [48, 27];
+  const tx = 0;
+  const tz = portrait ? 2 : 0;
+  const [tw, td] = portrait ? [14, 29] : [56, 33];
+  const zones = useMemo<Zone[]>(
+    () =>
+      [
+        ...Object.values(layout.spots),
+        ...FUTURE_PLOTS[portrait ? "portrait" : "desktop"],
+      ].map((spot) => {
+        const [w, d] = zoneSize(spot.r);
+        return { x: spot.x, z: spot.z, w, d };
+      }),
+    [layout, portrait],
+  );
+  const roads = useMemo<[Zone, Zone][]>(() => {
+    const spot = (id: string) => {
+      const sp = layout.spots[id];
+      const [w, d] = zoneSize(sp.r);
+      return { x: sp.x, z: sp.z, w, d };
+    };
+    const hl = spot("half-life");
+    return ["portal", "team-fortress", "counter-strike", "left-4-dead"].map(
+      (id) => [hl, spot(id)],
+    );
+  }, [layout]);
   const fallbackSpots = Object.values(layout.spots);
   // Un toque o clic en un territorio lleva allí la cámara; si ya está elegido, entra al universo
   const tap = (slug: string) => {
@@ -1386,17 +1552,23 @@ export function SagasStop({
           </mesh>
         </group>
       ))}
+      {/* El mapa en relieve, sobre la mesa */}
+      <group position={[tx, 0, tz]}>
+        <MapTerrain width={mw} depth={md} zones={zones} roads={roads} />
+      </group>
       {/* Luces cenitales sobre el mapa */}
       {(portrait
         ? [
-            [0, -2.5],
-            [0, 2.5],
+            [0, -7],
+            [0, 2],
+            [0, 10],
           ]
         : [
-            [-2, 0],
-            [6, 0],
-            [14, 0],
-            [22, 0],
+            [-14, -3],
+            [0, 0],
+            [14, -3],
+            [-10, 8],
+            [11, 8],
           ]
       ).map(([lx, lz]) => (
         <pointLight

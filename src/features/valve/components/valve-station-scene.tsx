@@ -72,7 +72,8 @@ function stopPosition(index: number, portrait: boolean) {
   return new THREE.Vector3(
     (portrait ? 0 : index === 5 ? 4.3 : 2.4) + (index >= 1 ? SHIFT : 0),
     portrait ? 1 : Math.sin(index * 1.9) * 0.3,
-    -index * GAP,
+    // La mesa de los universos está lejos del pasillo: se llega a ella con un largo zoom desde Steam y no choca con nada
+    -index * GAP - (index === 5 ? 130 : 0),
   );
 }
 
@@ -210,6 +211,12 @@ function Rig({
     camera.lookAt(look);
     camera.fov = 48 + lift * 34;
     camera.updateProjectionMatrix();
+    // Sobre la mesa la niebla del pasillo no debe apagar el mapa
+    const fog = state.scene.fog as THREE.Fog | null;
+    if (fog) {
+      fog.near = 24 + mapK * 260;
+      fog.far = 80 + mapK * 500;
+    }
 
     // Qué paradas se dibujan lo decide la posición real de la cámara, no el destino del scroll
     const here = Math.round(current.current);
