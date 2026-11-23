@@ -22,6 +22,8 @@ export type Model = {
   yaw?: number;
   // Cambio de tono de la textura en grados (el Heavy BLU sale del RED)
   hue?: number;
+  // No intenta ponerlo de pie solo (criaturas agachadas como el Hunter)
+  keep?: boolean;
   // Normaliza por la dimensión mayor (armas) en vez de por la altura (personajes)
   max?: boolean;
 };
@@ -439,7 +441,7 @@ export function Mini({ model }: { model: Model }) {
     let box = new THREE.Box3().setFromObject(wrapper);
     let size = box.getSize(new THREE.Vector3());
     // Un personaje que sigue tumbado (su eje largo no es el vertical) se pone de pie solo
-    if (!model.max && size.y < Math.max(size.x, size.z) * 0.8) {
+    if (!model.max && !model.keep && size.y < Math.max(size.x, size.z) * 0.8) {
       if (size.z >= size.x) inner.rotation.x = (model.roll ?? 0) + Math.PI / 2;
       else inner.rotation.z = (model.tilt ?? 0) + Math.PI / 2;
       wrapper.updateMatrixWorld(true);
