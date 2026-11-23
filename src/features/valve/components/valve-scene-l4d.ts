@@ -123,9 +123,9 @@ function survivor(
       if (!best) return { ...base, clip: "aim", phase: 0 };
       return {
         ...base,
-        // Un ciclo de disparo por cada tiro
+        // Un ciclo de disparo por cada tiro; la cuenta empieza de cero al terminar de recargar
         clip: "shoot",
-        phase: u / rate,
+        phase: t / rate,
         aim: [best.x, best.z],
       };
     },
