@@ -25,6 +25,10 @@ export type Pose = {
   scale?: number;
   // Si apunta a algo, dispara hacia allí
   aim?: [number, number] | null;
+  // Clip horneado en el modelo (correr, caer…) y por dónde va: en un bucle son vueltas completas; en uno de una sola vez,
+  // de 0 a 1 (se queda en el último fotograma)
+  clip?: string;
+  phase?: number;
 };
 export type Actor = {
   model: Model;
@@ -47,6 +51,40 @@ export const SCENES: Record<string, Scene[]> = {
 const BULLETS = 20;
 const FLASHES = 28;
 
+type Clip = { start: number; count: number; loop: boolean; seconds: number };
+type Rig = { meshes: THREE.Mesh[]; clips: Record<string, Clip> };
+
+// Busca en un actor sus mallas animables y la tabla de clips que dejó el conversor en el nodo
+function findRig(group: THREE.Group): Rig | null {
+  const meshes: THREE.Mesh[] = [];
+  let clips: Record<string, Clip> | null = null;
+  group.traverse((object) => {
+    if (object instanceof THREE.Mesh && object.morphTargetInfluences)
+      meshes.push(object);
+    const found = object.userData?.clips as Record<string, Clip> | undefined;
+    if (found) clips = found;
+  });
+  return meshes.length > 0 && clips ? { meshes, clips } : null;
+}
+
+// Coloca el actor en un instante de un clip: mezcla los dos fotogramas vecinos
+function playClip(rig: Rig, name: string | undefined, phase: number) {
+  const clip = rig.clips[name ?? Object.keys(rig.clips)[0]];
+  if (!clip) return;
+  const pos = clip.loop
+    ? (((phase % 1) + 1) % 1) * clip.count
+    : Math.min(1, Math.max(0, phase)) * (clip.count - 1);
+  const a = Math.floor(pos) % clip.count;
+  const b = clip.loop ? (a + 1) % clip.count : Math.min(a + 1, clip.count - 1);
+  const f = pos - Math.floor(pos);
+  for (const mesh of rig.meshes) {
+    const w = mesh.morphTargetInfluences!;
+    w.fill(0);
+    w[clip.start + a] = 1 - f;
+    w[clip.start + b] += f;
+  }
+}
+
 function resetSim(sim: {
   next: number[];
   kick: number[];
@@ -68,6 +106,8 @@ export function SceneAction({
 }) {
   const scene = scenes[index % scenes.length];
   const refs = useRef<(THREE.Group | null)[]>([]);
+  // Mallas con objetivos de morfado de cada actor y sus clips (se leen una vez cargado el modelo)
+  const rigs = useRef<(Rig | null)[]>([]);
   const bullets = useRef<(THREE.Mesh | null)[]>([]);
   const flashes = useRef<(THREE.Mesh | null)[]>([]);
   const sim = useMemo(
@@ -108,6 +148,7 @@ export function SceneAction({
       clock.current.scene = index;
       clock.current.t0 = t;
       resetSim(sim);
+      rigs.current.length = 0;
     }
     // Con movimiento reducido la escena se queda congelada en un instante vistoso
     const u = reduced ? 4 : t - clock.current.t0;
@@ -137,6 +178,11 @@ export function SceneAction({
       );
       const s = p.scale ?? 1;
       g.scale.setScalar(Math.max(s, 0.0001));
+      if (rigs.current[i] === undefined || rigs.current[i] === null) {
+        rigs.current[i] = findRig(g);
+      }
+      const rig = rigs.current[i];
+      if (rig) playClip(rig, p.clip, p.phase ?? 0);
       g.visible = s > 0.02;
 
       if (reduced || !a.fire || !p.aim || !g.visible) return;

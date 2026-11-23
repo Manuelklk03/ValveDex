@@ -34,6 +34,8 @@ type Rush = {
   // Altura del salto (el Hunter y el Jockey saltan sobre la multitud)
   jump?: number;
   scale?: number;
+  // false: este modelo no tiene clip de caída
+  fall?: boolean;
 };
 
 // Un infectado: sale del borde en una dirección al azar, corre hacia el centro y cae muerto antes de llegar; al rato vuelve
@@ -58,7 +60,6 @@ function rusher(c: Rush): Actor {
       const arc = c.jump
         ? Math.sin(Math.min(p / kill, 1) * Math.PI) * c.jump
         : 0;
-      const bob = alive ? Math.abs(Math.sin(u * 9 + c.seed * 5)) * 0.012 : 0;
       // Aparece con un pequeño salto de escala y, una vez caído, se desvanece enseguida para no apilar cuerpos
       const scale =
         Math.min(1, p / 0.05) * (alive ? 1 : Math.max(0, 1 - (p - kill) / 0.2));
@@ -66,10 +67,15 @@ function rusher(c: Rush): Actor {
         x,
         z,
         yaw: Math.atan2(-x, -z),
-        y: arc + bob,
-        pitch: alive ? (c.lean ?? 0.22) : 0,
-        fall: alive ? 0 : Math.min(1, (p - kill) / 0.07),
+        y: arc,
+        // Corre con su ciclo (vueltas enteras) y, al morir, hace su caída de una sola vez
+        clip: alive ? "run" : c.fall === false ? "run" : "fall",
+        phase: alive
+          ? u * 0.95 + c.seed * 0.37
+          : Math.min(1, (p - kill) / 0.12),
         scale: scale * (c.scale ?? 1),
+        // Sin clip de caída (algunos especiales) se vuelca el cuerpo entero
+        fall: !alive && c.fall === false ? Math.min(1, (p - kill) / 0.07) : 0,
       };
     },
   };
@@ -111,7 +117,8 @@ function survivor(
         x: sx,
         z: sz,
         yaw: best ? Math.atan2(best.x - sx, best.z - sz) : face,
-        pitch: Math.sin(u * 2 + slot) * 0.03,
+        clip: "aim",
+        phase: 0,
         aim: best ? [best.x, best.z] : null,
       };
     },
@@ -215,10 +222,12 @@ export const l4dScenes: Scene[] = [
       ["l4d2-rochelle", "l4d2-w-smg_uzi"],
     ],
     [
-      "l4d2-common_male_tshirt_cargos",
-      "l4d2-common_female_tanktop_jeans",
-      "l4d2-common_male_roadcrew",
-      "l4d2-common_male_clown",
+      // Los infectados comunes de la segunda parte pintan su color con una paleta de degradados que no se puede reproducir:
+      // se usan los de la primera, que se leen igual de bien
+      "l4d1-common_male01",
+      "l4d1-common_female01",
+      "l4d1-common_police_male01",
+      "l4d1-common_worker_male01",
     ],
     [
       {
@@ -229,6 +238,7 @@ export const l4dScenes: Scene[] = [
         r0: 0.98,
         r1: 0.15,
         seed: 201,
+        fall: false,
         lean: 0.35,
       },
       {
@@ -239,6 +249,7 @@ export const l4dScenes: Scene[] = [
         r0: 0.98,
         r1: 0.2,
         seed: 202,
+        fall: false,
         lean: 0.3,
         jump: 0.1,
       },
@@ -250,6 +261,7 @@ export const l4dScenes: Scene[] = [
         r0: 0.98,
         r1: 0.45,
         seed: 203,
+        fall: false,
         lean: 0.1,
       },
       {
@@ -260,6 +272,7 @@ export const l4dScenes: Scene[] = [
         r0: 0.98,
         r1: 0.2,
         seed: 204,
+        fall: false,
         lean: 0.5,
         jump: 0.14,
       },
