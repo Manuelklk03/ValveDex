@@ -12,12 +12,23 @@ import { getValveHardware } from "@/features/valve/get-valve-hardware";
 import { getValveMilestones } from "@/features/valve/get-valve-milestones";
 import { getValvePeople } from "@/features/valve/get-valve-people";
 import { getValveRooms } from "@/features/valve/get-valve-rooms";
+import { findMentions, getMentionTerms } from "@/features/valve/valve-mentions";
 import styles from "./page.module.css";
 
 // La portada es el propio mundo de Valve (ver docs/world-journey-plan.md): una sola escena que se recorre con el scroll
 // y, al llegar al final, la página termina; no hay contenido debajo
 export default function HomePage() {
   const universes = getUniverses();
+  // El pergamino de la parada Historia: cada hito, con los nombres que menciona (saga, persona, hardware o Steam)
+  const terms = getMentionTerms();
+  const history = getValveMilestones().map((milestone) => {
+    // Solo se buscan nombres en lo que el pergamino escribe (el título), para que cada tarjeta tenga su texto
+    return {
+      year: String(milestone.year),
+      text: milestone.title,
+      mentions: findMentions(milestone.title, terms),
+    };
+  });
   const stats = [
     { label: "Sagas", value: universes.length },
     {
@@ -32,6 +43,7 @@ export default function HomePage() {
     <main className={styles["home-page"]}>
       <ValveStation
         rooms={getValveRooms()}
+        history={history}
         universes={universes.flatMap((universe) => {
           const emblem =
             lineIcons[`emblem-${universe.id}` as keyof typeof lineIcons];
