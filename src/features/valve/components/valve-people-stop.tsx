@@ -695,7 +695,7 @@ function Frame({ width, height }: { width: number; height: number }) {
 const DRAWN_W = 3.2;
 const DRAWN_H = (DRAWN_W * H) / W;
 // Ancho del retablo cuando es la imagen real (apaisada)
-const IMAGE_W = 5.2;
+const IMAGE_W = 3.3;
 
 // Retablo de respaldo, dibujado por código, mientras no esté la imagen real del «rey de Steam»
 function DrawnPortrait({ reduced }: { reduced: boolean }) {
@@ -728,8 +728,7 @@ function DrawnPortrait({ reduced }: { reduced: boolean }) {
   );
 }
 
-// La imagen real del «rey de Steam», flotando en 3D: se mece, se inclina hacia el cursor y lleva un marco dorado. La imagen
-// ya trae su corona, su halo y su cielo, así que no se le añade nada encima
+// El «rey de Steam» recortado (sin cielo ni marco), flotando en 3D sobre la pared: se mece y se inclina hacia el cursor
 function ImagePortrait({ src, reduced }: { src: string; reduced: boolean }) {
   const map = useTexture(src, (texture) => {
     texture.colorSpace = THREE.SRGBColorSpace;
@@ -758,11 +757,13 @@ function ImagePortrait({ src, reduced }: { src: string; reduced: boolean }) {
       {/* Pulsable: el clic sube a la zona de la parada */}
       <mesh position={[0, 0, -0.5]}>
         <planeGeometry args={[IMAGE_W, height]} />
-        <meshBasicMaterial map={map} toneMapped={false} />
+        <meshBasicMaterial
+          map={map}
+          toneMapped={false}
+          transparent
+          alphaTest={0.05}
+        />
       </mesh>
-      <group position={[0, 0, -0.48]}>
-        <Frame width={IMAGE_W} height={height} />
-      </group>
       <pointLight
         position={[0, 0, 1.4]}
         intensity={6}

@@ -18,6 +18,7 @@ import styles from "./page.module.css";
 // Imagen del retablo de la parada Personal: si el archivo está en public/images/people, se usa tal cual; si no, la escena
 // dibuja su propia versión
 const PORTRAIT_FILES = [
+  "lord-gaben-body.webp",
   "lord-gaben.webp",
   "lord-gaben.jpg",
   "lord-gaben.jpeg",
