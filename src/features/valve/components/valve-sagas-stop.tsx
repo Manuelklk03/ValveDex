@@ -12,6 +12,7 @@ import {
 import * as THREE from "three";
 import { Emblem } from "@/components/ui/space-parts";
 import { Action } from "./valve-sagas-action";
+import { SCENES, SceneAction } from "./valve-scenes";
 import { Sparkles } from "./valve-props";
 
 // Parada 5 · Universos: una mesa-mapa vista desde arriba. Cada saga es un territorio con el suelo y el decorado de su
@@ -912,6 +913,7 @@ function MapStage({
   accent,
   hover,
   reduced,
+  stage,
 }: {
   id: string;
   maps: { name: string; src: string }[];
@@ -919,6 +921,8 @@ function MapStage({
   accent: string;
   hover: MutableRefObject<number>;
   reduced: boolean;
+  // Mapa que fija la escena en curso; sin él, el escenario cambia solo
+  stage?: number;
 }) {
   const loaded = useStageMaps(id, maps);
   const [index, setIndex] = useState(0);
@@ -944,12 +948,16 @@ function MapStage({
     if (!m || !mesh.current) return;
     const t = state.clock.elapsedTime;
     const s = phase.current;
+    const goal =
+      stage === undefined ? null : stage % Math.max(loaded.length, 1);
+    if (reduced && goal !== null && goal !== index) setIndex(goal);
     if (!reduced && loaded.length > 1) {
-      if (s.step === "idle" && t - s.t0 > 6.5) s.step = "down";
+      if (s.step === "idle" && goal === null && t - s.t0 > 6.5) s.step = "down";
+      if (s.step === "idle" && goal !== null && goal !== index) s.step = "down";
       if (s.step === "down") {
         s.factor = Math.max(0, s.factor - delta * 2.2);
         if (s.factor === 0) {
-          setIndex((value) => (value + 1) % loaded.length);
+          setIndex((value) => goal ?? (value + 1) % loaded.length);
           s.step = "up";
         }
       } else if (s.step === "up") {
@@ -1033,6 +1041,17 @@ function Territory({
   const hover = useRef(0);
   const target = useRef(0);
   const vis = useRef(1);
+  // Escenas guionizadas del universo (si las tiene): cada una dura lo suyo y se pasa a la siguiente en bucle
+  const scenes = SCENES[saga.id];
+  const [sceneIndex, setSceneIndex] = useState(0);
+  useEffect(() => {
+    if (!scenes || reduced) return;
+    const id = window.setTimeout(
+      () => setSceneIndex((value) => (value + 1) % scenes.length),
+      scenes[sceneIndex % scenes.length].duration * 1000,
+    );
+    return () => window.clearTimeout(id);
+  }, [scenes, sceneIndex, reduced]);
   const frame = useRef(0);
   const ground = useMemo(
     () => makeGround(saga.id, saga.accent),
@@ -1144,6 +1163,7 @@ function Territory({
           accent={saga.accent}
           hover={hover}
           reduced={reduced}
+          stage={scenes?.[sceneIndex % scenes.length].stage}
         />
         <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0.065, 0]}>
           <torusGeometry args={[R, 0.03, 8, 80]} />
@@ -1157,10 +1177,14 @@ function Territory({
         </mesh>
         {/* Escaramuza en miniatura en la parte delantera del territorio */}
         <group
-          position={[0, 0.062, 0.3 * (R / 1.45)]}
-          scale={(R / 1.45) * 1.45}
+          position={[0, 0.062, scenes ? 0 : 0.3 * (R / 1.45)]}
+          scale={scenes ? R * 0.92 : (R / 1.45) * 1.45}
         >
-          <Action id={saga.id} reduced={reduced} />
+          {scenes ? (
+            <SceneAction scenes={scenes} index={sceneIndex} reduced={reduced} />
+          ) : (
+            <Action id={saga.id} reduced={reduced} />
+          )}
         </group>
         {/* Haz holográfico del emblema y luz de color sobre el territorio */}
         <mesh position={[0, 0.062 + R * 0.45, 0]} raycast={() => null}>
@@ -1176,12 +1200,12 @@ function Territory({
         </mesh>
         <pointLight
           position={[0, 1.3, 0.3]}
-          intensity={5}
+          intensity={1.6}
           distance={4}
           color={saga.accent}
         />
         {/* Emblema de la saga flotando sobre el centro */}
-        <Billboard position={[0, R * 0.95, 0]}>
+        <Billboard position={[0, R * 0.55, -R * 1.05]}>
           <Emblem src={saga.emblem} color="#ffffff" size={R * 0.7} depthTest />
         </Billboard>
         {saga.games.map((game, i) => {

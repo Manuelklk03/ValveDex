@@ -191,13 +191,13 @@ function Rig({
       const p5 = stopPosition(5, portrait);
       const fk = mapFocus.k * mapK;
       const lx =
-        p5.x + layout.look[0] + (mapFocus.x - layout.look[0]) * 0.55 * fk;
+        p5.x + layout.look[0] + (mapFocus.x - layout.look[0]) * 0.85 * fk;
       const lz =
-        p5.z + layout.look[2] + (mapFocus.z - layout.look[2]) * 0.55 * fk;
+        p5.z + layout.look[2] + (mapFocus.z - layout.look[2]) * 0.85 * fk;
       camPos.set(
         camPos.x + (lx + px * 0.5 - camPos.x) * mapK,
-        camPos.y + (p5.y + layout.height * (1 - 0.25 * fk) - camPos.y) * mapK,
-        camPos.z + (lz + layout.back * (1 - 0.25 * fk) - camPos.z) * mapK,
+        camPos.y + (p5.y + layout.height * (1 - 0.42 * fk) - camPos.y) * mapK,
+        camPos.z + (lz + layout.back * (1 - 0.42 * fk) - camPos.z) * mapK,
       );
       look.set(
         look.x + (lx - look.x) * mapK,
