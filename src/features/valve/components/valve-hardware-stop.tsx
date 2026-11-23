@@ -107,12 +107,15 @@ function Floating({
   index,
   reduced,
   size = 1,
+  hit = [2.2, 1.6],
   children,
 }: {
   position: [number, number, number];
   index: number;
   reduced: boolean;
   size?: number;
+  // Tamaño de la zona que recibe el cursor: debe cubrir todo lo que lleva dentro
+  hit?: [number, number];
   children: ReactNode;
 }) {
   const ref = useRef<THREE.Group>(null);
@@ -154,7 +157,7 @@ function Floating({
     >
       {/* Zona de cursor: invisible, pero recibe el puntero (el clic sigue subiendo a la parada) */}
       <mesh position={[0, 0, 0.1]}>
-        <planeGeometry args={[2.2, 1.6]} />
+        <planeGeometry args={hit} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
       {children}
@@ -190,6 +193,7 @@ export function HardwareStop({ reduced }: { reduced: boolean }) {
       <Floating
         position={[-1.7, 2.05, 0.6]}
         index={0}
+        hit={[4.6, 2.2]}
         reduced={reduced}
         size={1.1}
       >
