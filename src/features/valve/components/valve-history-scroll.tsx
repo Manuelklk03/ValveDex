@@ -12,6 +12,7 @@ import {
   Gears,
   Sparkles,
   SteamBadge,
+  VrHeadset,
   ValveBadge,
 } from "./valve-props";
 
@@ -286,6 +287,13 @@ export function HistoryScroll({
         </group>
         <group position={[3.0, -0.2, 0.5]} rotation={[0, 0, 0.95]}>
           <Crowbar length={1.8} />
+        </group>
+        <group
+          position={[3.0, 2.1, 0.5]}
+          rotation={[0.25, -0.5, 0.15]}
+          scale={0.85}
+        >
+          <VrHeadset />
         </group>
         <group position={[1.9, -1.95, 0.6]}>
           <ValveBadge />

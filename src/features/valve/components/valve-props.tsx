@@ -409,6 +409,68 @@ export function Crowbar({ length = 2.4 }: { length?: number }) {
   );
 }
 
+// Gafas de realidad virtual (estilo Valve Index): visor con frontal negro y dos cámaras, juntas de goma, lentes y la
+// diadema con su arco superior
+export function VrHeadset() {
+  const strap = useDisposable(
+    () => new THREE.TorusGeometry(0.62, 0.05, 12, 40, Math.PI),
+  );
+  const visor = useDisposable(
+    () =>
+      new THREE.ExtrudeGeometry(roundedRect(1.5, 0.78, 0.22), {
+        depth: 0.4,
+        bevelEnabled: true,
+        bevelThickness: 0.05,
+        bevelSize: 0.05,
+        bevelSegments: 3,
+      }),
+  );
+  return (
+    <group>
+      <mesh geometry={visor} position={[0, 0, -0.2]} raycast={() => null}>
+        <meshStandardMaterial
+          color="#17191f"
+          roughness={0.35}
+          metalness={0.4}
+        />
+      </mesh>
+      {/* Frontal: franja clara y las dos cámaras */}
+      <mesh position={[0, 0, 0.27]} raycast={() => null}>
+        <boxGeometry args={[1.3, 0.3, 0.02]} />
+        <meshStandardMaterial color="#2c3038" roughness={0.3} metalness={0.6} />
+      </mesh>
+      {[-0.42, 0.42].map((x) => (
+        <mesh
+          key={x}
+          position={[x, 0, 0.29]}
+          rotation={[Math.PI / 2, 0, 0]}
+          raycast={() => null}
+        >
+          <cylinderGeometry args={[0.09, 0.09, 0.03, 24]} />
+          <meshStandardMaterial
+            color="#35d0e8"
+            emissive="#35d0e8"
+            emissiveIntensity={0.6}
+          />
+        </mesh>
+      ))}
+      {/* Arco de la diadema por encima y por detrás */}
+      <mesh
+        geometry={strap}
+        position={[0, 0.3, -0.2]}
+        rotation={[0, 0, 0]}
+        raycast={() => null}
+      >
+        <meshStandardMaterial color="#17191f" roughness={0.6} />
+      </mesh>
+      <mesh position={[0, 0, -0.75]} raycast={() => null}>
+        <boxGeometry args={[1.0, 0.3, 0.12]} />
+        <meshStandardMaterial color="#222" roughness={0.7} />
+      </mesh>
+    </group>
+  );
+}
+
 // Pequeños destellos de polvo alrededor de los objetos (puntos fijos que se mecen con el grupo)
 export function Sparkles() {
   const points = useMemo(() => {
