@@ -6,6 +6,12 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+### Añadido
+
+- La parada de Universos es una mesa rectangular alejada del pasillo, con un mapa 3D en relieve, una zona separada por universo (terreno, decorado y escena propios), caminos entre ellas y parcelas libres para universos futuros. Un selector lleva la cámara en zoom a cada zona y su botón entra al universo.
+- Escenas guionizadas en cada zona con modelos 3D reales. Left 4 Dead ya la tiene: los cuatro supervivientes de la primera y de la segunda parte, espalda con espalda, disparan con su animación, recargan y se enfrentan a una horda con sus infectados especiales.
+- Decodificador de animaciones de modelos de Source (`scripts/lib/mdl-anim.mjs`) y script de horneado (`scripts/bake-scene-models.mjs`): los clips (correr, caer, apuntar, disparar y recargar) se guardan como objetivos de morfado y el arma sigue a la mano.
+
 ## [0.6.0] — 2026-11-23
 
 ### Añadido
