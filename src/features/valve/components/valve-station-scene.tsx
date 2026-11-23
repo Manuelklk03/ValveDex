@@ -19,6 +19,7 @@ import {
 import * as THREE from "three";
 import { Emblem, Stars, makeGlowTexture } from "@/components/ui/space-parts";
 import { ValveCorridor } from "./valve-corridor";
+import { HardwareStop } from "./valve-hardware-stop";
 import { PeopleStop, type StationPerson } from "./valve-people-stop";
 import { HistoryScroll, type HistoryLine } from "./valve-history-scroll";
 import { ValveWall } from "./valve-wall";
@@ -177,53 +178,6 @@ function SteamModule({
           </group>
         ))}
       </group>
-    </group>
-  );
-}
-
-// Sala 03 · Hardware: un plano de laboratorio, con un sólido de alambre cian sobre la cuadrícula
-function HardwareModule({ reduced }: { reduced: boolean }) {
-  const solid = useRef<THREE.Mesh>(null);
-  const { box, frame } = useMemo(() => {
-    const source = new THREE.BoxGeometry(3.2, 2, 1.6);
-    return { box: source, frame: new THREE.EdgesGeometry(source) };
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      box.dispose();
-      frame.dispose();
-    };
-  }, [box, frame]);
-
-  useFrame((_, delta) => {
-    if (solid.current && !reduced) {
-      solid.current.rotation.y += delta * 0.35;
-      solid.current.rotation.x += delta * 0.12;
-    }
-  });
-
-  return (
-    <group>
-      <gridHelper
-        args={[10, 20, "#35d0e8", "#16505e"]}
-        position={[0, -1.7, 0]}
-      />
-      <lineSegments geometry={frame}>
-        <lineBasicMaterial color="#35d0e8" transparent opacity={0.7} />
-      </lineSegments>
-      <mesh ref={solid}>
-        <icosahedronGeometry args={[0.95, 1]} />
-        <meshBasicMaterial color="#35d0e8" wireframe />
-      </mesh>
-      <mesh>
-        <icosahedronGeometry args={[0.42, 1]} />
-        <meshStandardMaterial
-          color="#0d2a33"
-          emissive="#35d0e8"
-          emissiveIntensity={0.9}
-        />
-      </mesh>
     </group>
   );
 }
@@ -420,7 +374,7 @@ function Scene({
       {show(3) && (
         <group position={at(3)}>
           <Hit stop={3} onSelect={onSelect}>
-            <HardwareModule reduced={reduced} />
+            <HardwareStop reduced={reduced} />
           </Hit>
         </group>
       )}
