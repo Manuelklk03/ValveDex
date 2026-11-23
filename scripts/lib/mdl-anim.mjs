@@ -173,6 +173,8 @@ export function createAnimator(vpk, modelPath, folders = []) {
       desc,
       frames: i32(mdl, desc + 16),
       fps: f32(mdl, desc + 8),
+      // Aditiva: lo que no se anima vale «cero» (sin giro ni desplazamiento), no la pose del hueso
+      delta: (mdl.readInt32LE(seq + 12) & 4) !== 0,
     };
   }
 
@@ -218,8 +220,8 @@ export function createAnimator(vpk, modelPath, folders = []) {
     for (let b = 0; b < count; b++) {
       const f = flags(b);
       const src = anim.ctx.bones[b];
-      let quat = src.quat;
-      let pos = src.pos;
+      let quat = anim.delta ? [0, 0, 0, 1] : src.quat;
+      let pos = anim.delta ? [0, 0, 0] : src.pos;
       if (f & FRAME_CONST_ROT) {
         quat = quat48(buf, constant);
         constant += 6;
