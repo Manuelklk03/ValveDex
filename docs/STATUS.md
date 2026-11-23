@@ -4,9 +4,11 @@
 Fuente: Claude Code y Antigravity con acceso al repositorio local; la comprobación del estado de `main` y de las PR es de Claude Code (2026-11-06).
 Este archivo es el punto de continuación entre Claude, ChatGPT y Codex.
 
-## Versión actual: `v0.5.0` (Half-Life como mundos, navegación y paleta por saga)
+## Versión actual: `v0.6.0` (portada como mundo 3D de Valve)
 
-**`v0.5.0` publicada (2026-11-16):** buscador Ctrl+K y menús grandes en la cabecera, portada cinematográfica, paleta de marca y paisaje por saga, ambiente vivo de partículas, y los dossieres de Half-Life convertidos en mundos: material propio de cada juego, puertas en arco en perspectiva 3D, protagonista 3D que aparece con el ratón y una entrada animada propia por juego (ascensor, persiana, compuerta, monitor, tajo, destello, energía vortigaunt y rejilla).
+**`v0.6.0` publicada (2026-11-23):** la portada es un recorrido 3D (pared, esquina y pasillo) con paradas de Historia, Personal, Hardware, Steam y Universos; la parada de Universos es una mesa-mapa con territorios, mapas en relieve y combates en miniatura con modelos reales (PR #185). Comprobado: `npm run check` (244 pruebas) y los cuatro checks del CI. Sin medir en móvil real. **Siguiente (decidido por Manuel):** escenas guionizadas por universo en esa mesa (Left 4 Dead, Counter-Strike, Portal, Team Fortress con modelos de TFC y Half-Life con cuatro épocas), en PR abierta sin fusionar.
+
+**`v0.5.0` (2026-11-16):** buscador Ctrl+K y menús grandes en la cabecera, portada cinematográfica, paleta de marca y paisaje por saga, ambiente vivo de partículas, y los dossieres de Half-Life convertidos en mundos: material propio de cada juego, puertas en arco en perspectiva 3D, protagonista 3D que aparece con el ratón y una entrada animada propia por juego (ascensor, persiana, compuerta, monitor, tajo, destello, energía vortigaunt y rejilla).
 
 **`v0.4.0` publicada (2026-11-15):** rediseño de universos, dossieres, hubs y fichas; Valve y Steam renovados; modelos 3D de Team Fortress 2, Left 4 Dead, Portal y Counter-Strike: Source; unas 810 fichas con Portal y Counter-Strike abiertos; dossieres de Team Fortress y Counter-Strike por equipos; ambiente vivo con partículas; paleta de marca e iconos por saga. Tag anotado y GitHub Release creados a petición de Manuel (el 2026-11-15, sobre el merge de la PR de preparación).
 
@@ -829,7 +831,7 @@ Decisión de Manuel (2026-10-16): versionado semántico con tags de Git y GitHub
 | `v1.0.0` | **Todo el universo Half-Life**: todos sus juegos, expansiones y episodios, con proyectos cancelados y mods, revisado y desplegado |
 | `v1.x.0` | Cada universo nuevo (Portal, Team Fortress…) o funcionalidad grande posterior                                                     |
 
-Publicadas: **`v0.1.0`** (2026-10-23, esqueleto), **`v0.2.0`** (2026-10-26, bloque Half-Life 1), **`v0.3.0`** (2026-11-05, bloque Valve, Steam y apertura de la etapa Source) **`v0.4.0`** (2026-11-15, universos rediseñados, Portal y Counter-Strike abiertos, modelos de Source, equipos y paleta por saga) y **`v0.5.0`** (2026-11-16, Half-Life como mundos con entradas animadas, navegación y buscador).
+Publicadas: **`v0.1.0`** (2026-10-23, esqueleto), **`v0.2.0`** (2026-10-26, bloque Half-Life 1), **`v0.3.0`** (2026-11-05, bloque Valve, Steam y apertura de la etapa Source) **`v0.4.0`** (2026-11-15, universos rediseñados, Portal y Counter-Strike abiertos, modelos de Source, equipos y paleta por saga) **`v0.5.0`** (2026-11-16, Half-Life como mundos con entradas animadas, navegación y buscador) y **`v0.6.0`** (2026-11-23, portada como mundo 3D de Valve).
 
 Cómo se crea una versión, cuando Manuel lo indique (siempre sobre `main` actualizado y con `npm run check` y `npm run build` superados):
 
