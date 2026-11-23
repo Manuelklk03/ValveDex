@@ -1,11 +1,17 @@
 "use client";
 
-import { RoundedBox } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, type ReactNode } from "react";
 import * as THREE from "three";
 import { hash } from "./valve-parts";
-import { STEAM_PATH, Sparkles, ValveBadge, VrHeadset } from "./valve-props";
+import {
+  SteamController,
+  SteamDeck,
+  SteamMachine,
+  VrController,
+  VrHeadset,
+} from "./valve-devices";
+import { Sparkles, ValveBadge } from "./valve-props";
 
 // Parada 3 · Hardware: el logo de Valve en el centro, con billetes que le caen encima, y a su alrededor los dispositivos que
 // ha fabricado la empresa flotando en 3D. Cada uno se mece, gira despacio y, con el cursor encima, se acerca y se enciende
@@ -156,168 +162,6 @@ function Floating({
   );
 }
 
-const dark = { color: "#2b303b", metalness: 0.5, roughness: 0.3 };
-
-// Steam Machine: caja compacta negra con la rejilla frontal y una franja de luz
-function SteamMachine() {
-  return (
-    <group>
-      <RoundedBox
-        args={[1.1, 0.95, 1.1]}
-        radius={0.1}
-        smoothness={4}
-        raycast={() => null}
-      >
-        <meshStandardMaterial {...dark} />
-      </RoundedBox>
-      {Array.from({ length: 9 }, (_, i) => (
-        <mesh
-          key={i}
-          position={[0, 0.3 - i * 0.07, 0.555]}
-          raycast={() => null}
-        >
-          <boxGeometry args={[0.78, 0.022, 0.01]} />
-          <meshStandardMaterial color="#05060a" />
-        </mesh>
-      ))}
-      <mesh position={[0, -0.36, 0.556]} raycast={() => null}>
-        <boxGeometry args={[0.5, 0.025, 0.008]} />
-        <meshBasicMaterial color="#35d0e8" />
-      </mesh>
-      <mesh position={[0.38, 0.4, 0.56]} raycast={() => null}>
-        <circleGeometry args={[0.025, 12]} />
-        <meshBasicMaterial color="#ffffff" />
-      </mesh>
-    </group>
-  );
-}
-
-function makeDeckScreen() {
-  const canvas = document.createElement("canvas");
-  canvas.width = 512;
-  canvas.height = 320;
-  const g = canvas.getContext("2d");
-  if (g) {
-    const sky = g.createLinearGradient(0, 0, 0, 320);
-    sky.addColorStop(0, "#1b2838");
-    sky.addColorStop(1, "#0b1119");
-    g.fillStyle = sky;
-    g.fillRect(0, 0, 512, 320);
-    g.save();
-    g.translate(176, 40);
-    g.scale(6.5, 6.5);
-    g.fillStyle = "#c7d5e0";
-    g.fill(new Path2D(STEAM_PATH));
-    g.restore();
-    g.fillStyle = "#66c0f4";
-    g.fillRect(332, 120, 140, 14);
-    g.fillRect(332, 150, 100, 10);
-  }
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  return texture;
-}
-
-// Steam Deck: consola portátil con la pantalla en el centro, dos sticks, cruceta y cuatro botones
-function SteamDeck() {
-  const screen = useMemo(() => makeDeckScreen(), []);
-  useEffect(() => () => screen.dispose(), [screen]);
-  const face = ["#e5513c", "#5fbf66", "#4aa3ff", "#f3c64a"];
-  return (
-    <group>
-      <RoundedBox
-        args={[1.9, 0.72, 0.16]}
-        radius={0.12}
-        smoothness={4}
-        raycast={() => null}
-      >
-        <meshStandardMaterial {...dark} />
-      </RoundedBox>
-      <mesh position={[0, 0, 0.082]} raycast={() => null}>
-        <planeGeometry args={[1.1, 0.7]} />
-        <meshBasicMaterial map={screen} toneMapped={false} />
-      </mesh>
-      {[-1, 1].map((side) => (
-        <group key={side}>
-          <mesh
-            position={[side * 0.72, 0.12, 0.1]}
-            rotation={[Math.PI / 2, 0, 0]}
-            raycast={() => null}
-          >
-            <cylinderGeometry args={[0.1, 0.1, 0.06, 20]} />
-            <meshStandardMaterial color="#0a0b0e" roughness={0.5} />
-          </mesh>
-          <mesh position={[side * 0.72, -0.17, 0.09]} raycast={() => null}>
-            <circleGeometry args={[0.09, 20]} />
-            <meshStandardMaterial color="#2a2d34" />
-          </mesh>
-        </group>
-      ))}
-      {face.map((color, i) => {
-        const a = (i / 4) * Math.PI * 2;
-        return (
-          <mesh
-            key={color}
-            position={[
-              0.72 + Math.cos(a) * 0.1,
-              0.02 + Math.sin(a) * 0.1 + 0.2,
-              0.09,
-            ]}
-            raycast={() => null}
-          >
-            <circleGeometry args={[0.032, 12]} />
-            <meshBasicMaterial color={color} />
-          </mesh>
-        );
-      })}
-    </group>
-  );
-}
-
-// Steam Controller: cuerpo con dos superficies táctiles circulares, dos sticks y botones
-function SteamController() {
-  return (
-    <group>
-      <RoundedBox
-        args={[1.3, 0.62, 0.22]}
-        radius={0.16}
-        smoothness={4}
-        raycast={() => null}
-      >
-        <meshStandardMaterial
-          color="#1b1d23"
-          metalness={0.4}
-          roughness={0.35}
-        />
-      </RoundedBox>
-      {[-1, 1].map((side) => (
-        <group key={side}>
-          <mesh position={[side * 0.4, -0.05, 0.115]} raycast={() => null}>
-            <circleGeometry args={[0.17, 28]} />
-            <meshStandardMaterial
-              color="#3a3d45"
-              metalness={0.6}
-              roughness={0.3}
-            />
-          </mesh>
-          <mesh
-            position={[side * 0.17, 0.17, 0.13]}
-            rotation={[Math.PI / 2, 0, 0]}
-            raycast={() => null}
-          >
-            <cylinderGeometry args={[0.07, 0.07, 0.07, 18]} />
-            <meshStandardMaterial color="#0a0b0e" />
-          </mesh>
-        </group>
-      ))}
-      <mesh position={[0, 0.06, 0.115]} raycast={() => null}>
-        <circleGeometry args={[0.05, 14]} />
-        <meshBasicMaterial color="#35d0e8" />
-      </mesh>
-    </group>
-  );
-}
-
 export function HardwareStop({ reduced }: { reduced: boolean }) {
   const logo = useRef<THREE.Group>(null);
   const light = useRef<THREE.PointLight>(null);
@@ -349,13 +193,21 @@ export function HardwareStop({ reduced }: { reduced: boolean }) {
         reduced={reduced}
         size={1.1}
       >
-        <VrHeadset />
+        <group scale={0.8}>
+          <VrHeadset />
+          <group position={[-1.5, -0.6, 0.3]} rotation={[0.3, 0.4, 0.2]}>
+            <VrController side={-1} />
+          </group>
+          <group position={[1.5, -0.6, 0.3]} rotation={[0.3, -0.4, -0.2]}>
+            <VrController />
+          </group>
+        </group>
       </Floating>
       <Floating position={[2.9, 1.7, 0.5]} index={1} reduced={reduced}>
         <SteamMachine />
       </Floating>
       <Floating
-        position={[-1.55, -2.15, 0.7]}
+        position={[-0.9, -2.25, 0.8]}
         index={2}
         reduced={reduced}
         size={1.05}

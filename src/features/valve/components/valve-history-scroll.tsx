@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { Emblem } from "@/components/ui/space-parts";
 import { hash } from "./valve-parts";
+import { VrHeadset } from "./valve-devices";
 import {
   Crowbar,
   Crt,
@@ -12,7 +13,6 @@ import {
   Gears,
   Sparkles,
   SteamBadge,
-  VrHeadset,
   ValveBadge,
 } from "./valve-props";
 
