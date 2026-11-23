@@ -6,6 +6,16 @@ Seguimos la organización de [Keep a Changelog](https://keepachangelog.com/en/1.
 
 ## Sin publicar
 
+## [0.6.0] — 2026-11-23
+
+### Añadido
+
+- La portada es un recorrido 3D del mundo de Valve: pared con tuberías y válvula, esquina y pasillo con cinco paradas (Historia, Personal, Hardware, Steam y Universos), intro opcional y cabecera y pie que se mezclan con la paleta de cada página.
+- Historia: pergamino que se escribe solo, menciones enlazadas a sagas, personas y hardware, engranajes que encajan y dispositivos modelados (disquete, CRT, Steam Deck, Steam Machine y cascos VR).
+- Personal: tablero de corcho con expedientes enlazados a cada persona, polaroids, notas y retablo en relieve.
+- Steam por épocas con maqueta del cliente de cada una, año y cápsulas orbitando.
+- Universos: mesa-mapa con un territorio por saga, maquetas en relieve de mapas que rotan, combates en miniatura con modelos 3D reales, fichas de juego con su icono de línea y cámara que se acerca al territorio bajo el cursor.
+
 ### Corregido
 
 - Las migas de pan ya no se parten en las cabeceras con columna estrecha (la barra quedaba al final de línea): miden lo que miden sus pasos y solo saltan de línea en pantallas pequeñas.
