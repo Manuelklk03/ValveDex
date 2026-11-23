@@ -2,7 +2,13 @@
 
 import { useFrame } from "@react-three/fiber";
 import { Billboard } from "@react-three/drei";
-import { useEffect, useMemo, useRef, type MutableRefObject } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MutableRefObject,
+} from "react";
 import * as THREE from "three";
 import { Emblem } from "@/components/ui/space-parts";
 import { Sparkles } from "./valve-props";
@@ -247,14 +253,20 @@ function SagaWorld({
   position,
   reduced,
   size,
-  onOpen,
+  grow,
+  selected,
+  onTap,
 }: {
   saga: SagaWorldData;
   glow: THREE.Texture;
   position: [number, number, number];
   reduced: boolean;
   size: number;
-  onOpen: (slug: string) => void;
+  // Cuánto crece al abrirse (más en pantallas estrechas, para que las placas se lean)
+  grow: number;
+  // Elegida con un toque: en táctil abre las placas sin entrar todavía
+  selected: boolean;
+  onTap: (slug: string) => void;
 }) {
   const root = useRef<THREE.Group>(null);
   const orbit = useRef<THREE.Group>(null);
@@ -270,13 +282,14 @@ function SagaWorld({
 
   useFrame((state, delta) => {
     hover.current +=
-      (target.current - hover.current) * (1 - Math.exp(-8 * delta));
+      ((target.current || (selected ? 1 : 0)) - hover.current) *
+      (1 - Math.exp(-8 * delta));
     const h = hover.current;
     const t = reduced ? 0 : state.clock.elapsedTime;
     if (root.current) {
       root.current.position.y =
         position[1] + Math.sin(t * 0.8 + position[0]) * 0.1;
-      root.current.scale.setScalar(size * (1 + h * 0.6));
+      root.current.scale.setScalar(size * (1 + h * grow));
       root.current.position.z = position[2] + h * 1.0;
     }
     if (orbit.current && !reduced)
@@ -295,7 +308,7 @@ function SagaWorld({
       }}
       onClick={(event) => {
         event.stopPropagation();
-        onOpen(saga.slug);
+        onTap(saga.slug);
       }}
     >
       {/* Zona de cursor */}
@@ -363,6 +376,14 @@ export function SagasStop({
   reduced: boolean;
   onOpen: (slug: string) => void;
 }) {
+  // En táctil no hay hover: un primer toque abre las placas de la saga y el segundo entra a su universo
+  const [picked, setPicked] = useState<string | null>(null);
+  const tap = (slug: string) => {
+    const touch = window.matchMedia("(pointer: coarse)").matches;
+    if (touch && picked !== slug) setPicked(slug);
+    else onOpen(slug);
+  };
+
   return (
     <group>
       {/* Suelo negro con una cuadrícula tenue: el «mapa» sobre el que está cada mundo */}
@@ -373,15 +394,23 @@ export function SagasStop({
       {sagas.map((saga, i) => {
         // Cinco mundos al tresbolillo, lo bastante separados para que las órbitas de uno no entren en el vecino; el hueco
         // de la izquierda queda libre para el texto
-        const spots: [number, number][] = [
-          [-0.1, 1.7],
-          [3.1, 1.7],
-          [1.5, -0.1],
-          [-0.1, -1.9],
-          [3.1, -1.9],
-        ];
+        const spots: [number, number][] = portrait
+          ? // En vertical, arriba del texto
+            [
+              [-0.95, 2.5],
+              [0.95, 2.5],
+              [0, 1.5],
+              [-0.95, 0.5],
+              [0.95, 0.5],
+            ]
+          : [
+              [-0.1, 1.7],
+              [3.1, 1.7],
+              [1.5, -0.1],
+              [-0.1, -1.9],
+              [3.1, -1.9],
+            ];
         const [sx, sy] = spots[i % spots.length];
-        const k = portrait ? 0.6 : 1;
         return (
           <SagaWorld
             key={saga.id}
@@ -389,12 +418,10 @@ export function SagasStop({
             glow={glow}
             reduced={reduced}
             size={portrait ? 0.34 : 0.52}
-            onOpen={onOpen}
-            position={[
-              sx * k - (portrait ? 1.4 : 0),
-              sy * (portrait ? 1.1 : 1),
-              0.6,
-            ]}
+            grow={portrait ? 1.1 : 0.6}
+            selected={picked === saga.id || picked === saga.slug}
+            onTap={tap}
+            position={[sx, sy, 0.6]}
           />
         );
       })}
