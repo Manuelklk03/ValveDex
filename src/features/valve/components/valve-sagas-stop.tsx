@@ -270,6 +270,7 @@ function SagaWorld({
 }) {
   const root = useRef<THREE.Group>(null);
   const orbit = useRef<THREE.Group>(null);
+  const frame = useRef(0);
   const hover = useRef(0);
   const target = useRef(0);
   const count = saga.games.length;
@@ -287,10 +288,19 @@ function SagaWorld({
     const h = hover.current;
     const t = reduced ? 0 : state.clock.elapsedTime;
     if (root.current) {
-      root.current.position.y =
-        position[1] + Math.sin(t * 0.8 + position[0]) * 0.1;
+      root.current.position.y = Math.sin(t * 0.8 + position[0]) * 0.1;
       root.current.scale.setScalar(size * (1 + h * grow));
-      root.current.position.z = position[2] + h * 1.0;
+      root.current.position.z = h * 1.0;
+      // Lo que se ve crece al abrirse, pero solo la zona fija de abajo recibe el cursor: así un mundo abierto no tapa
+      // el toque de su vecino. Se repasa de vez en cuando porque el emblema carga después
+      frame.current += 1;
+      if (frame.current % 30 === 1) {
+        root.current.traverse((object) => {
+          if (object instanceof THREE.Mesh || object instanceof THREE.Sprite) {
+            object.raycast = () => null;
+          }
+        });
+      }
     }
     if (orbit.current && !reduced)
       orbit.current.rotation.y += delta * (0.35 + h * 1.2);
@@ -298,7 +308,6 @@ function SagaWorld({
 
   return (
     <group
-      ref={root}
       position={position}
       onPointerOver={() => {
         target.current = 1;
@@ -311,52 +320,54 @@ function SagaWorld({
         onTap(saga.slug);
       }}
     >
-      {/* Zona de cursor */}
+      {/* Zona de cursor fija: no crece con el mundo */}
       <mesh position={[0, 0, 0.1]}>
-        <circleGeometry args={[1.5, 24]} />
+        <circleGeometry args={[size * 1.55, 24]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
-      <sprite scale={[3.6, 3.6, 1]} raycast={() => null}>
-        <spriteMaterial
-          map={glow}
-          color={saga.accent}
-          transparent
-          opacity={0.55}
-          depthWrite={false}
+      <group ref={root}>
+        <sprite scale={[3.6, 3.6, 1]} raycast={() => null}>
+          <spriteMaterial
+            map={glow}
+            color={saga.accent}
+            transparent
+            opacity={0.55}
+            depthWrite={false}
+          />
+        </sprite>
+        <Theme
+          id={saga.id}
+          accent={saga.accent}
+          hover={hover}
+          reduced={reduced}
         />
-      </sprite>
-      <Theme
-        id={saga.id}
-        accent={saga.accent}
-        hover={hover}
-        reduced={reduced}
-      />
-      <Emblem src={saga.emblem} color="#ffffff" size={1.35} depthTest />
-      {/* Los juegos de la saga, en una órbita inclinada */}
-      <group rotation={[0.45, 0, 0.1]}>
-        <group ref={orbit}>
-          {saga.games.map((game, i) => {
-            // Hasta 6 juegos en una órbita; con más, la mitad pasa a una segunda más ancha y más alta
-            const outer = count > 6 && i % 2 === 1;
-            const ring = count > 6 ? Math.ceil(count / 2) : count;
-            const index = count > 6 ? Math.floor(i / 2) : i;
-            const ang =
-              (index / ring) * Math.PI * 2 + (outer ? Math.PI / ring : 0);
-            const radius = outer ? 2.3 : 1.8;
-            return (
-              <GameLabel
-                key={game.name}
-                game={game}
-                accent={saga.accent}
-                hover={hover}
-                position={[
-                  Math.cos(ang) * radius,
-                  outer ? 0.35 : 0,
-                  Math.sin(ang) * radius,
-                ]}
-              />
-            );
-          })}
+        <Emblem src={saga.emblem} color="#ffffff" size={1.35} depthTest />
+        {/* Los juegos de la saga, en una órbita inclinada */}
+        <group rotation={[0.45, 0, 0.1]}>
+          <group ref={orbit}>
+            {saga.games.map((game, i) => {
+              // Hasta 6 juegos en una órbita; con más, la mitad pasa a una segunda más ancha y más alta
+              const outer = count > 6 && i % 2 === 1;
+              const ring = count > 6 ? Math.ceil(count / 2) : count;
+              const index = count > 6 ? Math.floor(i / 2) : i;
+              const ang =
+                (index / ring) * Math.PI * 2 + (outer ? Math.PI / ring : 0);
+              const radius = outer ? 2.3 : 1.8;
+              return (
+                <GameLabel
+                  key={game.name}
+                  game={game}
+                  accent={saga.accent}
+                  hover={hover}
+                  position={[
+                    Math.cos(ang) * radius,
+                    outer ? 0.35 : 0,
+                    Math.sin(ang) * radius,
+                  ]}
+                />
+              );
+            })}
+          </group>
         </group>
       </group>
     </group>
