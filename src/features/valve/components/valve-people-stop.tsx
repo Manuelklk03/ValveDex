@@ -1,7 +1,7 @@
 "use client";
 
 import { useTexture } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { STEAM_PATH } from "./valve-props";
@@ -695,7 +695,7 @@ function Frame({ width, height }: { width: number; height: number }) {
 const DRAWN_W = 3.2;
 const DRAWN_H = (DRAWN_W * H) / W;
 // Ancho del retablo cuando es la imagen real (apaisada)
-const IMAGE_W = 4.4;
+const IMAGE_W = 5.2;
 
 // Retablo de respaldo, dibujado por código, mientras no esté la imagen real del «rey de Steam»
 function DrawnPortrait({ reduced }: { reduced: boolean }) {
@@ -736,6 +736,8 @@ function ImagePortrait({ src, reduced }: { src: string; reduced: boolean }) {
     texture.anisotropy = 8;
   });
   const group = useRef<THREE.Group>(null);
+  // En pantallas estrechas el retablo se reduce y sube, para caber y dejar sitio al texto
+  const narrow = useThree((state) => state.size.width / state.size.height < 1);
   const image = map.image as { width: number; height: number };
   const height = (IMAGE_W * image.height) / image.width;
 
@@ -747,11 +749,12 @@ function ImagePortrait({ src, reduced }: { src: string; reduced: boolean }) {
     const tilt = reduced ? 0 : -state.pointer.y * 0.14;
     group.current.rotation.y += (turn - group.current.rotation.y) * k;
     group.current.rotation.x += (tilt - group.current.rotation.x) * k;
-    group.current.position.y = -0.05 + Math.sin(t * 0.8) * 0.06;
+    group.current.position.y =
+      (narrow ? 0.95 : -0.05) + Math.sin(t * 0.8) * 0.06;
   });
 
   return (
-    <group ref={group}>
+    <group ref={group} scale={narrow ? 0.55 : 1}>
       {/* Pulsable: el clic sube a la zona de la parada */}
       <mesh position={[0, 0, -0.5]}>
         <planeGeometry args={[IMAGE_W, height]} />
