@@ -115,6 +115,7 @@ export function ValveStation({
       className={styles["station"]}
       aria-label="Entrada a ValveDex"
       tabIndex={-1}
+      data-world-home
       style={
         {
           "--station-accent": accents[active] ?? accents[0],
