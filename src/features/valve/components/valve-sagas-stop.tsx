@@ -21,50 +21,86 @@ export type SagaWorldData = {
   games: SagaGame[];
 };
 
-function makeLabel(text: string, accent: string) {
+// Nombre corto para la placa: las sagas se abrevian para que quepa en grande
+function shortName(name: string) {
+  return name
+    .replace("Half-Life", "HL")
+    .replace("Counter-Strike", "CS")
+    .replace("Team Fortress", "TF")
+    .replace("Left 4 Dead", "L4D");
+}
+
+// Placa de dos líneas: el nombre en grande y el año debajo
+function makeLabel(game: SagaGame, accent: string) {
   const canvas = document.createElement("canvas");
-  canvas.width = 384;
-  canvas.height = 84;
+  canvas.width = 320;
+  canvas.height = 112;
   const g = canvas.getContext("2d");
   if (g) {
-    g.fillStyle = "rgba(8,9,12,0.88)";
+    g.fillStyle = "rgba(8,9,12,0.94)";
     g.beginPath();
-    g.roundRect(4, 4, 376, 76, 14);
+    g.roundRect(4, 4, 312, 104, 16);
     g.fill();
     g.strokeStyle = accent;
-    g.lineWidth = 3;
+    g.lineWidth = 4;
     g.stroke();
     g.fillStyle = "#f3efe6";
-    g.font = "bold 30px system-ui, sans-serif";
+    g.font = "bold 36px system-ui, sans-serif";
     g.textAlign = "center";
-    const label = text.length > 22 ? `${text.slice(0, 21)}…` : text;
-    g.fillText(label, 192, 52);
+    const name = shortName(game.name);
+    g.fillText(name.length > 20 ? `${name.slice(0, 19)}…` : name, 160, 54);
+    g.fillStyle = accent;
+    g.font = "bold 28px system-ui, sans-serif";
+    g.fillText(String(game.year), 160, 92);
   }
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
   return texture;
 }
 
+// En reposo, cada juego es un punto de color en la órbita; con el cursor sobre la saga se abre en una placa legible
 function GameLabel({
   game,
   accent,
   position,
+  hover,
 }: {
   game: SagaGame;
   accent: string;
   position: [number, number, number];
+  hover: MutableRefObject<number>;
 }) {
-  const map = useMemo(
-    () => makeLabel(`${game.name} · ${game.year}`, accent),
-    [game, accent],
-  );
+  const map = useMemo(() => makeLabel(game, accent), [game, accent]);
+  const pill = useRef<THREE.MeshBasicMaterial>(null);
+  const dot = useRef<THREE.MeshBasicMaterial>(null);
   useEffect(() => () => map.dispose(), [map]);
+  useFrame(() => {
+    const h = hover.current;
+    if (pill.current) pill.current.opacity = h;
+    if (dot.current) dot.current.opacity = 1 - h;
+  });
   return (
     <group position={position}>
       <Billboard>
         <mesh raycast={() => null}>
-          <planeGeometry args={[1.3, 0.285]} />
-          <meshBasicMaterial map={map} transparent toneMapped={false} />
+          <circleGeometry args={[0.07, 14]} />
+          <meshBasicMaterial
+            ref={dot}
+            color={accent}
+            transparent
+            toneMapped={false}
+          />
+        </mesh>
+        <mesh raycast={() => null} renderOrder={10}>
+          <planeGeometry args={[1.35, 0.47]} />
+          <meshBasicMaterial
+            ref={pill}
+            map={map}
+            transparent
+            opacity={0}
+            depthTest={false}
+            toneMapped={false}
+          />
         </mesh>
       </Billboard>
     </group>
@@ -240,7 +276,8 @@ function SagaWorld({
     if (root.current) {
       root.current.position.y =
         position[1] + Math.sin(t * 0.8 + position[0]) * 0.1;
-      root.current.scale.setScalar(size * (1 + h * 0.18));
+      root.current.scale.setScalar(size * (1 + h * 0.6));
+      root.current.position.z = position[2] + h * 1.0;
     }
     if (orbit.current && !reduced)
       orbit.current.rotation.y += delta * (0.35 + h * 1.2);
@@ -298,6 +335,7 @@ function SagaWorld({
                 key={game.name}
                 game={game}
                 accent={saga.accent}
+                hover={hover}
                 position={[
                   Math.cos(ang) * radius,
                   outer ? 0.35 : 0,
