@@ -238,6 +238,10 @@
   --dot: var(--ink);
 }
 
+.station__button[hidden] {
+  display: none;
+}
+
 .station__actions {
   display: flex;
   flex-wrap: wrap;
