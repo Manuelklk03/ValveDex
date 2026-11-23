@@ -29,6 +29,8 @@ export type Pose = {
   // de 0 a 1 (se queda en el último fotograma)
   clip?: string;
   phase?: number;
+  // Al cambiar de clip (correr a caer) se funde con el anterior en vez de saltar de pose
+  blend?: { clip: string; phase: number; weight: number };
 };
 export type Actor = {
   model: Model;
@@ -79,10 +81,15 @@ function findRig(group: THREE.Group): Rig | null {
   return meshes.length > 0 && clips ? { meshes, clips, held } : null;
 }
 
-// Coloca el actor en un instante de un clip: mezcla los dos fotogramas vecinos
-function playClip(rig: Rig, name: string | undefined, phase: number) {
+// Pesos de un clip en un instante: mezcla los dos fotogramas vecinos
+function addClip(
+  rig: Rig,
+  name: string | undefined,
+  phase: number,
+  weight: number,
+) {
   const clip = rig.clips[name ?? Object.keys(rig.clips)[0]];
-  if (!clip) return;
+  if (!clip || weight <= 0) return null;
   const pos = clip.loop
     ? (((phase % 1) + 1) % 1) * clip.count
     : Math.min(1, Math.max(0, phase)) * (clip.count - 1);
@@ -91,16 +98,29 @@ function playClip(rig: Rig, name: string | undefined, phase: number) {
   const f = pos - Math.floor(pos);
   for (const mesh of rig.meshes) {
     const w = mesh.morphTargetInfluences!;
-    w.fill(0);
-    w[clip.start + a] = 1 - f;
-    w[clip.start + b] += f;
+    w[clip.start + a] += (1 - f) * weight;
+    w[clip.start + b] += f * weight;
   }
+  return { clip, a, b, f };
+}
+
+// Coloca el actor en un instante de un clip (y, si se está fundiendo desde otro, en una mezcla de los dos)
+function playClip(
+  rig: Rig,
+  name: string | undefined,
+  phase: number,
+  blend?: Pose["blend"],
+) {
+  for (const mesh of rig.meshes) mesh.morphTargetInfluences!.fill(0);
+  const mixed = blend ? Math.min(1, Math.max(0, blend.weight)) : 0;
+  if (blend && mixed > 0) addClip(rig, blend.clip, blend.phase, mixed);
+  const main = addClip(rig, name, phase, 1 - mixed);
   // El arma sigue a la mano: se mezclan las matrices de los dos fotogramas
-  const from = clip.attach?.[a];
-  const to = clip.attach?.[b];
-  if (rig.held && from && to) {
+  const from = main?.clip.attach?.[main.a];
+  const to = main?.clip.attach?.[main.b];
+  if (rig.held && main && from && to) {
     const e = rig.held.matrix.elements;
-    for (let k = 0; k < 16; k++) e[k] = from[k] + (to[k] - from[k]) * f;
+    for (let k = 0; k < 16; k++) e[k] = from[k] + (to[k] - from[k]) * main.f;
     rig.held.visible = true;
     rig.held.matrixWorldNeedsUpdate = true;
   }
@@ -207,7 +227,7 @@ export function SceneAction({
         rigs.current[i] = findRig(g);
       }
       const rig = rigs.current[i];
-      if (rig) playClip(rig, p.clip, p.phase ?? 0);
+      if (rig) playClip(rig, p.clip, p.phase ?? 0, p.blend);
       g.visible = s > 0.02;
 
       if (reduced || !a.fire || !p.aim || !g.visible) return;

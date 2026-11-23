@@ -67,6 +67,14 @@ function rusher(c: Rush): Actor {
         phase: alive
           ? u * 0.95 + c.seed * 0.37
           : Math.min(1, (p - kill) / 0.12),
+        // Los primeros instantes de la caída se funden con la postura de carrera con la que murió
+        blend: alive
+          ? undefined
+          : {
+              clip: "run",
+              phase: (k + kill - c.phase) * c.cycle * 0.95 + c.seed * 0.37,
+              weight: 1 - Math.min(1, (p - kill) / 0.06),
+            },
         scale: scale * (c.scale ?? 1),
         // Sin clip de caída (algunos especiales) se vuelca el cuerpo entero
         fall: !alive && c.topple ? Math.min(1, (p - kill) / 0.07) : 0,
