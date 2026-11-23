@@ -1,5 +1,8 @@
 /* Ruta de navegación en monoespaciada, como las fichas técnicas; la barra la pone el CSS */
 .breadcrumb {
+  /* Mide lo que miden sus pasos aunque la columna del hero sea estrecha: solo se parte en pantallas pequeñas */
+  width: max-content;
+  max-width: calc(100vw - 2rem);
   font-family: var(--font-plex-mono), monospace;
   font-size: 0.8125rem;
 }
@@ -13,6 +16,7 @@
 .breadcrumb__item {
   display: inline-flex;
   align-items: center;
+  white-space: nowrap;
 }
 
 /* Separador entre pasos: decorativo, por eso va en CSS y no en el texto. Va al final de cada paso (no al principio del siguiente) para que, al saltar de línea, ninguna ruta empiece con la barra */

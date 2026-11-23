@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { ChromeScroll } from "@/components/ui/chrome-scroll";
 import { MainNav } from "@/features/navigation/components/main-nav";
 import { SearchPalette } from "@/features/search/components/search-palette";
 import { Archivo, IBM_Plex_Mono } from "next/font/google";
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${archivo.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <ChromeScroll />
         <SiteHeader nav={<MainNav />} search={<SearchPalette />} />
         {children}
         <SiteFooter />

@@ -55,6 +55,7 @@ export function SiteHeader({ nav, search }: SiteHeaderProps) {
           {search}
         </nav>
       </div>
+      <div className={styles["site-header__progress"]} aria-hidden="true" />
     </header>
   );
 }

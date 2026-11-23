@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 import { AtmosphereCanvas } from "@/components/ui/atmosphere-canvas";
+import { ChromeSync } from "@/components/ui/chrome-sync";
 import { atmospheres } from "@/data/atmospheres";
 import { universePalettes } from "@/data/universe-palettes";
 import styles from "./universe-theme.module.css";
@@ -45,7 +46,12 @@ export function UniverseTheme({ universeId, children }: UniverseThemeProps) {
     : undefined;
 
   return (
-    <div className={className} style={style}>
+    <div className={className} style={style} data-chrome-theme>
+      {palette && (
+        // Con el HTML ya van los colores de la cabecera y el pie: sin primer pintado con la paleta de Valve
+        <style>{`:root{--chrome-background:${palette.background};--chrome-foreground:${palette.foreground};--chrome-surface:${palette.surface};--chrome-border:${palette.border};--chrome-muted:${palette.muted};--chrome-accent:${palette.accent}}`}</style>
+      )}
+      <ChromeSync />
       {atmosphere && <AtmosphereCanvas atmosphere={atmosphere} />}
       {children}
     </div>
