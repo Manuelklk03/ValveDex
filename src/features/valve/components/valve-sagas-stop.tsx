@@ -1,7 +1,7 @@
 "use client";
 
 import { useFrame } from "@react-three/fiber";
-import { Billboard } from "@react-three/drei";
+import { Billboard, Line } from "@react-three/drei";
 import {
   useEffect,
   useMemo,
@@ -270,6 +270,7 @@ function SagaWorld({
 }) {
   const root = useRef<THREE.Group>(null);
   const orbit = useRef<THREE.Group>(null);
+  const planet = useRef<THREE.Group>(null);
   const frame = useRef(0);
   const hover = useRef(0);
   const target = useRef(0);
@@ -304,6 +305,10 @@ function SagaWorld({
     }
     if (orbit.current && !reduced)
       orbit.current.rotation.y += delta * (0.35 + h * 1.2);
+    if (planet.current && !reduced) {
+      planet.current.rotation.y += delta * (0.15 + h * 0.6);
+      planet.current.rotation.x = Math.sin(t * 0.3) * 0.2;
+    }
   });
 
   return (
@@ -341,9 +346,49 @@ function SagaWorld({
           hover={hover}
           reduced={reduced}
         />
+        {/* Planeta: esfera de malla del color de la saga, con un núcleo tenue, detrás del emblema */}
+        <group ref={planet} position={[0, 0, -0.9]}>
+          <mesh raycast={() => null}>
+            <icosahedronGeometry args={[0.95, 2]} />
+            <meshBasicMaterial
+              color={saga.accent}
+              wireframe
+              transparent
+              opacity={0.28}
+              toneMapped={false}
+            />
+          </mesh>
+          <mesh raycast={() => null}>
+            <sphereGeometry args={[0.9, 24, 16]} />
+            <meshBasicMaterial
+              color={saga.accent}
+              transparent
+              opacity={0.1}
+              depthWrite={false}
+              toneMapped={false}
+            />
+          </mesh>
+        </group>
         <Emblem src={saga.emblem} color="#ffffff" size={1.35} depthTest />
         {/* Los juegos de la saga, en una órbita inclinada */}
         <group rotation={[0.45, 0, 0.1]}>
+          {/* Trazo de la órbita de cada anillo de juegos */}
+          {[1.8, ...(count > 6 ? [2.3] : [])].map((radius) => (
+            <mesh
+              key={radius}
+              rotation={[Math.PI / 2, 0, 0]}
+              position={[0, radius > 2 ? 0.35 : 0, 0]}
+              raycast={() => null}
+            >
+              <torusGeometry args={[radius, 0.008, 6, 96]} />
+              <meshBasicMaterial
+                color={saga.accent}
+                transparent
+                opacity={0.35}
+                toneMapped={false}
+              />
+            </mesh>
+          ))}
           <group ref={orbit}>
             {saga.games.map((game, i) => {
               // Hasta 6 juegos en una órbita; con más, la mitad pasa a una segunda más ancha y más alta
@@ -374,6 +419,16 @@ function SagaWorld({
   );
 }
 
+// Pares de mundos unidos por un hilo (por posición)
+const LINKS: [number, number][] = [
+  [0, 1],
+  [0, 2],
+  [1, 2],
+  [2, 3],
+  [2, 4],
+  [3, 4],
+];
+
 export function SagasStop({
   sagas,
   glow,
@@ -387,6 +442,24 @@ export function SagasStop({
   reduced: boolean;
   onOpen: (slug: string) => void;
 }) {
+  // Cinco mundos al tresbolillo, lo bastante separados para que las órbitas de uno no entren en el vecino; el hueco de la
+  // izquierda queda libre para el texto
+  const spots: [number, number][] = portrait
+    ? // En vertical, arriba del texto
+      [
+        [-0.95, 2.5],
+        [0.95, 2.5],
+        [0, 1.5],
+        [-0.95, 0.5],
+        [0.95, 0.5],
+      ]
+    : [
+        [-0.1, 1.7],
+        [3.1, 1.7],
+        [1.5, -0.1],
+        [-0.1, -1.9],
+        [3.1, -1.9],
+      ];
   // En táctil no hay hover: un primer toque abre las placas de la saga y el segundo entra a su universo
   const [picked, setPicked] = useState<string | null>(null);
   const tap = (slug: string) => {
@@ -402,25 +475,22 @@ export function SagasStop({
         args={[26, 52, "#2a2d36", "#14161c"]}
         position={[0, -2.7, 0]}
       />
+      {/* Constelación: hilos tenues que unen los mundos vecinos */}
+      {LINKS.map(([from, to]) => (
+        <Line
+          key={`${from}-${to}`}
+          points={[
+            [spots[from][0], spots[from][1], 0.2],
+            [spots[to][0], spots[to][1], 0.2],
+          ]}
+          color="#59606f"
+          lineWidth={1}
+          transparent
+          opacity={0.35}
+          raycast={() => null}
+        />
+      ))}
       {sagas.map((saga, i) => {
-        // Cinco mundos al tresbolillo, lo bastante separados para que las órbitas de uno no entren en el vecino; el hueco
-        // de la izquierda queda libre para el texto
-        const spots: [number, number][] = portrait
-          ? // En vertical, arriba del texto
-            [
-              [-0.95, 2.5],
-              [0.95, 2.5],
-              [0, 1.5],
-              [-0.95, 0.5],
-              [0.95, 0.5],
-            ]
-          : [
-              [-0.1, 1.7],
-              [3.1, 1.7],
-              [1.5, -0.1],
-              [-0.1, -1.9],
-              [3.1, -1.9],
-            ];
         const [sx, sy] = spots[i % spots.length];
         return (
           <SagaWorld
