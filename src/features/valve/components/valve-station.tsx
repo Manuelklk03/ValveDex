@@ -257,16 +257,39 @@ export function ValveStation({
         {active === 4 && eras[steamEra] && (
           <aside
             className={`${styles["station__era"]} ${styles[`station__era--${eras[steamEra].id}`]}`}
-            aria-live="polite"
-            key={eras[steamEra].id}
           >
-            <p className={styles["station__era-years"]}>
-              {eras[steamEra].years}
-            </p>
-            <p className={styles["station__era-name"]}>{eras[steamEra].name}</p>
-            <p className={styles["station__era-text"]}>
-              {eras[steamEra].summary}
-            </p>
+            {/* El texto se remonta al cambiar de época para animarse; los botones no, para no perder el foco */}
+            <div
+              key={eras[steamEra].id}
+              className={styles["station__era-body"]}
+              aria-live="polite"
+            >
+              <p className={styles["station__era-years"]}>
+                {eras[steamEra].years}
+              </p>
+              <p className={styles["station__era-name"]}>
+                {eras[steamEra].name}
+              </p>
+              <p className={styles["station__era-text"]}>
+                {eras[steamEra].summary}
+              </p>
+            </div>
+            <div
+              className={styles["station__era-pick"]}
+              role="group"
+              aria-label="Elegir época de Steam"
+            >
+              {eras.map((era, index) => (
+                <button
+                  key={era.id}
+                  type="button"
+                  aria-pressed={index === steamEra}
+                  onClick={() => pickEra(index)}
+                >
+                  {era.name}
+                </button>
+              ))}
+            </div>
           </aside>
         )}
 
