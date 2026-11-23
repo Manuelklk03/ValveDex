@@ -305,25 +305,52 @@ function GearMesh({ teeth, outer }: { teeth: number; outer: number }) {
   );
 }
 
-// Dos engranajes engranados que giran en sentidos opuestos: lo que mueve la maquinaria de la empresa
+// Dos engranajes engranados que giran en sentidos opuestos: lo que mueve la maquinaria de la empresa. La distancia entre
+// centros es la suma de sus radios de paso y el pequeño se calcula a partir del ángulo del grande en cada fotograma, de modo
+// que cada diente entra siempre en un hueco del otro
+const GEAR_BIG = 14;
+const GEAR_SMALL = 9;
+const GEAR_LINE = -0.46; // ángulo de la línea de centros
+const GEAR_DISTANCE = 0.8;
+
+function smallGearAngle(bigAngle: number) {
+  const bigStep = (Math.PI * 2) / GEAR_BIG;
+  const smallStep = (Math.PI * 2) / GEAR_SMALL;
+  // El diente del grande está en 0,25 de su paso y el hueco del pequeño en 0,75 del suyo
+  return (
+    GEAR_LINE +
+    Math.PI -
+    0.75 * smallStep -
+    (GEAR_BIG / GEAR_SMALL) * (bigAngle + 0.25 * bigStep - GEAR_LINE)
+  );
+}
+
 export function Gears({ reduced }: { reduced: boolean }) {
   const big = useRef<THREE.Group>(null);
   const small = useRef<THREE.Group>(null);
+  const angle = useRef(0);
 
   useFrame((_, delta) => {
-    if (reduced) return;
-    if (big.current) big.current.rotation.z += delta * 0.4;
-    // Los dientes engranan: el pequeño gira al revés y más deprisa en proporción a sus dientes
-    if (small.current) small.current.rotation.z -= delta * 0.4 * (14 / 9);
+    if (!reduced) angle.current += delta * 0.4;
+    if (big.current) big.current.rotation.z = angle.current;
+    if (small.current) small.current.rotation.z = smallGearAngle(angle.current);
   });
 
   return (
     <group>
       <group ref={big}>
-        <GearMesh teeth={14} outer={0.5} />
+        <GearMesh teeth={GEAR_BIG} outer={0.5} />
       </group>
-      <group ref={small} position={[0.76, -0.38, 0]} rotation={[0, 0, 0.2]}>
-        <GearMesh teeth={9} outer={0.34} />
+      <group
+        ref={small}
+        position={[
+          Math.cos(GEAR_LINE) * GEAR_DISTANCE,
+          Math.sin(GEAR_LINE) * GEAR_DISTANCE,
+          0,
+        ]}
+        rotation={[0, 0, smallGearAngle(0)]}
+      >
+        <GearMesh teeth={GEAR_SMALL} outer={0.34} />
       </group>
     </group>
   );

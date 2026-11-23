@@ -60,6 +60,7 @@ export default function HomePage() {
         portraitSrc={portraitFile && `/images/people/${portraitFile}`}
         people={getValvePeople().map((person) => ({
           name: person.name,
+          slug: person.slug,
           role: person.role,
           photo: person.image?.src,
         }))}

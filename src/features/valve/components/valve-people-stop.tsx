@@ -5,16 +5,24 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { STEAM_PATH } from "./valve-props";
+import { Clipping, MapCard, Pinned, Polaroid, StickyNote } from "./valve-board";
 import { Steam, hash, type Vent } from "./valve-parts";
 
 // Una persona de Valve para los paneles: nombre, cargo y, si hay foto libre, su ruta
-export type StationPerson = { name: string; role: string; photo?: string };
+export type StationPerson = {
+  name: string;
+  role: string;
+  slug: string;
+  photo?: string;
+};
 
 type PeopleStopProps = {
   people: StationPerson[];
   // Imagen real del retablo (ruta pública); sin ella se usa el dibujo de respaldo
   portraitSrc?: string;
   reduced: boolean;
+  // Abre la ficha de una persona (la navegación vive fuera del lienzo)
+  onPerson?: (slug: string) => void;
 };
 
 const W = 1024;
@@ -838,9 +846,15 @@ function makeCorkTexture() {
   return texture;
 }
 
-export function PeopleStop({ people, portraitSrc, reduced }: PeopleStopProps) {
+export function PeopleStop({
+  people,
+  portraitSrc,
+  reduced,
+  onPerson,
+}: PeopleStopProps) {
   const wallMap = useMemo(() => makeCorkTexture(), []);
-  const panels = useRef<THREE.Group>(null);
+  const root = useRef<THREE.Group>(null);
+  const spot = useRef<THREE.PointLight>(null);
   const halfWidth = (portraitSrc ? IMAGE_W : DRAWN_W) / 2;
 
   useEffect(() => () => wallMap.dispose(), [wallMap]);
@@ -897,17 +911,34 @@ export function PeopleStop({ people, portraitSrc, reduced }: PeopleStopProps) {
     [],
   );
 
-  useFrame((state) => {
-    const t = reduced ? 0 : state.clock.elapsedTime;
-    panels.current?.children.forEach((panel, i) => {
-      panel.userData.baseY ??= panel.position.y;
-      panel.position.y =
-        panel.userData.baseY + Math.sin(t * 0.7 + i * 1.3) * 0.07;
-    });
+  // El tablero se inclina un poco hacia el cursor y un foco cálido lo recorre sobre el corcho
+  useFrame((state, delta) => {
+    if (reduced) return;
+    const k = 1 - Math.exp(-4 * delta);
+    if (root.current) {
+      root.current.rotation.y +=
+        (state.pointer.x * 0.07 - root.current.rotation.y) * k;
+      root.current.rotation.x +=
+        (-state.pointer.y * 0.04 - root.current.rotation.x) * k;
+    }
+    if (spot.current) {
+      spot.current.position.x +=
+        (state.pointer.x * 4.2 - spot.current.position.x) * k;
+      spot.current.position.y +=
+        (state.pointer.y * 2.4 - 0.3 - spot.current.position.y) * k;
+    }
   });
 
+  const withPhoto = shown;
   return (
-    <group>
+    <group ref={root}>
+      <pointLight
+        ref={spot}
+        position={[0, 0, 1.6]}
+        intensity={9}
+        distance={5}
+        color="#ffd9a0"
+      />
       {/* Tablero colgado: panel industrial con marco de acero, escuadras y cadenas, sin bordes de pared */}
       <group position={[0, -0.35, -1.2]}>
         <mesh raycast={() => null}>
@@ -980,23 +1011,94 @@ export function PeopleStop({ people, portraitSrc, reduced }: PeopleStopProps) {
         <primitive key={shown[i].name} object={line} />
       ))}
 
-      {/* Expedientes del personal, a los lados */}
-      <group ref={panels}>
-        {shown.map((person, i) => (
-          <group
-            key={person.name}
-            position={placements[i].position}
-            rotation={[
-              0,
-              -placements[i].side * 0.3,
-              placements[i].side * (0.04 + (i % 3) * 0.03),
-            ]}
-            scale={0.7}
+      {/* Expedientes del personal, a los lados: cada uno se levanta al acercar el cursor y abre su ficha */}
+      {shown.map((person, i) => (
+        <Pinned
+          key={person.name}
+          index={i}
+          reduced={reduced}
+          position={placements[i].position}
+          rotation={[
+            0,
+            -placements[i].side * 0.3,
+            placements[i].side * (0.04 + (i % 3) * 0.03),
+          ]}
+          scale={0.7}
+          hit={[0.96, 1.28]}
+          onOpen={onPerson ? () => onPerson(person.slug) : undefined}
+        >
+          <Contract person={person} index={i} />
+        </Pinned>
+      ))}
+
+      {/* Polaroids de las mismas personas, también pulsables */}
+      {withPhoto.slice(0, 5).map((person, i) => {
+        const spots: [number, number, number][] = [
+          [-3.75, -1.25, 0.12],
+          [3.05, -1.05, 0.14],
+          [-2.75, -2.15, 0.16],
+          [3.95, -2.0, 0.12],
+          [2.4, -2.35, 0.18],
+        ];
+        const turn = [0.12, -0.1, -0.16, 0.14, -0.06][i];
+        return (
+          <Pinned
+            key={`p${person.name}`}
+            index={shown.length + i}
+            reduced={reduced}
+            position={spots[i]}
+            rotation={[0, 0, turn]}
+            scale={0.95}
+            hit={[0.72, 0.88]}
+            onOpen={onPerson ? () => onPerson(person.slug) : undefined}
           >
-            <Contract person={person} index={i} />
-          </group>
-        ))}
-      </group>
+            {person.photo && (
+              <Polaroid name={person.name} photo={person.photo} />
+            )}
+          </Pinned>
+        );
+      })}
+
+      {/* Notas, recorte de prensa y mapa de la sede */}
+      <Pinned
+        index={11}
+        reduced={reduced}
+        position={[-3.95, 1.95, 0.1]}
+        rotation={[0, 0, -0.12]}
+        hit={[0.7, 0.7]}
+      >
+        <StickyNote text={"Pulsa una\nfoto para\nabrir su ficha"} />
+      </Pinned>
+      <Pinned
+        index={12}
+        reduced={reduced}
+        position={[3.95, 1.95, 0.1]}
+        rotation={[0, 0, 0.1]}
+        hit={[0.7, 0.7]}
+      >
+        <StickyNote
+          color="#f5a8c4"
+          text={`${people.length} personas\nen la sala`}
+        />
+      </Pinned>
+      <Pinned
+        index={13}
+        reduced={reduced}
+        position={[-1.35, -2.4, 0.1]}
+        rotation={[0, 0, 0.05]}
+        hit={[1.2, 0.8]}
+      >
+        <Clipping />
+      </Pinned>
+      <Pinned
+        index={14}
+        reduced={reduced}
+        position={[0.95, -2.45, 0.1]}
+        rotation={[0, 0, -0.06]}
+        hit={[1.0, 0.75]}
+      >
+        <MapCard />
+      </Pinned>
     </group>
   );
 }

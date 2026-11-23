@@ -41,6 +41,8 @@ type SceneProps = {
   people: StationPerson[];
   // Imagen real del retablo de la parada Personal, si está en public/
   portraitSrc?: string;
+  // Abre la ficha de una persona
+  onPerson: (slug: string) => void;
 };
 
 // Paradas del viaje: 0 pared con la válvula, 1 Historia, 2 Personal, 3 Hardware, 4 Steam y 5 las sagas
@@ -354,6 +356,7 @@ function Scene({
   onHistoryLine,
   people,
   portraitSrc,
+  onPerson,
 }: SceneProps) {
   const size = useThree((state) => state.size);
   const portrait = size.width / size.height < 1;
@@ -408,6 +411,7 @@ function Scene({
             <PeopleStop
               people={people}
               portraitSrc={portraitSrc}
+              onPerson={onPerson}
               reduced={reduced}
             />
           </Hit>

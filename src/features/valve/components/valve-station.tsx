@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState, type CSSProperties } from "react";
 import { SceneBoundary } from "@/components/ui/scene-boundary";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -75,6 +76,7 @@ export function ValveStation({
   universes,
   stats,
 }: ValveStationProps) {
+  const router = useRouter();
   const stopCount = rooms.length + 2;
   const { section, target, entering, active, reduced, goTo, startEntering } =
     useScrollTravel(stopCount);
@@ -190,6 +192,7 @@ export function ValveStation({
               historyLines={historyLines}
               people={people}
               portraitSrc={portraitSrc}
+              onPerson={(slug) => router.push(`/valve/personas/${slug}`)}
               onHistoryLine={onHistoryLine}
             />
           </SceneBoundary>
