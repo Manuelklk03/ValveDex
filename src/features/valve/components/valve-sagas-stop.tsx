@@ -45,49 +45,44 @@ type Spot = { x: number; z: number; r: number };
 // Disposición de la mesa: Half-Life en el centro de atrás (es el hub de la saga), Portal y Team Fortress a sus lados y,
 // delante, Counter-Strike y Left 4 Dead. El hueco de la izquierda queda libre para el texto
 const DESKTOP_SPOTS: Record<string, Spot> = {
-  "half-life": { x: 4, z: -3.4, r: 2.2 },
-  portal: { x: -2, z: -3.6, r: 1.9 },
-  "team-fortress": { x: 10, z: -3.6, r: 1.9 },
-  "counter-strike": { x: 0.6, z: 2.8, r: 1.9 },
-  "left-4-dead": { x: 7.4, z: 2.8, r: 1.9 },
+  portal: { x: -4.2, z: -3.8, r: 3 },
+  "half-life": { x: 4.2, z: -3.8, r: 3 },
+  "team-fortress": { x: 12.6, z: -3.8, r: 3 },
+  "counter-strike": { x: -4.2, z: 3.8, r: 3 },
+  "left-4-dead": { x: 4.2, z: 3.8, r: 3 },
 };
 const PORTRAIT_SPOTS: Record<string, Spot> = {
-  "half-life": { x: 0, z: -3.3, r: 1.35 },
-  portal: { x: -1.45, z: -0.8, r: 1.0 },
-  "team-fortress": { x: 1.45, z: -0.8, r: 1.0 },
-  "counter-strike": { x: -1.45, z: 1.3, r: 1.0 },
-  "left-4-dead": { x: 1.45, z: 1.3, r: 1.0 },
+  portal: { x: -1.8, z: -3.2, r: 1.25 },
+  "half-life": { x: 1.8, z: -3.2, r: 1.25 },
+  "team-fortress": { x: -1.8, z: 0, r: 1.25 },
+  "counter-strike": { x: 1.8, z: 0, r: 1.25 },
+  "left-4-dead": { x: -1.8, z: 3.2, r: 1.25 },
 };
-// Parcelas libres de la mesa para los universos que aún no existen
-const FUTURE_PLOTS: Record<"desktop" | "portrait", [number, number][]> = {
+// Cada zona es un rectángulo: su tamaño sale del radio de la escena que lleva dentro
+const zoneSize = (r: number): [number, number] => [r * 2.73, r * 2.4];
+// Parcelas libres del mapa para los universos que aún no existen
+const FUTURE_PLOTS: Record<"desktop" | "portrait", Spot[]> = {
   desktop: [
-    [-4.8, 2.8],
-    [12.6, 2.8],
-    [4, 8.6],
-    [-1.6, 8.6],
-    [9.6, 8.6],
-    [4, -9.6],
+    { x: 12.6, z: 3.8, r: 3 },
+    { x: 21, z: -3.8, r: 3 },
+    { x: 21, z: 3.8, r: 3 },
   ],
-  portrait: [
-    [0, 3.2],
-    [-1.8, 4.9],
-    [1.8, 4.9],
-  ],
+  portrait: [{ x: 1.8, z: 3.2, r: 1.25 }],
 };
 
 // Dónde se coloca la cámara sobre la mesa: el punto al que mira (locales de la parada), su altura y lo retrasada que va
 export function mapLayout(portrait: boolean) {
   return portrait
     ? {
-        look: [0, 0, -0.9] as const,
-        height: 12.5,
-        back: 6,
+        look: [0, 0, 0] as const,
+        height: 16,
+        back: 7.5,
         spots: PORTRAIT_SPOTS,
       }
     : {
-        look: [4, 0, 0.4] as const,
-        height: 19,
-        back: 12,
+        look: [6.4, 0, 0] as const,
+        height: 25,
+        back: 15,
         spots: DESKTOP_SPOTS,
       };
 }
@@ -236,9 +231,7 @@ function makeGround(id: string, accent: string) {
     g.strokeStyle =
       id === "left-4-dead" ? "#d8b52a" : id === "portal" ? "#9aa5b2" : accent;
     if (id === "half-life" || id === "left-4-dead") g.setLineDash([28, 28]);
-    g.beginPath();
-    g.arc(S / 2, S / 2, 228, 0, Math.PI * 2);
-    g.stroke();
+    g.strokeRect(34, 34, S - 68, S - 68);
   }
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
@@ -248,52 +241,56 @@ function makeGround(id: string, accent: string) {
 
 // Superficie de la mesa: círculos concéntricos grabados, marcas de graduación y puntos cardinales, como un mapa de mando
 function makeTable() {
-  const S = 1024;
+  const W = 2048;
+  const H = 940;
   const canvas = document.createElement("canvas");
-  canvas.width = canvas.height = S;
+  canvas.width = W;
+  canvas.height = H;
   const g = canvas.getContext("2d");
   if (g) {
-    const c = S / 2;
-    const base = g.createRadialGradient(c, c, 40, c, c, c);
-    base.addColorStop(0, "#161a24");
-    base.addColorStop(1, "#090b11");
+    const base = g.createLinearGradient(0, 0, 0, H);
+    base.addColorStop(0, "#10141d");
+    base.addColorStop(1, "#080a10");
     g.fillStyle = base;
-    g.fillRect(0, 0, S, S);
-    g.strokeStyle = "rgba(160,175,200,0.22)";
-    for (const [r, w] of [
-      [500, 4],
-      [452, 1.5],
-      [330, 1.5],
-      [210, 1.5],
-      [90, 1.5],
-    ] as const) {
-      g.lineWidth = w;
+    g.fillRect(0, 0, W, H);
+    for (let x = 0; x <= W; x += 64) {
+      g.strokeStyle =
+        x % 256 === 0 ? "rgba(160,175,200,0.2)" : "rgba(160,175,200,0.07)";
+      g.lineWidth = x % 256 === 0 ? 2 : 1;
       g.beginPath();
-      g.arc(c, c, r, 0, Math.PI * 2);
+      g.moveTo(x, 0);
+      g.lineTo(x, H);
       g.stroke();
     }
-    for (let i = 0; i < 120; i += 1) {
-      const a = (i / 120) * Math.PI * 2;
-      const long = i % 10 === 0;
-      const r1 = long ? 452 : 470;
-      g.lineWidth = long ? 3 : 1.5;
-      g.strokeStyle = long ? "rgba(200,210,230,0.55)" : "rgba(160,175,200,0.3)";
+    for (let y = 0; y <= H; y += 64) {
+      g.strokeStyle =
+        y % 256 === 0 ? "rgba(160,175,200,0.2)" : "rgba(160,175,200,0.07)";
+      g.lineWidth = y % 256 === 0 ? 2 : 1;
       g.beginPath();
-      g.moveTo(c + Math.cos(a) * r1, c + Math.sin(a) * r1);
-      g.lineTo(c + Math.cos(a) * 498, c + Math.sin(a) * 498);
+      g.moveTo(0, y);
+      g.lineTo(W, y);
       g.stroke();
     }
-    g.fillStyle = "rgba(200,210,230,0.6)";
-    g.font = "bold 34px monospace";
-    g.textAlign = "center";
-    g.textBaseline = "middle";
-    for (const [label, a] of [
-      ["N", -Math.PI / 2],
-      ["E", 0],
-      ["S", Math.PI / 2],
-      ["O", Math.PI],
-    ] as const) {
-      g.fillText(label, c + Math.cos(a) * 418, c + Math.sin(a) * 418);
+    // Marcas de graduación en los bordes, como un plano de mando
+    g.strokeStyle = "rgba(200,210,230,0.45)";
+    g.lineWidth = 2;
+    for (let x = 0; x <= W; x += 32) {
+      const len = x % 128 === 0 ? 26 : 12;
+      g.beginPath();
+      g.moveTo(x, 0);
+      g.lineTo(x, len);
+      g.moveTo(x, H);
+      g.lineTo(x, H - len);
+      g.stroke();
+    }
+    for (let y = 0; y <= H; y += 32) {
+      const len = y % 128 === 0 ? 26 : 12;
+      g.beginPath();
+      g.moveTo(0, y);
+      g.lineTo(len, y);
+      g.moveTo(W, y);
+      g.lineTo(W - len, y);
+      g.stroke();
     }
   }
   const texture = new THREE.CanvasTexture(canvas);
@@ -882,22 +879,6 @@ function useStageMaps(id: string, maps: { name: string; src: string }[]) {
   return loaded;
 }
 
-// Máscara circular para recortar el terreno cuadrado
-function makeCircleMask() {
-  const canvas = document.createElement("canvas");
-  canvas.width = canvas.height = 128;
-  const g = canvas.getContext("2d");
-  if (g) {
-    g.fillStyle = "#000";
-    g.fillRect(0, 0, 128, 128);
-    g.fillStyle = "#fff";
-    g.beginPath();
-    g.arc(64, 64, 62, 0, Math.PI * 2);
-    g.fill();
-  }
-  return new THREE.CanvasTexture(canvas);
-}
-
 // Rótulo con el nombre del mapa que se está viendo
 function makeMapName(name: string, accent: string) {
   const canvas = document.createElement("canvas");
@@ -950,13 +931,11 @@ function MapStage({
     factor: 1,
     step: "idle" as "idle" | "down" | "up",
   });
-  const mask = useMemo(() => makeCircleMask(), []);
   const cur = loaded[index % Math.max(loaded.length, 1)];
   const nameTexture = useMemo(
     () => (cur ? makeMapName(cur.name, accent) : null),
     [cur, accent],
   );
-  useEffect(() => () => mask.dispose(), [mask]);
   useEffect(() => () => nameTexture?.dispose(), [nameTexture]);
 
   useFrame((state, delta) => {
@@ -985,8 +964,6 @@ function MapStage({
       }
     }
     m.displacementScale = (0.02 + 0.11 * s.factor) * (1 + hover.current * 0.7);
-    if (!reduced)
-      mesh.current.rotation.z += delta * (0.12 + hover.current * 0.4);
   });
 
   if (!cur) return null;
@@ -1005,8 +982,6 @@ function MapStage({
           displacementMap={cur.depth}
           displacementScale={0.13}
           displacementBias={-0.01}
-          alphaMap={mask}
-          alphaTest={0.5}
           roughness={0.85}
           metalness={0.1}
         />
@@ -1051,6 +1026,27 @@ function Territory({
   onHover: (slug: string | null) => void;
 }) {
   const R = spot.r;
+  const [W, D] = zoneSize(R);
+  const outline = useMemo(() => {
+    const w = W / 2;
+    const d = D / 2;
+    const t = 0.1;
+    const shape = new THREE.Shape();
+    shape.moveTo(-w, -d);
+    shape.lineTo(w, -d);
+    shape.lineTo(w, d);
+    shape.lineTo(-w, d);
+    shape.closePath();
+    const hole = new THREE.Path();
+    hole.moveTo(-w + t, -d + t);
+    hole.lineTo(-w + t, d - t);
+    hole.lineTo(w - t, d - t);
+    hole.lineTo(w - t, -d + t);
+    hole.closePath();
+    shape.holes.push(hole);
+    return new THREE.ShapeGeometry(shape);
+  }, [W, D]);
+  useEffect(() => () => outline.dispose(), [outline]);
   const inner = useRef<THREE.Group>(null);
   const ringMat = useRef<THREE.MeshBasicMaterial>(null);
   const glowMat = useRef<THREE.MeshBasicMaterial>(null);
@@ -1139,7 +1135,7 @@ function Territory({
     >
       {/* Zona de cursor fija: no se mueve con el territorio */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.1, 0]}>
-        <circleGeometry args={[R * 1.12, 40]} />
+        <planeGeometry args={[W, D]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
       {/* Resplandor del color de la saga sobre la mesa */}
@@ -1148,7 +1144,7 @@ function Territory({
         position={[0, 0.01, 0]}
         raycast={() => null}
       >
-        <planeGeometry args={[R * 3.6, R * 3.6]} />
+        <planeGeometry args={[W * 1.5, D * 1.5]} />
         <meshBasicMaterial
           ref={glowMat}
           map={glow}
@@ -1161,7 +1157,7 @@ function Territory({
       </mesh>
       <group ref={inner}>
         <mesh position={[0, 0.03, 0]}>
-          <cylinderGeometry args={[R, R * 1.04, 0.06, 56]} />
+          <boxGeometry args={[W, 0.06, D]} />
           <meshStandardMaterial
             color="#14161c"
             metalness={0.6}
@@ -1169,7 +1165,7 @@ function Territory({
           />
         </mesh>
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.062, 0]}>
-          <circleGeometry args={[R * 0.985, 56]} />
+          <planeGeometry args={[W * 0.985, D * 0.985]} />
           <meshStandardMaterial map={ground} roughness={0.85} />
         </mesh>
         <MapStage
@@ -1181,8 +1177,11 @@ function Territory({
           reduced={reduced}
           stage={scenes?.[sceneIndex % scenes.length].stage}
         />
-        <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0.065, 0]}>
-          <torusGeometry args={[R, 0.03, 8, 80]} />
+        <mesh
+          rotation={[-Math.PI / 2, 0, 0]}
+          position={[0, 0.068, 0]}
+          geometry={outline}
+        >
           <meshBasicMaterial
             ref={ringMat}
             color={saga.accent}
@@ -1246,7 +1245,7 @@ function Territory({
         })}
       </group>
       {/* Rótulo fijo del territorio, en el borde delantero de la mesa */}
-      <Billboard position={[0, 0.16, R + 0.42]}>
+      <Billboard position={[0, 0.16, D / 2 - 0.3]}>
         <mesh raycast={() => null}>
           <planeGeometry args={[R * 1.9, R * 0.36]} />
           <meshBasicMaterial
@@ -1261,46 +1260,30 @@ function Territory({
   );
 }
 
-// Parcela vacía de la mesa: sitio reservado para un universo que todavía no existe
-function FuturePlot({
-  x,
-  z,
-  label,
-}: {
-  x: number;
-  z: number;
-  label: THREE.Texture;
-}) {
+// Parcela vacía del mapa: sitio reservado para un universo que todavía no existe
+function FuturePlot({ spot, label }: { spot: Spot; label: THREE.Texture }) {
+  const [W, D] = zoneSize(spot.r);
   return (
-    <group position={[x, 0, z]}>
-      <mesh
-        rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, 0.02, 0]}
-        raycast={() => null}
-      >
-        <ringGeometry args={[1.5, 1.56, 56]} />
-        <meshBasicMaterial
-          color="#59606f"
-          transparent
-          opacity={0.45}
-          toneMapped={false}
-        />
-      </mesh>
+    <group position={[spot.x, 0, spot.z]}>
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
         position={[0, 0.015, 0]}
         raycast={() => null}
       >
-        <circleGeometry args={[1.5, 40]} />
-        <meshBasicMaterial color="#0d1018" transparent opacity={0.6} />
+        <planeGeometry args={[W, D]} />
+        <meshBasicMaterial color="#0d1018" transparent opacity={0.65} />
       </mesh>
-      <Billboard position={[0, 0.2, 1.9]}>
+      <lineSegments position={[0, 0.03, 0]} raycast={() => null}>
+        <edgesGeometry args={[new THREE.BoxGeometry(W, 0.001, D)]} />
+        <lineBasicMaterial color="#59606f" transparent opacity={0.6} />
+      </lineSegments>
+      <Billboard position={[0, 0.2, 0]}>
         <mesh raycast={() => null}>
-          <planeGeometry args={[2.2, 0.34]} />
+          <planeGeometry args={[W * 0.5, 0.5]} />
           <meshBasicMaterial
             map={label}
             transparent
-            opacity={0.55}
+            opacity={0.6}
             depthWrite={false}
             toneMapped={false}
           />
@@ -1334,9 +1317,9 @@ export function SagasStop({
   useEffect(() => () => tableMap.dispose(), [tableMap]);
   useEffect(() => () => futureLabel.dispose(), [futureLabel]);
   // La mesa es enorme y la cámara la ve entera de lejos; su centro depende de la disposición
-  const tx = portrait ? 0 : 4;
-  const tz = portrait ? -0.4 : 0;
-  const tableR = portrait ? 6.2 : 15.4;
+  const tx = portrait ? 0 : 8.4;
+  const tz = 0;
+  const [tw, td] = portrait ? [8.4, 11.2] : [35.4, 16.6];
   const fallbackSpots = Object.values(layout.spots);
   // Un toque o clic en un territorio lleva allí la cámara; si ya está elegido, entra al universo
   const tap = (slug: string) => {
@@ -1374,39 +1357,62 @@ export function SagasStop({
         accent={active ? active.accent : null}
         reduced={reduced}
       />
-      {/* La mesa-mapa: tablero grabado con borde y grosor de metal */}
+      {/* La mesa-mapa: un tablero rectangular grabado, con grosor y bordes de metal */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[tx, -0.04, tz]}>
-        <circleGeometry args={[tableR, 128]} />
+        <planeGeometry args={[tw, td]} />
         <meshStandardMaterial map={tableMap} roughness={0.55} metalness={0.5} />
       </mesh>
-      <mesh position={[tx, -0.34, tz]}>
-        <cylinderGeometry args={[tableR + 0.12, tableR + 0.4, 0.6, 128]} />
+      <mesh position={[tx, -0.36, tz]}>
+        <boxGeometry args={[tw + 0.5, 0.6, td + 0.5]} />
         <meshStandardMaterial color="#12141b" metalness={0.8} roughness={0.4} />
       </mesh>
-      <mesh rotation={[Math.PI / 2, 0, 0]} position={[tx, -0.02, tz]}>
-        <torusGeometry args={[tableR + 0.1, 0.08, 10, 160]} />
-        <meshStandardMaterial color="#59606f" metalness={0.9} roughness={0.3} />
-      </mesh>
-      {/* Luces cenitales sobre la mesa */}
+      {[-1, 1].map((side) => (
+        <group key={side}>
+          <mesh position={[tx, 0.05, tz + side * (td / 2 + 0.12)]}>
+            <boxGeometry args={[tw + 0.5, 0.2, 0.3]} />
+            <meshStandardMaterial
+              color="#59606f"
+              metalness={0.9}
+              roughness={0.3}
+            />
+          </mesh>
+          <mesh position={[tx + side * (tw / 2 + 0.12), 0.05, tz]}>
+            <boxGeometry args={[0.3, 0.2, td + 0.5]} />
+            <meshStandardMaterial
+              color="#59606f"
+              metalness={0.9}
+              roughness={0.3}
+            />
+          </mesh>
+        </group>
+      ))}
+      {/* Luces cenitales sobre el mapa */}
       {(portrait
-        ? [[0, -0.4]]
+        ? [
+            [0, -2.5],
+            [0, 2.5],
+          ]
         : [
-            [-2, -2],
-            [10, -2],
-            [4, 5],
-            [4, 10],
+            [-2, 0],
+            [6, 0],
+            [14, 0],
+            [22, 0],
           ]
       ).map(([lx, lz]) => (
         <pointLight
           key={`${lx}${lz}`}
-          position={[lx, 8, lz]}
-          intensity={portrait ? 90 : 70}
-          distance={portrait ? 24 : 18}
+          position={[lx, 9, lz]}
+          intensity={portrait ? 70 : 90}
+          distance={portrait ? 22 : 20}
           color="#dfe8ff"
         />
       ))}
-      {FUTURE_PLOTS[portrait ? "portrait" : "desktop"].map(([fx, fz]) => (
-        <FuturePlot key={`${fx}${fz}`} x={fx} z={fz} label={futureLabel} />
+      {FUTURE_PLOTS[portrait ? "portrait" : "desktop"].map((spot) => (
+        <FuturePlot
+          key={`${spot.x}${spot.z}`}
+          spot={spot}
+          label={futureLabel}
+        />
       ))}
       {sagas.map((saga, i) => (
         <Territory
