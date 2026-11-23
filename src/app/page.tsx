@@ -9,6 +9,7 @@ import {
   getUniverses,
 } from "@/features/universes/get-universes";
 import { ValveStation } from "@/features/valve/components/valve-station";
+import { getSteamEras } from "@/features/valve/get-steam-eras";
 import { getValveMilestones } from "@/features/valve/get-valve-milestones";
 import { getValvePeople } from "@/features/valve/get-valve-people";
 import { getValveRooms } from "@/features/valve/get-valve-rooms";
@@ -55,6 +56,14 @@ export default function HomePage() {
   return (
     <main className={styles["home-page"]}>
       <ValveStation
+        eras={getSteamEras().map((era) => ({
+          id: era.id,
+          name: era.name,
+          years: era.yearTo
+            ? `${era.yearFrom}–${era.yearTo}`
+            : `${era.yearFrom}–hoy`,
+          summary: era.summary,
+        }))}
         rooms={getValveRooms()}
         history={history}
         portraitSrc={portraitFile && `/images/people/${portraitFile}`}

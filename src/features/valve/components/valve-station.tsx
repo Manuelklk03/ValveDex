@@ -38,7 +38,15 @@ export type StationHistory = {
   mentions: Mention[];
 };
 
+export type StationEra = {
+  id: "origins" | "platform" | "unified";
+  name: string;
+  years: string;
+  summary: string;
+};
+
 type ValveStationProps = {
+  eras: StationEra[];
   rooms: ValveRoom[];
   history: StationHistory[];
   people: StationPerson[];
@@ -69,6 +77,7 @@ const accents = [
 // sagas. El scroll mueve la cámara de parada en parada; cada sala se puede pulsar o abrir con su botón, y entrar a una
 // sala o a una saga lanza la cámara hacia ella mientras se cierra la entrada animada
 export function ValveStation({
+  eras,
   rooms,
   history,
   people,
@@ -77,6 +86,7 @@ export function ValveStation({
   stats,
 }: ValveStationProps) {
   const router = useRouter();
+  const [steamEra, setSteamEra] = useState(0);
   const stopCount = rooms.length + 2;
   const { section, target, entering, active, reduced, goTo, startEntering } =
     useScrollTravel(stopCount);
@@ -192,6 +202,7 @@ export function ValveStation({
               historyLines={historyLines}
               people={people}
               portraitSrc={portraitSrc}
+              onSteamEra={setSteamEra}
               onPerson={(slug) => router.push(`/valve/personas/${slug}`)}
               onHistoryLine={onHistoryLine}
             />
@@ -227,6 +238,22 @@ export function ValveStation({
               </li>
             ))}
           </ul>
+        )}
+
+        {active === 4 && eras[steamEra] && (
+          <aside
+            className={`${styles["station__era"]} ${styles[`station__era--${eras[steamEra].id}`]}`}
+            aria-live="polite"
+            key={eras[steamEra].id}
+          >
+            <p className={styles["station__era-years"]}>
+              {eras[steamEra].years}
+            </p>
+            <p className={styles["station__era-name"]}>{eras[steamEra].name}</p>
+            <p className={styles["station__era-text"]}>
+              {eras[steamEra].summary}
+            </p>
+          </aside>
         )}
 
         <div className={styles["station__info"]}>

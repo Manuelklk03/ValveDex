@@ -22,6 +22,7 @@ import { ValveCorridor } from "./valve-corridor";
 import { HardwareStop } from "./valve-hardware-stop";
 import { PeopleStop, type StationPerson } from "./valve-people-stop";
 import { HistoryScroll, type HistoryLine } from "./valve-history-scroll";
+import { SteamStop } from "./valve-steam-stop";
 import { ValveWall } from "./valve-wall";
 
 export type StationSaga = { id: string; accent: string; emblem: string };
@@ -44,6 +45,8 @@ type SceneProps = {
   portraitSrc?: string;
   // Abre la ficha de una persona
   onPerson: (slug: string) => void;
+  // Época de Steam que está al frente en la parada Steam
+  onSteamEra: (index: number) => void;
 };
 
 // Paradas del viaje: 0 pared con la válvula, 1 Historia, 2 Personal, 3 Hardware, 4 Steam y 5 las sagas
@@ -122,63 +125,6 @@ function Glow({
         />
       </mesh>
     </Billboard>
-  );
-}
-
-// Sala 02 · Steam: un núcleo azul noche con anillos y nubes de vapor
-function SteamModule({
-  glow,
-  reduced,
-}: {
-  glow: THREE.Texture;
-  reduced: boolean;
-}) {
-  const ringA = useRef<THREE.Mesh>(null);
-  const ringB = useRef<THREE.Mesh>(null);
-  const clouds = useRef<THREE.Group>(null);
-
-  useFrame((state, delta) => {
-    if (reduced) return;
-    if (ringA.current) ringA.current.rotation.z += delta * 0.4;
-    if (ringB.current) ringB.current.rotation.z -= delta * 0.25;
-    clouds.current?.children.forEach((cloud, i) => {
-      const s = 1 + Math.sin(state.clock.elapsedTime * 0.6 + i * 2) * 0.12;
-      cloud.scale.setScalar(s);
-    });
-  });
-
-  return (
-    <group>
-      <Glow texture={glow} color="#2f7be0" size={9} opacity={0.6} />
-      <mesh>
-        <sphereGeometry args={[1, 64, 64]} />
-        <meshStandardMaterial
-          color="#10305c"
-          emissive="#2f7be0"
-          emissiveIntensity={0.7}
-          roughness={0.5}
-        />
-      </mesh>
-      <mesh ref={ringA} rotation={[1.2, 0.2, 0]}>
-        <torusGeometry args={[1.7, 0.035, 12, 120]} />
-        <meshBasicMaterial color="#7fb8ff" />
-      </mesh>
-      <mesh ref={ringB} rotation={[0.5, 0.9, 0]}>
-        <torusGeometry args={[2.2, 0.025, 12, 140]} />
-        <meshBasicMaterial color="#4aa3ff" transparent opacity={0.7} />
-      </mesh>
-      <group ref={clouds}>
-        {[
-          [-1.8, -0.7, 0.4],
-          [1.7, 0.8, -0.2],
-          [0.2, 1.7, 0.3],
-        ].map((p, i) => (
-          <group key={i} position={p as [number, number, number]}>
-            <Glow texture={glow} color="#9cc8ff" size={3} opacity={0.35} />
-          </group>
-        ))}
-      </group>
-    </group>
   );
 }
 
@@ -311,6 +257,7 @@ function Scene({
   people,
   portraitSrc,
   onPerson,
+  onSteamEra,
 }: SceneProps) {
   const size = useThree((state) => state.size);
   const portrait = size.width / size.height < 1;
@@ -381,7 +328,7 @@ function Scene({
       {show(4) && (
         <group position={at(4)}>
           <Hit stop={4} onSelect={onSelect}>
-            <SteamModule glow={glow} reduced={reduced} />
+            <SteamStop reduced={reduced} onEra={onSteamEra} />
           </Hit>
         </group>
       )}
