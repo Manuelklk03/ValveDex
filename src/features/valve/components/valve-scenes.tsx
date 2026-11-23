@@ -108,10 +108,12 @@ function playClip(rig: Rig, name: string | undefined, phase: number) {
 
 function resetSim(sim: {
   next: number[];
+  cycle: number[];
   kick: number[];
   b: { t0: number }[];
 }) {
   sim.next.length = 0;
+  sim.cycle.length = 0;
   sim.kick.length = 0;
   for (const b of sim.b) b.t0 = -1;
 }
@@ -134,6 +136,7 @@ export function SceneAction({
   const sim = useMemo(
     () => ({
       next: [] as number[],
+      cycle: [] as number[],
       kick: [] as number[],
       b: Array.from({ length: BULLETS }, () => ({
         t0: -1,
@@ -208,9 +211,16 @@ export function SceneAction({
       g.visible = s > 0.02;
 
       if (reduced || !a.fire || !p.aim || !g.visible) return;
-      if (sim.next[i] === undefined) sim.next[i] = t + (i % 5) * 0.07;
-      if (t < sim.next[i]) return;
-      sim.next[i] = t + a.fire.every * (0.75 + Math.random() * 0.5);
+      if (p.clip === "shoot" && p.phase !== undefined) {
+        // El tiro sale justo cuando empieza un ciclo de la animación de disparar (su fotograma de más retroceso)
+        const cycle = Math.floor(p.phase);
+        if (sim.cycle[i] === cycle) return;
+        sim.cycle[i] = cycle;
+      } else {
+        if (sim.next[i] === undefined) sim.next[i] = t + (i % 5) * 0.07;
+        if (t < sim.next[i]) return;
+        sim.next[i] = t + a.fire.every * (0.75 + Math.random() * 0.5);
+      }
       const slot = sim.b.find((b) => b.t0 < 0);
       if (!slot) return;
       slot.from.set(
