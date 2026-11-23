@@ -11,7 +11,7 @@ import { hash } from "./valve-parts";
 // Fortress, los Jockeys contra la Witch junto a una bomba de tubo en Left 4 Dead y un duelo de AK-47 y AWP con granadas en
 // Counter-Strike. Todo se anima en useFrame; con movimiento reducido las piezas se quedan quietas
 
-type Model = {
+export type Model = {
   url: string;
   // Tamaño final en unidades del territorio (el modelo se normaliza)
   size: number;
@@ -404,7 +404,7 @@ function config(id: string): Actor[] {
 }
 
 // Un modelo normalizado a su tamaño, con los pies sobre el suelo y centrado
-function Mini({ model }: { model: Model }) {
+export function Mini({ model }: { model: Model }) {
   const { scene } = useGLTF(model.url);
   const { object, scale } = useMemo(() => {
     const clone = scene.clone(true);
