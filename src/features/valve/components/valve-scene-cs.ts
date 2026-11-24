@@ -40,6 +40,12 @@ type Fighter = {
   squat?: { from: number; to: number; clip: "plant" | "crouch" };
   // Después de morir o llegar, mantiene esta mirada
   look?: XZ;
+  // Cae de espaldas (con la animación de caída hacia atrás) en vez de caer de bruces
+  back?: boolean;
+  // Después de plantar se aparta de la bomba corriendo hasta este punto
+  retreat?: { from: number; to: number; at: XZ };
+  // Desde este instante suelta el arma (la C4, una vez plantada)
+  dropsAt?: number;
 };
 
 function fighter(c: Fighter): Actor {
@@ -47,18 +53,41 @@ function fighter(c: Fighter): Actor {
     model: c.model,
     fire: { every: c.rate, color: "#ffe2a0", speed: 3.6, height: 0.3 },
     fn: (u): Pose => {
-      const pos = mix(c.from, c.to, seg(u, c.move[0], c.move[1]));
-      const base = { x: pos[0], z: pos[1] };
+      const arrived = mix(c.from, c.to, seg(u, c.move[0], c.move[1]));
+      const retreating = c.retreat && u >= c.retreat.from;
+      const pos = c.retreat
+        ? mix(c.to, c.retreat.at, seg(u, c.retreat.from, c.retreat.to))
+        : arrived;
+      const here = retreating ? pos : arrived;
+      const base = {
+        x: here[0],
+        z: here[1],
+        hideHeld: c.dropsAt !== undefined && u >= c.dropsAt,
+      };
       const fade = 1 - seg(u, ROUND - 1.6, ROUND - 0.2);
       const scale = fade < 1 ? Math.max(0.001, fade) : 1;
       const heading = face(c.from, c.to);
-      const rest = c.look ? face(pos, c.look) : heading;
-      if (c.dies !== undefined && u >= c.dies)
+      const rest = c.look ? face(here, c.look) : heading;
+      if (c.dies !== undefined && u >= c.dies) {
+        // Cae como un muñeco: pose flácida de la caída, fundida con su postura anterior, y el cuerpo se vuelca
+        const t = u - c.dies;
+        const topple = Math.sin(seg(t, 0, 0.55) * (Math.PI / 2));
         return {
           ...base,
           yaw: rest,
-          clip: "die",
-          phase: (u - c.dies) / 1.4,
+          clip: c.back ? "die_back" : "die",
+          phase: seg(t, 0, 0.9),
+          blend: { clip: "aim", phase: 0, weight: 1 - seg(t, 0, 0.2) },
+          ...(c.back ? { pitch: -topple * (Math.PI / 2) } : { fall: topple }),
+          scale,
+        };
+      }
+      if (retreating && c.retreat && u < c.retreat.to)
+        return {
+          ...base,
+          yaw: face(c.to, c.retreat.at),
+          clip: "run",
+          phase: u * 1.7,
           scale,
         };
       if (u > c.move[0] && u < c.move[1])
@@ -71,11 +100,11 @@ function fighter(c: Fighter): Actor {
           phase: (u - c.squat.from) / (c.squat.to - c.squat.from),
           scale,
         };
-      const shot = c.shots.find((s) => u >= s.from && u < s.to);
+      const shot = c.shots.find((x) => u >= x.from && u < x.to);
       if (shot)
         return {
           ...base,
-          yaw: face(pos, shot.at),
+          yaw: face(here, shot.at),
           clip: "shoot",
           phase: (u - shot.from) / c.rate,
           aim: shot.at,
@@ -169,15 +198,18 @@ function round(
   };
 
   const actors: Actor[] = [
-    // El T que planta: corre al punto de bomba, planta y cae a manos del último CT
+    // El T que planta: corre junto al punto de bomba, planta agachado, suelta la C4, se aparta y cae de espaldas lejos de ella
     fighter({
       model: planterModel,
       from: [-0.85, 0.72],
-      to: site,
+      to: [site[0] - 0.22, site[1]],
       move: [0, 2.2],
       shots: [],
       squat: { from: 2.2, to: 9, clip: "plant" },
+      dropsAt: 9,
+      retreat: { from: 9.3, to: 10.2, at: [-0.5, 0.62] },
       dies: 10.5,
+      back: true,
       rate: 1,
       look: [0.4, 0.2],
     }),
@@ -188,6 +220,7 @@ function round(
       move: [0.1, 2.4],
       shots: [{ from: 2.6, to: 5.2, at: [0.4, -0.65] }],
       dies: 5.3,
+      back: true,
       rate: 0.55,
     }),
     fighter({
@@ -197,6 +230,7 @@ function round(
       move: [0.4, 2.9],
       shots: [{ from: 3.1, to: 7.9, at: [0.5, -0.2] }],
       dies: 8.0,
+      back: true,
       rate: 0.5,
     }),
     fighter({

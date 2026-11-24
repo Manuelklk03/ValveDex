@@ -32,6 +32,8 @@ export type Pose = {
   phase?: number;
   // Al cambiar de clip (correr a caer) se funde con el anterior en vez de saltar de pose
   blend?: { clip: string; phase: number; weight: number };
+  // Esconde el arma de la mano (la C4 una vez plantada)
+  hideHeld?: boolean;
 };
 export type Actor = {
   model: Model;
@@ -112,6 +114,7 @@ function playClip(
   name: string | undefined,
   phase: number,
   blend?: Pose["blend"],
+  hideHeld?: boolean,
 ) {
   for (const mesh of rig.meshes) mesh.morphTargetInfluences!.fill(0);
   const mixed = blend ? Math.min(1, Math.max(0, blend.weight)) : 0;
@@ -123,7 +126,7 @@ function playClip(
   if (rig.held && main && from && to) {
     const e = rig.held.matrix.elements;
     for (let k = 0; k < 16; k++) e[k] = from[k] + (to[k] - from[k]) * main.f;
-    rig.held.visible = true;
+    rig.held.visible = !hideHeld;
     rig.held.matrixWorldNeedsUpdate = true;
   }
 }
@@ -229,7 +232,7 @@ export function SceneAction({
         rigs.current[i] = findRig(g);
       }
       const rig = rigs.current[i];
-      if (rig) playClip(rig, p.clip, p.phase ?? 0, p.blend);
+      if (rig) playClip(rig, p.clip, p.phase ?? 0, p.blend, p.hideHeld);
       g.visible = s > 0.02;
 
       if (reduced || !a.fire || !p.aim || !g.visible) return;
