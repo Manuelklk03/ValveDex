@@ -5,6 +5,7 @@ import { useGLTF } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { Mini, type Model } from "./valve-sagas-action";
+import { csScenes } from "./valve-scene-cs";
 import { l4dScenes } from "./valve-scene-l4d";
 
 // Motor de escenas guionizadas de la mesa-mapa. Una escena es un reparto de modelos 3D y, para cada uno, una función pura que
@@ -47,6 +48,7 @@ export type Scene = {
 
 export const SCENES: Record<string, Scene[]> = {
   "left-4-dead": l4dScenes,
+  "counter-strike": csScenes,
 };
 
 const BULLETS = 20;
