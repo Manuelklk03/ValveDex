@@ -1,7 +1,7 @@
 "use client";
 
 import { useFrame } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
+import { Billboard, useGLTF } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { Mini, type Model } from "./valve-sagas-action";
@@ -46,6 +46,10 @@ export type Scene = {
   // Mapa del escenario sobre el que ocurre
   stage: number;
   actors: Actor[];
+  // Rótulo sobre el centro del nivel (CT WINS…) entre dos instantes de la escena
+  banner?: { text: string; color: string; from: number; to: number };
+  // Explosión en un punto del nivel (la C4): bola de fuego que se abre y se apaga
+  blast?: { at: [number, number]; time: number };
 };
 
 export const SCENES: Record<string, Scene[]> = {
@@ -131,6 +135,29 @@ function playClip(
   }
 }
 
+// Rótulo grande con el color del bando que gana
+function makeBanner(text: string, color: string) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1024;
+  canvas.height = 256;
+  const g = canvas.getContext("2d");
+  if (g) {
+    g.textAlign = "center";
+    g.textBaseline = "middle";
+    g.font = "900 150px Archivo, system-ui, sans-serif";
+    g.lineWidth = 16;
+    g.strokeStyle = "rgba(0,0,0,0.85)";
+    g.strokeText(text, 512, 134);
+    g.shadowColor = color;
+    g.shadowBlur = 36;
+    g.fillStyle = color;
+    g.fillText(text, 512, 134);
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
 function resetSim(sim: {
   next: number[];
   cycle: number[];
@@ -156,6 +183,15 @@ export function SceneAction({
   const refs = useRef<(THREE.Group | null)[]>([]);
   // Mallas con objetivos de morfado de cada actor y sus clips (se leen una vez cargado el modelo)
   const rigs = useRef<(Rig | null)[]>([]);
+  const bannerMat = useRef<THREE.MeshBasicMaterial>(null);
+  const blastMesh = useRef<THREE.Mesh>(null);
+  const blastRing = useRef<THREE.Mesh>(null);
+  const bannerTexture = useMemo(
+    () =>
+      scene.banner ? makeBanner(scene.banner.text, scene.banner.color) : null,
+    [scene.banner],
+  );
+  useEffect(() => () => bannerTexture?.dispose(), [bannerTexture]);
   const bullets = useRef<(THREE.Mesh | null)[]>([]);
   const flashes = useRef<(THREE.Mesh | null)[]>([]);
   const sim = useMemo(
@@ -295,6 +331,30 @@ export function SceneAction({
       mat.opacity = 1 - p;
       mat.color.set(fl.color);
     });
+
+    // Rótulo de victoria
+    if (bannerMat.current && scene.banner) {
+      const { from, to } = scene.banner;
+      bannerMat.current.opacity =
+        Math.min(1, Math.max(0, (u - from) / 0.5)) *
+        (1 - Math.min(1, Math.max(0, (u - (to - 0.8)) / 0.8)));
+    }
+    // Explosión
+    if (blastMesh.current && blastRing.current && scene.blast) {
+      const t = u - scene.blast.time;
+      const on = t >= 0 && t < 1.6;
+      blastMesh.current.visible = on;
+      blastRing.current.visible = on;
+      if (on) {
+        const k = 1 - Math.pow(1 - Math.min(1, t / 0.9), 3);
+        blastMesh.current.scale.setScalar(0.1 + k * 0.7);
+        (blastMesh.current.material as THREE.MeshBasicMaterial).opacity =
+          0.9 * (1 - Math.min(1, t / 1.6));
+        blastRing.current.scale.setScalar(0.15 + k * 1.3);
+        (blastRing.current.material as THREE.MeshBasicMaterial).opacity =
+          0.8 * (1 - Math.min(1, t / 1.2));
+      }
+    }
   });
 
   return (
@@ -314,6 +374,51 @@ export function SceneAction({
           ))}
         </group>
       </Suspense>
+      {scene.banner && bannerTexture && (
+        <Billboard position={[0, 1.05, 0]}>
+          <mesh raycast={() => null} renderOrder={20}>
+            <planeGeometry args={[1.7, 0.43]} />
+            <meshBasicMaterial
+              ref={bannerMat}
+              map={bannerTexture}
+              transparent
+              opacity={0}
+              depthTest={false}
+              toneMapped={false}
+            />
+          </mesh>
+        </Billboard>
+      )}
+      {scene.blast && (
+        <group position={[scene.blast.at[0], 0.12, scene.blast.at[1]]}>
+          <mesh ref={blastMesh} visible={false} raycast={() => null}>
+            <sphereGeometry args={[1, 20, 14]} />
+            <meshBasicMaterial
+              color="#ffb04a"
+              transparent
+              opacity={0.9}
+              depthWrite={false}
+              toneMapped={false}
+            />
+          </mesh>
+          <mesh
+            ref={blastRing}
+            visible={false}
+            rotation={[-Math.PI / 2, 0, 0]}
+            raycast={() => null}
+          >
+            <ringGeometry args={[0.85, 1, 40]} />
+            <meshBasicMaterial
+              color="#fff0c0"
+              transparent
+              opacity={0.8}
+              depthWrite={false}
+              toneMapped={false}
+              side={THREE.DoubleSide}
+            />
+          </mesh>
+        </group>
+      )}
       {Array.from({ length: BULLETS }, (_, k) => (
         <mesh
           key={`b${k}`}
