@@ -512,26 +512,30 @@ if (process.env.ANIM) {
   for (const spec of process.env.ANIM.split(",")) {
     const [clip, rest] = spec.split("=");
     const [seqPart, countPart, mode] = rest.split(":");
-    const [seqSpec, baseName] = seqPart.split("+");
-    const [seqName, blendPart] = seqSpec.split("@");
-    const found = animator.find(seqName);
-    const baseRef = baseName ? animator.find(baseName) : null;
-    if (baseName && !baseRef)
-      throw new Error(`secuencia base no encontrada: ${baseName}`);
-    const basePoses = baseRef
-      ? animator.sample(animator.describe(baseRef), 0)
-      : null;
-    const delta = animator.isDelta(found);
-    if (!found) throw new Error(`secuencia no encontrada: ${seqName}`);
-    let blend = blendPart === undefined ? undefined : Number(blendPart);
-    if (blendPart === "auto") {
-      const best = animator.bestBlend(found);
-      blend = best.blend;
-      console.error(
-        `  ${clip}: mezcla ${best.blend} (movimiento ${best.score.toFixed(2)})`,
-      );
-    }
-    const info = animator.describe(found, blend);
+    // «Capa+Base1+Base2»: la capa sustituye (o suma, si es aditiva) los huesos que define sobre las bases, de arriba abajo.
+    // Una base con «~» avanza con la capa (misma fracción de su duración); sin él se queda en su primer fotograma.
+    // «Secuencia@auto» elige la mezcla que más se mueve.
+    const resolve = (text) => {
+      const sync = text.startsWith("~");
+      const [name, blendPart] = text.replace(/^~/, "").split("@");
+      const ref = animator.find(name);
+      if (!ref) throw new Error(`secuencia no encontrada: ${name}`);
+      let blend = blendPart === undefined ? undefined : Number(blendPart);
+      if (blendPart === "auto") {
+        const best = animator.bestBlend(ref);
+        blend = best.blend;
+        console.error(
+          `  ${clip}: mezcla ${best.blend} (movimiento ${best.score.toFixed(2)})`,
+        );
+      }
+      return {
+        sync,
+        info: animator.describe(ref, blend),
+        delta: animator.isDelta(ref),
+      };
+    };
+    const [top, ...baseList] = seqPart.split("+").map(resolve);
+    const info = top.info;
     const count = Number(countPart) || 1;
     const loop = mode === "loop";
     for (let k = 0; k < count; k++) {
@@ -541,7 +545,20 @@ if (process.env.ANIM) {
           ? 0
           : Math.round((k * (info.frames - 1)) / (count - 1));
       let poses = animator.sample(info, frame);
-      if (basePoses) poses = compose(poses, basePoses, delta);
+      if (baseList.length > 0) {
+        const phase = info.frames > 1 ? frame / (info.frames - 1) : 0;
+        const baseFrame = (layer) =>
+          layer.sync ? Math.round(phase * (layer.info.frames - 1)) : 0;
+        const last = baseList[baseList.length - 1];
+        let base = animator.sample(last.info, baseFrame(last));
+        for (let i = baseList.length - 2; i >= 0; i--)
+          base = compose(
+            animator.sample(baseList[i].info, baseFrame(baseList[i])),
+            base,
+            baseList[i].delta,
+          );
+        poses = compose(poses, base, top.delta);
+      }
       if (attachBone >= 0) (attach[clip] ??= []).push(attachMatrix(poses));
       const matrices = bakeFrame(poses);
       // La pose base es el primer fotograma del primer clip: así el modelo sale ya de pie y no en la pose de referencia

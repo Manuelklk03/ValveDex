@@ -127,6 +127,58 @@ const jobs = {
   ],
 };
 
+// Counter-Strike: Source. Los jugadores combinan piernas (Run_lower…) y torso por arma (Run_Upper_AK…); disparar es aditivo
+const csPlayer = (model, set, weapon, role) => ({
+  out: `cs-${model}-${role}`,
+  game: "Counter-Strike Source",
+  mod: "cstrike",
+  model: `player/${model}`,
+  attach: `models/weapons/${weapon}.mdl`,
+  anim:
+    role === "c4"
+      ? [
+          "aim=Idle_Upper_C4+Idle_lower:1",
+          "run=Run_Upper_C4+~Run_lower@auto:6:loop",
+          "plant=Crouch_Idle_Shoot_C4+Crouch_Idle_Upper_C4+Crouch_Idle_Lower:10",
+          "die=Death1:8",
+        ].join(",")
+      : [
+          `aim=Idle_Upper_${set}+Idle_lower:1`,
+          `run=Run_Upper_${set}+~Run_lower@auto:6:loop`,
+          `shoot=Idle_Shoot_${set}+Idle_Upper_${set}+Idle_lower:4:loop`,
+          `crouch=Crouch_Idle_Upper_${set}+Crouch_Idle_Lower:1`,
+          "die=Death1:8",
+        ].join(","),
+});
+jobs.cs = [
+  ...[
+    ["ct_urban", "t_phoenix"],
+    ["ct_gign", "t_leet"],
+    ["ct_sas", "t_arctic"],
+    ["ct_gsg9", "t_guerilla"],
+  ].flatMap(([ct, t]) => [
+    csPlayer(ct, "M4", "w_rif_m4a1", "rifle"),
+    csPlayer(t, "AK", "w_rif_ak47", "rifle"),
+    csPlayer(t, "C4", "w_c4", "c4"),
+  ]),
+  // Las armas que lleva cada jugador
+  ...["w_rif_m4a1", "w_rif_ak47", "w_c4"].map((weapon) => ({
+    out: `cs-${weapon.replace("w_rif_", "w-").replace("w_c4", "w-c4")}`,
+    game: "Counter-Strike Source",
+    mod: "cstrike",
+    model: `weapons/${weapon}`,
+    texture: 256,
+  })),
+  // La bomba plantada, quieta
+  {
+    out: "cs-c4-planted",
+    game: "Counter-Strike Source",
+    mod: "cstrike",
+    model: "weapons/w_c4_planted",
+    texture: 256,
+  },
+];
+
 if (!jobs[universe])
   throw new Error(`Universo sin trabajos: ${universe} (${Object.keys(jobs)})`);
 const dir = `public/models/scenes/${universe}`;
@@ -148,7 +200,7 @@ for (const job of jobs[universe]) {
       {
         env: {
           ...process.env,
-          ANIM: job.anim,
+          ...(job.anim && { ANIM: job.anim }),
           ...(job.attach && { ATTACH: `ValveBiped.weapon_bone|${job.attach}` }),
           GLB_TEXTURE_MAX: String(job.texture ?? 512),
         },
