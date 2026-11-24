@@ -220,7 +220,6 @@ function round(
       move: [0.1, 2.4],
       shots: [{ from: 2.6, to: 5.2, at: [0.4, -0.65] }],
       dies: 5.3,
-      back: true,
       rate: 0.55,
     }),
     fighter({
@@ -230,7 +229,6 @@ function round(
       move: [0.4, 2.9],
       shots: [{ from: 3.1, to: 7.9, at: [0.5, -0.2] }],
       dies: 8.0,
-      back: true,
       rate: 0.5,
     }),
     fighter({
@@ -240,6 +238,7 @@ function round(
       move: [0.2, 2.3],
       shots: [{ from: 2.5, to: 4.6, at: t2 }],
       dies: 4.7,
+      back: true,
       rate: 0.5,
     }),
     fighter({
@@ -249,6 +248,7 @@ function round(
       move: [0.3, 2.5],
       shots: [{ from: 2.9, to: 7.2, at: t3 }],
       dies: 7.4,
+      back: true,
       rate: 0.55,
     }),
     lastCt(),
