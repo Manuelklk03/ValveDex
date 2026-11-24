@@ -1466,6 +1466,13 @@ function ZoneDecor({ id }: { id: string }) {
   );
 }
 
+// Una escena al azar distinta de la actual
+function otherScene(current: number, count: number) {
+  if (count < 2) return 0;
+  const pick = Math.floor(Math.random() * (count - 1));
+  return pick >= current ? pick + 1 : pick;
+}
+
 function Territory({
   saga,
   glow,
@@ -1517,30 +1524,30 @@ function Territory({
   const vis = useRef(1);
   // Escenas guionizadas del universo (si las tiene): cada una dura lo suyo y se pasa a la siguiente en bucle
   const scenes = SCENES[saga.id];
-  const [sceneIndex, setSceneIndex] = useState(0);
-  // El orden de las escenas es aleatorio: la primera se elige al montar (en el servidor siempre es la 0, para no desajustar
-  // la hidratación) y cada una da paso a otra distinta al azar
+  // La escena en curso y la siguiente, elegida ya al empezar la actual para precargar sus modelos y que al cambiar no haya
+  // un hueco sin personajes
+  const [pair, setPair] = useState({ index: 0, next: 0 });
+  const sceneIndex = pair.index;
   useEffect(() => {
     if (!scenes || reduced) return;
-    const id = window.setTimeout(
-      () => setSceneIndex(Math.floor(Math.random() * scenes.length)),
-      0,
-    );
+    const id = window.setTimeout(() => {
+      const first = Math.floor(Math.random() * scenes.length);
+      setPair({ index: first, next: otherScene(first, scenes.length) });
+    }, 0);
     return () => window.clearTimeout(id);
   }, [scenes, reduced]);
   useEffect(() => {
     if (!scenes || reduced) return;
     const id = window.setTimeout(
       () =>
-        setSceneIndex((value) => {
-          if (scenes.length < 2) return 0;
-          const next = Math.floor(Math.random() * (scenes.length - 1));
-          return next >= value ? next + 1 : next;
+        setPair({
+          index: pair.next,
+          next: otherScene(pair.next, scenes.length),
         }),
-      scenes[sceneIndex % scenes.length].duration * 1000,
+      scenes[pair.index % scenes.length].duration * 1000,
     );
     return () => window.clearTimeout(id);
-  }, [scenes, sceneIndex, reduced]);
+  }, [scenes, pair, reduced]);
   const frame = useRef(0);
   const ground = useMemo(
     () => makeGround(saga.id, saga.accent),
@@ -1676,7 +1683,12 @@ function Territory({
           scale={scenes ? R * 0.92 : (R / 1.45) * 1.45}
         >
           {scenes ? (
-            <SceneAction scenes={scenes} index={sceneIndex} reduced={reduced} />
+            <SceneAction
+              scenes={scenes}
+              index={sceneIndex}
+              next={pair.next}
+              reduced={reduced}
+            />
           ) : (
             <Action id={saga.id} reduced={reduced} />
           )}

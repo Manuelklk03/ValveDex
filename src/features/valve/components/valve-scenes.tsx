@@ -173,10 +173,13 @@ function resetSim(sim: {
 export function SceneAction({
   scenes,
   index,
+  next,
   reduced,
 }: {
   scenes: Scene[];
   index: number;
+  // Escena que viene después: se precargan sus modelos
+  next: number;
   reduced: boolean;
 }) {
   const scene = scenes[index % scenes.length];
@@ -218,14 +221,14 @@ export function SceneAction({
 
   const clock = useRef({ scene: -1, t0: 0, flash: 0 });
 
-  // El siguiente reparto se carga con antelación para que el cambio de escena no parpadee
+  // El siguiente reparto se carga con antelación para que el cambio de escena no deje un hueco sin personajes
   useEffect(() => {
-    const next = scenes[(index + 1) % scenes.length];
-    for (const a of next.actors) {
+    const upcoming = scenes[next % scenes.length];
+    for (const a of upcoming.actors) {
       useGLTF.preload(a.model.url);
       if (a.model.weapon) useGLTF.preload(a.model.weapon);
     }
-  }, [scenes, index]);
+  }, [scenes, next]);
 
   useFrame((state) => {
     const t = state.clock.elapsedTime;
