@@ -1518,10 +1518,25 @@ function Territory({
   // Escenas guionizadas del universo (si las tiene): cada una dura lo suyo y se pasa a la siguiente en bucle
   const scenes = SCENES[saga.id];
   const [sceneIndex, setSceneIndex] = useState(0);
+  // El orden de las escenas es aleatorio: la primera se elige al montar (en el servidor siempre es la 0, para no desajustar
+  // la hidratación) y cada una da paso a otra distinta al azar
   useEffect(() => {
     if (!scenes || reduced) return;
     const id = window.setTimeout(
-      () => setSceneIndex((value) => (value + 1) % scenes.length),
+      () => setSceneIndex(Math.floor(Math.random() * scenes.length)),
+      0,
+    );
+    return () => window.clearTimeout(id);
+  }, [scenes, reduced]);
+  useEffect(() => {
+    if (!scenes || reduced) return;
+    const id = window.setTimeout(
+      () =>
+        setSceneIndex((value) => {
+          if (scenes.length < 2) return 0;
+          const next = Math.floor(Math.random() * (scenes.length - 1));
+          return next >= value ? next + 1 : next;
+        }),
       scenes[sceneIndex % scenes.length].duration * 1000,
     );
     return () => window.clearTimeout(id);
