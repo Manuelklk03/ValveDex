@@ -140,14 +140,16 @@ const csPlayer = (model, set, weapon, role) => ({
           "aim=Idle_Upper_C4+Idle_lower:1",
           "run=Run_Upper_C4+~Run_lower@auto:6:loop",
           "plant=Crouch_Idle_Shoot_C4+Crouch_Idle_Upper_C4+Crouch_Idle_Lower:10",
-          "die=Death1:8",
+          "die=deathpose_front:4",
+          "die_back=deathpose_back:4",
         ].join(",")
       : [
           `aim=Idle_Upper_${set}+Idle_lower:1`,
           `run=Run_Upper_${set}+~Run_lower@auto:6:loop`,
           `shoot=Idle_Shoot_${set}+Idle_Upper_${set}+Idle_lower:4:loop`,
           `crouch=Crouch_Idle_Upper_${set}+Crouch_Idle_Lower:1`,
-          "die=Death1:8",
+          "die=deathpose_front:4",
+          "die_back=deathpose_back:4",
         ].join(","),
 });
 jobs.cs = [
